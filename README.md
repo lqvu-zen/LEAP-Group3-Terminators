@@ -1,6 +1,11 @@
 # LEAP-Group3-Terminators
 
-## Tên trò chơi: 
+## Thành viên:
+* Trịnh Đông Dương
+* Triệu Tấn Hùng
+* Lê Quang Vũ
+
+## Tên trò chơi: Forgotten Memoriae
 
 ### Thể loại: RPG
 
