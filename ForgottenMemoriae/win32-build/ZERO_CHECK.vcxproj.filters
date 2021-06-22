@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\win32-build\CMakeFiles\c9d2766b30bdf4b63ecf9355604e587c\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{5A927071-6588-3748-9F58-A89F3E6507E9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

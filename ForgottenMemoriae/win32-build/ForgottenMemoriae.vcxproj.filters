@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Classes\AppDelegate.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Classes\HelloWorldScene.cpp">
+      <Filter>Source Files\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\proj.win32\main.cpp">
+      <Filter>Source Files\proj.win32</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\cocos2d\cocos\precheader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Classes\AppDelegate.h">
+      <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Classes\HelloWorldScene.h">
+      <Filter>Source Files\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\proj.win32\main.h">
+      <Filter>Source Files\proj.win32</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\proj.win32\resource.h">
+      <Filter>Source Files\proj.win32</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Resources\CloseNormal.png">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Resources\CloseSelected.png">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Resources\HelloWorld.png">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Resources\fonts\Marker Felt.ttf">
+      <Filter>Resources\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Resources\fonts\arial.ttf">
+      <Filter>Resources\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\Resources\res\.gitkeep">
+      <Filter>Resources\res</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="D:\GameLoft\Project\LEAP-Group3-Terminators\ForgottenMemoriae\proj.win32\game.rc">
+      <Filter>Source Files\proj.win32</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{1D7AC4E5-D374-3D1E-8FC9-0747FF1BA855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\fonts">
+      <UniqueIdentifier>{33A76266-25CB-30F8-9C7D-D2BFF2D425AD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\res">
+      <UniqueIdentifier>{A6E6F664-4DB5-33CC-95EF-9DFF97B4776E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{04D8C3FC-613B-3702-8930-F465B65F313C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Classes">
+      <UniqueIdentifier>{5EC337AF-4E9A-3E96-91A0-E48BC5CB0ACF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\proj.win32">
+      <UniqueIdentifier>{7CA49EE9-3B3E-3244-BE8A-D627003AAD77}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
