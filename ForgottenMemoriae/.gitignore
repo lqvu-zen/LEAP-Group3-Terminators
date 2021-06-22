@@ -5,6 +5,7 @@ config.bat
 **/CMakeCache.txt
 **/CMakeFiles
 bin
+win32-build
 win32-build/**/Debug
 win32-build/**/Release
 win32-build/**/*.obj
