@@ -22,27 +22,25 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __SPLASH_SCENE_H__
-#define __SPLASH_SCENE_H__
+#ifndef __SCENE_MANAGER_H__
+#define __SCENE_MANAGER_H__
 
 #include "cocos2d.h"
 
-class SplashScene : public cocos2d::Scene
+class SceneManager : public cocos2d::Scene
 {
 public:
-    static cocos2d::Scene* createScene();
+    SceneManager(Scene* scene) {
+        currentScene = scene;
+    }
 
-    virtual bool init();
+    void goToNextScene(float dt);
 
-
-    // implement the "static create()" method manually
-    CREATE_FUNC(SplashScene);
-
+    void goToPrevScene(float dt);
 private:
-
-    void loadSplashScene(float dt);
-
+    Scene* currentScene;
+    
     void goToMainMenuScene(float dt);
 };
 
-#endif // __SPLASH_SCENE_H__
+#endif // __SCENE_MANAGER_H__
