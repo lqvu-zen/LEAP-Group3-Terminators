@@ -40,6 +40,7 @@ public:
 
 private:
     void goToMainMenuScene(float dt);
+	void goToHelloWorldScene(float dt);
 };
 
 #endif // __SPLASH_SCENE_H__

@@ -25,6 +25,7 @@
 #include "SplashScene.h"
 #include "ui/CocosGUI.h"
 #include "MainMenuScene.h"
+#include "HelloWorldScene.h"
 #include "Definitions.h"
 
 USING_NS_CC;
@@ -70,7 +71,7 @@ bool SplashScene::init()
         loadingBar->setPercent(percent);
         if (percent >= 100.0f) {
             this->unschedule("updateLoadingBar");
-            this->scheduleOnce(CC_SCHEDULE_SELECTOR(SplashScene::goToMainMenuScene), DISPLAY_TIME_SPLASH_SCENE);
+            this->scheduleOnce(CC_SCHEDULE_SELECTOR(SplashScene::goToHelloWorldScene), DISPLAY_TIME_SPLASH_SCENE);
         }
     }, 0.1f, "updateLoadingBar");
 
@@ -81,4 +82,9 @@ bool SplashScene::init()
 void SplashScene::goToMainMenuScene(float dt) {
     auto scene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+}
+
+void SplashScene::goToHelloWorldScene(float dt) {
+	auto scene = HelloWorld::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
