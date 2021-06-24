@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="2">
+ <tileset firstgid="1" source="PlayTileSet1.tsx"/>
+ <layer id="3" name="Trees" width="60" height="34">
+  <data encoding="base64" compression="zlib">
+   eJztlMcNwkAQRddcCSKJAxKhAwMdEDogdEAolVQBqQJSBcDfA9IKyevxCgsE/8lP2oNnZmdkj1KEEEIIIYQQQgghhPwPJeF75Vhv8d38U++v3wN7j07SOGccc3wC6S54pWKc62+4hxQ95xRMK/mcXWI05mx8Zf825nABl3AF1xHq2NBzrsKaks/ZJcZE8k9s4Bbu4B4eHOoE1WrAJmwJc/gOMVE5whM8wwu8Roi1zbMNO7ALe8J8thjpPhtbYjQ3eNcHDw9MePY7Sev24QAO4cieMjDGZWeH7bks+svBPCzAYki/UvScJ3AKZzHEuO5vG+WAvGFzfuddnrXi6I/8Fg9/EB2s
+  </data>
+ </layer>
+ <layer id="2" name="Foreground" width="60" height="34">
+  <data encoding="base64" compression="zlib">
+   eJztlF1OwkAURq+PIPAKRkA2or7Lg7gEZSnAEtAN+LszdQPgzwPHmCal6Z1kDJkS+53kpF+m5TJfJq2ZEEIIIYQQQgghhBD1YoZzXATyf2KJt3gXyF3s4VFFe6wSda9n9x/q9i2I4RXf8L3qjSQmZe86vH8pO/7lv3Zx3vvecYVr/MBP/MLv3W8tOfmzy3dsHJg18RBb2MYOnnLvDM+tPGd46yG8mbG5ONM7u3zHY+zjAId4giO85LkJXll5zvDWQ3gzY3Nxpnd2XscLfjO23+s13uDUyRneeghvZmwuzvR63XPvAR9tOz/hM77gBidhUPY=
+  </data>
+ </layer>
+ <objectgroup id="4" name="Objects">
+  <object id="1" name="SpawnPoint" x="28.538" y="389.654" width="30.7332" height="29.6356"/>
+ </objectgroup>
+</map>

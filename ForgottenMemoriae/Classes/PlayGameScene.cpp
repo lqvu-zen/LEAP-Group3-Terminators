@@ -22,15 +22,15 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "HelloWorldScene.h"
+#include "PlayGameScene.h"
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+Scene* PlayGameScene::createScene()
 {
 	auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	scene->getPhysicsWorld()->setGravity(Vect(0, -100));
-	auto layer = HelloWorld::create();
+	scene->getPhysicsWorld()->setGravity(Vect(0, -100));//test world with gravity physics!!! Working for now!!!
+	auto layer = PlayGameScene::create();
 	layer->SetPhysicsWorld(scene->getPhysicsWorld());
 	scene->addChild(layer);
     return scene;
@@ -44,7 +44,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool PlayGameScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -56,7 +56,13 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	//collision
+	//add background
+	auto bgSprite = Sprite::create("sprites/Top sky.png");
+	bgSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	bgSprite->setScale(visibleSize.width /bgSprite->getContentSize().width, visibleSize.height / bgSprite->getContentSize().height);
+	this->addChild(bgSprite);
+
+	//collision with map edges
 	auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
@@ -95,13 +101,15 @@ bool HelloWorld::init()
 	int x = spawnPoint["x"].asInt();
 	int y = spawnPoint["y"].asInt();
 	CCLOG("spawnPoint x value: %d; y value: %d", x,y);
+	
 	//Add character here!!!
 	player = Sprite::create("sprites/yellowbird-midflap.png");
 	player->setPosition(x, y);
 	auto playerBody = PhysicsBody::createCircle(player->getContentSize().width / 2);
-	playerBody->setDynamic(true);
+	playerBody->setDynamic(true);//test Gravity physics. Working 
 	player->setPhysicsBody(playerBody);
 	this->addChild(player);
+	//Add character here!!!
     return true;
 }
 

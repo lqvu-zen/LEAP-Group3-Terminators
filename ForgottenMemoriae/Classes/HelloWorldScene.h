@@ -26,7 +26,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-
+USING_NS_CC;
 class HelloWorld : public cocos2d::Scene
 {
 public:
@@ -34,11 +34,17 @@ public:
 
     virtual bool init();
     
-    // a selector callback
-    void menuCloseCallback(cocos2d::Ref* pSender);
     
-    // implement the "static create()" method manually
+	Sprite *Tile[1000];//Wizard class to load tiles that need to add collision
+	int lastTile = 0; //The tail of the Tile array
+					   
+	// implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+private:
+	void SetPhysicsWorld(cocos2d::PhysicsWorld *world) { sceneWorld = world; };
+	cocos2d::PhysicsWorld *sceneWorld;
+	Sprite *player;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

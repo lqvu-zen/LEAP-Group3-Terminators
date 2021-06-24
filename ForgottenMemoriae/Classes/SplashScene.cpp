@@ -27,7 +27,7 @@
 #include "MainMenuScene.h"
 #include "HelloWorldScene.h"
 #include "Definitions.h"
-
+#include "PlayGameScene.h"
 USING_NS_CC;
 
 Scene* SplashScene::createScene()
@@ -71,7 +71,7 @@ bool SplashScene::init()
         loadingBar->setPercent(percent);
         if (percent >= 100.0f) {
             this->unschedule("updateLoadingBar");
-            this->scheduleOnce(CC_SCHEDULE_SELECTOR(SplashScene::goToHelloWorldScene), DISPLAY_TIME_SPLASH_SCENE);
+            this->scheduleOnce(CC_SCHEDULE_SELECTOR(SplashScene::goToPlayGameScene), DISPLAY_TIME_SPLASH_SCENE);
         }
     }, 0.1f, "updateLoadingBar");
 
@@ -84,7 +84,7 @@ void SplashScene::goToMainMenuScene(float dt) {
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
-void SplashScene::goToHelloWorldScene(float dt) {
-	auto scene = HelloWorld::createScene();
+void SplashScene::goToPlayGameScene(float dt) {
+	auto scene = PlayGameScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
