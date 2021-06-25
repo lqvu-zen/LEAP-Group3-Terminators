@@ -29,7 +29,7 @@ Scene* PlayGameScene::createScene()
 {
 	auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	scene->getPhysicsWorld()->setGravity(Vect(0, -100));//test world with gravity physics!!! Working for now!!!
+	//scene->getPhysicsWorld()->setGravity(Vect(0, -100));//test world with gravity physics!!! Working for now!!!
 	auto layer = PlayGameScene::create();
 	layer->SetPhysicsWorld(scene->getPhysicsWorld());
 	scene->addChild(layer);
@@ -105,12 +105,37 @@ bool PlayGameScene::init()
 	//Add character here!!!
 	player = Sprite::create("sprites/yellowbird-midflap.png");
 	player->setPosition(x, y);
-	auto playerBody = PhysicsBody::createCircle(player->getContentSize().width / 2);
-	playerBody->setDynamic(true);//test Gravity physics. Working 
+	auto playerBody = PhysicsBody::createBox(player->getContentSize());
+	//playerBody->setDynamic(true);//test Gravity physics. Working 
 	player->setPhysicsBody(playerBody);
 	this->addChild(player);
 	//Add character here!!!
+	
+	
+	
+	//Add enemies here!!
+	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
+	//If true -> add enemey at the EnemySpawn.
+	for each (Value EnemySpawn in objectGroup->getObjects())
+	{
+		if (EnemySpawn.asValueMap()["Enemy"].asInt() == 1)
+		{
+			int eneX = EnemySpawn.asValueMap()["x"].asInt();
+			int eneY = EnemySpawn.asValueMap()["y"].asInt();
+			this->addEnemyAt(eneX, eneY);
+		}
+	}
+	//Add enemies here!!
     return true;
 }
 
 
+void PlayGameScene::addEnemyAt(int x, int y)
+{
+	Sprite *enemy = Sprite::create("sprites/redbird-midflap.png");
+	enemy->setFlippedX(true);
+	enemy->setPosition(x, y);
+	auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
+	enemy->setPhysicsBody(enemyBody);
+	this->addChild(enemy);
+}

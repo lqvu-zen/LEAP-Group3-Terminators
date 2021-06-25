@@ -41,6 +41,7 @@ private:
 	void SetPhysicsWorld(cocos2d::PhysicsWorld *world) { sceneWorld = world; };
 	cocos2d::PhysicsWorld *sceneWorld;
 	Sprite *player;
+	void addEnemyAt(int x, int y);
 };
 
 #endif // __PLAYGAME_SCENE_H__
