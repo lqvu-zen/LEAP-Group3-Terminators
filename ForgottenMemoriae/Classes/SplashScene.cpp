@@ -64,13 +64,22 @@ bool SplashScene::init()
 
 void SplashScene::loadSplashScene(float dt) {
     auto scene = Scene::create();
-    CCLOG("Name: %s", scene->getName());
+
+    auto tmp = Director::getInstance()->getRunningScene();
+    CCLOG("TYPE THIS SCENE: %s", typeid(this).name());
+    CCLOG("TYPE SCENE: %s", typeid(tmp).name());
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto logo = Sprite::create("sprites/logo.png");
+    /*auto logo = Sprite::create("sprites/logo.png");
     logo->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.75));
-    scene->addChild(logo);
+    scene->addChild(logo);*/
+
+    auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
+    title->setTextColor(Color4B::WHITE);
+    title->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
+    scene->addChild(title);
 
     auto loadingBar = ui::LoadingBar::create("sprites/loadingbar.png");
     loadingBar->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.25));

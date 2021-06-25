@@ -22,19 +22,29 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "SceneManager.h"
-#include "ui/CocosGUI.h"
-#include "MainMenuScene.h"
-#include "Definitions.h"
+#ifndef __CHARACTER_H__
+#define __CHARACTER_H__
 
-USING_NS_CC;
+#include "cocos2d.h"
 
-void SceneManager::goToNextScene(float dt) {
-	auto tmp = Director::getInstance()->getRunningScene();
-	goToMainMenuScene(dt);
-}
+class Character : public cocos2d::Scene
+{
+public:
+    float hp;
+    float mana;
+    float atk;
+    float def;
 
-void SceneManager::goToMainMenuScene(float dt) {
-	auto scene = MainMenuScene::createScene();
-	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-}
+    Character();
+
+    Character(float _hp, float _mana, float _atk, float _def) {
+        hp = _hp;
+        mana = _mana;
+        atk = _atk;
+        def = _def;
+    }
+private:
+    
+};
+
+#endif // __CHARACTER_H__

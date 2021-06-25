@@ -34,9 +34,20 @@ public:
 
     virtual bool init();
     
+    cocos2d::Sprite* monster;
     
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenuScene);
+
+private:
+
+    void onClickMenuItem(cocos2d::Ref* sender);
+
+    void goToVillage(cocos2d::Ref* sender);
+
+    void goToSetting(float dt);
+
+    void goToExit(float dt);
 };
 
 #endif // __MAIN_MENU_SCENE_H__

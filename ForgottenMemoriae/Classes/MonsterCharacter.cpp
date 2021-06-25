@@ -22,19 +22,35 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "SceneManager.h"
-#include "ui/CocosGUI.h"
-#include "MainMenuScene.h"
+#include "MonsterCharacter.h"
 #include "Definitions.h"
 
 USING_NS_CC;
 
-void SceneManager::goToNextScene(float dt) {
-	auto tmp = Director::getInstance()->getRunningScene();
-	goToMainMenuScene(dt);
+MonsterCharacter::MonsterCharacter(cocos2d::Scene* scene) {
+	visibleSize = Director::getInstance()->getVisibleSize();
+	origin = Director::getInstance()->getVisibleOrigin();
+
+	SpriteBatchNode* spriteNode = SpriteBatchNode::create("plist/Walk.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Walk.plist");
+	monster = Sprite::createWithSpriteFrameName("Walk_1.png");
 }
 
-void SceneManager::goToMainMenuScene(float dt) {
-	auto scene = MainMenuScene::createScene();
-	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+void MonsterCharacter::move() {
+	auto animate = Animate::create(MonsterCharacter::createAnimation("Walk_", 22, 0.15));
+	animate->retain();
+	monster->runAction(RepeatForever::create(animate));
+}
+
+cocos2d::Animation* MonsterCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {
+	Vector<SpriteFrame*> animFrames;
+	for (int i = 1; i <= pFramesOrder; i++) {
+		char buffer[20] = { 0 };
+		sprintf(buffer, "%d.png", i);
+		string str = prefixName + buffer;
+		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(str);
+		animFrames.pushBack(frame);
+	}
+	animation = Animation::createWithSpriteFrames(animFrames, delay);
+	return animation;
 }

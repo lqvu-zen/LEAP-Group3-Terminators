@@ -23,6 +23,8 @@
  ****************************************************************************/
 
 #include "MainMenuScene.h"
+#include "Definitions.h"
+#include "MonsterCharacter.h"
 
 USING_NS_CC;
 
@@ -51,5 +53,70 @@ bool MainMenuScene::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
     
+
+
+    ///Menu
+    /*
+    auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
+    title->setTextColor(Color4B::WHITE);
+    title->setPosition(Vec2(visibleSize.width / 2, visibleSize.height * 0.75));
+    this->addChild(title);
+
+    auto newGameItem = MenuItemFont::create("New Game", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
+    newGameItem->setTag(1);
+
+    auto settingItem = MenuItemFont::create("Setting", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
+    newGameItem->setTag(2);
+
+    auto aboutItem = MenuItemFont::create("About", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
+    aboutItem->setTag(3);
+
+    auto exitItem = MenuItemFont::create("Exit", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
+    exitItem->setTag(4);
+
+    auto menu = Menu::create(newGameItem, settingItem, aboutItem, exitItem, nullptr);
+    menu->setPosition(visibleSize / 2);
+    menu->alignItemsVertically();
+    this->addChild(menu);
+    */
+    
+    
+    //Test Charter
+    MonsterCharacter *newMonster = new MonsterCharacter(this);
+    newMonster->get()->setPosition(visibleSize / 2);
+    this->addChild(newMonster->get());
+
+    newMonster->move();
+
     return true;
+}
+
+void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
+    auto node = dynamic_cast<Node*>(sender);
+    if (node->getTag() == 1) {
+
+    }
+    else if (node->getTag() == 2) {
+
+    }
+    else if (node->getTag() == 3) {
+
+    }
+    else if (node->getTag() == 4) {
+        CCLOG("Exit");
+        Director::getInstance()->end();
+        goToExit(TRANSITION_TIME);
+    }
+}
+
+void MainMenuScene::goToVillage(cocos2d::Ref* sender) {
+
+}
+
+void MainMenuScene::goToSetting(float dt) {
+
+}
+
+void MainMenuScene::goToExit(float dt) {
+    Director::getInstance()->end();
 }

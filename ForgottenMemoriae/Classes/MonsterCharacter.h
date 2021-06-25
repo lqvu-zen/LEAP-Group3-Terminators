@@ -22,19 +22,33 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "SceneManager.h"
-#include "ui/CocosGUI.h"
-#include "MainMenuScene.h"
-#include "Definitions.h"
+#ifndef __MONSTER_CHARACTER_H__
+#define __MONSTER_CHARACTER_H__
 
-USING_NS_CC;
+#include "cocos2d.h"
+#include "Character.h"
 
-void SceneManager::goToNextScene(float dt) {
-	auto tmp = Director::getInstance()->getRunningScene();
-	goToMainMenuScene(dt);
-}
+using namespace std;
 
-void SceneManager::goToMainMenuScene(float dt) {
-	auto scene = MainMenuScene::createScene();
-	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-}
+class MonsterCharacter //: public Character
+{
+public:  
+    MonsterCharacter(cocos2d::Scene* scene);
+
+    cocos2d::Sprite* get() {
+        return monster;
+    };
+
+    void move();
+private:
+    cocos2d::Size visibleSize;
+    cocos2d::Vec2 origin;
+
+    cocos2d::Sprite* monster;
+
+    cocos2d::Animation* animation;
+
+    cocos2d::Animation *createAnimation(string prefixName, int pFrames, float delay);
+};
+
+#endif // __MONSTER_CHARACTER_H__

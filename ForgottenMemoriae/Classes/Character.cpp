@@ -28,13 +28,3 @@
 #include "Definitions.h"
 
 USING_NS_CC;
-
-void SceneManager::goToNextScene(float dt) {
-	auto tmp = Director::getInstance()->getRunningScene();
-	goToMainMenuScene(dt);
-}
-
-void SceneManager::goToMainMenuScene(float dt) {
-	auto scene = MainMenuScene::createScene();
-	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-}
