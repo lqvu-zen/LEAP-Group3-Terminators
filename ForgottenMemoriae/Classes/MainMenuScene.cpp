@@ -24,7 +24,7 @@
 
 #include "MainMenuScene.h"
 #include "Definitions.h"
-#include "MonsterCharacter.h"
+#include "PlayGameScene.h"
 
 USING_NS_CC;
 
@@ -56,7 +56,7 @@ bool MainMenuScene::init()
 
 
     ///Menu
-    /*
+    
     auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
     title->setTextColor(Color4B::WHITE);
     title->setPosition(Vec2(visibleSize.width / 2, visibleSize.height * 0.75));
@@ -66,7 +66,7 @@ bool MainMenuScene::init()
     newGameItem->setTag(1);
 
     auto settingItem = MenuItemFont::create("Setting", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
-    newGameItem->setTag(2);
+    settingItem->setTag(2);
 
     auto aboutItem = MenuItemFont::create("About", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
     aboutItem->setTag(3);
@@ -78,23 +78,14 @@ bool MainMenuScene::init()
     menu->setPosition(visibleSize / 2);
     menu->alignItemsVertically();
     this->addChild(menu);
-    */
     
-    
-    //Test Charter
-    MonsterCharacter *newMonster = new MonsterCharacter(this);
-    newMonster->get()->setPosition(visibleSize / 2);
-    this->addChild(newMonster->get());
-
-    newMonster->move();
-
     return true;
 }
 
 void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
     auto node = dynamic_cast<Node*>(sender);
     if (node->getTag() == 1) {
-
+        goToNewGame(TRANSITION_TIME);
     }
     else if (node->getTag() == 2) {
 
@@ -109,8 +100,9 @@ void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
     }
 }
 
-void MainMenuScene::goToVillage(cocos2d::Ref* sender) {
-
+void MainMenuScene::goToNewGame(float dt) {
+    auto scene = PlayGameScene::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 void MainMenuScene::goToSetting(float dt) {

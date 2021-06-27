@@ -22,57 +22,38 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __MONSTER_CHARACTER_H__
-#define __MONSTER_CHARACTER_H__
+#include "PlayGameScene.h"
+#include "ui/CocosGUI.h"
+#include "MainMenuScene.h"
+#include "Definitions.h"
 
-#include "cocos2d.h"
-#include "Character.h"
+USING_NS_CC;
 
-using namespace std;
-
-class MonsterCharacter //: public Character
+Scene* PlayGameScene::createScene()
 {
-public:  
-    MonsterCharacter(cocos2d::Scene* scene);
+    return PlayGameScene::create();
+}
 
-    cocos2d::Sprite* get() {
-        return monster;
-    };
 
-    void attack_1();
+// on "init" you need to initialize your instance
+bool PlayGameScene::init()
+{
+    //////////////////////////////
+    // 1. super init first
+    if (!Scene::init())
+    {
+        return false;
+    }
 
-    void attack_2();
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    void block();
+    /////////////////////////////
+    // 2. add a menu item with "X" image, which is clicked to quit the program
+    //    you may modify it.
 
-    void charge();
+    // add a "close" icon to exit the progress. it's an autorelease object
 
-    void death();
 
-    void hurt();
-
-    void idle();
-
-    void jump();
-
-    void jump_attack_1();
-
-    void jump_attack_2();
-
-    void run();
-
-    void shoot_bow();
-
-    void walk();
-private:
-    cocos2d::Size visibleSize;
-    cocos2d::Vec2 origin;
-
-    cocos2d::Sprite* monster;
-
-    cocos2d::Animation* animation;
-
-    cocos2d::Animation *createAnimation(string prefixName, int pFrames, float delay);
-};
-
-#endif // __MONSTER_CHARACTER_H__
+    return true;
+}

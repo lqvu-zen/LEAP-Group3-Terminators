@@ -35,14 +35,6 @@ public:
     float atk;
     float def;
 
-    Character();
-
-    Character(float _hp, float _mana, float _atk, float _def) {
-        hp = _hp;
-        mana = _mana;
-        atk = _atk;
-        def = _def;
-    }
 private:
     
 };
