@@ -26,6 +26,7 @@
 #define __PLAY_GAME_SCENE_H__
 
 #include "cocos2d.h"
+#include "MonsterCharacter.h"
 
 class PlayGameScene : public cocos2d::Scene
 {
@@ -39,7 +40,7 @@ public:
     CREATE_FUNC(PlayGameScene);
 
 private:
-
+    MonsterCharacter* monster;
 };
 
 #endif // __PLAY_GAME_SCENE_H__

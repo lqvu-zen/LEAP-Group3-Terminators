@@ -101,8 +101,8 @@ void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
 }
 
 void MainMenuScene::goToNewGame(float dt) {
-    auto scene = PlayGameScene::createScene();
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+   auto scene = PlayGameScene::createScene();
+   Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 void MainMenuScene::goToSetting(float dt) {

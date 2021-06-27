@@ -54,6 +54,10 @@ bool PlayGameScene::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
 
+    monster = new MonsterCharacter(this);
+    monster->get()->setScale(0.5);
+    monster->get()->setPosition(visibleSize / 2);
+    this->addChild(monster->get());
 
     return true;
 }
