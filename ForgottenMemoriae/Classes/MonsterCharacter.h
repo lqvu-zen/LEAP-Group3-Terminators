@@ -27,13 +27,14 @@
 
 #include "cocos2d.h"
 #include "Character.h"
+#include "PhysicsShapeCache.h"
 
 using namespace std;
 
 class MonsterCharacter //: public Character
 {
 public:  
-    MonsterCharacter(cocos2d::Scene* scene);
+    MonsterCharacter(cocos2d::Scene* scene, int level);
 
     cocos2d::Sprite* get() {
         return monster;

@@ -46,6 +46,8 @@ private:
 
     void goToSetting(float dt);
 
+    void goToAbout(float dt);
+
     void goToExit(float dt);
 };
 

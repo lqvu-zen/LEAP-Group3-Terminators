@@ -24,14 +24,22 @@
 
 #include "PlayGameScene.h"
 #include "ui/CocosGUI.h"
-#include "MainMenuScene.h"
 #include "Definitions.h"
 
 USING_NS_CC;
 
 Scene* PlayGameScene::createScene()
 {
-    return PlayGameScene::create();
+    //return PlayGameScene::create();
+
+
+    auto scene = Scene::createWithPhysics();
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
+    auto layer = PlayGameScene::create();
+    layer->SetPhysicsWord(scene->getPhysicsWorld());
+    scene->addChild(layer);
+    return scene;
 }
 
 
@@ -54,9 +62,18 @@ bool PlayGameScene::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
 
-    monster = new MonsterCharacter(this);
+    auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
+    auto edgeNode = Node::create();
+    edgeNode->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    edgeNode->setPhysicsBody(edgeBody);
+    this->addChild(edgeNode);
+
+
+    monster = new MonsterCharacter(this, 3);
     monster->get()->setScale(0.5);
     monster->get()->setPosition(visibleSize / 2);
+    //auto monsterBody = PhysicsBody::createBox(monster->get()->getContentSize());
+    //monster->get()->setPhysicsBody(monsterBody);
     this->addChild(monster->get());
 
     return true;

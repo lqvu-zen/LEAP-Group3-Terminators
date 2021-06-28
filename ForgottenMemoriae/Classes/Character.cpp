@@ -22,9 +22,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "SceneManager.h"
+#include "Character.h"
 #include "ui/CocosGUI.h"
-#include "MainMenuScene.h"
 #include "Definitions.h"
 
 USING_NS_CC;

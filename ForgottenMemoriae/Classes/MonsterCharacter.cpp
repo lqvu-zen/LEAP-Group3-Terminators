@@ -27,55 +27,66 @@
 
 USING_NS_CC;
 
-MonsterCharacter::MonsterCharacter(cocos2d::Scene* scene) {
+MonsterCharacter::MonsterCharacter(cocos2d::Scene* scene, int level) {
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-	SpriteBatchNode* spriteNode = SpriteBatchNode::create("plist/Boss_1/Attack_1.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Attack_1.plist");
+	string boss = StringUtils::format("plist/Boss_%i/", level);
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Attack_2.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Attack_2.plist");
+	SpriteBatchNode* spriteNode = SpriteBatchNode::create(boss + "Attack_1.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Attack_1.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Block.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Block.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Attack_2.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Attack_2.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Charge.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Charge.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Block.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Block.plist");
 
-	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create("plist/Boss_1/Death.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Death.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Charge.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Charge.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Hurt.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Hurt.plist");
+	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(boss + "Death.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Death.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Jump.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Jump.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Hurt.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Hurt.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Jump_Attack_1.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Jump_Attack_1.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Jump.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Jump.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Jump_Attack_2.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Jump_Attack_2.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Jump_Attack_1.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Jump_Attack_1.plist");
 
-	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create("plist/Boss_1/Idle.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Idle.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Jump_Attack_2.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Jump_Attack_2.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Run.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Run.plist");
+	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(boss + "Idle.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Idle.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Shoot_Bow.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Shoot_Bow.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Run.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Run.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create("plist/Boss_1/Walk.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("plist/Boss_1/Walk.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Shoot_Bow.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Shoot_Bow.plist");
+
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Walk.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Walk.plist");
 
 
 	monster = Sprite::createWithSpriteFrameName("Idle1.png");
 
+	//auto bodyMonster = PhysicsBody::createBox(Size(150, 250));
+	//monster->setPhysicsBody(bodyMonster);
+
+	auto shapeCache = PhysicsShapeCache::getInstance();
+	shapeCache->addShapesWithFile(boss + "body.plist");
+	shapeCache->setBodyOnSprite("Idle1", monster);
+
 	auto animate = Animate::create(MonsterCharacter::createAnimation("Idle", 16, 0.1));
 	animate->retain();
 	monster->runAction(RepeatForever::create(animate));
+
+	monster->setFlippedX(false);
 }
 
 void MonsterCharacter::attack_1() {

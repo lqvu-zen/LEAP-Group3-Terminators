@@ -40,6 +40,13 @@ public:
     CREATE_FUNC(PlayGameScene);
 
 private:
+
+    cocos2d::PhysicsWorld* sceneWorld;
+
+    void SetPhysicsWord(cocos2d::PhysicsWorld* world) {
+        sceneWorld = world;
+    }
+
     MonsterCharacter* monster;
 };
 

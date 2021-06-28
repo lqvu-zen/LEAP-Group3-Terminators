@@ -88,10 +88,10 @@ void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
         goToNewGame(TRANSITION_TIME);
     }
     else if (node->getTag() == 2) {
-
+        goToSetting(TRANSITION_TIME);
     }
     else if (node->getTag() == 3) {
-
+        goToAbout(TRANSITION_TIME);
     }
     else if (node->getTag() == 4) {
         CCLOG("Exit");
@@ -106,7 +106,35 @@ void MainMenuScene::goToNewGame(float dt) {
 }
 
 void MainMenuScene::goToSetting(float dt) {
+    auto scene = Scene::create();
 
+    auto tmp = Director::getInstance()->getRunningScene();
+    CCLOG("TYPE THIS SCENE: %s", typeid(this).name());
+    CCLOG("TYPE SCENE: %s", typeid(tmp).name());
+
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    auto title = Label::createWithTTF("Setting", "fonts/Marker Felt.ttf", 60);
+    title->setTextColor(Color4B::WHITE);
+    title->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
+    scene->addChild(title);
+}
+
+void MainMenuScene::goToAbout(float dt) {
+    auto scene = Scene::create();
+
+    auto tmp = Director::getInstance()->getRunningScene();
+    CCLOG("TYPE THIS SCENE: %s", typeid(this).name());
+    CCLOG("TYPE SCENE: %s", typeid(tmp).name());
+
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    auto title = Label::createWithTTF("About", "fonts/Marker Felt.ttf", 60);
+    title->setTextColor(Color4B::WHITE);
+    title->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
+    scene->addChild(title);
 }
 
 void MainMenuScene::goToExit(float dt) {
