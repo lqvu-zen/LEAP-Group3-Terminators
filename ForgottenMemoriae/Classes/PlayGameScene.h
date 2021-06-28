@@ -30,18 +30,24 @@ USING_NS_CC;
 class PlayGameScene : public cocos2d::Scene
 {
 public:
+	Sprite *cameraTarget;
+	cocos2d::Follow *followCamera;
     static cocos2d::Scene* createScene();
-
-    virtual bool init();
-					   
-	// implement the "static create()" method manually
+	virtual bool init();
+	void setViewPointCenter(float positionX, float positionY);
+	void updateScene(float dt);
     CREATE_FUNC(PlayGameScene);
 
 private:
+	TMXTiledMap *map;
+	cocos2d::Size visibleSize;
+	cocos2d::Vec2 origin;
 	void SetPhysicsWorld(cocos2d::PhysicsWorld *world) { sceneWorld = world; };
 	cocos2d::PhysicsWorld *sceneWorld;
 	Sprite *player;
 	void addEnemyAt(int x, int y);
+	void onKeyPressedTest(EventKeyboard::KeyCode keyCode, Event *event);
+	
 };
 
 #endif // __PLAYGAME_SCENE_H__
