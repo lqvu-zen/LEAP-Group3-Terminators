@@ -1,34 +1,20 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
-
 #include "MainMenuScene.h"
 
 USING_NS_CC;
 
 Scene* MainMenuScene::createScene()
 {
-    return MainMenuScene::create();
+	auto scene = Scene::createWithPhysics();
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setGravity(Vec2::ZERO);
+
+	//add physic scene
+	auto scenePhysic = MainMenuScene::create();
+	scenePhysic->SetPhysicsWorld(scene->getPhysicsWorld());
+
+	scene->addChild(scenePhysic);
+
+	return scene;
 }
 
 
@@ -45,11 +31,59 @@ bool MainMenuScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
+	// add hero
+	hero = new PlayerCharacter();
+	hero->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2  + origin.y));
 
-    // add a "close" icon to exit the progress. it's an autorelease object
+	this->addChild(hero->getSprite());
+
+	//add physics world
+	auto edgeBody = PhysicsBody::createEdgeBox(
+		Size(visibleSize.width, visibleSize.height), PHYSICSBODY_MATERIAL_DEFAULT, 3
+	);
+	//set collision bitmask
+	edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
+	edgeBody->setContactTestBitmask(true);
+
+	auto edgeNode = Node::create();
+	edgeNode->setPosition(
+		Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
+	);
+
+	edgeNode->setPhysicsBody(edgeBody);
+
+	this->addChild(edgeNode);
+
+	// creating a keyboard event listener
+	auto listener = EventListenerKeyboard::create();
+	listener->onKeyPressed = CC_CALLBACK_2(MainMenuScene::onKeyPressed, this);
+	listener->onKeyReleased = CC_CALLBACK_2(MainMenuScene::onKeyReleased, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+	this->scheduleUpdate();
     
     return true;
+}
+
+void MainMenuScene::SetPhysicsWorld(cocos2d::PhysicsWorld * world)
+{
+	this->sceneWorld = world;
+}
+
+void MainMenuScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+{
+	CCLOG("Key with keycode %d pressed", keyCode);
+	hero->updateAnimation(PlayerCharacter::State::RUNING);
+}
+
+void MainMenuScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+{
+	CCLOG("Key with keycode %d released", keyCode);
+	hero->updateAnimation(PlayerCharacter::State::IDLE);
+}
+
+void MainMenuScene::update(float dt)
+{
+	hero->updateAction(dt);
 }
