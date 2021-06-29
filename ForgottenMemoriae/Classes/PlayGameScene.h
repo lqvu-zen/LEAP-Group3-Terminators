@@ -27,6 +27,7 @@
 
 #include "cocos2d.h"
 #include "MonsterCharacter.h"
+#include "BossCharacter.h"
 
 class PlayGameScene : public cocos2d::Scene
 {
@@ -34,7 +35,6 @@ public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
-
 
     // implement the "static create()" method manually
     CREATE_FUNC(PlayGameScene);
@@ -47,7 +47,12 @@ private:
         sceneWorld = world;
     }
 
-    MonsterCharacter* monster;
+    MonsterCharacter* monster[10];
+
+    int numMonster;
+    int numType;
+
+    BossCharacter* boss;
 };
 
 #endif // __PLAY_GAME_SCENE_H__

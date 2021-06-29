@@ -56,6 +56,8 @@ bool PlayGameScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    numType = 1;
+    numMonster = 10;
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
     //    you may modify it.
@@ -68,13 +70,16 @@ bool PlayGameScene::init()
     edgeNode->setPhysicsBody(edgeBody);
     this->addChild(edgeNode);
 
+    boss = new BossCharacter(this, 3);
+    boss->get()->setPosition(visibleSize / 2);
+    this->addChild(boss->get());
 
-    monster = new MonsterCharacter(this, 3);
-    monster->get()->setScale(0.5);
-    monster->get()->setPosition(visibleSize / 2);
-    //auto monsterBody = PhysicsBody::createBox(monster->get()->getContentSize());
-    //monster->get()->setPhysicsBody(monsterBody);
-    this->addChild(monster->get());
+
+    for (int i = 0; i < numMonster; i++) {
+        monster[i] = new MonsterCharacter(this, i % numType + 1);
+        monster[i]->get()->setPosition(visibleSize / 2);
+        this->addChild(monster[i]->get());
+    }
 
     return true;
 }

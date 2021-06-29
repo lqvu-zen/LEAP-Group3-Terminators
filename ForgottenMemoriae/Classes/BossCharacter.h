@@ -22,25 +22,58 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __PLAY_GAME_SCENE_H__
-#define __PLAY_GAME_SCENE_H__
+#ifndef __BOSS_CHARACTER_H__
+#define __BOSS_CHARACTER_H__
 
 #include "cocos2d.h"
-#include "MonsterCharacter.h"
+#include "Character.h"
+#include "PhysicsShapeCache.h"
 
-class PlayGameScene : public cocos2d::Scene
+using namespace std;
+
+class BossCharacter //: public Character
 {
-public:
-    static cocos2d::Scene* createScene();
+public:  
+    BossCharacter(cocos2d::Scene* scene, int level);
 
-    virtual bool init();
+    cocos2d::Sprite* get() {
+        return monster;
+    };
 
+    void attack_1();
 
-    // implement the "static create()" method manually
-    CREATE_FUNC(PlayGameScene);
+    void attack_2();
 
+    void block();
+
+    void charge();
+
+    void death();
+
+    void hurt();
+
+    void idle();
+
+    void jump();
+
+    void jump_attack_1();
+
+    void jump_attack_2();
+
+    void run();
+
+    void shoot_bow();
+
+    void walk();
 private:
-    MonsterCharacter* monster;
+    cocos2d::Size visibleSize;
+    cocos2d::Vec2 origin;
+
+    cocos2d::Sprite* monster;
+
+    cocos2d::Animation* animation;
+
+    cocos2d::Animation *createAnimation(string prefixName, int pFrames, float delay);
 };
 
-#endif // __PLAY_GAME_SCENE_H__
+#endif // __BOSS_CHARACTER_H__

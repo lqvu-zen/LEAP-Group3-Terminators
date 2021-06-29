@@ -31,91 +31,38 @@ MonsterCharacter::MonsterCharacter(cocos2d::Scene* scene, int level) {
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-	string boss = StringUtils::format("plist/Boss_%i/", level);
+	string floder = StringUtils::format("plist/Monster_%i/", level);
 
-	SpriteBatchNode* spriteNode = SpriteBatchNode::create(boss + "Attack_1.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Attack_1.plist");
+	SpriteBatchNode* spriteNode = SpriteBatchNode::create(floder + "Attack.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Attack.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Attack_2.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Attack_2.plist");
+	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(floder + "Death.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Death.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Block.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Block.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Hurt.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Hurt.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Charge.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Charge.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Jump.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Jump.plist");
 
-	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(boss + "Death.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Death.plist");
+	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(floder + "Idle.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Idle.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Hurt.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Hurt.plist");
+	monster = Sprite::createWithSpriteFrameName("Idle-0.png");
+	monster->setScale(0.5);
+	auto monsterBody = PhysicsBody::createBox(monster->getContentSize());
+	monster->setPhysicsBody(monsterBody);
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Jump.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Jump.plist");
-
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Jump_Attack_1.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Jump_Attack_1.plist");
-
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Jump_Attack_2.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Jump_Attack_2.plist");
-
-	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(boss + "Idle.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Idle.plist");
-
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Run.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Run.plist");
-
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Shoot_Bow.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Shoot_Bow.plist");
-
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Walk.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Walk.plist");
-
-
-	monster = Sprite::createWithSpriteFrameName("Idle1.png");
-
-	//auto bodyMonster = PhysicsBody::createBox(Size(150, 250));
-	//monster->setPhysicsBody(bodyMonster);
-
-	auto shapeCache = PhysicsShapeCache::getInstance();
-	shapeCache->addShapesWithFile(boss + "body.plist");
-	shapeCache->setBodyOnSprite("Idle1", monster);
-
-	auto animate = Animate::create(MonsterCharacter::createAnimation("Idle", 16, 0.1));
+	auto animate = Animate::create(MonsterCharacter::createAnimation("Idle-", 16, 0.1));
 	animate->retain();
 	monster->runAction(RepeatForever::create(animate));
 
 	monster->setFlippedX(false);
 }
 
-void MonsterCharacter::attack_1() {
+void MonsterCharacter::attack() {
 	animation->release();
-	animation = MonsterCharacter::createAnimation("Attack_1", 8, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
-}
-
-void MonsterCharacter::attack_2() {
-	animation->release();
-	animation = MonsterCharacter::createAnimation("Attack_2", 7, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
-}
-
-void MonsterCharacter::block() {
-	animation->release();
-	animation = MonsterCharacter::createAnimation("Block", 9, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
-}
-
-void MonsterCharacter::charge() {
-	animation->release();
-	animation = MonsterCharacter::createAnimation("Charge", 7, 0.1);
+	animation = MonsterCharacter::createAnimation("Attack-", 19, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
@@ -123,7 +70,7 @@ void MonsterCharacter::charge() {
 
 void MonsterCharacter::death() {
 	animation->release();
-	animation = MonsterCharacter::createAnimation("Death", 15, 0.1);
+	animation = MonsterCharacter::createAnimation("Death-", 24, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
@@ -131,7 +78,7 @@ void MonsterCharacter::death() {
 
 void MonsterCharacter::hurt() {
 	animation->release();
-	animation = MonsterCharacter::createAnimation("Hurt", 8, 0.1);
+	animation = MonsterCharacter::createAnimation("Hurt-", 4, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
@@ -139,7 +86,7 @@ void MonsterCharacter::hurt() {
 
 void MonsterCharacter::idle() {
 	animation->release();
-	animation = MonsterCharacter::createAnimation("Idle", 16, 0.1);
+	animation = MonsterCharacter::createAnimation("Idle-", 48, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
@@ -147,47 +94,7 @@ void MonsterCharacter::idle() {
 
 void MonsterCharacter::jump() {
 	animation->release();
-	animation = MonsterCharacter::createAnimation("Jump", 10, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
-}
-
-void MonsterCharacter::jump_attack_1() {
-	animation->release();
-	animation = MonsterCharacter::createAnimation("Jump_Attack_1", 8, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
-}
-
-void MonsterCharacter::jump_attack_2() {
-	animation->release();
-	animation = MonsterCharacter::createAnimation("Jump_Attack_2", 7, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
-}
-
-void MonsterCharacter::run() {
-	animation->release();
-	animation = MonsterCharacter::createAnimation("Run", 6, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
-}
-
-void MonsterCharacter::shoot_bow() {
-	animation->release();
-	animation = MonsterCharacter::createAnimation("Shoot_Bow", 12, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
-}
-
-void MonsterCharacter::walk() {
-	animation->release();
-	animation = MonsterCharacter::createAnimation("Walk", 12, 0.1);
+	animation = MonsterCharacter::createAnimation("Jump-", 17, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
@@ -195,7 +102,7 @@ void MonsterCharacter::walk() {
 
 cocos2d::Animation* MonsterCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {
 	Vector<SpriteFrame*> animFrames;
-	for (int i = 1; i <= pFramesOrder; i++) {
+	for (int i = 0; i < pFramesOrder; i++) {
 		char buffer[20] = { 0 };
 		sprintf(buffer, "%d.png", i);
 		string str = prefixName + buffer;

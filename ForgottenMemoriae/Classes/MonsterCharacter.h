@@ -40,13 +40,7 @@ public:
         return monster;
     };
 
-    void attack_1();
-
-    void attack_2();
-
-    void block();
-
-    void charge();
+    void attack();
 
     void death();
 
@@ -55,14 +49,6 @@ public:
     void idle();
 
     void jump();
-
-    void jump_attack_1();
-
-    void jump_attack_2();
-
-    void run();
-
-    void shoot_bow();
 
     void walk();
 private:
