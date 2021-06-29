@@ -93,10 +93,11 @@ bool PlayGameScene::init()
 		CCLOG("tile map has no objects layer");
 	}
 	//get the x, y value from the spawnPoint in the tilemap.
-	ValueMap spawnPoint = objectGroup->getObject("SpawnPoint");
+	/*ValueMap spawnPoint = objectGroup->getObject("SpawnPoint");
 	int x = spawnPoint["x"].asInt();
-	int y = spawnPoint["y"].asInt();
+	int y = spawnPoint["y"].asInt();*/
 
+	//Change to spawn Player Character always in the middle of the map
 	//Add character here!!!
 	player = Sprite::create("sprites/yellowbird-midflap.png");
 	player->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
@@ -112,13 +113,22 @@ bool PlayGameScene::init()
 	//Add enemies here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
-	for each (Value EnemySpawn in objectGroup->getObjects())
+	for each (Value SpawnPoint in objectGroup->getObjects())
 	{
-		if (EnemySpawn.asValueMap()["Enemy"].asInt() == 1)
+		//Spawn enemy
+		if (SpawnPoint.asValueMap()["Enemy"].asInt() == 1)
 		{
-			int eneX = EnemySpawn.asValueMap()["x"].asInt();
-			int eneY = EnemySpawn.asValueMap()["y"].asInt();
-			this->addEnemyAt(eneX * SCALE_FACTOR, eneY * SCALE_FACTOR);
+			int eneX = SpawnPoint.asValueMap()["x"].asInt();
+			int eneY = SpawnPoint.asValueMap()["y"].asInt();
+			this->addAt(eneX * SCALE_FACTOR, eneY * SCALE_FACTOR, 1);
+		}
+
+		//Spawn gem
+		if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
+		{
+			int gemX = SpawnPoint.asValueMap()["x"].asInt();
+			int gemY = SpawnPoint.asValueMap()["y"].asInt();
+			this->addAt(gemX * SCALE_FACTOR, gemY * SCALE_FACTOR, 2);
 		}
 	}
 
@@ -139,14 +149,35 @@ bool PlayGameScene::init()
 }
 
 
-void PlayGameScene::addEnemyAt(int x, int y)
+void PlayGameScene::addAt(int x, int y, int type)
 {
-	Sprite *enemy = Sprite::create("sprites/redbird-midflap.png");
-	enemy->setFlippedX(true);
-	enemy->setPosition(x, y);
-	auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
-	enemy->setPhysicsBody(enemyBody);
-	this->addChild(enemy);
+	//Add new objects based on their type.
+	//1 for enemy; 2 for gem
+	switch (type)
+	{
+	case 1:
+		{
+		Sprite *enemy = Sprite::create("sprites/redbird-midflap.png");
+		enemy->setFlippedX(true);
+		enemy->setPosition(x, y);
+		auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
+		enemy->setPhysicsBody(enemyBody);
+		this->addChild(enemy);
+		}
+		break;
+	case 2:
+		{
+		Sprite *gem = Sprite::create("sprites/Gem.png");
+		gem->setPosition(x, y);
+		auto gemBody = PhysicsBody::createBox(gem->getContentSize());
+		gemBody->setDynamic(false);
+		gem->setPhysicsBody(gemBody);
+		this->addChild(gem);
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void PlayGameScene::onKeyPressedTest(EventKeyboard::KeyCode keyCode, Event *event)

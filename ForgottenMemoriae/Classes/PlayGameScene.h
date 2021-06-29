@@ -45,7 +45,7 @@ private:
 	cocos2d::Size visibleSize;
 	cocos2d::Vec2 origin;
 	Sprite *player;
-	void addEnemyAt(int x, int y);
+	void addAt(int x, int y, int type);
 	void onKeyPressedTest(EventKeyboard::KeyCode keyCode, Event *event);
 	cocos2d::Vector<cocos2d::Node*> pausedActions;
 
