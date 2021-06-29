@@ -14,25 +14,35 @@ public:
 		LEFT, RIGHT
 	};
 
-	State state;
-	Direction direction;
+	State characterState;
+	Direction characterDirection;
 
 	PlayerCharacter();
 	PlayerCharacter(cocos2d::Vec2 position);
 
 	void setPosition(cocos2d::Vec2 position);
 
-	void updateAnimation(State actionState, Direction actionDirection = Direction::RIGHT);
+	void updateAnimation(State actionState, Direction actionDirection = Direction::RIGHT, bool repeatForever = true);
 	void updateAction(float dt);
 
+	bool isFalling();
+	bool isGrounded();
+	bool isJumping();
+
 	cocos2d::Sprite* getSprite();
+
+	void setVelocity(cocos2d::Vec2 velocity);
+	cocos2d::Vec2 getVolocity();
 private:
 	cocos2d::Sprite* characterSprite;
 	cocos2d::Size characterSize;
 	cocos2d::Vec2 characterVelocity;
 
-	bool isFalling;
+	bool falling;
 	bool grounded;
+	bool jumping;
+
+	void updatePhysicsBody();
 };
 
 #endif // __PLAYERCHARACTER_H__

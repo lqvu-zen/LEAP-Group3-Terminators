@@ -17,7 +17,9 @@ public:
 
 private:
 	cocos2d::PhysicsWorld* sceneWorld;
-	PlayerCharacter* hero;
+	PlayerCharacter* player;
+
+	std::vector<cocos2d::EventKeyboard::KeyCode> heldKeys;
 
 	void SetPhysicsWorld(cocos2d::PhysicsWorld* world);
 
@@ -25,6 +27,7 @@ private:
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 
 	void update(float dt);
+	void updateCharacter(float dt);
 };
 
 #endif // __MAIN_MENU_SCENE_H__

@@ -6,7 +6,7 @@ Scene* MainMenuScene::createScene()
 {
 	auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	scene->getPhysicsWorld()->setGravity(Vec2::ZERO);
+	scene->getPhysicsWorld()->setGravity(Vec2(0.0f, 0.0f));
 
 	//add physic scene
 	auto scenePhysic = MainMenuScene::create();
@@ -32,18 +32,24 @@ bool MainMenuScene::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	// add hero
-	hero = new PlayerCharacter();
-	hero->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2  + origin.y));
+	player = new PlayerCharacter();
+	player->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2  + origin.y));
 
-	this->addChild(hero->getSprite());
+	this->addChild(player->getSprite());
+
+	this->schedule(
+		CC_SCHEDULE_SELECTOR(MainMenuScene::updateCharacter), 0.0f, CC_REPEAT_FOREVER, 0.0f
+	);
 
 	//add physics world
 	auto edgeBody = PhysicsBody::createEdgeBox(
-		Size(visibleSize.width, visibleSize.height), PHYSICSBODY_MATERIAL_DEFAULT, 3
+		Size(visibleSize.width, visibleSize.height), PhysicsMaterial(1.0f, 0.0f, 0.0f), 1.0f
 	);
 	//set collision bitmask
 	edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
 	edgeBody->setContactTestBitmask(true);
+
+	edgeBody->setDynamic(false);
 
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(
@@ -74,16 +80,41 @@ void MainMenuScene::SetPhysicsWorld(cocos2d::PhysicsWorld * world)
 void MainMenuScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
 	CCLOG("Key with keycode %d pressed", keyCode);
-	hero->updateAnimation(PlayerCharacter::State::RUNING);
+	if (std::find(heldKeys.begin(), heldKeys.end(), keyCode) == heldKeys.end()) {
+		heldKeys.push_back(keyCode);
+	}
 }
 
 void MainMenuScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
 	CCLOG("Key with keycode %d released", keyCode);
-	hero->updateAnimation(PlayerCharacter::State::IDLE);
+	heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), keyCode), heldKeys.end());
 }
 
 void MainMenuScene::update(float dt)
 {
-	hero->updateAction(dt);
+	
+}
+
+void MainMenuScene::updateCharacter(float dt)
+{
+	if (heldKeys.empty()){
+		player->setVelocity(Vec2(0.0f, player->getVolocity().y));
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
+		if (player->isGrounded() && player->getVolocity().y <= 0) {
+			player->setVelocity(Vec2(player->getVolocity().x, PLAYER_JUMP_VELOCITY));
+		}
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), RIGHT_ARROW) != heldKeys.end()) {
+		player->setVelocity(Vec2(PLAYER_MAX_VELOCITY, player->getVolocity().y));
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
+		player->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, player->getVolocity().y));
+	}
+
+	player->updateAction(dt);
 }
