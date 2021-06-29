@@ -34,17 +34,20 @@ public:
 	cocos2d::Follow *followCamera;
 	static cocos2d::Scene* createScene();
 	virtual bool init();
-	void setViewPointCenter(float positionX, float positionY);
 	virtual void update(float dt);
+	bool isLocked = false;
 	CREATE_FUNC(PlayGameScene);
+	Node *lockNode;
 
 private:
+	
 	TMXTiledMap *map;
 	cocos2d::Size visibleSize;
 	cocos2d::Vec2 origin;
 	Sprite *player;
 	void addEnemyAt(int x, int y);
 	void onKeyPressedTest(EventKeyboard::KeyCode keyCode, Event *event);
+	cocos2d::Vector<cocos2d::Node*> pausedActions;
 
 };
 

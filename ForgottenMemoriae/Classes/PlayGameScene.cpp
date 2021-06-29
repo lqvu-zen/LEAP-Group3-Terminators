@@ -30,7 +30,7 @@ Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
+	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
 
@@ -53,22 +53,22 @@ bool PlayGameScene::init()
 
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
-	//add background
-	auto bgSprite = Sprite::create("sprites/Top sky.png");
-	bgSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-	bgSprite->setScale(visibleSize.width / bgSprite->getContentSize().width, visibleSize.height / bgSprite->getContentSize().height);
-	this->addChild(bgSprite);
 
-	//collision with map edges
-	/*auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
-	auto edgeNode = Node::create();
-	edgeNode->setPosition(Point(center->x,center->y));
-	edgeNode->setPhysicsBody(edgeBody);
-	this->addChild(edgeNode);*/
+	//background already added in the .tmx
 
 	//map setup + add map
+	//scale map with SCALE_FACTOR
 	map = TMXTiledMap::create("map/playMap.tmx");
+	map->setScale(SCALE_FACTOR);
 	this->addChild(map, 0);
+
+	//collision with map edges
+	auto mapSize = Size((map->getMapSize().width * map->getTileSize().width) * SCALE_FACTOR, (map->getMapSize().height * map->getTileSize().height) * SCALE_FACTOR);
+	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
+	auto edgeNode = Node::create();
+	edgeNode->setPosition(Point(mapSize.width/2, mapSize.height/2));
+	edgeNode->setPhysicsBody(edgeBody);
+	this->addChild(edgeNode);
 
 	//setup map physics. Since we are doing a 60x34 map so width = 60 and height = 34 (2 loops)
 	TMXLayer *Foreground = map->getLayer("Foreground");
@@ -79,7 +79,7 @@ bool PlayGameScene::init()
 			auto spriteTile = Foreground->getTileAt(Vec2(i, j));
 			if (spriteTile != NULL)
 			{
-				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 1.0f, 0.0f));
+				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 				tilePhysics->setDynamic(false);
 				spriteTile->setPhysicsBody(tilePhysics);
 			}
@@ -99,20 +99,15 @@ bool PlayGameScene::init()
 
 	//Add character here!!!
 	player = Sprite::create("sprites/yellowbird-midflap.png");
-	player->setPosition(Point(x, y));
+	player->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 	auto playerBody = PhysicsBody::createBox(player->getContentSize());
 	player->setPhysicsBody(playerBody);
-	CCLOG("width: %f; height: %f", visibleSize.width, visibleSize.height);
+	//cameraTarget for the followCamera to follow the player.
 	cameraTarget = Node::create();
 	cameraTarget->setPositionX(player->getPositionX());
 	cameraTarget->setPositionY(visibleSize.height / 2 + origin.y);
-
 	this->addChild(player);
 	this->addChild(cameraTarget);
-
-
-	//this->setViewPointCenter(player->getPositionX(), player->getPositionY());
-
 
 	//Add enemies here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
@@ -123,7 +118,7 @@ bool PlayGameScene::init()
 		{
 			int eneX = EnemySpawn.asValueMap()["x"].asInt();
 			int eneY = EnemySpawn.asValueMap()["y"].asInt();
-			this->addEnemyAt(eneX, eneY);
+			this->addEnemyAt(eneX * SCALE_FACTOR, eneY * SCALE_FACTOR);
 		}
 	}
 
@@ -132,12 +127,12 @@ bool PlayGameScene::init()
 	auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = CC_CALLBACK_2(PlayGameScene::onKeyPressedTest, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-	float mapSize;
-	mapSize = map->getMapSize().width * map->getTileSize().width;
-	CCLOG("Map size: %f", mapSize);
-
-	followCamera = Follow::create(cameraTarget);
+	
+	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
+	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
+	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
 	this->runAction(followCamera);
+	
 	this->scheduleUpdate();
 
 	return true;
@@ -159,15 +154,16 @@ void PlayGameScene::onKeyPressedTest(EventKeyboard::KeyCode keyCode, Event *even
 	if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
 	{
 		player->setPositionX(player->getPositionX() + (BIRD_JUMP * visibleSize.width));
-		//cameraTarget->setPositionX(player->getPositionX());
-		CCLOG("player position: %f. camera position: %f %f", player->getPositionX(), cameraTarget->getPositionX(), cameraTarget->getPositionY());
+		cameraTarget->setPositionX(player->getPositionX());
+		
 	}
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
 	{
 		player->setPositionX(player->getPositionX() - (BIRD_JUMP * visibleSize.width));
-		//cameraTarget->setPositionX(player->getPositionX());
-		CCLOG("player position: %f. camera position: %f %f", player->getPositionX(), cameraTarget->getPositionX(), cameraTarget->getPositionY());
+		cameraTarget->setPositionX(player->getPositionX());
+		
+		
 	}
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW)
@@ -179,21 +175,34 @@ void PlayGameScene::onKeyPressedTest(EventKeyboard::KeyCode keyCode, Event *even
 	{
 		player->setPositionY(player->getPositionY() - (BIRD_JUMP * visibleSize.height));
 	}
+
+	//testing lockScreen!!!
+	/*if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
+	{
+		if (!isLocked)
+		{
+			isLocked = true;
+			CCLOG("LOCK SCREEN!");
+			pausedActions = Director::getInstance()->getActionManager()->pauseAllRunningActions();
+			auto lockBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
+			lockNode = Node::create();
+			lockNode->setPosition(Point(player->getPositionX(), player->getPositionY()));
+			lockNode->setPhysicsBody(lockBody);
+			this->addChild(lockNode);
+		}
+		else
+		{
+			isLocked = false;
+			Director::getInstance()->getActionManager()->resumeTargets(pausedActions);
+			this->removeChild(lockNode);
+		}
+	}*/
 }
 
-void PlayGameScene::setViewPointCenter(float positionX, float positionY)
-{
-	int x = MAX(positionX, visibleSize.width / 2);
-	int y = MAX(positionY, visibleSize.height / 2);
-	x = MIN(x, (map->getMapSize().width * map->getTileSize().width) - visibleSize.width / 2);
-	y = MIN(y, (map->getMapSize().height * map->getTileSize().height) - visibleSize.height / 2);
-	Point actualPosition = Point(x, y);
-	Point centerOfView = Point(visibleSize.width / 2, visibleSize.height / 2);
-	Point viewPoint = actualPosition - centerOfView;
-	this->setPosition(viewPoint);
-}
 
 void PlayGameScene::update(float dt)
 {
-	cameraTarget->setPositionX(player->getPositionX());
+	//Some debug log
+	//CCLOG("player position: %f. camera position: %f %f; map width: %f", player->getPositionX(), cameraTarget->getPositionX(), cameraTarget->getPositionY(), map->getMapSize().width * map->getTileSize().width);
+	//cameraTarget->setPositionX(player->getPositionX());
 }

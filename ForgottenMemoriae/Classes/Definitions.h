@@ -30,6 +30,7 @@
 
 #define BIRD_ANIMATION_DELAY 0.2
 #define BIRD_JUMP 0.1
+#define SCALE_FACTOR 2.0
 #define BIRD_FLYING_SPEED 0.005
 #define BIRD_FLY_DURATION 0.25
 #endif // __DIFINITIONS_H__
