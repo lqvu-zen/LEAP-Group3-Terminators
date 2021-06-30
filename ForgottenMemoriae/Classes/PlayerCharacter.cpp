@@ -5,22 +5,28 @@ USING_NS_CC;
 PlayerCharacter::PlayerCharacter()
 {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Warrior/Warrior.plist", "sprites/Warrior/Warrior.png");
-	characterSprite = Sprite::create("sprites/Warrior/Idle-0.png");
+	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Warrior-Idle-0.png");
+	
+	characterSize = frame->getOriginalSize();
 
-	characterSize = characterSprite->getContentSize();
+	characterSprite = Sprite::create();
+	characterSpriteAnimation = Sprite::createWithSpriteFrame(frame);
 
-	auto characterBody = PhysicsBody::createBox(characterSprite->getBoundingBox().size);
+	characterPhysicsBody = PhysicsBody::createBox(characterSize);
 	//set collision bitmask
-	//characterBody->setDynamic(true);
+	characterPhysicsBody->setDynamic(true);
+	characterPhysicsBody->setRotationEnable(false);
 
-	characterBody->setCollisionBitmask(HERO_COLLISION_BITMASK);
-	characterBody->setContactTestBitmask(true);
+	characterPhysicsBody->setCollisionBitmask(HERO_COLLISION_BITMASK);
+	characterPhysicsBody->setContactTestBitmask(true);
 
-	characterSprite->setPhysicsBody(characterBody);
+	characterSprite->setPhysicsBody(characterPhysicsBody);
 
 	characterVelocity.setZero();
 
-	updateAnimation(PlayerCharacter::State::FALLING);
+	setFalling();
+
+	characterSprite->addChild(characterSpriteAnimation);
 }
 
 PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
@@ -32,6 +38,7 @@ PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
 void PlayerCharacter::setPosition(cocos2d::Vec2 position)
 {
 	characterSprite->setPosition(position);
+	characterSpriteAnimation->setPosition(Vec2::ZERO);
 }
 
 void PlayerCharacter::updateAnimation(State actionState, Direction actionDirection, bool repeatForever)
@@ -42,6 +49,9 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 
 		int numberSprite;
 		char nameSprite[maxWord] = { 0 };
+		char nameCharacter[maxWord] = { 0 };
+
+		sprintf(nameCharacter, "Warrior");
 
 		switch (actionState)
 		{
@@ -66,10 +76,16 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 			sprintf(nameSprite, "Attack1");
 			break;
 		case PlayerCharacter::State::ATTACK2:
+			numberSprite = 7;
+			sprintf(nameSprite, "Attack2");
 			break;
 		case PlayerCharacter::State::ATTACK3:
+			numberSprite = 8;
+			sprintf(nameSprite, "Attack3");
 			break;
 		case PlayerCharacter::State::DEATH:
+			numberSprite = 7;
+			sprintf(nameSprite, "Death");
 			break;
 		default:
 			break;
@@ -81,7 +97,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 
 		for (int index = 0; index < numberSprite; index++)
 		{
-			sprintf(spriteFrameByName, "%s-%d.png", nameSprite, index);
+			sprintf(spriteFrameByName, "%s-%s-%d.png", nameCharacter,nameSprite, index);
 
 			auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameByName);
 			animFrames.pushBack(frame);
@@ -91,71 +107,91 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 		Animate* animate = Animate::create(animation);
 
 		if (repeatForever) {
-			characterSprite->getActionManager()->removeAllActions();
+			characterSpriteAnimation->getActionManager()->removeAllActions();
 
-			characterSprite->runAction(RepeatForever::create(animate));
+			characterSpriteAnimation->runAction(RepeatForever::create(animate));
 		}
 		else {
-			characterSprite->getActionManager()->removeAllActions();
+			characterSpriteAnimation->getActionManager()->removeAllActions();
 
-			characterSprite->runAction(animate);
+			characterSpriteAnimation->runAction(animate);
 		}
 
 		characterState = actionState;
 	}
 
 	if (actionDirection == Direction::LEFT) {
-		characterSprite->setFlippedX(true);
+		characterSpriteAnimation->setFlippedX(true);
 	}
 	else {
-		characterSprite->setFlippedX(false);
+		characterSpriteAnimation->setFlippedX(false);
 	}
 	characterDirection = actionDirection;
 }
 
 void PlayerCharacter::updateAction(float dt)
 {
-	CCLOG("Character velocity: x:%f - y:%f", characterVelocity.x, characterVelocity.y);
-
-	updatePhysicsBody();
-
-	if (characterVelocity.y >= 0) {
-		characterVelocity.y -= GRAVITY;
-	}
+	//CCLOG("Character velocity: x:%f - y:%f", characterVelocity.x, characterVelocity.y);
+	CCLOG("PhysicBody velocity: x:%f - y:%f", characterPhysicsBody->getVelocity().x, characterPhysicsBody->getVelocity().y);
 
 	Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
 
-	if (characterVelocity.y < 0 && characterSprite->getPositionY() - characterSize.height / 2 + characterVelocity.y >= GROUND) {
-		falling = true;
-		grounded = false;
-		jumping = false;
-		updateAnimation(State::FALLING, direction);
+	//update position
+	if (characterPhysicsBody->getVelocity().y > PADDING_VELOCITY){
+		setJumping();
 	}
-	else if (characterVelocity.y > 0) {
-		grounded = false;
-		falling = false;
-		jumping = true;
-		updateAnimation(State::JUMPING, direction, false);
+	else if (characterPhysicsBody->getVelocity().y < - PADDING_VELOCITY){
+		setFalling();
 	}
 	else {
-		grounded = true;
-		falling = false;
-		jumping = false;
-		if (characterVelocity.x != 0)
-			updateAnimation(State::RUNING, direction);
-		else 
-			updateAnimation(State::IDLE, direction);
+		setGrounded();
 	}
 
-	auto velocityY = characterVelocity.y > 0 ? GRAVITY * 2.0f : -GRAVITY;
-
-	if (characterSprite->getPositionY() - characterSize.height / 2 + velocityY >= GROUND) {
-		characterSprite->setPositionY(characterSprite->getPositionY() + velocityY);
+	if (characterVelocity.y > BASE_VELOCITY) {
+		characterPhysicsBody->setVelocity(
+			Vec2(
+				characterPhysicsBody->getVelocity().x, characterVelocity.y
+			)
+		);
+		characterVelocity.y = BASE_VELOCITY;
 	}
 		
-	if (characterVelocity.x != 0) {
-		characterSprite->setPositionX(characterSprite->getPositionX() + characterVelocity.x);
-	}	
+	if (characterVelocity.x != 0.0f) {
+		characterPhysicsBody->setVelocity(
+			Vec2(
+				characterVelocity.x, characterPhysicsBody->getVelocity().y
+			)
+		);
+	}
+	else {
+		characterPhysicsBody->setVelocity(
+			Vec2(
+				0.0f , characterPhysicsBody->getVelocity().y
+			)
+		);
+	}
+
+	//update animation
+	if (falling) {
+		CCLOG("FALLING");
+		updateAnimation(State::FALLING, direction);
+	}
+
+	if (jumping) {
+		CCLOG("JUMPING");
+		updateAnimation(State::JUMPING, direction, false);
+	}
+
+	if (grounded) {
+		if (characterPhysicsBody->getVelocity().x > PADDING_VELOCITY || characterPhysicsBody->getVelocity().x < - PADDING_VELOCITY) {
+			CCLOG("RUNING");
+			updateAnimation(State::RUNING, direction);
+		}
+		else {
+			CCLOG("IDLE");
+			updateAnimation(State::IDLE, direction);
+		}	
+	}
 }
 
 bool PlayerCharacter::isFalling()
@@ -173,6 +209,27 @@ bool PlayerCharacter::isJumping()
 	return jumping;
 }
 
+void PlayerCharacter::setFalling()
+{
+	falling = true;
+	jumping = false;
+	grounded = false;
+}
+
+void PlayerCharacter::setGrounded()
+{
+	falling = false;
+	jumping = false;
+	grounded = true;
+}
+
+void PlayerCharacter::setJumping()
+{
+	falling = false;
+	jumping = true;
+	grounded = false;
+}
+
 cocos2d::Sprite * PlayerCharacter::getSprite()
 {
 	return characterSprite;
@@ -188,12 +245,7 @@ cocos2d::Vec2 PlayerCharacter::getVolocity()
 	return characterVelocity;
 }
 
-void PlayerCharacter::updatePhysicsBody()
+cocos2d::Vec2 PlayerCharacter::getRealtimeVolocity()
 {
-	characterSprite->getPhysicsBody()->setPositionOffset(
-		Vec2(
-			(characterSprite->getContentSize().width - characterSize.width) / 2,
-			(characterSprite->getContentSize().height - characterSize.height) / 2
-		)
-	);
+	return characterPhysicsBody->getVelocity();
 }

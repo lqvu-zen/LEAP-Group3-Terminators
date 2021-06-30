@@ -6,7 +6,7 @@ Scene* MainMenuScene::createScene()
 {
 	auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	scene->getPhysicsWorld()->setGravity(Vec2(0.0f, 0.0f));
+	//scene->getPhysicsWorld()->setGravity(Vec2(0.0f, 0.0f));
 
 	//add physic scene
 	auto scenePhysic = MainMenuScene::create();
@@ -43,7 +43,7 @@ bool MainMenuScene::init()
 
 	//add physics world
 	auto edgeBody = PhysicsBody::createEdgeBox(
-		Size(visibleSize.width, visibleSize.height), PhysicsMaterial(1.0f, 0.0f, 0.0f), 1.0f
+		Size(visibleSize.width, visibleSize.height), PhysicsMaterial(0.5f, 0.0f, 0.0f), 1.0f
 	);
 	//set collision bitmask
 	edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
@@ -98,12 +98,13 @@ void MainMenuScene::update(float dt)
 
 void MainMenuScene::updateCharacter(float dt)
 {
+	//keys movement
 	if (heldKeys.empty()){
-		player->setVelocity(Vec2(0.0f, player->getVolocity().y));
+		player->setVelocity(Vec2::ZERO);
 	}
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (player->isGrounded() && player->getVolocity().y <= 0) {
+		if (player->isGrounded() && player->getRealtimeVolocity().y <= 0) {
 			player->setVelocity(Vec2(player->getVolocity().x, PLAYER_JUMP_VELOCITY));
 		}
 	}
@@ -115,6 +116,8 @@ void MainMenuScene::updateCharacter(float dt)
 	if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
 		player->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, player->getVolocity().y));
 	}
+
+	//keys action
 
 	player->updateAction(dt);
 }
