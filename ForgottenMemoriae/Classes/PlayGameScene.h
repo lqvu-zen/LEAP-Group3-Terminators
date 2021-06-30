@@ -60,7 +60,9 @@ private:
 
     void attack(float dt);
 
-    void onClickButtonMenu(cocos2d::Ref* sender);
+    void onClickMoveMenu(cocos2d::Ref* sender);
+
+    void onClickAttackMenu(cocos2d::Ref* sender);
 };
 
 #endif // __PLAY_GAME_SCENE_H__

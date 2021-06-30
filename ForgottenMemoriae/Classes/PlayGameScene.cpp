@@ -70,55 +70,69 @@ bool PlayGameScene::init()
     edgeNode->setPhysicsBody(edgeBody);
     this->addChild(edgeNode);
 
+
+    /// <summary>
+    /// Character control button to move  
+    /// </summary>
+    /// <returns></returns>
     auto button = Sprite::create("sprites/button.png");
     button->setScale(0.1);
     button->setPosition(Vec2(button->getContentSize().width * 0.075, button->getContentSize().height * 0.075));
     this->addChild(button);
 
-    /*auto up = Sprite::create("sprites/up.png");
-    up->setScale(0.05);
-    up->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.1 / 4));
-    this->addChild(up);
-
-    auto down = Sprite::create("sprites/down.png");
-    down->setScale(0.05);
-    down->setPosition(Vec2(button->getPosition().x, button->getPosition().y - button->getContentSize().height * 0.1 / 4));
-    this->addChild(down);
-
-    auto left = Sprite::create("sprites/left.png");
-    left->setScale(0.05);
-    left->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.1 / 4, button->getPosition().y));
-    this->addChild(left);
-
-    auto right = Sprite::create("sprites/right.png");
-    right->setScale(0.05);
-    right->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.1 / 4, button->getPosition().y));
-    this->addChild(right);*/
-
-    auto upItem = MenuItemImage::create("sprites/up.png", "sprites/up.png", CC_CALLBACK_1(PlayGameScene::onClickButtonMenu, this));
+    auto upItem = MenuItemImage::create("sprites/up.png", "sprites/up.png", CC_CALLBACK_1(PlayGameScene::onClickMoveMenu, this));
     upItem->setScale(0.05);
     upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.1 / 4));
     upItem->setTag(1);
 
-    auto downItem = MenuItemImage::create("sprites/down.png", "sprites/down.png", CC_CALLBACK_1(PlayGameScene::onClickButtonMenu, this));
+    auto downItem = MenuItemImage::create("sprites/down.png", "sprites/down.png", CC_CALLBACK_1(PlayGameScene::onClickMoveMenu, this));
     downItem->setScale(0.05);
     downItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y - button->getContentSize().height * 0.1 / 4));
     downItem->setTag(2);
 
-    auto leftItem = MenuItemImage::create("sprites/left.png", "sprites/left.png", CC_CALLBACK_1(PlayGameScene::onClickButtonMenu, this));
+    auto leftItem = MenuItemImage::create("sprites/left.png", "sprites/left.png", CC_CALLBACK_1(PlayGameScene::onClickMoveMenu, this));
     leftItem->setScale(0.05);
     leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.1 / 4, button->getPosition().y));
     leftItem->setTag(3);
 
-    auto rightItem = MenuItemImage::create("sprites/right.png", "sprites/right.png", CC_CALLBACK_1(PlayGameScene::onClickButtonMenu, this));
+    auto rightItem = MenuItemImage::create("sprites/right.png", "sprites/right.png", CC_CALLBACK_1(PlayGameScene::onClickMoveMenu, this));
     rightItem->setScale(0.05);
     rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.1 / 4, button->getPosition().y));
     rightItem->setTag(4);
 
-    auto buttonMenu = Menu::create(upItem, downItem, leftItem, rightItem, nullptr);
-    buttonMenu->setPosition(Vec2::ZERO);
-    this->addChild(buttonMenu);
+    auto moveMenu = Menu::create(upItem, downItem, leftItem, rightItem, nullptr);
+    moveMenu->setPosition(Vec2::ZERO);
+    this->addChild(moveMenu);
 
+
+    /// <summary>
+    /// Character control button to attack and use skills 
+    /// </summary>
+    /// <returns></returns>
+    auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
+    attackItem->setScale(0.7);
+    attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
+    attackItem->setTag(1);
+
+    auto skill_1Item = MenuItemImage::create("sprites/skill_1.png", "sprites/skill_1.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
+    skill_1Item->setScale(0.3);
+    skill_1Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.7, attackItem->getContentSize().height * 0.2));
+    skill_1Item->setTag(2);
+
+    auto skill_2Item = MenuItemImage::create("sprites/skill_2.png", "sprites/skill_2.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
+    skill_2Item->setScale(0.3);
+    skill_2Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.65, attackItem->getContentSize().height * 0.55));
+    skill_2Item->setTag(3);
+
+    auto skill_3Item = MenuItemImage::create("sprites/skill_3.png", "sprites/skill_3.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
+    skill_3Item->setScale(0.3);
+    skill_3Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.3, attackItem->getContentSize().height * 0.7));
+    skill_3Item->setTag(4);
+
+    auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
+    attackMenu->setPosition(Vec2::ZERO);
+    this->addChild(attackMenu);
+    
     //////////////////        BOSS
     //boss = new BossCharacter(this, 1);
     //boss->get()->setPosition(visibleSize / 2);
@@ -139,7 +153,11 @@ bool PlayGameScene::init()
     return true;
 }
 
-void PlayGameScene::onClickButtonMenu(cocos2d::Ref* sender) {
+/// <summary>
+/// Control character movement  
+/// </summary>
+/// <returns></returns>
+void PlayGameScene::onClickMoveMenu(cocos2d::Ref* sender) {
     auto node = dynamic_cast<Node*>(sender);
     if (node->getTag() == 1) {
         CCLOG("Up");
@@ -152,6 +170,27 @@ void PlayGameScene::onClickButtonMenu(cocos2d::Ref* sender) {
     }
     else if (node->getTag() == 4) {
         CCLOG("Right");
+    }
+}
+
+/// <summary>
+/// Control the character to attack and use skills   
+/// </summary>
+/// <returns></returns>
+void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
+    auto node = dynamic_cast<Node*>(sender);
+    CCLOG("%i", node->getTag());
+    if (node->getTag() == 1) {
+        CCLOG("Attack");
+    }
+    else if (node->getTag() == 2) {
+        CCLOG("Skill 1");
+    }
+    else if (node->getTag() == 3) {
+        CCLOG("Skill 2");
+    }
+    else if (node->getTag() == 4) {
+        CCLOG("Skill 3");
     }
 }
 

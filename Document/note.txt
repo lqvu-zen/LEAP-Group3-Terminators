@@ -1,2 +1,5 @@
 Cocos2d - a way to get the current scene?
 https://stackoverflow.com/questions/5755472/cocos2d-a-way-to-get-the-current-scene
+
+Skill:
+https://ffrkstrategy-es.gamematome.jp/game/953/wiki/Lista%20de%20rompealmas_L%C3%ADmite%20compartido
