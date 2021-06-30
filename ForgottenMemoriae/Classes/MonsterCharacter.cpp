@@ -27,7 +27,10 @@
 
 USING_NS_CC;
 
-MonsterCharacter::MonsterCharacter(cocos2d::Scene* scene, int level) {
+MonsterCharacter::MonsterCharacter(cocos2d::Scene* _scene, int level) {
+
+	scene = _scene;
+
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
@@ -49,27 +52,39 @@ MonsterCharacter::MonsterCharacter(cocos2d::Scene* scene, int level) {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Idle.plist");
 
 	monster = Sprite::createWithSpriteFrameName("Idle-0.png");
-	monster->setScale(0.5);
+	monster->setScale(0.25);
+
 	auto monsterBody = PhysicsBody::createBox(monster->getContentSize());
+	monsterBody->setDynamic(false);
 	monster->setPhysicsBody(monsterBody);
 
 	auto animate = Animate::create(MonsterCharacter::createAnimation("Idle-", 16, 0.1));
 	animate->retain();
 	monster->runAction(RepeatForever::create(animate));
 
-	monster->setFlippedX(false);
 }
 
 void MonsterCharacter::attack() {
-	animation->release();
+	//animation->release();
 	animation = MonsterCharacter::createAnimation("Attack-", 19, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
+	
+	auto bullet = Sprite::create("plist/Monster_1/poisonspit.png");
+	auto bodyBullet = PhysicsBody::createBox(bullet->getContentSize());
+	bullet->setPhysicsBody(bodyBullet);
+	bodyBullet->setDynamic(false);
+	bullet->setPosition(monster->getPosition());
+	bullet->setScale(0.25);
+	scene->addChild(bullet);
+
+	auto shootAction = MoveBy::create(5, Vec2(-visibleSize.width, 0));
+	bullet->runAction(shootAction);
 }
 
 void MonsterCharacter::death() {
-	animation->release();
+	//animation->release();
 	animation = MonsterCharacter::createAnimation("Death-", 24, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -77,7 +92,7 @@ void MonsterCharacter::death() {
 }
 
 void MonsterCharacter::hurt() {
-	animation->release();
+	//animation->release();
 	animation = MonsterCharacter::createAnimation("Hurt-", 4, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -85,7 +100,7 @@ void MonsterCharacter::hurt() {
 }
 
 void MonsterCharacter::idle() {
-	animation->release();
+	//animation->release();
 	animation = MonsterCharacter::createAnimation("Idle-", 48, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -93,7 +108,7 @@ void MonsterCharacter::idle() {
 }
 
 void MonsterCharacter::jump() {
-	animation->release();
+	//animation->release();
 	animation = MonsterCharacter::createAnimation("Jump-", 17, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();

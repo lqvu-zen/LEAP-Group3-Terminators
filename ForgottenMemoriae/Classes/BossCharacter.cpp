@@ -74,31 +74,30 @@ BossCharacter::BossCharacter(cocos2d::Scene* scene, int level) {
 
 
 	monster = Sprite::createWithSpriteFrameName("Idle1.png");
-	monster->setScale(0.5);
-	//auto bodyMonster = PhysicsBody::createBox(Size(150, 250));
-	//monster->setPhysicsBody(bodyMonster);
+	monster->setScale(0.25);
 
-	auto shapeCache = PhysicsShapeCache::getInstance();
+	/*auto shapeCache = PhysicsShapeCache::getInstance();
 	shapeCache->addShapesWithFile(boss + "body.plist");
-	shapeCache->setBodyOnSprite("Idle1", monster);
-
+	shapeCache->setBodyOnSprite("Idle1", monster);*/
+	
 	auto animate = Animate::create(BossCharacter::createAnimation("Idle", 16, 0.1));
 	animate->retain();
 	monster->runAction(RepeatForever::create(animate));
 
-	monster->setFlippedX(false);
+	monster->setFlippedX(true);
 }
 
 void BossCharacter::attack_1() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Attack_1", 8, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
+	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(1);
 	monster->runAction(animate);
 }
 
 void BossCharacter::attack_2() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Attack_2", 7, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -106,7 +105,7 @@ void BossCharacter::attack_2() {
 }
 
 void BossCharacter::block() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Block", 9, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -114,15 +113,17 @@ void BossCharacter::block() {
 }
 
 void BossCharacter::charge() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Charge", 7, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
+	auto move = MoveBy::create(0.7, Vec2(-30, 0));
+	monster->runAction(move);
 }
 
 void BossCharacter::death() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Death", 15, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -130,7 +131,7 @@ void BossCharacter::death() {
 }
 
 void BossCharacter::hurt() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Hurt", 8, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -138,7 +139,7 @@ void BossCharacter::hurt() {
 }
 
 void BossCharacter::idle() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Idle", 16, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -146,7 +147,7 @@ void BossCharacter::idle() {
 }
 
 void BossCharacter::jump() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Jump", 10, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -154,7 +155,7 @@ void BossCharacter::jump() {
 }
 
 void BossCharacter::jump_attack_1() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Jump_Attack_1", 8, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -162,7 +163,7 @@ void BossCharacter::jump_attack_1() {
 }
 
 void BossCharacter::jump_attack_2() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Jump_Attack_2", 7, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -170,15 +171,17 @@ void BossCharacter::jump_attack_2() {
 }
 
 void BossCharacter::run() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Run", 6, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
+	auto move = MoveBy::create(0.6, Vec2(-30, 0));
+	monster->runAction(move);
 }
 
 void BossCharacter::shoot_bow() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Shoot_Bow", 12, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -186,11 +189,13 @@ void BossCharacter::shoot_bow() {
 }
 
 void BossCharacter::walk() {
-	animation->release();
+	//animation->release();
 	animation = BossCharacter::createAnimation("Walk", 12, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
+	auto move = MoveBy::create(1.2, Vec2(-10, 0));
+	monster->runAction(move);
 }
 
 cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {

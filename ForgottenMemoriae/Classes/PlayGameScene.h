@@ -53,6 +53,12 @@ private:
     int numType;
 
     BossCharacter* boss;
+
+    bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
+
+    void attackMonster(float dt);
+
+    void attack(float dt);
 };
 
 #endif // __PLAY_GAME_SCENE_H__

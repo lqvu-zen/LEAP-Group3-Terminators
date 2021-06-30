@@ -70,16 +70,43 @@ bool PlayGameScene::init()
     edgeNode->setPhysicsBody(edgeBody);
     this->addChild(edgeNode);
 
-    boss = new BossCharacter(this, 3);
+    /*auto button = Sprite::create("sprites/button.png");
+    button->setScale(0.1);
+    button->setPosition(Vec2(button->getContentSize().width * 0.075, button->getContentSize().height * 0.075));
+    this->addChild(button);*/
+
+
+    ////////////////        BOSS
+    boss = new BossCharacter(this, 1);
     boss->get()->setPosition(visibleSize / 2);
     this->addChild(boss->get());
+    boss->walk();
+
+    //this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attack), 3);
 
 
-    for (int i = 0; i < numMonster; i++) {
+    ////////////////        MONSTER
+    /*for (int i = 0; i < numMonster; i++) {
         monster[i] = new MonsterCharacter(this, i % numType + 1);
-        monster[i]->get()->setPosition(visibleSize / 2);
+        monster[i]->get()->setPosition(Vec2(visibleSize / 2));
         this->addChild(monster[i]->get());
     }
 
+    this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);*/
+
+    return true;
+}
+
+void PlayGameScene::attack(float dt) {
+    boss->attack_1();
+}
+
+void PlayGameScene::attackMonster(float dt) {
+    for (int i = 0; i < numMonster; i++) {
+        monster[i]->attack();
+    }  
+}
+
+bool PlayGameScene::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
     return true;
 }
