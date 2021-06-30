@@ -29,12 +29,20 @@ public:
 	bool isGrounded();
 	bool isJumping();
 
+	void setFalling();
+	void setGrounded();
+	void setJumping();
+
 	cocos2d::Sprite* getSprite();
 
 	void setVelocity(cocos2d::Vec2 velocity);
 	cocos2d::Vec2 getVolocity();
+	cocos2d::Vec2 getRealtimeVolocity();
 private:
 	cocos2d::Sprite* characterSprite;
+	cocos2d::Sprite* characterSpriteAnimation;
+	cocos2d::PhysicsBody* characterPhysicsBody;
+
 	cocos2d::Size characterSize;
 	cocos2d::Vec2 characterVelocity;
 

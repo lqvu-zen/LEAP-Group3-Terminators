@@ -1,36 +1,20 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
-
 #include "MainMenuScene.h"
-#include "Definitions.h"
-#include "PlayGameScene.h"
 
 USING_NS_CC;
 
 Scene* MainMenuScene::createScene()
 {
-    return MainMenuScene::create();
+	auto scene = Scene::createWithPhysics();
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setGravity(Vec2(0.0f, 0.0f));
+
+	//add physic scene
+	auto scenePhysic = MainMenuScene::create();
+	scenePhysic->SetPhysicsWorld(scene->getPhysicsWorld());
+
+	scene->addChild(scenePhysic);
+
+	return scene;
 }
 
 
@@ -47,96 +31,93 @@ bool MainMenuScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
+	// add hero
+	player = new PlayerCharacter();
+	player->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2  + origin.y));
 
-    // add a "close" icon to exit the progress. it's an autorelease object
-    
+	this->addChild(player->getSprite());
 
+	this->schedule(
+		CC_SCHEDULE_SELECTOR(MainMenuScene::updateCharacter), 0.0f, CC_REPEAT_FOREVER, 0.0f
+	);
 
-    ///Menu
-    
-    auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
-    title->setTextColor(Color4B::WHITE);
-    title->setPosition(Vec2(visibleSize.width / 2, visibleSize.height * 0.75));
-    this->addChild(title);
+	//add physics world
+	auto edgeBody = PhysicsBody::createEdgeBox(
+		Size(visibleSize.width, visibleSize.height), PhysicsMaterial(0.5f, 0.0f, 0.0f), 1.0f
+	);
+	//set collision bitmask
+	edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
+	edgeBody->setContactTestBitmask(true);
 
-    auto newGameItem = MenuItemFont::create("New Game", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
-    newGameItem->setTag(1);
+	edgeBody->setDynamic(false);
 
-    auto settingItem = MenuItemFont::create("Setting", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
-    settingItem->setTag(2);
+	auto edgeNode = Node::create();
+	edgeNode->setPosition(
+		Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
+	);
 
-    auto aboutItem = MenuItemFont::create("About", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
-    aboutItem->setTag(3);
+	edgeNode->setPhysicsBody(edgeBody);
 
-    auto exitItem = MenuItemFont::create("Exit", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
-    exitItem->setTag(4);
+	this->addChild(edgeNode);
 
-    auto menu = Menu::create(newGameItem, settingItem, aboutItem, exitItem, nullptr);
-    menu->setPosition(visibleSize / 2);
-    menu->alignItemsVertically();
-    this->addChild(menu);
+	// creating a keyboard event listener
+	auto listener = EventListenerKeyboard::create();
+	listener->onKeyPressed = CC_CALLBACK_2(MainMenuScene::onKeyPressed, this);
+	listener->onKeyReleased = CC_CALLBACK_2(MainMenuScene::onKeyReleased, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+	this->scheduleUpdate();
     
     return true;
 }
 
-void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
-    auto node = dynamic_cast<Node*>(sender);
-    if (node->getTag() == 1) {
-        goToNewGame(TRANSITION_TIME);
-    }
-    else if (node->getTag() == 2) {
-        goToSetting(TRANSITION_TIME);
-    }
-    else if (node->getTag() == 3) {
-        goToAbout(TRANSITION_TIME);
-    }
-    else if (node->getTag() == 4) {
-        CCLOG("Exit");
-        Director::getInstance()->end();
-        goToExit(TRANSITION_TIME);
-    }
+void MainMenuScene::SetPhysicsWorld(cocos2d::PhysicsWorld * world)
+{
+	this->sceneWorld = world;
 }
 
-void MainMenuScene::goToNewGame(float dt) {
-   auto scene = PlayGameScene::createScene();
-   Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+void MainMenuScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+{
+	CCLOG("Key with keycode %d pressed", keyCode);
+	if (std::find(heldKeys.begin(), heldKeys.end(), keyCode) == heldKeys.end()) {
+		heldKeys.push_back(keyCode);
+	}
 }
 
-void MainMenuScene::goToSetting(float dt) {
-    auto scene = Scene::create();
-
-    auto tmp = Director::getInstance()->getRunningScene();
-    CCLOG("TYPE THIS SCENE: %s", typeid(this).name());
-    CCLOG("TYPE SCENE: %s", typeid(tmp).name());
-
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    auto title = Label::createWithTTF("Setting", "fonts/Marker Felt.ttf", 60);
-    title->setTextColor(Color4B::WHITE);
-    title->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
-    scene->addChild(title);
+void MainMenuScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+{
+	CCLOG("Key with keycode %d released", keyCode);
+	heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), keyCode), heldKeys.end());
 }
 
-void MainMenuScene::goToAbout(float dt) {
-    auto scene = Scene::create();
-
-    auto tmp = Director::getInstance()->getRunningScene();
-    CCLOG("TYPE THIS SCENE: %s", typeid(this).name());
-    CCLOG("TYPE SCENE: %s", typeid(tmp).name());
-
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    auto title = Label::createWithTTF("About", "fonts/Marker Felt.ttf", 60);
-    title->setTextColor(Color4B::WHITE);
-    title->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
-    scene->addChild(title);
+void MainMenuScene::update(float dt)
+{
+	
 }
 
-void MainMenuScene::goToExit(float dt) {
-    Director::getInstance()->end();
+void MainMenuScene::updateCharacter(float dt)
+{
+	//keys movement
+	if (heldKeys.empty()){
+		player->setVelocity(Vec2::ZERO);
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
+		if (player->isGrounded() && player->getRealtimeVolocity().y <= 0) {
+			player->setVelocity(Vec2(player->getVolocity().x, PLAYER_JUMP_VELOCITY));
+		}
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), RIGHT_ARROW) != heldKeys.end()) {
+		player->setVelocity(Vec2(PLAYER_MAX_VELOCITY, player->getVolocity().y));
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
+		player->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, player->getVolocity().y));
+	}
+
+	//keys action
+
+	player->updateAction(dt);
 }
