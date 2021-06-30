@@ -40,9 +40,7 @@ public:
         return monster;
     };
 
-    void attack_1();
-
-    void attack_2();
+    void attack();
 
     void block();
 
@@ -56,9 +54,7 @@ public:
 
     void jump();
 
-    void jump_attack_1();
-
-    void jump_attack_2();
+    void jump_attack();
 
     void run();
 
@@ -74,6 +70,14 @@ private:
     cocos2d::Animation* animation;
 
     cocos2d::Animation *createAnimation(string prefixName, int pFrames, float delay);
+
+    void attack_1();
+
+    void attack_2();
+
+    void jump_attack_1();
+
+    void jump_attack_2();
 };
 
 #endif // __BOSS_CHARACTER_H__

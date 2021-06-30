@@ -70,35 +70,93 @@ bool PlayGameScene::init()
     edgeNode->setPhysicsBody(edgeBody);
     this->addChild(edgeNode);
 
-    /*auto button = Sprite::create("sprites/button.png");
+    auto button = Sprite::create("sprites/button.png");
     button->setScale(0.1);
     button->setPosition(Vec2(button->getContentSize().width * 0.075, button->getContentSize().height * 0.075));
-    this->addChild(button);*/
+    this->addChild(button);
+
+    /*auto up = Sprite::create("sprites/up.png");
+    up->setScale(0.05);
+    up->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.1 / 4));
+    this->addChild(up);
+
+    auto down = Sprite::create("sprites/down.png");
+    down->setScale(0.05);
+    down->setPosition(Vec2(button->getPosition().x, button->getPosition().y - button->getContentSize().height * 0.1 / 4));
+    this->addChild(down);
+
+    auto left = Sprite::create("sprites/left.png");
+    left->setScale(0.05);
+    left->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+    this->addChild(left);
+
+    auto right = Sprite::create("sprites/right.png");
+    right->setScale(0.05);
+    right->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+    this->addChild(right);*/
+
+    auto upItem = MenuItemImage::create("sprites/up.png", "sprites/up.png", CC_CALLBACK_1(PlayGameScene::onClickButtonMenu, this));
+    upItem->setScale(0.05);
+    upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.1 / 4));
+    upItem->setTag(1);
+
+    auto downItem = MenuItemImage::create("sprites/down.png", "sprites/down.png", CC_CALLBACK_1(PlayGameScene::onClickButtonMenu, this));
+    downItem->setScale(0.05);
+    downItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y - button->getContentSize().height * 0.1 / 4));
+    downItem->setTag(2);
+
+    auto leftItem = MenuItemImage::create("sprites/left.png", "sprites/left.png", CC_CALLBACK_1(PlayGameScene::onClickButtonMenu, this));
+    leftItem->setScale(0.05);
+    leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+    leftItem->setTag(3);
+
+    auto rightItem = MenuItemImage::create("sprites/right.png", "sprites/right.png", CC_CALLBACK_1(PlayGameScene::onClickButtonMenu, this));
+    rightItem->setScale(0.05);
+    rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+    rightItem->setTag(4);
+
+    auto buttonMenu = Menu::create(upItem, downItem, leftItem, rightItem, nullptr);
+    buttonMenu->setPosition(Vec2::ZERO);
+    this->addChild(buttonMenu);
+
+    //////////////////        BOSS
+    //boss = new BossCharacter(this, 1);
+    //boss->get()->setPosition(visibleSize / 2);
+    //this->addChild(boss->get());
+    //boss->shoot_bow();
+
+    ////this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attack), 3);
 
 
-    ////////////////        BOSS
-    boss = new BossCharacter(this, 1);
-    boss->get()->setPosition(visibleSize / 2);
-    this->addChild(boss->get());
-    boss->walk();
+    //////////////////        MONSTER
+    ///*for (int i = 0; i < numMonster; i++) {
+    //    monster[i] = new MonsterCharacter(this, i % numType + 1);
+    //    monster[i]->get()->setPosition(Vec2(visibleSize / 2));
+    //    this->addChild(monster[i]->get());
+    //}
 
-    //this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attack), 3);
-
-
-    ////////////////        MONSTER
-    /*for (int i = 0; i < numMonster; i++) {
-        monster[i] = new MonsterCharacter(this, i % numType + 1);
-        monster[i]->get()->setPosition(Vec2(visibleSize / 2));
-        this->addChild(monster[i]->get());
-    }
-
-    this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);*/
-
+    //this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);*/
     return true;
 }
 
+void PlayGameScene::onClickButtonMenu(cocos2d::Ref* sender) {
+    auto node = dynamic_cast<Node*>(sender);
+    if (node->getTag() == 1) {
+        CCLOG("Up");
+    }
+    else if (node->getTag() == 2) {
+        CCLOG("Down");
+    }
+    else if (node->getTag() == 3) {
+        CCLOG("Left");
+    }
+    else if (node->getTag() == 4) {
+        CCLOG("Right");
+    }
+}
+
 void PlayGameScene::attack(float dt) {
-    boss->attack_1();
+    boss->attack();
 }
 
 void PlayGameScene::attackMonster(float dt) {

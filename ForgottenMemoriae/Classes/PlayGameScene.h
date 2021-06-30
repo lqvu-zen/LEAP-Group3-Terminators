@@ -59,6 +59,8 @@ private:
     void attackMonster(float dt);
 
     void attack(float dt);
+
+    void onClickButtonMenu(cocos2d::Ref* sender);
 };
 
 #endif // __PLAY_GAME_SCENE_H__

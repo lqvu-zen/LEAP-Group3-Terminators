@@ -87,6 +87,16 @@ BossCharacter::BossCharacter(cocos2d::Scene* scene, int level) {
 	monster->setFlippedX(true);
 }
 
+void BossCharacter::attack() {
+	int type = rand() % 2 + 1;
+	if (type == 1) {
+		attack_1();
+	}
+	else {
+		attack_2();
+	}
+}
+
 void BossCharacter::attack_1() {
 	//animation->release();
 	animation = BossCharacter::createAnimation("Attack_1", 8, 0.1);
@@ -152,6 +162,16 @@ void BossCharacter::jump() {
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
+}
+
+void BossCharacter::jump_attack() {
+	int type = rand() % 2 + 1;
+	if (type == 1) {
+		jump_attack_1();
+	}
+	else {
+		jump_attack_2();
+	}
 }
 
 void BossCharacter::jump_attack_1() {
