@@ -3,6 +3,8 @@
 
 #include "cocos2d.h"
 #include "PlayerCharacter.h"
+#include "MonsterCharacter.h"
+#include "BossCharacter.h"
 USING_NS_CC;
 class PlayGameScene : public cocos2d::Scene
 {
@@ -21,6 +23,10 @@ private:
 	cocos2d::Size visibleSize;
 	cocos2d::Vec2 origin;
 	Sprite *player;
+	MonsterCharacter* monster;
+	BossCharacter* boss;
+
+
 	void addAt(int x, int y, int type);
 	void onKeyPressedTest(EventKeyboard::KeyCode keyCode, Event *event);
 	cocos2d::Vector<cocos2d::Node*> pausedActions;

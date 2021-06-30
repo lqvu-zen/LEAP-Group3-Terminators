@@ -11,7 +11,7 @@ PlayerCharacter::PlayerCharacter()
 
 	auto characterBody = PhysicsBody::createBox(characterSprite->getBoundingBox().size);
 	//set collision bitmask
-	characterBody->setDynamic(false);
+	characterBody->setDynamic(true);
 
 	characterBody->setCollisionBitmask(HERO_COLLISION_BITMASK);
 	characterBody->setContactTestBitmask(true);
@@ -36,6 +36,7 @@ void PlayerCharacter::setPosition(cocos2d::Vec2 position)
 
 void PlayerCharacter::updateAnimation(State actionState, Direction actionDirection, bool repeatForever)
 {
+	return;
 	if (characterState != actionState) {
 
 		const int maxWord = 50;
@@ -120,9 +121,9 @@ void PlayerCharacter::updateAction(float dt)
 	updatePhysicsBody();
 
 	//mimic gravity
-	if (characterVelocity.y >= 0) {
+	/*if (characterVelocity.y >= 0) {
 		characterVelocity.y -= GRAVITY;
-	}
+	}*/
 
 	Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
 
@@ -148,11 +149,11 @@ void PlayerCharacter::updateAction(float dt)
 			updateAnimation(State::IDLE, direction);
 	}
 
-	auto velocityY = characterVelocity.y > 0 ? GRAVITY * 2.0f : -GRAVITY;
+	//auto velocityY = characterVelocity.y > 0 ? GRAVITY * 2.0f : -GRAVITY;
 
-	/*if (characterSprite->getPositionY() - characterSize.height / 2 + velocityY >= GROUND) {
-		characterSprite->setPositionY(characterSprite->getPositionY() + velocityY);
-	}*/
+	if (characterVelocity.y > 0) {
+		characterSprite->setPositionY(characterSprite->getPositionY() + 2.0f);
+	}
 		
 	if (characterVelocity.x != 0) {
 		characterSprite->setPositionX(characterSprite->getPositionX() + characterVelocity.x);

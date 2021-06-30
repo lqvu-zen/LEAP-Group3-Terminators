@@ -6,7 +6,7 @@ Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
+	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
 
@@ -59,6 +59,7 @@ bool PlayGameScene::init()
 			auto spriteTile = Foreground->getTileAt(Vec2(i, j));
 			if (spriteTile != NULL)
 			{
+				
 				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 				tilePhysics->setDynamic(false);
 				tilePhysics->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
@@ -74,10 +75,6 @@ bool PlayGameScene::init()
 	{
 		CCLOG("tile map has no objects layer");
 	}
-	//get the x, y value from the spawnPoint in the tilemap.
-	/*ValueMap spawnPoint = objectGroup->getObject("SpawnPoint");
-	int x = spawnPoint["x"].asInt();
-	int y = spawnPoint["y"].asInt();*/
 
 	//Change to spawn Player Character always in the middle of the map
 	//Add character here!!!
@@ -100,7 +97,7 @@ bool PlayGameScene::init()
 	//Add enemies here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
-	for each (Value SpawnPoint in objectGroup->getObjects())
+	/*for each (Value SpawnPoint in objectGroup->getObjects())
 	{
 		//Spawn enemy
 		if (SpawnPoint.asValueMap()["Enemy"].asInt() == 1)
@@ -117,7 +114,7 @@ bool PlayGameScene::init()
 			int gemY = SpawnPoint.asValueMap()["y"].asInt();
 			this->addAt(gemX * SCALE_FACTOR, gemY * SCALE_FACTOR, 2);
 		}
-	}
+	}*/
 
 
 	//Keyboard test
@@ -130,7 +127,7 @@ bool PlayGameScene::init()
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
-	
+
 	this->scheduleUpdate();
 	this->runAction(followCamera);
 	return true;
@@ -145,12 +142,11 @@ void PlayGameScene::addAt(int x, int y, int type)
 	{
 	case 1:
 		{
-		Sprite *enemy = Sprite::create("sprites/redbird-midflap.png");
-		enemy->setFlippedX(true);
-		enemy->setPosition(x, y);
-		auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
-		enemy->setPhysicsBody(enemyBody);
-		this->addChild(enemy);
+		monster = new MonsterCharacter(this, 1);
+		monster->get()->setPosition(x, y);
+		//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
+		//enemy->setPhysicsBody(enemyBody);
+		this->addChild(monster->get());
 		}
 		break;
 	case 2:
@@ -186,10 +182,10 @@ void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos
 void PlayGameScene::update(float dt)
 {
 	//Some debug log
-	/*if (followCamera->isDone())
+	if (!followCamera->isDone())
 	{
 		CCLOG("Camera is done!");
-	}*/
+	}
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
 	CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
