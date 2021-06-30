@@ -11,7 +11,7 @@ PlayerCharacter::PlayerCharacter()
 
 	auto characterBody = PhysicsBody::createBox(characterSprite->getBoundingBox().size);
 	//set collision bitmask
-	//characterBody->setDynamic(true);
+	characterBody->setDynamic(false);
 
 	characterBody->setCollisionBitmask(HERO_COLLISION_BITMASK);
 	characterBody->setContactTestBitmask(true);
@@ -119,6 +119,7 @@ void PlayerCharacter::updateAction(float dt)
 
 	updatePhysicsBody();
 
+	//mimic gravity
 	if (characterVelocity.y >= 0) {
 		characterVelocity.y -= GRAVITY;
 	}
@@ -149,9 +150,9 @@ void PlayerCharacter::updateAction(float dt)
 
 	auto velocityY = characterVelocity.y > 0 ? GRAVITY * 2.0f : -GRAVITY;
 
-	if (characterSprite->getPositionY() - characterSize.height / 2 + velocityY >= GROUND) {
+	/*if (characterSprite->getPositionY() - characterSize.height / 2 + velocityY >= GROUND) {
 		characterSprite->setPositionY(characterSprite->getPositionY() + velocityY);
-	}
+	}*/
 		
 	if (characterVelocity.x != 0) {
 		characterSprite->setPositionX(characterSprite->getPositionX() + characterVelocity.x);

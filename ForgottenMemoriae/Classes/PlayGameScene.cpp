@@ -1,27 +1,3 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
-
- http://www.cocos2d-x.org
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
 #include "Definitions.h"
 #include "PlayGameScene.h"
 USING_NS_CC;
@@ -30,7 +6,7 @@ Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
+	scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
 
@@ -63,10 +39,14 @@ bool PlayGameScene::init()
 	this->addChild(map, 0);
 
 	//collision with map edges
-	auto mapSize = Size((map->getMapSize().width * map->getTileSize().width) * SCALE_FACTOR, (map->getMapSize().height * map->getTileSize().height) * SCALE_FACTOR);
-	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
+	auto mapSize = Size((map->getMapSize().width * map->getTileSize().width) * SCALE_FACTOR, ((map->getMapSize().height * map->getTileSize().height) * SCALE_FACTOR) );
+	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 0.0f), 3);
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(Point(mapSize.width/2, mapSize.height/2));
+	edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
+	edgeBody->setContactTestBitmask(true);
+
+	edgeBody->setDynamic(false);
 	edgeNode->setPhysicsBody(edgeBody);
 	this->addChild(edgeNode);
 
@@ -81,6 +61,8 @@ bool PlayGameScene::init()
 			{
 				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 				tilePhysics->setDynamic(false);
+				tilePhysics->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
+				tilePhysics->setContactTestBitmask(true);
 				spriteTile->setPhysicsBody(tilePhysics);
 			}
 		}
@@ -99,15 +81,20 @@ bool PlayGameScene::init()
 
 	//Change to spawn Player Character always in the middle of the map
 	//Add character here!!!
-	player = Sprite::create("sprites/yellowbird-midflap.png");
+	/*player = Sprite::create("sprites/yellowbird-midflap.png");
 	player->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 	auto playerBody = PhysicsBody::createBox(player->getContentSize());
-	player->setPhysicsBody(playerBody);
+	player->setPhysicsBody(playerBody);*/
+	playerChar = new PlayerCharacter();
+	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+
+
 	//cameraTarget for the followCamera to follow the player.
 	cameraTarget = Node::create();
-	cameraTarget->setPositionX(player->getPositionX());
+	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	cameraTarget->setPositionY(visibleSize.height / 2 + origin.y);
-	this->addChild(player);
+	//this->addChild(player);
+	this->addChild(playerChar->getSprite());
 	this->addChild(cameraTarget);
 
 	//Add enemies here!!
@@ -135,16 +122,17 @@ bool PlayGameScene::init()
 
 	//Keyboard test
 	auto listener = EventListenerKeyboard::create();
-	listener->onKeyPressed = CC_CALLBACK_2(PlayGameScene::onKeyPressedTest, this);
+	listener->onKeyPressed = CC_CALLBACK_2(PlayGameScene::onKeyPressed, this);
+	listener->onKeyReleased = CC_CALLBACK_2(PlayGameScene::onKeyReleased, this);
+
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
-	this->runAction(followCamera);
 	
 	this->scheduleUpdate();
-
+	this->runAction(followCamera);
 	return true;
 }
 
@@ -180,60 +168,52 @@ void PlayGameScene::addAt(int x, int y, int type)
 	}
 }
 
-void PlayGameScene::onKeyPressedTest(EventKeyboard::KeyCode keyCode, Event *event)
+void PlayGameScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
-	{
-		player->setPositionX(player->getPositionX() + (BIRD_JUMP * visibleSize.width));
-		cameraTarget->setPositionX(player->getPositionX());
-		
+	CCLOG("Key with keycode %d pressed, Character position: %f", keyCode, playerChar->getSprite()->getPositionX());
+	if (std::find(heldKeys.begin(), heldKeys.end(), keyCode) == heldKeys.end()) {
+		heldKeys.push_back(keyCode);
 	}
+}
 
-	if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
-	{
-		player->setPositionX(player->getPositionX() - (BIRD_JUMP * visibleSize.width));
-		cameraTarget->setPositionX(player->getPositionX());
-		
-		
-	}
-
-	if (keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW)
-	{
-		player->setPositionY(player->getPositionY() + (BIRD_JUMP * visibleSize.height));
-	}
-
-	if (keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW)
-	{
-		player->setPositionY(player->getPositionY() - (BIRD_JUMP * visibleSize.height));
-	}
-
-	//testing lockScreen!!!
-	/*if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
-	{
-		if (!isLocked)
-		{
-			isLocked = true;
-			CCLOG("LOCK SCREEN!");
-			pausedActions = Director::getInstance()->getActionManager()->pauseAllRunningActions();
-			auto lockBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
-			lockNode = Node::create();
-			lockNode->setPosition(Point(player->getPositionX(), player->getPositionY()));
-			lockNode->setPhysicsBody(lockBody);
-			this->addChild(lockNode);
-		}
-		else
-		{
-			isLocked = false;
-			Director::getInstance()->getActionManager()->resumeTargets(pausedActions);
-			this->removeChild(lockNode);
-		}
-	}*/
+void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+{
+	CCLOG("Key with keycode %d released", keyCode);
+	heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), keyCode), heldKeys.end());
 }
 
 
 void PlayGameScene::update(float dt)
 {
 	//Some debug log
-	//CCLOG("player position: %f. camera position: %f %f; map width: %f", player->getPositionX(), cameraTarget->getPositionX(), cameraTarget->getPositionY(), map->getMapSize().width * map->getTileSize().width);
-	//cameraTarget->setPositionX(player->getPositionX());
+	/*if (followCamera->isDone())
+	{
+		CCLOG("Camera is done!");
+	}*/
+	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
+	this->updateCharacter(dt);
+	CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
+}
+
+void PlayGameScene::updateCharacter(float dt)
+{
+	if (heldKeys.empty()) {
+		playerChar->setVelocity(Vec2(0.0f, playerChar->getVolocity().y));
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
+		if (playerChar->isGrounded() && playerChar->getVolocity().y <= 0) {
+			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
+		}
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), RIGHT_ARROW) != heldKeys.end()) {
+		playerChar->setVelocity(Vec2(PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
+		playerChar->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
+	}
+
+	playerChar->updateAction(dt);
 }
