@@ -1,0 +1,2 @@
+Cocos2d - a way to get the current scene?
+https://stackoverflow.com/questions/5755472/cocos2d-a-way-to-get-the-current-scene

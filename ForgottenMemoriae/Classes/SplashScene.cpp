@@ -25,9 +25,8 @@
 #include "SplashScene.h"
 #include "ui/CocosGUI.h"
 #include "MainMenuScene.h"
-#include "HelloWorldScene.h"
 #include "Definitions.h"
-#include "PlayGameScene.h"
+
 USING_NS_CC;
 
 Scene* SplashScene::createScene()
@@ -58,33 +57,49 @@ bool SplashScene::init()
     auto bar = Sprite::create("sprites/bar.png");
     bar->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
     this->addChild(bar);
+    this->scheduleOnce(CC_SCHEDULE_SELECTOR(SplashScene::loadSplashScene), DISPLAY_TIME_SPLASH_SCENE);
+
+    return true;
+}
+
+void SplashScene::loadSplashScene(float dt) {
+    auto scene = Scene::create();
+
+    auto tmp = Director::getInstance()->getRunningScene();
+    CCLOG("TYPE THIS SCENE: %s", typeid(this).name());
+    CCLOG("TYPE SCENE: %s", typeid(tmp).name());
+
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    /*auto logo = Sprite::create("sprites/logo.png");
+    logo->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.75));
+    scene->addChild(logo);*/
+
+    auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
+    title->setTextColor(Color4B::WHITE);
+    title->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
+    scene->addChild(title);
 
     auto loadingBar = ui::LoadingBar::create("sprites/loadingbar.png");
     loadingBar->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.25));
     loadingBar->setScale(1.5);
     loadingBar->setDirection(ui::LoadingBar::Direction::LEFT);
     loadingBar->setPercent(0);
-    this->addChild(loadingBar);
-    this->schedule([=](float delta) {
+    scene->addChild(loadingBar);
+    scene->schedule([=](float delta) {
         float percent = loadingBar->getPercent();
-        percent+=50;
+        percent++;
         loadingBar->setPercent(percent);
         if (percent >= 100.0f) {
-            this->unschedule("updateLoadingBar");
-            this->scheduleOnce(CC_SCHEDULE_SELECTOR(SplashScene::goToPlayGameScene), DISPLAY_TIME_SPLASH_SCENE);
+            scene->unschedule("updateLoadingBar");
+            scene->scheduleOnce(CC_SCHEDULE_SELECTOR(SplashScene::goToMainMenuScene), DISPLAY_TIME_SPLASH_SCENE);
         }
     }, 0.1f, "updateLoadingBar");
-
-
-    return true;
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 void SplashScene::goToMainMenuScene(float dt) {
     auto scene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-}
-
-void SplashScene::goToPlayGameScene(float dt) {
-	auto scene = PlayGameScene::createScene();
-	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }

@@ -1,18 +1,18 @@
 /****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
+
  http://www.cocos2d-x.org
- 
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in
  all copies or substantial portions of the Software.
- 
+
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,33 +22,48 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __MAIN_MENU_SCENE_H__
-#define __MAIN_MENU_SCENE_H__
+#ifndef __MONSTER_CHARACTER_H__
+#define __MONSTER_CHARACTER_H__
 
 #include "cocos2d.h"
+#include "Character.h"
+#include "PhysicsShapeCache.h"
 
-class MainMenuScene : public cocos2d::Scene
+using namespace std;
+
+class MonsterCharacter //: public Character
 {
-public:
-    static cocos2d::Scene* createScene();
+public:  
+    MonsterCharacter(cocos2d::Scene* _scene, int level);
 
-    virtual bool init();
-    
-    
-    // implement the "static create()" method manually
-    CREATE_FUNC(MainMenuScene);
+    cocos2d::Sprite* get() {
+        return monster;
+    };
 
+    void attack();
+
+    void death();
+
+    void hurt();
+
+    void idle();
+
+    void jump();
+
+    void walk();
 private:
 
-    void onClickMenuItem(cocos2d::Ref* sender);
+    cocos2d::Scene* scene;
 
-    void goToNewGame(float dt);
+    cocos2d::Size visibleSize;
+    cocos2d::Vec2 origin;
 
-    void goToSetting(float dt);
+    cocos2d::Sprite* monster;
 
-    void goToAbout(float dt);
+    cocos2d::Animation* animation;
 
-    void goToExit(float dt);
+    cocos2d::Animation *createAnimation(string prefixName, int pFrames, float delay);
+
 };
 
-#endif // __MAIN_MENU_SCENE_H__
+#endif // __MONSTER_CHARACTER_H__

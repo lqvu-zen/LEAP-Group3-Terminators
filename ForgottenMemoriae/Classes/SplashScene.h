@@ -39,6 +39,9 @@ public:
     CREATE_FUNC(SplashScene);
 
 private:
+
+    void loadSplashScene(float dt);
+
     void goToMainMenuScene(float dt);
 	void goToPlayGameScene(float dt);
 };
