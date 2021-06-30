@@ -134,22 +134,20 @@ bool PlayGameScene::init()
     this->addChild(attackMenu);
     
     //////////////////        BOSS
-    //boss = new BossCharacter(this, 1);
-    //boss->get()->setPosition(visibleSize / 2);
-    //this->addChild(boss->get());
-    //boss->shoot_bow();
-
-    ////this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attack), 3);
+    boss = new BossCharacter(this, 1);
+    boss->get()->setPosition(visibleSize / 2);
+    this->addChild(boss->get());
+    boss->attack();
 
 
-    //////////////////        MONSTER
-    ///*for (int i = 0; i < numMonster; i++) {
-    //    monster[i] = new MonsterCharacter(this, i % numType + 1);
-    //    monster[i]->get()->setPosition(Vec2(visibleSize / 2));
-    //    this->addChild(monster[i]->get());
-    //}
+    ////////////////        MONSTER
+    /*for (int i = 0; i < numMonster; i++) {
+        monster[i] = new MonsterCharacter(this, i % numType + 1);
+        monster[i]->get()->setPosition(Vec2(visibleSize / 2));
+        this->addChild(monster[i]->get());
+    }
 
-    //this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);*/
+    this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);*/
     return true;
 }
 
@@ -182,15 +180,19 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
     CCLOG("%i", node->getTag());
     if (node->getTag() == 1) {
         CCLOG("Attack");
+        boss->attack();
     }
     else if (node->getTag() == 2) {
         CCLOG("Skill 1");
+        boss->charge();
     }
     else if (node->getTag() == 3) {
         CCLOG("Skill 2");
+        boss->shoot_bow();
     }
     else if (node->getTag() == 4) {
         CCLOG("Skill 3");
+        boss->jump_attack();
     }
 }
 
