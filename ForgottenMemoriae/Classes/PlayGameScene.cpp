@@ -145,11 +145,13 @@ void PlayGameScene::addAt(int x, int y, int type)
 	{
 	case 1:
 		{
-		monster = new MonsterCharacter(this, 1);
-		monster->get()->setPosition(x, y);
+		monsters[numOfMonster] = new MonsterCharacter(this, 1);
+		monsters[numOfMonster]->get()->setPosition(x, y);
 		//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
 		//enemy->setPhysicsBody(enemyBody);
-		this->addChild(monster->get());
+		this->addChild(monsters[numOfMonster]->get());
+		numOfMonster++;
+		//this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monster->attack()));
 		}
 		break;
 	case 2:

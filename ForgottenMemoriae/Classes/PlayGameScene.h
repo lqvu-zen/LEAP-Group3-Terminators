@@ -17,14 +17,14 @@ public:
 	bool isLocked = false;
 	CREATE_FUNC(PlayGameScene);
 	Node *lockNode;
-
+	int numOfMonster = 0;
 private:
 	
 	TMXTiledMap *map;
 	Size visibleSize;
 	Vec2 origin;
 	Sprite *player;
-	MonsterCharacter* monster;
+	MonsterCharacter* monsters[2];
 	BossCharacter* boss;
 
 
@@ -32,9 +32,7 @@ private:
 	Vector<Node*> pausedActions;
 	
 	PlayerCharacter* playerChar;
-
 	std::vector<EventKeyboard::KeyCode> heldKeys;
-
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void update(float dt);
