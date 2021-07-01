@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  
  http://www.cocos2d-x.org
@@ -25,6 +25,7 @@
 #include "MainMenuScene.h"
 #include "Definitions.h"
 #include "PlayGameScene.h"
+#include "Popup2.h"
 
 USING_NS_CC;
 
@@ -98,7 +99,6 @@ void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
     }
     else if (node->getTag() == 4) {
         CCLOG("Exit");
-        Director::getInstance()->end();
         goToExit(TRANSITION_TIME);
     }
 }
@@ -113,21 +113,13 @@ void MainMenuScene::goToSetting(float dt) {
 }
 
 void MainMenuScene::goToAbout(float dt) {
-    auto scene = Scene::create();
-
-    auto tmp = Director::getInstance()->getRunningScene();
-    CCLOG("TYPE THIS SCENE: %s", typeid(this).name());
-    CCLOG("TYPE SCENE: %s", typeid(tmp).name());
-
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    auto title = Label::createWithTTF("About", "fonts/Marker Felt.ttf", 60);
-    title->setTextColor(Color4B::WHITE);
-    title->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
-    scene->addChild(title);
+    UICustom::Popup* popup = UICustom::Popup::createAsMessage("About", "Forgotten memoriae.\n\nTrieu Tan Hung\nLe Quang Vu\nTrinh Dong Duong");
+    this->addChild(popup);
 }
 
 void MainMenuScene::goToExit(float dt) {
-    Director::getInstance()->end();
+    UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Notify", "Want to Exit game", [=]() {
+        Director::getInstance()->end();
+    });
+    this->addChild(popup);
 }
