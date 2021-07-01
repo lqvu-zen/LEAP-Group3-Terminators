@@ -106,13 +106,13 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 		Animation* animation = Animation::createWithSpriteFrames(animFrames, ANIMATION_DELAY);
 		Animate* animate = Animate::create(animation);
 
-		if (repeatForever) {
-			characterSpriteAnimation->getActionManager()->removeAllActions();
 
+		if (repeatForever) {
+			characterSpriteAnimation->stopAllActions();
 			characterSpriteAnimation->runAction(RepeatForever::create(animate));
 		}
 		else {
-			characterSpriteAnimation->getActionManager()->removeAllActions();
+			characterSpriteAnimation->stopAllActions();
 
 			characterSpriteAnimation->runAction(animate);
 		}

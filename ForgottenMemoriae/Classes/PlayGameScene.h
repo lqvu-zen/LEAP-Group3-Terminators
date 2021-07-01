@@ -10,7 +10,8 @@ class PlayGameScene : public cocos2d::Scene
 {
 public:
 	Node *cameraTarget;
-	cocos2d::Follow *followCamera;
+	Follow *followCamera;
+
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	bool isLocked = false;
@@ -20,22 +21,22 @@ public:
 private:
 	
 	TMXTiledMap *map;
-	cocos2d::Size visibleSize;
-	cocos2d::Vec2 origin;
+	Size visibleSize;
+	Vec2 origin;
 	Sprite *player;
 	MonsterCharacter* monster;
 	BossCharacter* boss;
 
 
 	void addAt(int x, int y, int type);
-	cocos2d::Vector<cocos2d::Node*> pausedActions;
+	Vector<Node*> pausedActions;
 	
 	PlayerCharacter* playerChar;
 
-	std::vector<cocos2d::EventKeyboard::KeyCode> heldKeys;
+	std::vector<EventKeyboard::KeyCode> heldKeys;
 
-	void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+	void onKeyPressed(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
+	void onKeyReleased(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void update(float dt);
 	void updateCharacter(float dt);
 };

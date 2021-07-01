@@ -82,9 +82,12 @@ bool PlayGameScene::init()
 	player->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 	auto playerBody = PhysicsBody::createBox(player->getContentSize());
 	player->setPhysicsBody(playerBody);*/
+	
 	playerChar = new PlayerCharacter();
+	playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
+	
+	
 	
 
 	//cameraTarget for the followCamera to follow the player.
@@ -127,7 +130,7 @@ bool PlayGameScene::init()
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
-	followCamera->retain();
+	
 	this->runAction(followCamera);
 	this->scheduleUpdate();
 	return true;
@@ -181,9 +184,9 @@ void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos
 
 void PlayGameScene::update(float dt)
 {
-	if ((followCamera->isDone()) != true)
+	if (followCamera->isBoundarySet() == true)
 	{
-		CCLOG("Here!!!");
+		CCLOG("Camera boundary is set!");
 	}
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
