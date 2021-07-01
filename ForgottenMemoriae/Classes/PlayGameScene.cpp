@@ -1,11 +1,12 @@
 #include "Definitions.h"
 #include "PlayGameScene.h"
+#include "Popup2.h"
 USING_NS_CC;
 
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -27,16 +28,146 @@ bool PlayGameScene::init()
 		return false;
 	}
 
+	//buttonNode to holds the buttons and gameNode to holds the game
+	buttonNode = Node::create();
+	gameNode = Node::create();
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-	//background already added in the .tmx
+	//Add buttons
+#if 1
+	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
+	pauseButton->setScale(0.1);
+	pauseButton->setPosition(Vec2(visibleSize.width - pauseButton->getContentSize().width * 0.05, visibleSize.height - pauseButton->getContentSize().height * 0.05));
+	pauseButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", "Defeat 2 toads to become chimpanzees ");
+			buttonNode->addChild(popup, 100);
+			break;
+		}
+	});
+	buttonNode->addChild(pauseButton, 100);
+#endif
+
+#if 1
+	auto button = Sprite::create("sprites/button.png");
+	button->setScale(0.1);
+	button->setPosition(Vec2(button->getContentSize().width * 0.075, button->getContentSize().height * 0.075));
+	buttonNode->addChild(button, 100);
+
+	auto upItem = ui::Button::create("sprites/up.png");
+	upItem->setScale(0.05);
+	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.1 / 4));
+	buttonNode->addChild(upItem, 100);
+	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			//Here code to up move
+			//Action Reapeat
+			CCLOG("Up");
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			CCLOG("End Up");
+			break;
+		}
+	});
+
+	auto downItem = ui::Button::create("sprites/down.png");
+	downItem->setScale(0.05);
+	downItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y - button->getContentSize().height * 0.1 / 4));
+	buttonNode->addChild(downItem, 100);
+	downItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			//Here code to down move
+			//Action Reapeat
+			CCLOG("Down");
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			CCLOG("End Down");
+			break;
+		}
+	});
+
+	auto leftItem = ui::Button::create("sprites/up.png");
+	leftItem->setScale(0.05);
+	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+	buttonNode->addChild(leftItem, 100);
+	leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			//Here code to left move
+			//Action Reapeat
+			CCLOG("Left");
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			CCLOG("End Left");
+			break;
+		}
+	});
+
+	auto rightItem = ui::Button::create("sprites/up.png");
+	rightItem->setScale(0.05);
+	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+	buttonNode->addChild(rightItem, 100);
+	rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			//Here code to right move
+			//Action Reapeat
+			CCLOG("Right");
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			CCLOG("End Right");
+			break;
+		}
+	});
+#endif
+
+#if 1
+
+	auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
+	attackItem->setScale(0.7);
+	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
+	attackItem->setTag(1);
+
+	auto skill_1Item = MenuItemImage::create("sprites/skill_1.png", "sprites/skill_1.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
+	skill_1Item->setScale(0.3);
+	skill_1Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.7, attackItem->getContentSize().height * 0.2));
+	skill_1Item->setTag(2);
+
+	auto skill_2Item = MenuItemImage::create("sprites/skill_2.png", "sprites/skill_2.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
+	skill_2Item->setScale(0.3);
+	skill_2Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.65, attackItem->getContentSize().height * 0.55));
+	skill_2Item->setTag(3);
+
+	auto skill_3Item = MenuItemImage::create("sprites/skill_3.png", "sprites/skill_3.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
+	skill_3Item->setScale(0.3);
+	skill_3Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.3, attackItem->getContentSize().height * 0.7));
+	skill_3Item->setTag(4);
+
+	auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
+	attackMenu->setPosition(Vec2::ZERO);
+	buttonNode->addChild(attackMenu, 100);
+#endif
+
+
+
+
 
 	//map setup + add map
 	//scale map with SCALE_FACTOR
 	map = TMXTiledMap::create("map/playMap.tmx");
 	map->setScale(SCALE_FACTOR);
-	this->addChild(map, 0);
+	gameNode->addChild(map, 0);
 
 	//collision with map edges
 	auto mapSize = Size((map->getMapSize().width * map->getTileSize().width) * SCALE_FACTOR, ((map->getMapSize().height * map->getTileSize().height) * SCALE_FACTOR) );
@@ -48,7 +179,7 @@ bool PlayGameScene::init()
 
 	edgeBody->setDynamic(false);
 	edgeNode->setPhysicsBody(edgeBody);
-	this->addChild(edgeNode);
+	gameNode->addChild(edgeNode);
 
 	//setup map physics. Since we are doing a 60x34 map so width = 60 and height = 34 (2 loops)
 	TMXLayer *Foreground = map->getLayer("Foreground");
@@ -94,8 +225,8 @@ bool PlayGameScene::init()
 	cameraTarget = Node::create();
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	cameraTarget->setPositionY(visibleSize.height / 2 + origin.y);
-	this->addChild(cameraTarget);
-	this->addChild(playerChar->getSprite());
+	gameNode->addChild(cameraTarget);
+	gameNode->addChild(playerChar->getSprite());
 
 	//Add enemies here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
@@ -105,18 +236,23 @@ bool PlayGameScene::init()
 		//Spawn enemy
 		if (SpawnPoint.asValueMap()["Enemy"].asInt() == 1)
 		{
-			int eneX = SpawnPoint.asValueMap()["x"].asInt();
-			int eneY = SpawnPoint.asValueMap()["y"].asInt();
-			this->addAt(eneX * SCALE_FACTOR, eneY * SCALE_FACTOR, 1);
+			int eneX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
+			int eneY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			monsters[numOfMonster] = new MonsterCharacter(this, 1);
+			monsters[numOfMonster]->get()->setPosition(eneX, eneY);
+			//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
+			//enemy->setPhysicsBody(enemyBody);
+			gameNode->addChild(monsters[numOfMonster]->get());
+			numOfMonster++;
 		}
 
 		//Spawn gem
-		if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
+		/*if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
 		{
 			int gemX = SpawnPoint.asValueMap()["x"].asInt();
 			int gemY = SpawnPoint.asValueMap()["y"].asInt();
 			this->addAt(gemX * SCALE_FACTOR, gemY * SCALE_FACTOR, 2);
-		}
+		}*/
 	}
 
 
@@ -131,7 +267,11 @@ bool PlayGameScene::init()
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
 	
-	this->runAction(followCamera);
+	gameNode->runAction(followCamera);
+	this->addChild(gameNode);
+	this->addChild(buttonNode, 100);
+
+	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);
 	this->scheduleUpdate();
 	return true;
 }
@@ -186,13 +326,9 @@ void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos
 
 void PlayGameScene::update(float dt)
 {
-	if (followCamera->isBoundarySet() == true)
-	{
-		CCLOG("Camera boundary is set!");
-	}
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
-	CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
+	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
 }
 
 void PlayGameScene::updateCharacter(float dt)
@@ -219,4 +355,50 @@ void PlayGameScene::updateCharacter(float dt)
 	//keys action
 
 	playerChar->updateAction(dt);
+}
+
+// <summary>
+/// Control character movement  
+/// </summary>
+/// <returns></returns>
+void PlayGameScene::onClickMoveMenu(cocos2d::Ref* sender) {
+	auto node = dynamic_cast<Node*>(sender);
+	if (node->getTag() == 1) {
+		CCLOG("Up");
+	}
+	else if (node->getTag() == 2) {
+		CCLOG("Down");
+	}
+	else if (node->getTag() == 3) {
+		CCLOG("Left");
+	}
+	else if (node->getTag() == 4) {
+		CCLOG("Right");
+	}
+}
+
+/// <summary>
+/// Control the character to attack and use skills   
+/// </summary>
+/// <returns></returns>
+void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
+	auto node = dynamic_cast<Node*>(sender);
+	CCLOG("%i", node->getTag());
+	if (node->getTag() == 1) {
+		CCLOG("Attack");
+	}
+	else if (node->getTag() == 2) {
+		CCLOG("Skill 1");
+	}
+	else if (node->getTag() == 3) {
+		CCLOG("Skill 2");
+	}
+	else if (node->getTag() == 4) {
+		CCLOG("Skill 3");
+	}
+}
+
+void PlayGameScene::attackMonster(float dt)
+{
+	monsters[0]->attack();
 }

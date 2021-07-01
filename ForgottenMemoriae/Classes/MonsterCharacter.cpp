@@ -54,8 +54,8 @@ MonsterCharacter::MonsterCharacter(cocos2d::Scene* _scene, int level) {
 	monster = Sprite::createWithSpriteFrameName("Idle-0.png");
 	monster->setScale(0.5);
 
-	auto monsterBody = PhysicsBody::createBox(monster->getContentSize());
-	monsterBody->setDynamic(true);
+	monsterBody = PhysicsBody::createBox(monster->getContentSize());
+	monsterBody->setDynamic(false);
 	monsterBody->setRotationEnable(false);
 	monster->setPhysicsBody(monsterBody);
 
@@ -67,7 +67,8 @@ MonsterCharacter::MonsterCharacter(cocos2d::Scene* _scene, int level) {
 
 void MonsterCharacter::attack() {
 	//animation->release();
-	animation = MonsterCharacter::createAnimation("Attack-", 19, 0.1);
+	monsterBody->setDynamic(false);
+	animation = MonsterCharacter::createAnimation("Attack-", 19, 0.02);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);

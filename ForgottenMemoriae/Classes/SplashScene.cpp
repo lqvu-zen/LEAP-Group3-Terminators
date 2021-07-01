@@ -89,7 +89,7 @@ void SplashScene::loadSplashScene(float dt) {
     scene->addChild(loadingBar);
     scene->schedule([=](float delta) {
         float percent = loadingBar->getPercent();
-        percent++;
+        percent+= 50;
         loadingBar->setPercent(percent);
         if (percent >= 100.0f) {
             scene->unschedule("updateLoadingBar");

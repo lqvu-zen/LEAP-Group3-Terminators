@@ -54,7 +54,7 @@ public:
 private:
 
     cocos2d::Scene* scene;
-
+	cocos2d::PhysicsBody* monsterBody;
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
 
