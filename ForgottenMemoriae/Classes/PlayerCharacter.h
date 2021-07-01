@@ -34,7 +34,7 @@ public:
 	void setJumping();
 
 	cocos2d::Sprite* getSprite();
-
+	cocos2d::PhysicsBody* getPhysicsBody();
 	void setVelocity(cocos2d::Vec2 velocity);
 	cocos2d::Vec2 getVolocity();
 	cocos2d::Vec2 getRealtimeVolocity();

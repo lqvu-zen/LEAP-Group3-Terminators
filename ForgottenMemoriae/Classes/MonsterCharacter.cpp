@@ -52,10 +52,11 @@ MonsterCharacter::MonsterCharacter(cocos2d::Scene* _scene, int level) {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Idle.plist");
 
 	monster = Sprite::createWithSpriteFrameName("Idle-0.png");
-	monster->setScale(0.25);
+	monster->setScale(1);
 
 	auto monsterBody = PhysicsBody::createBox(monster->getContentSize());
-	monsterBody->setDynamic(false);
+	monsterBody->setDynamic(true);
+	monsterBody->setRotationEnable(false);
 	monster->setPhysicsBody(monsterBody);
 
 	auto animate = Animate::create(MonsterCharacter::createAnimation("Idle-", 16, 0.1));

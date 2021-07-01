@@ -28,7 +28,6 @@ private:
 
 
 	void addAt(int x, int y, int type);
-	void onKeyPressedTest(EventKeyboard::KeyCode keyCode, Event *event);
 	cocos2d::Vector<cocos2d::Node*> pausedActions;
 	
 	PlayerCharacter* playerChar;

@@ -235,6 +235,11 @@ cocos2d::Sprite * PlayerCharacter::getSprite()
 	return characterSprite;
 }
 
+cocos2d::PhysicsBody* PlayerCharacter::getPhysicsBody()
+{
+	return characterPhysicsBody;
+}
+
 void PlayerCharacter::setVelocity(cocos2d::Vec2 velocity)
 {
 	characterVelocity = velocity;

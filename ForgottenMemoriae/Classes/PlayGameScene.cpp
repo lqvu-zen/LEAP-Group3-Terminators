@@ -85,19 +85,19 @@ bool PlayGameScene::init()
 	playerChar = new PlayerCharacter();
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
+	
 
 	//cameraTarget for the followCamera to follow the player.
 	cameraTarget = Node::create();
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	cameraTarget->setPositionY(visibleSize.height / 2 + origin.y);
-	//this->addChild(player);
-	this->addChild(playerChar->getSprite());
 	this->addChild(cameraTarget);
+	this->addChild(playerChar->getSprite());
 
 	//Add enemies here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
-	/*for each (Value SpawnPoint in objectGroup->getObjects())
+	for each (Value SpawnPoint in objectGroup->getObjects())
 	{
 		//Spawn enemy
 		if (SpawnPoint.asValueMap()["Enemy"].asInt() == 1)
@@ -114,7 +114,7 @@ bool PlayGameScene::init()
 			int gemY = SpawnPoint.asValueMap()["y"].asInt();
 			this->addAt(gemX * SCALE_FACTOR, gemY * SCALE_FACTOR, 2);
 		}
-	}*/
+	}
 
 
 	//Keyboard test
@@ -127,9 +127,9 @@ bool PlayGameScene::init()
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
-
-	this->scheduleUpdate();
+	followCamera->retain();
 	this->runAction(followCamera);
+	this->scheduleUpdate();
 	return true;
 }
 
@@ -181,10 +181,9 @@ void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos
 
 void PlayGameScene::update(float dt)
 {
-	//Some debug log
-	if (!followCamera->isDone())
+	if ((followCamera->isDone()) != true)
 	{
-		CCLOG("Camera is done!");
+		CCLOG("Here!!!");
 	}
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
@@ -193,12 +192,13 @@ void PlayGameScene::update(float dt)
 
 void PlayGameScene::updateCharacter(float dt)
 {
+	//keys movement
 	if (heldKeys.empty()) {
-		playerChar->setVelocity(Vec2(0.0f, playerChar->getVolocity().y));
+		playerChar->setVelocity(Vec2::ZERO);
 	}
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (playerChar->isGrounded() && playerChar->getVolocity().y <= 0) {
+		if (playerChar->isGrounded() && playerChar->getRealtimeVolocity().y <= 0) {
 			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
 		}
 	}
@@ -210,6 +210,8 @@ void PlayGameScene::updateCharacter(float dt)
 	if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
 		playerChar->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
 	}
+
+	//keys action
 
 	playerChar->updateAction(dt);
 }
