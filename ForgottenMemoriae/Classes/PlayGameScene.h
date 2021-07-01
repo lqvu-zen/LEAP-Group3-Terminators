@@ -28,6 +28,7 @@
 #include "cocos2d.h"
 #include "MonsterCharacter.h"
 #include "BossCharacter.h"
+#include "ui//CocosGUI.h"
 
 class PlayGameScene : public cocos2d::Scene
 {
@@ -53,12 +54,6 @@ private:
     int numType;
 
     BossCharacter* boss;
-
-    bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
-
-    void attackMonster(float dt);
-
-    void attack(float dt);
 
     void onClickMoveMenu(cocos2d::Ref* sender);
 

@@ -25,6 +25,7 @@
 #include "PlayGameScene.h"
 #include "ui/CocosGUI.h"
 #include "Definitions.h"
+#include "Popup2.h"
 
 USING_NS_CC;
 
@@ -72,9 +73,32 @@ bool PlayGameScene::init()
 
 
     /// <summary>
+    /// Pause Button  
+    /// </summary>
+    /// <returns></returns>
+#if 1
+    auto pauseButton = ui::Button::create("sprites/pauseButton.png");
+    pauseButton->setScale(0.1);
+    pauseButton->setPosition(Vec2(visibleSize.width - pauseButton->getContentSize().width * 0.05, visibleSize.height - pauseButton->getContentSize().height * 0.05));
+    pauseButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type)
+        {
+            case ui::Widget::TouchEventType::BEGAN:
+                break;
+            case ui::Widget::TouchEventType::ENDED:
+                UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", "Defeat 2 toads to become chimpanzees ");
+                this->addChild(popup);
+                break;
+        }
+    });
+    this->addChild(pauseButton);
+#endif
+
+    /// <summary>
     /// Character control button to move  
     /// </summary>
     /// <returns></returns>
+#if 0
     auto button = Sprite::create("sprites/button.png");
     button->setScale(0.1);
     button->setPosition(Vec2(button->getContentSize().width * 0.075, button->getContentSize().height * 0.075));
@@ -103,12 +127,93 @@ bool PlayGameScene::init()
     auto moveMenu = Menu::create(upItem, downItem, leftItem, rightItem, nullptr);
     moveMenu->setPosition(Vec2::ZERO);
     this->addChild(moveMenu);
+#endif
 
+#if 1
+    auto button = Sprite::create("sprites/button.png");
+    button->setScale(0.1);
+    button->setPosition(Vec2(button->getContentSize().width * 0.075, button->getContentSize().height * 0.075));
+    this->addChild(button);
 
+    auto upItem = ui::Button::create("sprites/up.png");
+    upItem->setScale(0.05);
+    upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.1 / 4));
+    this->addChild(upItem);
+    upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type)
+        {
+        case ui::Widget::TouchEventType::BEGAN:
+            //Here code to up move
+            //Action Reapeat
+            CCLOG("Up");
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            CCLOG("End Up");
+            break;
+        }
+    }); 
+
+    auto downItem = ui::Button::create("sprites/down.png");
+    downItem->setScale(0.05);
+    downItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y - button->getContentSize().height * 0.1 / 4));
+    this->addChild(downItem);
+    downItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type)
+        {
+        case ui::Widget::TouchEventType::BEGAN:
+            //Here code to down move
+            //Action Reapeat
+            CCLOG("Down");
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            CCLOG("End Down");
+            break;
+        }
+    });
+
+    auto leftItem = ui::Button::create("sprites/up.png");
+    leftItem->setScale(0.05);
+    leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+    this->addChild(leftItem);
+    leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type)
+        {
+        case ui::Widget::TouchEventType::BEGAN:
+            //Here code to left move
+            //Action Reapeat
+            CCLOG("Left");
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            CCLOG("End Left");
+            break;
+        }
+    });
+
+    auto rightItem = ui::Button::create("sprites/up.png");
+    rightItem->setScale(0.05);
+    rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+    this->addChild(rightItem);
+    rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type)
+        {
+        case ui::Widget::TouchEventType::BEGAN:
+            //Here code to right move
+            //Action Reapeat
+            CCLOG("Right");
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            CCLOG("End Right");
+            break;
+        }
+    });
+#endif
+    
     /// <summary>
     /// Character control button to attack and use skills 
     /// </summary>
     /// <returns></returns>
+#if 1
+    
     auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
     attackItem->setScale(0.7);
     attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
@@ -132,22 +237,8 @@ bool PlayGameScene::init()
     auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
     attackMenu->setPosition(Vec2::ZERO);
     this->addChild(attackMenu);
+#endif
     
-    //////////////////        BOSS
-    boss = new BossCharacter(this, 1);
-    boss->get()->setPosition(visibleSize / 2);
-    this->addChild(boss->get());
-    boss->attack();
-
-
-    ////////////////        MONSTER
-    /*for (int i = 0; i < numMonster; i++) {
-        monster[i] = new MonsterCharacter(this, i % numType + 1);
-        monster[i]->get()->setPosition(Vec2(visibleSize / 2));
-        this->addChild(monster[i]->get());
-    }
-
-    this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);*/
     return true;
 }
 
@@ -180,32 +271,14 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
     CCLOG("%i", node->getTag());
     if (node->getTag() == 1) {
         CCLOG("Attack");
-        boss->attack();
     }
     else if (node->getTag() == 2) {
         CCLOG("Skill 1");
-        boss->charge();
     }
     else if (node->getTag() == 3) {
         CCLOG("Skill 2");
-        boss->shoot_bow();
     }
     else if (node->getTag() == 4) {
         CCLOG("Skill 3");
-        boss->jump_attack();
     }
-}
-
-void PlayGameScene::attack(float dt) {
-    boss->attack();
-}
-
-void PlayGameScene::attackMonster(float dt) {
-    for (int i = 0; i < numMonster; i++) {
-        monster[i]->attack();
-    }  
-}
-
-bool PlayGameScene::onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event) {
-    return true;
-}
+}  

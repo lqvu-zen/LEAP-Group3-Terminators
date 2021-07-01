@@ -52,11 +52,9 @@ bool MainMenuScene::init()
     //    you may modify it.
 
     // add a "close" icon to exit the progress. it's an autorelease object
-    
 
-
+#if 1 
     ///Menu
-    
     auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
     title->setTextColor(Color4B::WHITE);
     title->setPosition(Vec2(visibleSize.width / 2, visibleSize.height * 0.75));
@@ -78,7 +76,12 @@ bool MainMenuScene::init()
     menu->setPosition(visibleSize / 2);
     menu->alignItemsVertically();
     this->addChild(menu);
+#endif 
     
+    m_popupSetting = PopupSetting::create();
+    m_popupSetting->retain();
+    addChild(m_popupSetting);
+
     return true;
 }
 
@@ -106,19 +109,7 @@ void MainMenuScene::goToNewGame(float dt) {
 }
 
 void MainMenuScene::goToSetting(float dt) {
-    auto scene = Scene::create();
-
-    auto tmp = Director::getInstance()->getRunningScene();
-    CCLOG("TYPE THIS SCENE: %s", typeid(this).name());
-    CCLOG("TYPE SCENE: %s", typeid(tmp).name());
-
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    auto title = Label::createWithTTF("Setting", "fonts/Marker Felt.ttf", 60);
-    title->setTextColor(Color4B::WHITE);
-    title->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
-    scene->addChild(title);
+    m_popupSetting->appear();
 }
 
 void MainMenuScene::goToAbout(float dt) {
