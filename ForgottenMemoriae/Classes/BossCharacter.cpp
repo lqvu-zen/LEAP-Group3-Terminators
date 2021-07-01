@@ -76,9 +76,9 @@ BossCharacter::BossCharacter(cocos2d::Scene* scene, int level) {
 	monster = Sprite::createWithSpriteFrameName("Idle1.png");
 	monster->setScale(0.25);
 
-	/*auto shapeCache = PhysicsShapeCache::getInstance();
+	auto shapeCache = PhysicsShapeCache::getInstance();
 	shapeCache->addShapesWithFile(boss + "body.plist");
-	shapeCache->setBodyOnSprite("Idle1", monster);*/
+	shapeCache->setBodyOnSprite("Idle1", monster);
 	
 	auto animate = Animate::create(BossCharacter::createAnimation("Idle", 16, 0.1));
 	animate->retain();
