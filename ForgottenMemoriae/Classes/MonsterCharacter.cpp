@@ -27,7 +27,7 @@
 
 USING_NS_CC;
 
-MonsterCharacter::MonsterCharacter(cocos2d::Scene* _scene, int level) {
+MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int level) {
 
 	scene = _scene;
 

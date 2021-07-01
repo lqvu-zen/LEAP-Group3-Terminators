@@ -67,11 +67,13 @@ bool PlayGameScene::init()
 		switch (type)
 		{
 		case ui::Widget::TouchEventType::BEGAN:
-			//Here code to up move
-			//Action Reapeat
+			if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW) == heldKeys.end()) {
+				heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW);
+			}
 			CCLOG("Up");
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW), heldKeys.end());
 			CCLOG("End Up");
 			break;
 		}
@@ -85,17 +87,19 @@ bool PlayGameScene::init()
 		switch (type)
 		{
 		case ui::Widget::TouchEventType::BEGAN:
-			//Here code to down move
-			//Action Reapeat
+			if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW) == heldKeys.end()) {
+				heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW);
+			}
 			CCLOG("Down");
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW), heldKeys.end());
 			CCLOG("End Down");
 			break;
 		}
 	});
 
-	auto leftItem = ui::Button::create("sprites/up.png");
+	auto leftItem = ui::Button::create("sprites/left.png");
 	leftItem->setScale(0.05);
 	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.1 / 4, button->getPosition().y));
 	buttonNode->addChild(leftItem, 100);
@@ -103,17 +107,19 @@ bool PlayGameScene::init()
 		switch (type)
 		{
 		case ui::Widget::TouchEventType::BEGAN:
-			//Here code to left move
-			//Action Reapeat
+			if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW) == heldKeys.end()) {
+				heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW);
+			}
 			CCLOG("Left");
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW), heldKeys.end());
 			CCLOG("End Left");
 			break;
 		}
 	});
 
-	auto rightItem = ui::Button::create("sprites/up.png");
+	auto rightItem = ui::Button::create("sprites/right.png");
 	rightItem->setScale(0.05);
 	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.1 / 4, button->getPosition().y));
 	buttonNode->addChild(rightItem, 100);
@@ -121,11 +127,13 @@ bool PlayGameScene::init()
 		switch (type)
 		{
 		case ui::Widget::TouchEventType::BEGAN:
-			//Here code to right move
-			//Action Reapeat
+			if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW) == heldKeys.end()) {
+				heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW);
+			}
 			CCLOG("Right");
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW), heldKeys.end());
 			CCLOG("End Right");
 			break;
 		}
@@ -238,7 +246,7 @@ bool PlayGameScene::init()
 		{
 			int eneX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
 			int eneY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			monsters[numOfMonster] = new MonsterCharacter(this, 1);
+			monsters[numOfMonster] = new MonsterCharacter(gameNode, 1);
 			monsters[numOfMonster]->get()->setPosition(eneX, eneY);
 			//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
 			//enemy->setPhysicsBody(enemyBody);
@@ -355,26 +363,6 @@ void PlayGameScene::updateCharacter(float dt)
 	//keys action
 
 	playerChar->updateAction(dt);
-}
-
-// <summary>
-/// Control character movement  
-/// </summary>
-/// <returns></returns>
-void PlayGameScene::onClickMoveMenu(cocos2d::Ref* sender) {
-	auto node = dynamic_cast<Node*>(sender);
-	if (node->getTag() == 1) {
-		CCLOG("Up");
-	}
-	else if (node->getTag() == 2) {
-		CCLOG("Down");
-	}
-	else if (node->getTag() == 3) {
-		CCLOG("Left");
-	}
-	else if (node->getTag() == 4) {
-		CCLOG("Right");
-	}
 }
 
 /// <summary>

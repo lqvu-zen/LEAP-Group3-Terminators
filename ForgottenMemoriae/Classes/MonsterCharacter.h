@@ -34,7 +34,7 @@ using namespace std;
 class MonsterCharacter //: public Character
 {
 public:  
-    MonsterCharacter(cocos2d::Scene* _scene, int level);
+    MonsterCharacter(cocos2d::Node* _scene, int level);
 
     cocos2d::Sprite* get() {
         return monster;
@@ -53,7 +53,7 @@ public:
     void walk();
 private:
 
-    cocos2d::Scene* scene;
+    cocos2d::Node* scene;
 	cocos2d::PhysicsBody* monsterBody;
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
