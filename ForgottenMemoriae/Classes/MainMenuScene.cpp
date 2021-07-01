@@ -47,7 +47,7 @@ bool MainMenuScene::init()
 	);
 	//set collision bitmask
 	edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
-	edgeBody->setContactTestBitmask(true);
+	edgeBody->setContactTestBitmask(ALLSET_BITMASK);
 
 	edgeBody->setDynamic(false);
 
@@ -104,7 +104,7 @@ void MainMenuScene::updateCharacter(float dt)
 	}
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (player->isGrounded() && player->getRealtimeVolocity().y <= 0) {
+		if (player->isGrounded()) {
 			player->setVelocity(Vec2(player->getVolocity().x, PLAYER_JUMP_VELOCITY));
 		}
 	}
@@ -115,6 +115,10 @@ void MainMenuScene::updateCharacter(float dt)
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
 		player->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, player->getVolocity().y));
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), ATTACK) != heldKeys.end()) {
+		player->attack();
 	}
 
 	//keys action

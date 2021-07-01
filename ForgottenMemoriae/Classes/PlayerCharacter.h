@@ -15,6 +15,7 @@ public:
 	};
 
 	State characterState;
+	State characterStateOnce;
 	Direction characterDirection;
 
 	PlayerCharacter();
@@ -24,6 +25,7 @@ public:
 
 	void updateAnimation(State actionState, Direction actionDirection = Direction::RIGHT, bool repeatForever = true);
 	void updateAction(float dt);
+	void reupdateAnimation();
 
 	bool isFalling();
 	bool isGrounded();
@@ -32,6 +34,8 @@ public:
 	void setFalling();
 	void setGrounded();
 	void setJumping();
+
+	void attack(int mode = 0);
 
 	cocos2d::Sprite* getSprite();
 
@@ -43,14 +47,17 @@ private:
 	cocos2d::Sprite* characterSpriteAnimation;
 	cocos2d::PhysicsBody* characterPhysicsBody;
 
+	cocos2d::Sprite* attackSprite;
+
 	cocos2d::Size characterSize;
 	cocos2d::Vec2 characterVelocity;
+
+	cocos2d::Size attackSize;
 
 	bool falling;
 	bool grounded;
 	bool jumping;
-
-	void updatePhysicsBody();
+	int attackMode;
 };
 
 #endif // __PLAYERCHARACTER_H__
