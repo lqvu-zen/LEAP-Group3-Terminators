@@ -23,3 +23,4 @@
 * Move Sdk to D:/Tools/
 * Java jdk: follow system
 * Rename your virtual device in config file 
+* Remember to change path in enviroment path, re-setup cocos and change path in android build.
