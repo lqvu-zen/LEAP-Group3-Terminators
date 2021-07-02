@@ -239,7 +239,7 @@ bool PlayGameScene::init()
 	//Add enemies here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
-	for each (Value SpawnPoint in objectGroup->getObjects())
+	for (auto SpawnPoint : objectGroup->getObjects())
 	{
 		//Spawn enemy
 		if (SpawnPoint.asValueMap()["Enemy"].asInt() == 1)
@@ -265,11 +265,11 @@ bool PlayGameScene::init()
 
 
 	//Keyboard test
-	auto listener = EventListenerKeyboard::create();
+	/*auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = CC_CALLBACK_2(PlayGameScene::onKeyPressed, this);
 	listener->onKeyReleased = CC_CALLBACK_2(PlayGameScene::onKeyReleased, this);
 
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);*/
 	
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.

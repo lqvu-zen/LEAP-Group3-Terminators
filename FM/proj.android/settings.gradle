@@ -1,4 +1,4 @@
 include ':libcocos2dx'
 project(':libcocos2dx').projectDir = new File(settingsDir, '../cocos2d/cocos/platform/android/libcocos2dx')
-include ':ForgottenMemoriae'
-project(':ForgottenMemoriae').projectDir = new File(settingsDir, 'app')
+include ':FM'
+project(':FM').projectDir = new File(settingsDir, 'app')
