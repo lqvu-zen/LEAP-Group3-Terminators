@@ -360,6 +360,10 @@ void PlayGameScene::updateCharacter(float dt)
 		playerChar->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
 	}
 
+	if (std::find(heldKeys.begin(), heldKeys.end(), ATTACK) != heldKeys.end()) {
+		playerChar->attack();
+	}
+
 	//keys action
 
 	playerChar->updateAction(dt);
@@ -373,6 +377,7 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	auto node = dynamic_cast<Node*>(sender);
 	CCLOG("%i", node->getTag());
 	if (node->getTag() == 1) {
+		playerChar->attack();
 		CCLOG("Attack");
 	}
 	else if (node->getTag() == 2) {
