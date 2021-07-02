@@ -40,6 +40,7 @@ Scene* PlayGameScene::createScene()
     auto layer = PlayGameScene::create();
     layer->SetPhysicsWord(scene->getPhysicsWorld());
     scene->addChild(layer);
+    //CCLOG("%s", scene->getPhysicsWorld());
     return scene;
 }
 
@@ -76,7 +77,7 @@ bool PlayGameScene::init()
     /// Pause Button  
     /// </summary>
     /// <returns></returns>
-#if 1
+#if 0
     auto pauseButton = ui::Button::create("sprites/pauseButton.png");
     pauseButton->setScale(0.1);
     pauseButton->setPosition(Vec2(visibleSize.width - pauseButton->getContentSize().width * 0.05, visibleSize.height - pauseButton->getContentSize().height * 0.05));
@@ -99,37 +100,6 @@ bool PlayGameScene::init()
     /// </summary>
     /// <returns></returns>
 #if 0
-    auto button = Sprite::create("sprites/button.png");
-    button->setScale(0.1);
-    button->setPosition(Vec2(button->getContentSize().width * 0.075, button->getContentSize().height * 0.075));
-    this->addChild(button);
-
-    auto upItem = MenuItemImage::create("sprites/up.png", "sprites/up.png", CC_CALLBACK_1(PlayGameScene::onClickMoveMenu, this));
-    upItem->setScale(0.05);
-    upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.1 / 4));
-    upItem->setTag(1);
-
-    auto downItem = MenuItemImage::create("sprites/down.png", "sprites/down.png", CC_CALLBACK_1(PlayGameScene::onClickMoveMenu, this));
-    downItem->setScale(0.05);
-    downItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y - button->getContentSize().height * 0.1 / 4));
-    downItem->setTag(2);
-
-    auto leftItem = MenuItemImage::create("sprites/left.png", "sprites/left.png", CC_CALLBACK_1(PlayGameScene::onClickMoveMenu, this));
-    leftItem->setScale(0.05);
-    leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.1 / 4, button->getPosition().y));
-    leftItem->setTag(3);
-
-    auto rightItem = MenuItemImage::create("sprites/right.png", "sprites/right.png", CC_CALLBACK_1(PlayGameScene::onClickMoveMenu, this));
-    rightItem->setScale(0.05);
-    rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.1 / 4, button->getPosition().y));
-    rightItem->setTag(4);
-
-    auto moveMenu = Menu::create(upItem, downItem, leftItem, rightItem, nullptr);
-    moveMenu->setPosition(Vec2::ZERO);
-    this->addChild(moveMenu);
-#endif
-
-#if 1
     auto button = Sprite::create("sprites/button.png");
     button->setScale(0.1);
     button->setPosition(Vec2(button->getContentSize().width * 0.075, button->getContentSize().height * 0.075));
@@ -212,7 +182,7 @@ bool PlayGameScene::init()
     /// Character control button to attack and use skills 
     /// </summary>
     /// <returns></returns>
-#if 1
+#if 0
     
     auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
     attackItem->setScale(0.7);
@@ -239,27 +209,13 @@ bool PlayGameScene::init()
     this->addChild(attackMenu);
 #endif
     
-    return true;
-}
+    //CCLOG("%s", this->getPhysicsWorld());
+    boss = new BossCharacter(this, 1);
+    boss->get()->setPosition(visibleSize / 2);
+    this->addChild(boss->get());
 
-/// <summary>
-/// Control character movement  
-/// </summary>
-/// <returns></returns>
-void PlayGameScene::onClickMoveMenu(cocos2d::Ref* sender) {
-    auto node = dynamic_cast<Node*>(sender);
-    if (node->getTag() == 1) {
-        CCLOG("Up");
-    }
-    else if (node->getTag() == 2) {
-        CCLOG("Down");
-    }
-    else if (node->getTag() == 3) {
-        CCLOG("Left");
-    }
-    else if (node->getTag() == 4) {
-        CCLOG("Right");
-    }
+    boss->idle();
+    return true;
 }
 
 /// <summary>

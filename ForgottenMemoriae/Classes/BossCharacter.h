@@ -61,6 +61,14 @@ public:
     void shoot_bow();
 
     void walk();
+
+    void attack_1();
+
+    void attack_2();
+
+    void jump_attack_1();
+
+    void jump_attack_2();
 private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
@@ -71,13 +79,9 @@ private:
 
     cocos2d::Animation *createAnimation(string prefixName, int pFrames, float delay);
 
-    void attack_1();
+    string boss;
 
-    void attack_2();
-
-    void jump_attack_1();
-
-    void jump_attack_2();
+    PhysicsShapeCache* shapeCache;
 };
 
 #endif // __BOSS_CHARACTER_H__

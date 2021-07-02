@@ -55,8 +55,6 @@ private:
 
     BossCharacter* boss;
 
-    void onClickMoveMenu(cocos2d::Ref* sender);
-
     void onClickAttackMenu(cocos2d::Ref* sender);
 };
 

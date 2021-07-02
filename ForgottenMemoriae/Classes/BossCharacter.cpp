@@ -31,7 +31,7 @@ BossCharacter::BossCharacter(cocos2d::Scene* scene, int level) {
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-	string boss = StringUtils::format("plist/Boss_%i/", level);
+	boss = StringUtils::format("plist/Boss_%i/", level);
 
 	SpriteBatchNode* spriteNode = SpriteBatchNode::create(boss + "Attack_1.png");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Attack_1.plist");
@@ -74,17 +74,16 @@ BossCharacter::BossCharacter(cocos2d::Scene* scene, int level) {
 
 
 	monster = Sprite::createWithSpriteFrameName("Idle1.png");
-	monster->setScale(0.25);
+	monster->setScale(0.5);
 
-	auto shapeCache = PhysicsShapeCache::getInstance();
+	shapeCache = PhysicsShapeCache::getInstance();
 	shapeCache->addShapesWithFile(boss + "body.plist");
-	shapeCache->setBodyOnSprite("Idle1", monster);
 	
 	auto animate = Animate::create(BossCharacter::createAnimation("Idle", 16, 0.1));
 	animate->retain();
 	monster->runAction(RepeatForever::create(animate));
 
-	monster->setFlippedX(true);
+	monster->setFlippedX(false);
 }
 
 void BossCharacter::attack() {
@@ -99,6 +98,8 @@ void BossCharacter::attack() {
 
 void BossCharacter::attack_1() {
 	//animation->release();
+	CCLOG("%s", monster->getPhysicsBody());
+
 	animation = BossCharacter::createAnimation("Attack_1", 8, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
@@ -150,6 +151,8 @@ void BossCharacter::hurt() {
 
 void BossCharacter::idle() {
 	//animation->release();
+	auto monsterBody = shapeCache->createBodyWithName("Idle");
+	monster->setPhysicsBody(monsterBody);
 	animation = BossCharacter::createAnimation("Idle", 16, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
