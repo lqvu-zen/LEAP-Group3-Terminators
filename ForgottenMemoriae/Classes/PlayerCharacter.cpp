@@ -9,16 +9,19 @@ PlayerCharacter::PlayerCharacter()
 	
 	characterSize = frame->getOriginalSize();
 
+	//create sprites
 	characterSprite = Sprite::create();
 	characterSpriteAnimation = Sprite::createWithSpriteFrame(frame);
+	attackSprite = Sprite::create();
 
 	characterPhysicsBody = PhysicsBody::createBox(characterSize);
 	//set collision bitmask
 	characterPhysicsBody->setDynamic(true);
 	characterPhysicsBody->setRotationEnable(false);
 
-	characterPhysicsBody->setCollisionBitmask(HERO_COLLISION_BITMASK);
-	characterPhysicsBody->setContactTestBitmask(true);
+	characterPhysicsBody->setCategoryBitmask(PLAYER_CATEGORY_BITMASK);
+	characterPhysicsBody->setCollisionBitmask(PLAYER_COLLISION_BITMASK);
+	characterPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
 
 	characterSprite->setPhysicsBody(characterPhysicsBody);
 
@@ -27,6 +30,9 @@ PlayerCharacter::PlayerCharacter()
 	setFalling();
 
 	characterSprite->addChild(characterSpriteAnimation);
+	characterSprite->addChild(attackSprite);
+
+	attackMode = 1;
 }
 
 PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
@@ -39,11 +45,16 @@ void PlayerCharacter::setPosition(cocos2d::Vec2 position)
 {
 	characterSprite->setPosition(position);
 	characterSpriteAnimation->setPosition(Vec2::ZERO);
+	attackSprite->setPosition(Vec2::ZERO);
+	
 }
 
 void PlayerCharacter::updateAnimation(State actionState, Direction actionDirection, bool repeatForever)
 {
 	if (characterState != actionState) {
+
+		if (attackSprite->getPhysicsBody() != nullptr)
+			attackSprite->getPhysicsBody()->removeFromWorld();
 
 		const int maxWord = 50;
 
@@ -106,18 +117,24 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 		Animation* animation = Animation::createWithSpriteFrames(animFrames, ANIMATION_DELAY);
 		Animate* animate = Animate::create(animation);
 
-
 		if (repeatForever) {
 			characterSpriteAnimation->stopAllActions();
+
 			characterSpriteAnimation->runAction(RepeatForever::create(animate));
+
+			characterState = actionState;
 		}
 		else {
 			characterSpriteAnimation->stopAllActions();
 
-			characterSpriteAnimation->runAction(animate);
-		}
+			auto callbackAction = CallFunc::create(
+				CC_CALLBACK_0(PlayerCharacter::reupdateAnimation, this)
+			);
 
-		characterState = actionState;
+			characterSpriteAnimation->runAction(Sequence::create(animate, callbackAction, nullptr));
+
+			characterStateOnce = actionState;
+		}
 	}
 
 	if (actionDirection == Direction::LEFT) {
@@ -194,6 +211,19 @@ void PlayerCharacter::updateAction(float dt)
 	}
 }
 
+void PlayerCharacter::reupdateAnimation()
+{
+	characterState = characterStateOnce;
+
+	if (characterStateOnce != State::DEATH) {
+		updateAnimation(characterState, characterDirection);
+		attackMode++;
+	}
+	else {
+		//Death update
+	}
+}
+
 bool PlayerCharacter::isFalling()
 {
 	return falling;
@@ -230,14 +260,54 @@ void PlayerCharacter::setJumping()
 	grounded = false;
 }
 
+void PlayerCharacter::attack(int mode)
+{
+	CCLOG("ATTACK");
+	
+
+	if (mode > 0) {
+		attackMode = mode;
+	}
+	else {
+		attackMode = (attackMode - 1) % 3 + 1;
+	}
+
+	//update animation
+	if (attackMode == 1) {
+		attackSize = Size(characterSize.width * 1.5f, characterSize.height);
+		updateAnimation(State::ATTACK1, characterDirection, false);
+	} else if (attackMode == 2) {
+		attackSize = Size(characterSize.width * 2.0f, characterSize.height);
+		updateAnimation(State::ATTACK2, characterDirection, false);
+	} else if (attackMode == 3) {
+		attackSize = Size(characterSize.width * 2.0f, characterSize.height * 2.0f);
+		updateAnimation(State::ATTACK3, characterDirection, false);
+	}	
+
+	//create physic for attack
+	if (mode == 0) {
+
+		auto attackBody = PhysicsBody::createBox(attackSize);
+
+		attackBody->setDynamic(false);
+		attackBody->setRotationEnable(false);
+		attackBody->setGravityEnable(false);		
+		attackBody->setMass(0.0f);		
+
+		attackBody->setCategoryBitmask(PLAYER_CATEGORY_BITMASK);
+		attackBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(ALLSET_BITMASK);
+
+		attackSprite->setPhysicsBody(attackBody);
+	}
+	else {
+		
+	}
+}
+
 cocos2d::Sprite * PlayerCharacter::getSprite()
 {
 	return characterSprite;
-}
-
-cocos2d::PhysicsBody* PlayerCharacter::getPhysicsBody()
-{
-	return characterPhysicsBody;
 }
 
 void PlayerCharacter::setVelocity(cocos2d::Vec2 velocity)
