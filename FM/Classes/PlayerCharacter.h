@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Definitions.h"
+#include "Stats.h"
 
 class PlayerCharacter
 {
@@ -38,11 +39,14 @@ public:
 	void attack(int mode = 0);
 
 	cocos2d::Sprite* getSprite();
-	cocos2d::PhysicsBody* getPhysicsBody();
+	Stats* getStats();
+
 	void setVelocity(cocos2d::Vec2 velocity);
 	cocos2d::Vec2 getVolocity();
 	cocos2d::Vec2 getRealtimeVolocity();
 private:
+	Stats* characterStats;
+
 	cocos2d::Sprite* characterSprite;
 	cocos2d::Sprite* characterSpriteAnimation;
 	cocos2d::PhysicsBody* characterPhysicsBody;

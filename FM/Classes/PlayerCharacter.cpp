@@ -33,6 +33,10 @@ PlayerCharacter::PlayerCharacter()
 	characterSprite->addChild(attackSprite);
 
 	attackMode = 1;
+
+	//set Stats
+	characterStats = new Stats();
+	characterStats->SetHeroStats();
 }
 
 PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
@@ -209,6 +213,9 @@ void PlayerCharacter::updateAction(float dt)
 			updateAnimation(State::IDLE, direction);
 		}	
 	}
+
+	//update stats
+	characterStats->UpdateStatsBar();
 }
 
 void PlayerCharacter::reupdateAnimation()
@@ -263,7 +270,6 @@ void PlayerCharacter::setJumping()
 void PlayerCharacter::attack(int mode)
 {
 	CCLOG("ATTACK");
-	
 
 	if (mode > 0) {
 		attackMode = mode;
@@ -308,6 +314,11 @@ void PlayerCharacter::attack(int mode)
 cocos2d::Sprite * PlayerCharacter::getSprite()
 {
 	return characterSprite;
+}
+
+Stats * PlayerCharacter::getStats()
+{
+	return characterStats;
 }
 
 void PlayerCharacter::setVelocity(cocos2d::Vec2 velocity)

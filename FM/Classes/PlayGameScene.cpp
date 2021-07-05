@@ -236,6 +236,20 @@ bool PlayGameScene::init()
 	gameNode->addChild(cameraTarget);
 	gameNode->addChild(playerChar->getSprite());
 
+	//add healthbar
+	auto playerStats = playerChar->getStats();
+	auto playerStatsSprite = playerStats->GetSprite();
+	auto scaleRatio = 3.0f;
+	playerStatsSprite->setScale(scaleRatio);
+	playerStatsSprite->setPosition(
+		Vec2(
+			origin.x, 
+			visibleSize.height + origin.y - playerStats->GetSpriteSize().height * scaleRatio
+		)
+		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
+	);
+	gameNode->addChild(playerStatsSprite, 100);
+
 	//Add enemies here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
@@ -265,11 +279,11 @@ bool PlayGameScene::init()
 
 
 	//Keyboard test
-	/*auto listener = EventListenerKeyboard::create();
+	auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = CC_CALLBACK_2(PlayGameScene::onKeyPressed, this);
 	listener->onKeyReleased = CC_CALLBACK_2(PlayGameScene::onKeyReleased, this);
 
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);*/
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
@@ -347,7 +361,7 @@ void PlayGameScene::updateCharacter(float dt)
 	}
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (playerChar->isGrounded() && playerChar->getRealtimeVolocity().y <= 0) {
+		if (playerChar->isGrounded() && playerChar->getRealtimeVolocity().y <= PADDING_VELOCITY) {
 			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
 		}
 	}
