@@ -60,7 +60,7 @@ bool PlayGameScene::init()
 	//buttonNode->addChild(button, -100);
 
 	auto upItem = ui::Button::create("sprites/up.png");
-	upItem->setScale(0.1);
+	upItem->setScale(0.4);
 	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.2 / 4));
 	buttonNode->addChild(upItem, 100);
 	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
