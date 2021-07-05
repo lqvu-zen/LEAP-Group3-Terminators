@@ -43,6 +43,8 @@ private:
 	void onClickMoveMenu(cocos2d::Ref* sender);
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onClickAttackMenu(cocos2d::Ref* sender);
+	void updateMonster(float dt);
+	void monsterAction(float dt);
 };
 
 #endif // __PLAYGAME_SCENE_H__

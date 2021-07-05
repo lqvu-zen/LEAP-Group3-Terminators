@@ -1,40 +1,20 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
-
- http://www.cocos2d-x.org
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
-
 #include "MonsterCharacter.h"
 #include "Definitions.h"
 
 USING_NS_CC;
 
-MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int level) {
+MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _level) {
 
 	scene = _scene;
 
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-	string floder = StringUtils::format("plist/Monster_%i/", level);
+	hp = 100 * _level;
+	atk = 10 * _level;
+	level = _level;
+
+	floder = StringUtils::format("plist/Monster_%i/", 1);
 
 	SpriteBatchNode* spriteNode = SpriteBatchNode::create(floder + "Attack.png");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Attack.plist");
@@ -65,25 +45,56 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int level) {
 
 }
 
+cocos2d::Sprite* MonsterCharacter::getSprite() {
+	return monster;
+};
+
+void MonsterCharacter::setPosition(cocos2d::Vec2 _position) {
+	monster->setPosition(_position);
+	position = _position;
+}
+
+void MonsterCharacter::setDirection(Direction _actionDirection) {
+	actionDirection = _actionDirection;
+	if (actionDirection == Direction::LEFT) {
+		monster->setFlippedX(false);
+	}
+	else {
+		monster->setFlippedX(true);
+	}
+}
+
 void MonsterCharacter::attack() {
-	//animation->release();
+
 	monsterBody->setDynamic(false);
 	animation = MonsterCharacter::createAnimation("Attack-", 19, 0.02);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
 	
-	auto bullet = Sprite::create("plist/Monster_1/poisonspit.png");
+	string bulletSprite = StringUtils::format("poisonspit_%i.png", level);
+	bullet = Sprite::create(floder + bulletSprite);
 	auto bodyBullet = PhysicsBody::createBox(bullet->getContentSize());
 	bullet->setPhysicsBody(bodyBullet);
 	bodyBullet->setDynamic(false);
+	bodyBullet->setCollisionBitmask(MONSTER_ATTACK_COLLISION_BITMASK);
+	bodyBullet->setContactTestBitmask(false);
 	bullet->setPosition(monster->getPosition());
-	bullet->setScale(0.25);
+	bullet->setScale(0.25 * level);
 	scene->addChild(bullet);
 
-	auto shootAction = MoveBy::create(5, Vec2(-visibleSize.width, 0));
-	bullet->runAction(shootAction);
-	
+	if(actionDirection == Direction::LEFT){
+		auto shootAction = MoveBy::create(5, Vec2(-visibleSize.width / 3, 0));
+		auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
+		auto seq = Sequence::create(shootAction, disappearAction, nullptr);
+		bullet->runAction(seq);
+	}
+	else {
+		auto shootAction = MoveBy::create(5, Vec2(visibleSize.width / 3, 0));
+		auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
+		auto seq = Sequence::create(shootAction, disappearAction, nullptr);
+		bullet->runAction(seq);
+	}
 }
 
 void MonsterCharacter::death() {
@@ -92,14 +103,25 @@ void MonsterCharacter::death() {
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
+
+	auto dieAction = MoveTo::create(0, Vec2(-100 * visibleSize.width, 0));
+	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(2.4);
+	auto seq = Sequence::create(delay, dieAction, nullptr);
+	monster->runAction(seq);
 }
 
-void MonsterCharacter::hurt() {
-	//animation->release();
-	animation = MonsterCharacter::createAnimation("Hurt-", 4, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
+void MonsterCharacter::hurt(int dame) {
+	hp -= dame;
+	if (hp <= 0) {
+		death();
+	}
+	else {
+		//animation->release();
+		animation = MonsterCharacter::createAnimation("Hurt-", 4, 0.5);
+		auto animate = Animate::create(animation);
+		animate->retain();
+		monster->runAction(animate);
+	}
 }
 
 void MonsterCharacter::idle() {
@@ -107,10 +129,10 @@ void MonsterCharacter::idle() {
 	animation = MonsterCharacter::createAnimation("Idle-", 48, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	monster->runAction(RepeatForever::create(animate));
 }
 
-void MonsterCharacter::jump() {
+void MonsterCharacter::walk() {
 	//animation->release();
 	animation = MonsterCharacter::createAnimation("Jump-", 17, 0.1);
 	auto animate = Animate::create(animation);
