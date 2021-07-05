@@ -34,7 +34,7 @@ using namespace std;
 class BossCharacter //: public Character
 {
 public:  
-    BossCharacter(cocos2d::Scene* scene, int level);
+    BossCharacter(cocos2d::Node* scene, int level);
 
     cocos2d::Sprite* get() {
         return monster;

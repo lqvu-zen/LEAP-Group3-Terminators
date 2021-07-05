@@ -55,13 +55,13 @@ bool PlayGameScene::init()
 
 #if 1
 	auto button = Sprite::create("sprites/button.png");
-	button->setScale(0.1);
-	button->setPosition(Vec2(button->getContentSize().width * 0.075, button->getContentSize().height * 0.075));
-	buttonNode->addChild(button, 100);
+	button->setScale(0.2);
+	button->setPosition(Vec2(button->getContentSize().width * 0.1, button->getContentSize().height * 0.05));
+	//buttonNode->addChild(button, -100);
 
 	auto upItem = ui::Button::create("sprites/up.png");
-	upItem->setScale(0.05);
-	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.1 / 4));
+	upItem->setScale(0.4);
+	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.2 / 4));
 	buttonNode->addChild(upItem, 100);
 	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -79,29 +79,9 @@ bool PlayGameScene::init()
 		}
 	});
 
-	auto downItem = ui::Button::create("sprites/down.png");
-	downItem->setScale(0.05);
-	downItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y - button->getContentSize().height * 0.1 / 4));
-	buttonNode->addChild(downItem, 100);
-	downItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW) == heldKeys.end()) {
-				heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW);
-			}
-			CCLOG("Down");
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW), heldKeys.end());
-			CCLOG("End Down");
-			break;
-		}
-	});
-
 	auto leftItem = ui::Button::create("sprites/left.png");
-	leftItem->setScale(0.05);
-	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+	leftItem->setScale(0.1);
+	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.2 / 4, button->getPosition().y));
 	buttonNode->addChild(leftItem, 100);
 	leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -120,8 +100,8 @@ bool PlayGameScene::init()
 	});
 
 	auto rightItem = ui::Button::create("sprites/right.png");
-	rightItem->setScale(0.05);
-	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.1 / 4, button->getPosition().y));
+	rightItem->setScale(0.1);
+	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.2 / 4, button->getPosition().y));
 	buttonNode->addChild(rightItem, 100);
 	rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -191,7 +171,7 @@ bool PlayGameScene::init()
 
 	//setup map physics. Since we are doing a 60x34 map so width = 60 and height = 34 (2 loops)
 	TMXLayer *Foreground = map->getLayer("Foreground");
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 146; i++)
 	{
 		for (int j = 0; j < 34; j++)
 		{
@@ -243,12 +223,12 @@ bool PlayGameScene::init()
 	playerStatsSprite->setScale(scaleRatio);
 	playerStatsSprite->setPosition(
 		Vec2(
-			origin.x, 
+			origin.x,
 			visibleSize.height + origin.y - playerStats->GetSpriteSize().height * scaleRatio
 		)
 		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
 	);
-	gameNode->addChild(playerStatsSprite, 100);
+	buttonNode->addChild(playerStatsSprite, 100);
 
 	//Add enemies here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
@@ -261,45 +241,67 @@ bool PlayGameScene::init()
 			int eneX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
 			int eneY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
 			monsters[numOfMonster] = new MonsterCharacter(gameNode, 1);
-			monsters[numOfMonster]->get()->setPosition(eneX, eneY);
+			monsters[numOfMonster]->getSprite()->setPosition(eneX, eneY);
 			//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
 			//enemy->setPhysicsBody(enemyBody);
-			gameNode->addChild(monsters[numOfMonster]->get());
+			gameNode->addChild(monsters[numOfMonster]->getSprite());
 			numOfMonster++;
 		}
 
 		//Spawn gem
-		/*if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
+		if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
 		{
-			int gemX = SpawnPoint.asValueMap()["x"].asInt();
-			int gemY = SpawnPoint.asValueMap()["y"].asInt();
-			this->addAt(gemX * SCALE_FACTOR, gemY * SCALE_FACTOR, 2);
-		}*/
+			int gemX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
+			int gemY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			Sprite *gem = Sprite::create("sprites/Gem.png");
+			gem->setPosition(gemX, gemY);
+			auto gemBody = PhysicsBody::createBox(gem->getContentSize());
+			gemBody->setDynamic(false);
+			//gemBody->setCollisionBitmask(POINT_COLLISION_BITMASK);
+			//gemBody->setContactTestBitmask(ALLSET_BITMASK);
+			gem->setPhysicsBody(gemBody);
+			gameNode->addChild(gem);
+			
+		}
+
+		//Spawn boss
+		if (SpawnPoint.asValueMap()["Boss"].asInt() == 1)
+		{
+			int bossX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
+			int bossY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			BossCharacter* boss = new BossCharacter(gameNode, 1);
+			boss->get()->setPosition(bossX, bossY);
+			gameNode->addChild(boss->get());
+		}
 	}
+
+	//Contact test
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(PlayGameScene::onContactBegin, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
 
 
 	//Keyboard test
 	auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = CC_CALLBACK_2(PlayGameScene::onKeyPressed, this);
 	listener->onKeyReleased = CC_CALLBACK_2(PlayGameScene::onKeyReleased, this);
-
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
-	
 	gameNode->runAction(followCamera);
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 100);
 
-	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);
+	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	this->scheduleUpdate();
 	return true;
 }
 
 
-void PlayGameScene::addAt(int x, int y, int type)
+/*void PlayGameScene::addAt(int x, int y, int type)
 {
 	//Add new objects based on their type.
 	//1 for enemy; 2 for gem
@@ -329,11 +331,11 @@ void PlayGameScene::addAt(int x, int y, int type)
 	default:
 		break;
 	}
-}
+}*/
 
 void PlayGameScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
-	CCLOG("Key with keycode %d pressed, Character position: %f", keyCode, playerChar->getSprite()->getPositionX());
+	//CCLOG("Key with keycode %d pressed, Character position: %f", keyCode, playerChar->getSprite()->getPositionX());
 	if (std::find(heldKeys.begin(), heldKeys.end(), keyCode) == heldKeys.end()) {
 		heldKeys.push_back(keyCode);
 	}
@@ -348,6 +350,7 @@ void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos
 
 void PlayGameScene::update(float dt)
 {
+	this->updateMonster(dt);
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
 	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
@@ -417,7 +420,47 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	}
 }
 
-void PlayGameScene::attackMonster(float dt)
+
+//onContactBegin to check for collisions happening in the PlayGameScene.
+bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 {
-	monsters[0]->attack();
+	auto a = contact.getShapeA()->getBody()->getNode();
+	auto b = contact.getShapeB()->getBody()->getNode();
+	if (a && b)
+	{
+		if (a->getTag() == 10)
+		{
+			CCLOG("Hello1");
+			b->removeFromParentAndCleanup(true);
+		}
+		else if (b->getTag() == 10)
+		{
+			CCLOG("Hello2");
+			a->removeFromParentAndCleanup(true);
+		}
+		
+	}
+	return true;
+}
+
+void PlayGameScene::updateMonster(float dt) {
+	for (int i = 0; i < numOfMonster; i++) {
+		if (monsters[i]->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
+			monsters[i]->setDirection(MonsterCharacter::Direction::LEFT);
+		}
+		else {
+			monsters[i]->setDirection(MonsterCharacter::Direction::RIGHT);
+		}
+	}
+}
+
+void PlayGameScene::monsterAction(float dt) {
+	for (int i = 0; i < numOfMonster; i++) {
+		if (abs(monsters[i]->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
+			monsters[i]->attack();
+		}
+		else {
+			monsters[i]->idle();
+		}
+	}
 }
