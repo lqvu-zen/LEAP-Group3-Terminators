@@ -225,11 +225,11 @@ bool PlayGameScene::init()
 	playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
-	//boss = new BossCharacter(1);
-	//boss->getSprite();
-	//boss->setPosition(Vec2(visibleSize.width / 8 + origin.x, visibleSize.height / 2 + origin.y));
-	//gameNode->addChild(boss->getSprite());
-	//this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackBoss), 3);
+	boss = new BossCharacter(1);
+	boss->getSprite();
+	boss->setPosition(Vec2(visibleSize.width / 8 + origin.x, visibleSize.height / 2 + origin.y));
+	gameNode->addChild(boss->getSprite());
+	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackBoss), 3);
 
 	//cameraTarget for the followCamera to follow the player.
 	cameraTarget = Node::create();

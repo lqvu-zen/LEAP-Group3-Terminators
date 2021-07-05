@@ -33,7 +33,12 @@ using namespace std;
 
 class BossCharacter //: public Character
 {
-public:  
+public:
+
+    enum class Direction {
+        LEFT, RIGHT
+    };
+
     BossCharacter(int level);
 
     cocos2d::Sprite* getSprite() {
@@ -46,25 +51,22 @@ public:
         attackSprite->setPosition(Vec2::ZERO);
     }
 
+    void updateCharacter();
+
     void attack(float dt);
-
     void block();
-
     void charge();
-
     void death();
-
     void hurt();
-
     void idle();
-
     void jump();
-
     void run();
-
     void shoot_bow();
-
     void walk();
+    void attack_1();
+    void attack_2();
+    void jump_attack_1();
+    void jump_attack_2();
 
 private:
     cocos2d::Size visibleSize;
@@ -80,12 +82,6 @@ private:
 
     cocos2d::Animation* animation;
     cocos2d::Animation *createAnimation(string prefixName, int pFrames, float delay);
-
-    
-    void attack_1();
-    void attack_2();
-    void jump_attack_1();
-    void jump_attack_2();
 };
 
 #endif // __BOSS_CHARACTER_H__

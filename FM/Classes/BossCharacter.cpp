@@ -105,8 +105,8 @@ void BossCharacter::attack_1() {
 	animation = BossCharacter::createAnimation("Attack_1", 8, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
-	characterSpriteAnimation->runAction(seq);
+	//auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
+	characterSpriteAnimation->runAction(animate);
 }
 
 void BossCharacter::attack_2() {
@@ -125,8 +125,8 @@ void BossCharacter::attack_2() {
 	animation = BossCharacter::createAnimation("Attack_2", 7, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
-	characterSpriteAnimation->runAction(seq);
+	//auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
+	characterSpriteAnimation->runAction(animate);
 }
 
 void BossCharacter::jump_attack_1() {
@@ -146,8 +146,8 @@ void BossCharacter::jump_attack_1() {
 	auto animate = Animate::create(animation);
 	animate->retain();
 
-	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
-	characterSpriteAnimation->runAction(seq);
+	//auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
+	characterSpriteAnimation->runAction(animate);
 }
 
 void BossCharacter::jump_attack_2() {
@@ -166,8 +166,8 @@ void BossCharacter::jump_attack_2() {
 	animation = BossCharacter::createAnimation("Jump_Attack_2", 7, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
-	characterSpriteAnimation->runAction(seq);
+	//auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
+	characterSpriteAnimation->runAction(animate);
 }
 
 void BossCharacter::block() {
@@ -274,4 +274,9 @@ cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFrame
 	}
 	animation = Animation::createWithSpriteFrames(animFrames, delay);
 	return animation;
+}
+
+
+void BossCharacter::updateCharacter() {
+
 }
