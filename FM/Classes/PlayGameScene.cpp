@@ -6,7 +6,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -376,6 +376,18 @@ void PlayGameScene::updateCharacter(float dt)
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), ATTACK) != heldKeys.end()) {
 		playerChar->attack();
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), SKILL1) != heldKeys.end()) {
+		playerChar->attack(1);
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), SKILL2) != heldKeys.end()) {
+		playerChar->attack(2);
+	}
+
+	if (std::find(heldKeys.begin(), heldKeys.end(), SKILL3) != heldKeys.end()) {
+		playerChar->attack(3);
 	}
 
 	//keys action
