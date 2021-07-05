@@ -149,7 +149,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 void PlayerCharacter::updateAction(float dt)
 {
 	//CCLOG("Character velocity: x:%f - y:%f", characterVelocity.x, characterVelocity.y);
-	CCLOG("PhysicBody velocity: x:%f - y:%f", characterPhysicsBody->getVelocity().x, characterPhysicsBody->getVelocity().y);
+	//CCLOG("PhysicBody velocity: x:%f - y:%f", characterPhysicsBody->getVelocity().x, characterPhysicsBody->getVelocity().y);
 
 	Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
 
@@ -190,22 +190,22 @@ void PlayerCharacter::updateAction(float dt)
 
 	//update animation
 	if (falling) {
-		CCLOG("FALLING");
+		//CCLOG("FALLING");
 		updateAnimation(State::FALLING, direction);
 	}
 
 	if (jumping) {
-		CCLOG("JUMPING");
+		//CCLOG("JUMPING");
 		updateAnimation(State::JUMPING, direction, false);
 	}
 
 	if (grounded) {
 		if (characterPhysicsBody->getVelocity().x > PADDING_VELOCITY || characterPhysicsBody->getVelocity().x < - PADDING_VELOCITY) {
-			CCLOG("RUNING");
+			//CCLOG("RUNING");
 			updateAnimation(State::RUNING, direction);
 		}
 		else {
-			CCLOG("IDLE");
+			//CCLOG("IDLE");
 			updateAnimation(State::IDLE, direction);
 		}	
 	}

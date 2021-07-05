@@ -6,7 +6,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -191,7 +191,7 @@ bool PlayGameScene::init()
 
 	//setup map physics. Since we are doing a 60x34 map so width = 60 and height = 34 (2 loops)
 	TMXLayer *Foreground = map->getLayer("Foreground");
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 146; i++)
 	{
 		for (int j = 0; j < 34; j++)
 		{
@@ -255,31 +255,53 @@ bool PlayGameScene::init()
 		}
 
 		//Spawn gem
-		/*if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
+		if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
 		{
-			int gemX = SpawnPoint.asValueMap()["x"].asInt();
-			int gemY = SpawnPoint.asValueMap()["y"].asInt();
-			this->addAt(gemX * SCALE_FACTOR, gemY * SCALE_FACTOR, 2);
-		}*/
+			int gemX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
+			int gemY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			Sprite *gem = Sprite::create("sprites/Gem.png");
+			gem->setPosition(gemX, gemY);
+			auto gemBody = PhysicsBody::createBox(gem->getContentSize());
+			gemBody->setDynamic(false);
+			//gemBody->setCollisionBitmask(POINT_COLLISION_BITMASK);
+			//gemBody->setContactTestBitmask(ALLSET_BITMASK);
+			gem->setPhysicsBody(gemBody);
+			gameNode->addChild(gem);
+			
+		}
+
+		//Spawn boss
+		if (SpawnPoint.asValueMap()["Boss"].asInt() == 1)
+		{
+			int bossX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
+			int bossY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			BossCharacter* boss = new BossCharacter(gameNode, 1);
+			boss->get()->setPosition(bossX, bossY);
+			gameNode->addChild(boss->get());
+		}
 	}
+
+	//Contact test
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(PlayGameScene::onContactBegin, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
 
 
 	//Keyboard test
-	/*auto listener = EventListenerKeyboard::create();
+	auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = CC_CALLBACK_2(PlayGameScene::onKeyPressed, this);
 	listener->onKeyReleased = CC_CALLBACK_2(PlayGameScene::onKeyReleased, this);
-
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);*/
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
-	
 	gameNode->runAction(followCamera);
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 100);
 
-	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);
+	//this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::attackMonster), 3);
 	this->scheduleUpdate();
 	return true;
 }
@@ -319,7 +341,7 @@ void PlayGameScene::addAt(int x, int y, int type)
 
 void PlayGameScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
-	CCLOG("Key with keycode %d pressed, Character position: %f", keyCode, playerChar->getSprite()->getPositionX());
+	//CCLOG("Key with keycode %d pressed, Character position: %f", keyCode, playerChar->getSprite()->getPositionX());
 	if (std::find(heldKeys.begin(), heldKeys.end(), keyCode) == heldKeys.end()) {
 		heldKeys.push_back(keyCode);
 	}
@@ -347,7 +369,7 @@ void PlayGameScene::updateCharacter(float dt)
 	}
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (playerChar->isGrounded() && playerChar->getRealtimeVolocity().y <= 0) {
+		if (playerChar->isGrounded() && playerChar->getRealtimeVolocity().y <= PADDING_VELOCITY) {
 			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
 		}
 	}
@@ -394,4 +416,26 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 void PlayGameScene::attackMonster(float dt)
 {
 	monsters[0]->attack();
+}
+
+//onContactBegin to check for collisions happening in the PlayGameScene.
+bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
+{
+	auto a = contact.getShapeA()->getBody()->getNode();
+	auto b = contact.getShapeB()->getBody()->getNode();
+	if (a && b)
+	{
+		if (a->getTag() == 10)
+		{
+			CCLOG("Hello1");
+			b->removeFromParentAndCleanup(true);
+		}
+		else if (b->getTag() == 10)
+		{
+			CCLOG("Hello2");
+			a->removeFromParentAndCleanup(true);
+		}
+		
+	}
+	return true;
 }

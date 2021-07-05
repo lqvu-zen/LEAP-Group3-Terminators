@@ -41,7 +41,7 @@ private:
 	void update(float dt);
 	void updateCharacter(float dt);
 	void onClickMoveMenu(cocos2d::Ref* sender);
-
+	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onClickAttackMenu(cocos2d::Ref* sender);
 };
 

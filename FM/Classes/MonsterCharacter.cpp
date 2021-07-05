@@ -83,6 +83,7 @@ void MonsterCharacter::attack() {
 
 	auto shootAction = MoveBy::create(5, Vec2(-visibleSize.width, 0));
 	bullet->runAction(shootAction);
+	
 }
 
 void MonsterCharacter::death() {

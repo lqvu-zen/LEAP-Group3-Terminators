@@ -27,7 +27,7 @@
 
 USING_NS_CC;
 
-BossCharacter::BossCharacter(cocos2d::Scene* scene, int level) {
+BossCharacter::BossCharacter(cocos2d::Node* scene, int level) {
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
@@ -74,12 +74,12 @@ BossCharacter::BossCharacter(cocos2d::Scene* scene, int level) {
 
 
 	monster = Sprite::createWithSpriteFrameName("Idle1.png");
-	monster->setScale(0.25);
+	monster->setScale(0.45);
 
 	auto shapeCache = PhysicsShapeCache::getInstance();
 	shapeCache->addShapesWithFile(boss + "body.plist");
 	shapeCache->setBodyOnSprite("Idle1", monster);
-	
+	monster->getPhysicsBody()->setRotationEnable(false);
 	auto animate = Animate::create(BossCharacter::createAnimation("Idle", 16, 0.1));
 	animate->retain();
 	monster->runAction(RepeatForever::create(animate));
