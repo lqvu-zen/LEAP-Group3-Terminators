@@ -236,6 +236,20 @@ bool PlayGameScene::init()
 	gameNode->addChild(cameraTarget);
 	gameNode->addChild(playerChar->getSprite());
 
+	//add healthbar
+	auto playerStats = playerChar->getStats();
+	auto playerStatsSprite = playerStats->GetSprite();
+	auto scaleRatio = 3.0f;
+	playerStatsSprite->setScale(scaleRatio);
+	playerStatsSprite->setPosition(
+		Vec2(
+			origin.x,
+			visibleSize.height + origin.y - playerStats->GetSpriteSize().height * scaleRatio
+		)
+		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
+	);
+	buttonNode->addChild(playerStatsSprite, 100);
+
 	//Add enemies here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
