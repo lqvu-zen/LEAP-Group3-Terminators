@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="100" height="34" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="10">
+ <tileset firstgid="1" source="PlayTileSet1.tsx"/>
+ <tileset firstgid="325" source="BackgroundTileSet.tsx"/>
+ <layer id="7" name="Background" width="100" height="34">
+  <data encoding="base64" compression="zlib">
+   eJzt10XblWUbhuFXQinpEqQbCUEJaenu7u7u7i4ppVtpBaS7JRRQ6U4lpJRU6tv/wLdG77aYrME+fLbjmp33U+K9sLCSlKI0ZShLOcpTgYpUojJVqEo1qlODmtSiNnWoSz3q04CGNKIxTSgRav7fZlOa0ZwWtKQVrWlDW9rRng50pBOd6UJXutGdHvSkF73pQ1/60Z8BDAw1AzYHMZghDGUYwxnBSEYxmjGMZRzjmcBEvmISk5nCVKbxNd8wnRnMZBazQ82AzTnMZR7zWcBCFrGYb/mOJSxlGctZwUpW8T0/sJo1rOVH1rGeDWxkE5tDzYDNLWxlG9vZwU52sZs97GUf+znATxzkEIc5ws/8wlGOcZxf+Y3fOcFJToWaAZunOcNZznGeC1zkEpe5wlWucZ0b3OQP/uQWt7nDXf7iHvd5wEMe8Tf/hJoBm495wlOe8ZwX/Mt/vOQVr3nDW8IihIW9RwQiEonIvM8HRCEq0YhODD4kJrEihJqBmrF9F4e4xCM+CUhIIhLzEUlIysckIzkpSEkqUpOGtKQjPRnISCYy8wlZIoSagZpZyUZ2PiUHOfmMz8lFbvKQly/IR34KUJBCFKYIX1KUYhSnBCUpRWnKhJoBm2UpR3kqUJFKVKYKValGdWpQk1rUpg51qUd9GtCQRjSmCU1pRnNa0DLUDNhsRWva0JZ2tKcDHelEZ7rQlW50pwc96UVv+tCXfvRnAAMZxGCGMJRhoWbA5nBGMJJRjGYMYxnHeCYwka+YxGSmMJVpfM03TGcGM5nFbOYwl3nMZ0GoGbC5kEUs5lu+YwlLWcZyVrCSVXzPD6xmDWv5kXWsZwMb2cRmtrCVbWxnR6gZsLmTXexmD3vZx34O8BMHOcRhjvAzv3CUYxznV37jd05wklOc5gxnOcf5UDNg8wIXucRlrnCVa1znBjf5gz+5xW3ucJe/uMd9HvCQR/zNPzzmCU95xvNQM2DzBf/yHy95xWve8JawiP6JiEBEIhGZ9/mAKEQlGtGJwYfEJBaxiUNc4hE/YqgZqJmAhCQiMR+RhKR8TDKSk4KUpCI1aUhLOtKTgYxkIjOfkIWsZCM7n5Ij1AzYzMlnfE4ucpOHvHxBPvJTgIIUojBF+JKiFKM4JShJKUpThrKUozwVqBhqBmxWojJVqEo1qlODmtSiNnWoSz3q04CGNKIxTWhKM5rTgpa0ojVtaEu7UDNgsz0d6EgnOtOFrnSjOz3oSS9604e+9KM/AxjIIAYzhKEMYzgjGMkoRoeaAZtjGMs4xjOBiXzFJCYzhalM42u+YTozmMksZjOHucxjPgtYyCIW8y3fhZoBm0tYyjKWs4KVrOJ7fmA1a1jLj6xjPRvYyCY2s4WtbGM7O9jJLnazh72hZsBmsHYu2HsaHr138QYI1s4Fe0/Do/cu3gDB2rlg72l49N7FGyBYOxfsPQ2P3rt4AwRr54K9p+HRexdvgH3s5wA/cZBDHOYIP/MLRznGcX7lN37nBCc5xWnOcJZznOcCF4PYucTlcOoF++YrXOUa17nBTf7gT25xmzvc5S/ucZ8HPOQRf/MPj3nCU57xnBf8G8TOf7wMp16wb37Fa97wlrBIYWHvEYGIRCIy7/MBUYhKNKITgw+JSSxiE4e4xCM+CUgYKXidRCQOp16wb/6IJCTlY5KRnBSkJBWpSUNa0pGeDGQkE5n5hCxkJRvZ+ZQc5OSzIHY+J1c49YJ9c27ykJcvyEd+ClCQQhSmCF9SlGIUpwQlKUVpylCWcpSnAhWpROUgdqpQNZx6wb65GtWpQU1qUZs61KUe9WlAQxrRmCY0pRnNaUFLWtGaNrSlHe3pEMRORzqFUy/YN3emC13pRnd60JNe9KYPfelHfwYwkEEMZghDGcZwRjCSUYxmDGOD2BnH+HDqBfvmCfwPdgebGw==
+  </data>
+ </layer>
+ <layer id="3" name="Trees" width="100" height="34">
+  <data encoding="base64" compression="zlib">
+   eJzt1VtOwkAUxvHBV9HgJT6YIO4AdQciO1DZgZdXdomXFXhbgQIrAL55MDa1lsMwNaX8f+FL+tAzDHMOrXMAAAAAAAAAAAAAACC2A+N9h4XuAsugN+WR/j/Rm/KI1ZvNxPV24Br4zfouSmsmro8j7KMq/JzWlS1nn9OQGi/Zu7Zb7efeQHlQHpUn5TnSun5Oj5SWs89pSE1SFd5HL8qr8qa8Kx+B62SdxYlyqpwZ12gH1FTNp/KlDJWRMl6gNm8ez5WOcqF0jevl1Vhn/yanZln9yOtlmShTf1HTR9mo5d9vPZdL5Uq5VnrGvaRrQp4/sXvwl6J609D57yi7yp6yP6cfVn5Ob5U75b6Amv869zLx85j1u+fNacyz+v6udTx/AD9mwxgejg==
+  </data>
+ </layer>
+ <layer id="2" name="Foreground" width="100" height="34">
+  <data encoding="base64" compression="zlib">
+   eJztmEtOwzAURc2Q7xQQ340AcxgASwDm0CWE3wagwAb47gzYAN8BJ6osjKUXx0CbVLpHOvJ13L6menYq1TkhhBBCCCGEEEIIIYQQQgghhBBC9INjPMHTiiwGxwVe4lVFnsYZnG3oHoWNetNe1Jt2o9+i4eURn/C56RsRP1BfvtHzv3kG2YPffFZ4XvbxADs1cjx2/uUb9Ie29+AFX/EN3/EDP7HAQzyqkeOxXBuG3jRJuPfDHoyOODeG4ziBkziFZ6ydY9elczyWa4Xr9abMdc9ZKofzFVzFNSN7rOtVWDVzc1zT2vthD+ZwHhdwEZdwGa953Q3eunSOx3LN96Zw9c9ZKofzTdzCbSN7rOtVWDVzc1zT2vtWD9Z5z4brjXX+y7FyeSZ8b3LOWSqH8x3cxT0je6zrVVg1c3NcM3fv3+E9PvwxdwNzzlkqh/MvAYG8rg==
+  </data>
+ </layer>
+ <objectgroup id="4" name="Objects">
+  <object id="5" name="EnemySpawn1" x="170.897" y="447.855" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="6" name="EnemySpawn2" x="445.632" y="443.986" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="8" name="GemSpawn" x="401.967" y="277.182" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Gem" type="int" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

@@ -1,0 +1,4 @@
+@echo off
+
+set PROJECT_NAME=ForgottenMemoriae
+set EMULATOR_NAME=Pixel_API_28

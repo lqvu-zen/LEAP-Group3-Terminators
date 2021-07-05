@@ -1,0 +1,11 @@
+Cocos2d - a way to get the current scene?
+https://stackoverflow.com/questions/5755472/cocos2d-a-way-to-get-the-current-scene
+
+Skill:
+https://ffrkstrategy-es.gamematome.jp/game/953/wiki/Lista%20de%20rompealmas_L%C3%ADmite%20compartido
+
+https://discuss.cocos2d-x.org/t/custom-ui-popups-buttons/42404
+
+https://www.stdio.vn/lap-trinh-game/ky-thuat-popup-voi-cocos-2-d-x-3-x-x-w6jcg
+
+https://www.youtube.com/watch?v=Fsh2k8450lU
