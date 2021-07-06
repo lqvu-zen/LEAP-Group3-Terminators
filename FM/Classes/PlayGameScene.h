@@ -19,7 +19,7 @@ public:
 	bool isLocked = false;
 	CREATE_FUNC(PlayGameScene);
 	Node *lockNode;
-	void attackMonster(float dt);
+
 	int numOfMonster = 0;
 private:
 	
@@ -30,8 +30,6 @@ private:
 	MonsterCharacter* monsters[2];
 	BossCharacter* boss;
 
-
-	void addAt(int x, int y, int type);
 	Vector<Node*> pausedActions;
 	
 	PlayerCharacter* playerChar;
@@ -40,11 +38,13 @@ private:
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void update(float dt);
 	void updateCharacter(float dt);
-	void onClickMoveMenu(cocos2d::Ref* sender);
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onClickAttackMenu(cocos2d::Ref* sender);
 	void updateMonster(float dt);
 	void monsterAction(float dt);
+
+	void updateBoss(float dt);
+	void bossAction(float dt);
 };
 
 #endif // __PLAYGAME_SCENE_H__

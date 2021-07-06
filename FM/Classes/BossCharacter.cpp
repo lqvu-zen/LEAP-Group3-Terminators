@@ -1,36 +1,11 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
-
- http://www.cocos2d-x.org
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
-
 #include "BossCharacter.h"
 #include "Definitions.h"
 
 USING_NS_CC;
 
-BossCharacter::BossCharacter(cocos2d::Node* scene, int level) {
-	visibleSize = Director::getInstance()->getVisibleSize();
-	origin = Director::getInstance()->getVisibleOrigin();
+BossCharacter::BossCharacter(int level) {
 
+#if 1
 	string boss = StringUtils::format("plist/Boss_%i/", level);
 
 	SpriteBatchNode* spriteNode = SpriteBatchNode::create(boss + "Attack_1.png");
@@ -71,47 +46,117 @@ BossCharacter::BossCharacter(cocos2d::Node* scene, int level) {
 
 	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Walk.png");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Walk.plist");
+#endif
 
+	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Idle1.png");
 
-	monster = Sprite::createWithSpriteFrameName("Idle1.png");
-	monster->setScale(0.45);
+	characterSprite = Sprite::create();
+	characterSpriteAnimation = Sprite::createWithSpriteFrame(frame);
 
-	auto shapeCache = PhysicsShapeCache::getInstance();
+	attackSprite = Sprite::create();
+
+	shapeCache = PhysicsShapeCache::getInstance();
 	shapeCache->addShapesWithFile(boss + "body.plist");
-	shapeCache->setBodyOnSprite("Idle1", monster);
-	monster->getPhysicsBody()->setRotationEnable(false);
-	auto animate = Animate::create(BossCharacter::createAnimation("Idle", 16, 0.1));
-	animate->retain();
-	monster->runAction(RepeatForever::create(animate));
 
-	monster->setFlippedX(true);
+	characterPhysicsBody = shapeCache->createBodyWithName("Idle");
+	characterPhysicsBody->setDynamic(false);
+	characterPhysicsBody->setRotationEnable(false);
+	characterSprite->setPhysicsBody(characterPhysicsBody);
+
+	characterSprite->addChild(characterSpriteAnimation);
+	characterSprite->addChild(attackSprite);
+
+	characterSprite->setScale(0.5);
+	characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
+	characterDirection = Direction::LEFT;
 }
 
-void BossCharacter::attack() {
-	int type = rand() % 2 + 1;
-	if (type == 1) {
-		attack_1();
-	}
-	else {
-		attack_2();
-	}
-}
-
+#if 0
 void BossCharacter::attack_1() {
 	//animation->release();
+
+	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Attack_1");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(false);
+	attackBody->setMass(0.0f);
+
+	attackSprite->setPhysicsBody(attackBody);
+
+
+	//shapeCache->setBodyOnSprite("Attack_1", characterSpriteAnimation);
+
+
 	animation = BossCharacter::createAnimation("Attack_1", 8, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(1);
-	monster->runAction(animate);
+	/*cocos2d::DelayTime* delay = cocos2d::DelayTime::create(0.8);
+	auto seq = Sequence::create(animate, delay, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);*/
+	characterSpriteAnimation->runAction(animate);
 }
 
 void BossCharacter::attack_2() {
 	//animation->release();
+
+	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Attack_2");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCollisionBitmask(BOSS_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(false);
+	attackBody->setMass(0.0f);
+
+	attackSprite->setPhysicsBody(attackBody);
+
 	animation = BossCharacter::createAnimation("Attack_2", 7, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	/*cocos2d::DelayTime* delay = cocos2d::DelayTime::create(0.7);
+	auto seq = Sequence::create(animate, delay, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);*/
+	characterSpriteAnimation->runAction(animate);
+}
+
+void BossCharacter::jump_attack_1() {
+	//animation->release();
+
+	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Jump_Attack_1");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(false);
+	attackBody->setMass(0.0f);
+
+	attackSprite->setPhysicsBody(attackBody);
+
+	animation = BossCharacter::createAnimation("Jump_Attack_1", 8, 0.1);
+	auto animate = Animate::create(animation);
+	animate->retain();
+	/*cocos2d::DelayTime* delay = cocos2d::DelayTime::create(0.8);
+	auto seq = Sequence::create(animate, delay, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);*/
+	characterSpriteAnimation->runAction(animate);
+}
+
+void BossCharacter::jump_attack_2() {
+	//animation->release();
+
+	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Jump_Attack_2");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(false);
+	attackBody->setMass(0.0f);
+
+	attackSprite->setPhysicsBody(attackBody);
+	animation = BossCharacter::createAnimation("Jump_Attack_2", 7, 0.1);
+	auto animate = Animate::create(animation);
+	animate->retain();
+	/*cocos2d::DelayTime* delay = cocos2d::DelayTime::create(0.7);
+	auto seq = Sequence::create(animate, delay, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);*/
+	characterSpriteAnimation->runAction(animate);
 }
 
 void BossCharacter::block() {
@@ -119,17 +164,28 @@ void BossCharacter::block() {
 	animation = BossCharacter::createAnimation("Block", 9, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	characterSprite->runAction(animate);
 }
 
 void BossCharacter::charge() {
 	//animation->release();
+	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Charge");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(false);
+	attackBody->setMass(0.0f);
+
+	attackSprite->setPhysicsBody(attackBody);
+
 	animation = BossCharacter::createAnimation("Charge", 7, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
+	characterSpriteAnimation->runAction(seq);
 	auto move = MoveBy::create(0.7, Vec2(-30, 0));
-	monster->runAction(move);
+	characterSprite->runAction(move);
 }
 
 void BossCharacter::death() {
@@ -137,7 +193,7 @@ void BossCharacter::death() {
 	animation = BossCharacter::createAnimation("Death", 15, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	characterSprite->runAction(animate);
 }
 
 void BossCharacter::hurt() {
@@ -145,15 +201,18 @@ void BossCharacter::hurt() {
 	animation = BossCharacter::createAnimation("Hurt", 8, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	characterSprite->runAction(animate);
 }
 
 void BossCharacter::idle() {
-	//animation->release();
+	animation->release();
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
 	animation = BossCharacter::createAnimation("Idle", 16, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	characterSpriteAnimation->runAction(RepeatForever::create(animate));
 }
 
 void BossCharacter::jump() {
@@ -161,33 +220,7 @@ void BossCharacter::jump() {
 	animation = BossCharacter::createAnimation("Jump", 10, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
-}
-
-void BossCharacter::jump_attack() {
-	int type = rand() % 2 + 1;
-	if (type == 1) {
-		jump_attack_1();
-	}
-	else {
-		jump_attack_2();
-	}
-}
-
-void BossCharacter::jump_attack_1() {
-	//animation->release();
-	animation = BossCharacter::createAnimation("Jump_Attack_1", 8, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
-}
-
-void BossCharacter::jump_attack_2() {
-	//animation->release();
-	animation = BossCharacter::createAnimation("Jump_Attack_2", 7, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	monster->runAction(animate);
+	characterSprite->runAction(animate);
 }
 
 void BossCharacter::run() {
@@ -195,17 +228,18 @@ void BossCharacter::run() {
 	animation = BossCharacter::createAnimation("Run", 6, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	characterSprite->runAction(animate);
 	auto move = MoveBy::create(0.6, Vec2(-30, 0));
-	monster->runAction(move);
+	characterSprite->runAction(move);
 }
 
 void BossCharacter::shoot_bow() {
 	//animation->release();
+
 	animation = BossCharacter::createAnimation("Shoot_Bow", 12, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	characterSprite->runAction(animate);
 }
 
 void BossCharacter::walk() {
@@ -213,9 +247,23 @@ void BossCharacter::walk() {
 	animation = BossCharacter::createAnimation("Walk", 12, 0.1);
 	auto animate = Animate::create(animation);
 	animate->retain();
-	monster->runAction(animate);
+	characterSprite->runAction(animate);
 	auto move = MoveBy::create(1.2, Vec2(-10, 0));
-	monster->runAction(move);
+	characterSprite->runAction(move);
+}
+
+#endif
+
+void BossCharacter::setDirection(Direction actionDirection) {
+	characterDirection = actionDirection;
+	if (characterDirection == Direction::LEFT) {
+		//characterSprite->setFlippedX(true);
+		characterSprite->setScaleX(-0.5);
+	}
+	else {
+		//characterSprite->setFlippedX(false);
+		characterSprite->setScaleX(0.5);
+	}
 }
 
 cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {
@@ -229,4 +277,128 @@ cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFrame
 	}
 	animation = Animation::createWithSpriteFrames(animFrames, delay);
 	return animation;
+}
+
+void BossCharacter::updateAnimation(State actionState, bool repeatForever) {
+	if (characterState != actionState) {
+		if (attackSprite->getPhysicsBody() != nullptr)
+			attackSprite->getPhysicsBody()->removeFromWorld();
+
+		const int maxWord = 50;
+
+		int numberSprite;
+		string prefixName;
+
+		switch (actionState)
+		{
+		case BossCharacter::State::ATTACK1:
+			numberSprite = 8;
+			prefixName = "Attack_1";;
+			break;
+		case BossCharacter::State::ATTACK2:
+			numberSprite = 7;
+			prefixName = "Attack_2";
+			break;
+		case BossCharacter::State::BLOCK:
+			numberSprite = 9;
+			prefixName = "Block";
+			break;
+		case BossCharacter::State::CHARGE:
+			numberSprite = 7;
+			prefixName = "Charge";
+			break;
+		case BossCharacter::State::DEATH:
+			numberSprite = 15;
+			prefixName = "Death";
+			break;
+		case BossCharacter::State::HURT:
+			numberSprite = 8;
+			prefixName = "Hurt";
+			break;
+		case BossCharacter::State::IDLE:
+			numberSprite = 16;
+			prefixName = "Idle";
+			break;
+		case BossCharacter::State::JUMP:
+			numberSprite = 10;
+			prefixName = "Jump";
+			break;
+		case BossCharacter::State::JUMPATTACK1:
+			numberSprite = 8;
+			prefixName = "Jump_Attack_1";
+			break;
+		case BossCharacter::State::JUMPATTACK2:
+			numberSprite = 7;
+			prefixName = "Jump_Attack_2";
+			break;
+		case BossCharacter::State::RUN:
+			numberSprite = 6;
+			prefixName = "Run";
+			break;
+		case BossCharacter::State::SHOOTBOW:
+			numberSprite = 12;
+			prefixName = "Shoot_Bow";
+			break;
+		case BossCharacter::State::WALK:
+			numberSprite = 12;
+			prefixName = "Walk";
+			break;
+		default:
+			break;
+		}
+
+		animation = createAnimation(prefixName, numberSprite, ANIMATION_DELAY);
+		auto animate = Animate::create(animation);
+		animate->retain();
+
+		if (repeatForever) {
+			characterSpriteAnimation->stopAllActions();
+			characterSpriteAnimation->runAction(RepeatForever::create(animate));
+			characterState = actionState;
+		}
+		else {
+			characterSpriteAnimation->stopAllActions();
+			characterSpriteAnimation->runAction(animate);
+			characterState = actionState;
+		}
+	}
+
+	/*if (characterDirection == Direction::LEFT) {
+		characterSpriteAnimation->setFlippedX(true);
+	}
+	else {
+		characterSpriteAnimation->setFlippedX(false);
+	}*/
+}
+
+void BossCharacter::updateAction(float dt) {
+	updateAnimation(State::IDLE, true);
+}
+
+void BossCharacter::attack() {
+	int type = rand() % 4 + 1;
+	if (type == 1) {
+		updateAnimation(State::ATTACK1);
+		cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Attack_1");
+		attackBody->setDynamic(false);
+		attackBody->setRotationEnable(false);
+		attackBody->setGravityEnable(false);
+		attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(false);
+		attackBody->setMass(0.0f);
+
+		attackSprite->setPhysicsBody(attackBody);
+	}
+	else if (type == 2) {
+		updateAnimation(State::ATTACK2);
+		cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Attack_2");
+		attackBody->setDynamic(false);
+		attackBody->setRotationEnable(false);
+		attackBody->setGravityEnable(false);
+		attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(false);
+		attackBody->setMass(0.0f);
+
+		attackSprite->setPhysicsBody(attackBody);
+	}
 }
