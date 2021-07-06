@@ -253,15 +253,9 @@ bool PlayGameScene::init()
 		{
 			int gemX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
 			int gemY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			Sprite *gem = Sprite::create("sprites/Gem.png");
-			gem->setPosition(gemX, gemY);
-			auto gemBody = PhysicsBody::createBox(gem->getContentSize());
-			gemBody->setDynamic(false);
-			//gemBody->setCollisionBitmask(POINT_COLLISION_BITMASK);
-			//gemBody->setContactTestBitmask(ALLSET_BITMASK);
-			gem->setPhysicsBody(gemBody);
-			gameNode->addChild(gem);
-			
+			auto gem = new Gem();
+			gem->getSprite()->setPosition(gemX, gemY);
+			gameNode->addChild(gem->getSprite());
 		}
 
 		//Spawn boss
@@ -424,21 +418,21 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 //onContactBegin to check for collisions happening in the PlayGameScene.
 bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 {
-	auto a = contact.getShapeA()->getBody()->getNode();
-	auto b = contact.getShapeB()->getBody()->getNode();
-	if (a && b)
+	auto a = contact.getShapeA();
+	auto b = contact.getShapeB();
+	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
+		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
-		if (a->getTag() == 10)
+		if (a->getCollisionBitmask() == GEM_COLLISION_BITMASK)
 		{
-			CCLOG("Hello1");
-			b->removeFromParentAndCleanup(true);
+			CCLOG("Collected Gem");
+			a->getBody()->getNode()->removeFromParentAndCleanup(true);
 		}
-		else if (b->getTag() == 10)
+		else if (b->getCollisionBitmask() == GEM_COLLISION_BITMASK)
 		{
-			CCLOG("Hello2");
-			a->removeFromParentAndCleanup(true);
+			CCLOG("Collected Gem");
+			b->getBody()->getNode()->removeFromParentAndCleanup(true);
 		}
-		
 	}
 	return true;
 }

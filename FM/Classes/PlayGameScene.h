@@ -6,6 +6,7 @@
 #include "MonsterCharacter.h"
 #include "ui//CocosGUI.h"
 #include "BossCharacter.h"
+#include "Gem.h"
 USING_NS_CC;
 class PlayGameScene : public cocos2d::Scene
 {
@@ -29,7 +30,6 @@ private:
 	Sprite *player;
 	MonsterCharacter* monsters[2];
 	BossCharacter* boss;
-
 
 	void addAt(int x, int y, int type);
 	Vector<Node*> pausedActions;
