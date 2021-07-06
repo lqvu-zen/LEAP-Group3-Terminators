@@ -26,6 +26,7 @@
 #include "Definitions.h"
 #include "PlayGameScene.h"
 #include "Popup2.h"
+#include "VillageScene.h"
 
 USING_NS_CC;
 
@@ -104,7 +105,7 @@ void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
 }
 
 void MainMenuScene::goToNewGame(float dt) {
-   auto scene = PlayGameScene::createScene();
+   auto scene = VillageScene::createScene();
    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
