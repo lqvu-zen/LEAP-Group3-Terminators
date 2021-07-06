@@ -246,9 +246,6 @@ void PlayerCharacter::reupdateAnimation()
 		attackMode++;
 
 		if (castingSkill) {
-			
-
-			characterSkill->CastSkill(attackSkill, characterDirection);
 			castingSkill = false;
 		}
 	}
@@ -306,17 +303,17 @@ void PlayerCharacter::attack(int mode)
 
 	//update animation
 	if (attackMode == 1) {
-		attackSize = Size(characterSize.width * 1.5f, characterSize.height);
+		attackSize = Size(characterSize.width * 3.0f, characterSize.height);
 		updateAnimation(State::ATTACK1, characterDirection, false);
 
 		attackSkill = Skill::SkillType::Normal;
 	} else if (attackMode == 2) {
-		attackSize = Size(characterSize.width * 2.0f, characterSize.height);
+		attackSize = Size(characterSize.width * 4.0f, characterSize.height);
 		updateAnimation(State::ATTACK2, characterDirection, false);
 
 		attackSkill = Skill::SkillType::Special;
 	} else if (attackMode == 3) {
-		attackSize = Size(characterSize.width * 2.0f, characterSize.height * 2.0f);
+		attackSize = Size(characterSize.width * 4.0f, characterSize.height * 2.0f);
 		updateAnimation(State::ATTACK3, characterDirection, false);
 
 		attackSkill = Skill::SkillType::Ultimate;
@@ -339,6 +336,7 @@ void PlayerCharacter::attack(int mode)
 		attackSprite->setPhysicsBody(attackBody);
 	}
 	else {
+		characterSkill->CastSkill(attackSkill, characterDirection);
 		castingSkill = true;
 	}
 }
