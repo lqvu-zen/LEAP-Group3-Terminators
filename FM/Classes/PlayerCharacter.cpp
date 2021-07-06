@@ -7,7 +7,7 @@ PlayerCharacter::PlayerCharacter()
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Warrior/Warrior.plist", "sprites/Warrior/Warrior.png");
 	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Warrior-Idle-0.png");
 	
-	characterSize = frame->getOriginalSize();
+	characterSize = Size(frame->getOriginalSize().width * 0.5f, frame->getOriginalSize().height * 0.8f);
 
 	//create sprites
 	characterSprite = Sprite::create();
@@ -37,6 +37,15 @@ PlayerCharacter::PlayerCharacter()
 	//set Stats
 	characterStats = new Stats();
 	characterStats->SetHeroStats();
+
+	characterAnimate.clear();
+
+	//set skill
+	characterSkill = new Skill();
+
+	characterSkill->SetPosition(characterSize);
+
+	characterSprite->addChild(characterSkill->GetSprite());
 }
 
 PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
@@ -57,8 +66,8 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 {
 	if (characterState != actionState) {
 
-		if (attackSprite->getPhysicsBody() != nullptr)
-			attackSprite->getPhysicsBody()->removeFromWorld();
+		if (attackSprite->getPhysicsBody() != nullptr && int(attackSprite->getPhysicsBody()->getShapes().size() > 0))
+			attackSprite->getPhysicsBody()->removeAllShapes();
 
 		const int maxWord = 50;
 
@@ -102,29 +111,38 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 			numberSprite = 7;
 			sprintf(nameSprite, "Death");
 			break;
+		case PlayerCharacter::State::TAKE_HIT:
+			numberSprite = 3;
+			sprintf(nameSprite, "Take hit");
+			break;
 		default:
 			break;
 		}
 
-		Vector<SpriteFrame*> animFrames;
+		if (characterAnimate[nameSprite] == nullptr) {
+			Vector<SpriteFrame*> animFrames;
 
-		char spriteFrameByName[maxWord] = { 0 };
+			char spriteFrameByName[maxWord] = { 0 };
 
-		for (int index = 0; index < numberSprite; index++)
-		{
-			sprintf(spriteFrameByName, "%s-%s-%d.png", nameCharacter,nameSprite, index);
+			for (int index = 0; index < numberSprite; index++)
+			{
+				sprintf(spriteFrameByName, "%s-%s-%d.png", nameCharacter, nameSprite, index);
 
-			auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameByName);
-			animFrames.pushBack(frame);
+				auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameByName);
+				animFrames.pushBack(frame);
+			}
+
+			Animation* animation = Animation::createWithSpriteFrames(animFrames, repeatForever == true ? ANIMATION_DELAY : FAST_ANIMATION_DELAY);
+			//Animate* animate = Animate::create(animation);
+
+			characterAnimate[nameSprite] = Animate::create(animation);
+			characterAnimate[nameSprite]->retain();
 		}
-
-		Animation* animation = Animation::createWithSpriteFrames(animFrames, ANIMATION_DELAY);
-		Animate* animate = Animate::create(animation);
 
 		if (repeatForever) {
 			characterSpriteAnimation->stopAllActions();
 
-			characterSpriteAnimation->runAction(RepeatForever::create(animate));
+			characterSpriteAnimation->runAction(RepeatForever::create(characterAnimate[nameSprite]));
 
 			characterState = actionState;
 		}
@@ -135,7 +153,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 				CC_CALLBACK_0(PlayerCharacter::reupdateAnimation, this)
 			);
 
-			characterSpriteAnimation->runAction(Sequence::create(animate, callbackAction, nullptr));
+			characterSpriteAnimation->runAction(Sequence::create(characterAnimate[nameSprite], callbackAction, nullptr));
 
 			characterStateOnce = actionState;
 		}
@@ -225,6 +243,13 @@ void PlayerCharacter::reupdateAnimation()
 	if (characterStateOnce != State::DEATH) {
 		updateAnimation(characterState, characterDirection);
 		attackMode++;
+
+		if (castingSkill) {
+			
+
+			characterSkill->CastSkill(attackSkill, characterDirection);
+			castingSkill = false;
+		}
 	}
 	else {
 		//Death update
@@ -282,12 +307,18 @@ void PlayerCharacter::attack(int mode)
 	if (attackMode == 1) {
 		attackSize = Size(characterSize.width * 1.5f, characterSize.height);
 		updateAnimation(State::ATTACK1, characterDirection, false);
+
+		attackSkill = Skill::SkillType::Normal;
 	} else if (attackMode == 2) {
 		attackSize = Size(characterSize.width * 2.0f, characterSize.height);
 		updateAnimation(State::ATTACK2, characterDirection, false);
+
+		attackSkill = Skill::SkillType::Special;
 	} else if (attackMode == 3) {
 		attackSize = Size(characterSize.width * 2.0f, characterSize.height * 2.0f);
 		updateAnimation(State::ATTACK3, characterDirection, false);
+
+		attackSkill = Skill::SkillType::Ultimate;
 	}	
 
 	//create physic for attack
@@ -307,7 +338,7 @@ void PlayerCharacter::attack(int mode)
 		attackSprite->setPhysicsBody(attackBody);
 	}
 	else {
-		
+		castingSkill = true;
 	}
 }
 
