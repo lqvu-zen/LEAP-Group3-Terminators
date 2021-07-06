@@ -58,7 +58,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 	if (characterState != actionState) {
 
 		if (attackSprite->getPhysicsBody() != nullptr)
-			attackSprite->getPhysicsBody()->removeFromWorld();
+			attackSprite->getPhysicsBody()->removeAllShapes();
 
 		const int maxWord = 50;
 

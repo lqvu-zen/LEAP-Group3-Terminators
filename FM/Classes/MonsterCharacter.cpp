@@ -37,6 +37,7 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _level) {
 	monsterBody = PhysicsBody::createBox(monster->getContentSize());
 	monsterBody->setDynamic(false);
 	monsterBody->setRotationEnable(false);
+
 	monster->setPhysicsBody(monsterBody);
 
 	auto animate = Animate::create(MonsterCharacter::createAnimation("Idle-", 16, 0.1));
