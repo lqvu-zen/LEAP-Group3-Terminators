@@ -48,6 +48,9 @@ BossCharacter::BossCharacter(int level) {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Walk.plist");
 #endif
 
+	visibleSize = Director::getInstance()->getVisibleSize();
+	origin = Director::getInstance()->getVisibleOrigin();
+
 	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Idle1.png");
 
 	characterSprite = Sprite::create();
@@ -59,8 +62,13 @@ BossCharacter::BossCharacter(int level) {
 	shapeCache->addShapesWithFile(boss + "body.plist");
 
 	characterPhysicsBody = shapeCache->createBodyWithName("Idle");
-	characterPhysicsBody->setDynamic(false);
+	characterPhysicsBody->setDynamic(true);
 	characterPhysicsBody->setRotationEnable(false);
+
+	characterPhysicsBody->setCategoryBitmask(BOSS_CATEGORY_BITMASK);
+	characterPhysicsBody->setCollisionBitmask(BOSS_COLLISION_BITMASK);
+	characterPhysicsBody->setContactTestBitmask(false);
+
 	characterSprite->setPhysicsBody(characterPhysicsBody);
 
 	characterSprite->addChild(characterSpriteAnimation);
@@ -362,21 +370,25 @@ void BossCharacter::updateAnimation(State actionState, bool repeatForever) {
 			characterState = actionState;
 		}
 	}
-
-	/*if (characterDirection == Direction::LEFT) {
-		characterSpriteAnimation->setFlippedX(true);
-	}
-	else {
-		characterSpriteAnimation->setFlippedX(false);
-	}*/
 }
 
-void BossCharacter::updateAction(float dt) {
-	updateAnimation(State::IDLE, true);
+void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
+	
+	if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 8) {
+		if (positionPlayer.y > characterSprite->getPosition().y + characterSprite->getContentSize().height) {
+			jumpAttack();
+		}
+		else {
+			attack();
+		}
+	}
+	else {
+		updateAnimation(State::IDLE, true);
+	}
 }
 
 void BossCharacter::attack() {
-	int type = rand() % 4 + 1;
+	int type = rand() % 2 + 1;
 	if (type == 1) {
 		updateAnimation(State::ATTACK1);
 		cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Attack_1");
@@ -400,5 +412,48 @@ void BossCharacter::attack() {
 		attackBody->setMass(0.0f);
 
 		attackSprite->setPhysicsBody(attackBody);
+	}
+}
+
+void BossCharacter::jumpAttack() {
+	int type = rand() % 2 + 1;
+	if (type == 1) {
+		updateAnimation(State::JUMPATTACK1);
+		cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Jump_Attack_1");
+		attackBody->setDynamic(false);
+		attackBody->setRotationEnable(false);
+		attackBody->setGravityEnable(false);
+		attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(false);
+		attackBody->setMass(0.0f);
+		auto move = MoveBy::create(0.8, Vec2(0, visibleSize.height / 4));
+		characterSprite->runAction(move);
+		attackSprite->setPhysicsBody(attackBody);
+	}
+	else if (type == 2) {
+		updateAnimation(State::JUMPATTACK2);
+		cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Jump_Attack_2");
+		attackBody->setDynamic(false);
+		attackBody->setRotationEnable(false);
+		attackBody->setGravityEnable(false);
+		attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(false);
+		attackBody->setMass(0.0f);
+		auto move = MoveBy::create(0.7, Vec2(0, visibleSize.height / 4));
+		characterSprite->runAction(move);
+		attackSprite->setPhysicsBody(attackBody);
+	}
+}
+
+void BossCharacter::run() {
+	updateAnimation(State::RUN);
+	if (characterDirection == Direction::RIGHT) {
+		auto move = MoveBy::create(0.7, Vec2(visibleSize.width / 6, 0));
+		characterSprite->runAction(move);
+	}
+	else
+	{
+		auto move = MoveBy::create(0.7, Vec2(-visibleSize.width / 6, 0));
+		characterSprite->runAction(move);
 	}
 }

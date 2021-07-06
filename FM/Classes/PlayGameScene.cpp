@@ -302,7 +302,7 @@ bool PlayGameScene::init()
 	boss = new BossCharacter(1);
 	boss->setPosition(visibleSize / 2);
 	gameNode->addChild(boss->getSprite());
-	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::bossAction), 3);
+	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
 	this->scheduleUpdate();
 
 	return true;
@@ -328,7 +328,7 @@ void PlayGameScene::update(float dt)
 	this->updateMonster(dt);
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
-	this->updateBoss(dt);
+	//this->updateBoss(dt);
 
 	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
 }
@@ -447,8 +447,9 @@ void PlayGameScene::updateBoss(float dt) {
 			boss->setDirection(BossCharacter::Direction::RIGHT);
 		}
 	}
+	boss->updateAction(playerChar->getSprite()->getPosition());
 }
 
 void PlayGameScene::bossAction(float dt) {
-	boss->attack();
+	boss->jumpAttack();
 }

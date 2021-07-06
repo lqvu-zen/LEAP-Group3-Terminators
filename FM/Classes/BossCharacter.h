@@ -23,25 +23,31 @@ public:
 
     State characterState;
     Direction characterDirection;
+    cocos2d::Vec2 position;
 
     cocos2d::Sprite* getSprite() {
         return characterSprite;
     };
 
-    void setPosition(cocos2d::Vec2 position) {
-        characterSprite->setPosition(position);
+    void setPosition(cocos2d::Vec2 _position) {
+        position = _position;
+        characterSprite->setPosition(_position);
         characterSpriteAnimation->setPosition(Vec2::ZERO);
         attackSprite->setPosition(Vec2::ZERO);
     }
 
     void updateAnimation(State actionState, bool repeatForever = false);
 
-    void updateAction(float dt);
+    void updateAction(cocos2d::Vec2 positionPlayer);
 
     void setDirection(Direction actionDirection);
+    Direction getDirection() {
+        return characterDirection;
+    }
 
     void attack();
-
+    void jumpAttack();
+    void run();
 private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
@@ -56,6 +62,7 @@ private:
 
     cocos2d::Animation* animation;
     cocos2d::Animation* createAnimation(string prefixName, int pFrames, float delay);
+
 };
 
 #endif // __BOSS_CHARACTER_H__
