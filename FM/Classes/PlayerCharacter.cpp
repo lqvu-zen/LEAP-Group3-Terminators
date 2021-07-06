@@ -41,6 +41,7 @@ PlayerCharacter::PlayerCharacter()
 	characterAnimate.clear();
 
 	//set skill
+	castingSkill = false;
 	characterSkill = new Skill();
 
 	characterSkill->SetPosition(characterSize);
