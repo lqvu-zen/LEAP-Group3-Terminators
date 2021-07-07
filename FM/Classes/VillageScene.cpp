@@ -395,7 +395,7 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 }
 
 
-//onContactBegin to check for collisions happening in the PlayGameScene.
+//onContactBegin to check for collisions happening in the VillageScene.
 bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 {
 	auto a = contact.getShapeA();
@@ -403,7 +403,12 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
-		
+		if ( (a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK)
+			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK))
+		{
+			CCLOG("Hello Hero");
+			return false;
+		}
 	}
 	return true;
 }

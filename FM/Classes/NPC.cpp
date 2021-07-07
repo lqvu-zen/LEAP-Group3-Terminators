@@ -22,8 +22,11 @@ NPC::NPC()
 	//PhysicsBody
 	characterSize = characterSpriteAnimation->getContentSize();
 	characterPhysicsBody = PhysicsBody::createBox(characterSize);
-	characterPhysicsBody->setDynamic(false);
+	characterPhysicsBody->setDynamic(true);
 	characterPhysicsBody->setRotationEnable(false);
+	characterPhysicsBody->setCategoryBitmask(NONPLAYER_CATEGORY_BITMASK);
+	characterPhysicsBody->setCollisionBitmask(NONPLAYER_COLLISION_BITMASK);
+	characterPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
 	characterSprite->setPhysicsBody(characterPhysicsBody);
 }
 

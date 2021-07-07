@@ -78,7 +78,7 @@ void MonsterCharacter::attack() {
 	auto bodyBullet = PhysicsBody::createBox(bullet->getContentSize());
 	bullet->setPhysicsBody(bodyBullet);
 	bodyBullet->setDynamic(false);
-	bodyBullet->setCollisionBitmask(MONSTER_ATTACK_COLLISION_BITMASK);
+	bodyBullet->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
 	bodyBullet->setContactTestBitmask(false);
 	bullet->setPosition(monster->getPosition());
 	bullet->setScale(0.25 * level);

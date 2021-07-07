@@ -20,8 +20,8 @@ PlayerCharacter::PlayerCharacter()
 	characterPhysicsBody->setRotationEnable(false);
 
 	characterPhysicsBody->setCategoryBitmask(PLAYER_CATEGORY_BITMASK);
-	characterPhysicsBody->setCollisionBitmask(PLAYER_COLLISION_BITMASK);
-	characterPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
+	characterPhysicsBody->setCollisionBitmask(ALLSET_BITMASK);
+	characterPhysicsBody->setContactTestBitmask(ALLCLEARED_BITMASK);
 
 	characterSprite->setPhysicsBody(characterPhysicsBody);
 
