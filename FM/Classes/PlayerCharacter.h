@@ -4,15 +4,13 @@
 #include "cocos2d.h"
 #include "Definitions.h"
 #include "Stats.h"
+#include "Skill.h"
 
 class PlayerCharacter
 {
 public:
 	enum class State {
-		IDLE, JUMPING, FALLING, RUNING, ATTACK1, ATTACK2, ATTACK3, DEATH
-	};
-	enum class Direction {
-		LEFT, RIGHT
+		IDLE, JUMPING, FALLING, RUNING, ATTACK1, ATTACK2, ATTACK3, DEATH, TAKE_HIT
 	};
 
 	State characterState;
@@ -38,6 +36,8 @@ public:
 
 	void attack(int mode = 0);
 
+	void takeHit(float dame = 10.0f);
+
 	cocos2d::Sprite* getSprite();
 	Stats* getStats();
 
@@ -58,9 +58,18 @@ private:
 
 	cocos2d::Size attackSize;
 
+	Skill* characterSkill;
+
+	Skill::SkillType attackSkill;
+
+	bool castingSkill;
+
+	std::map<std::string, cocos2d::Animate*> characterAnimate;
+
 	bool falling;
 	bool grounded;
 	bool jumping;
+	bool died;
 	int attackMode;
 };
 

@@ -1,11 +1,14 @@
 #ifndef __DIFINITIONS_H__
 #define __DIFINITIONS_H__
+
 #include "cocos2d.h"
+
 #define DISPLAY_TIME_SPLASH_SCENE 1
 #define TRANSITION_TIME 0.5
 #define SCALE_FACTOR 2.0
 #define BIRD_JUMP 0.1
 #define ANIMATION_DELAY 0.1f
+#define FAST_ANIMATION_DELAY 0.05f
 #define PLAYER_MAX_VELOCITY 100.0f
 #define PLAYER_JUMP_VELOCITY 110.0f
 
@@ -49,5 +52,9 @@ const cocos2d::EventKeyboard::KeyCode SKILL1 = cocos2d::EventKeyboard::KeyCode::
 const cocos2d::EventKeyboard::KeyCode SKILL2 = cocos2d::EventKeyboard::KeyCode::KEY_E;
 const cocos2d::EventKeyboard::KeyCode SKILL3 = cocos2d::EventKeyboard::KeyCode::KEY_R;
 
+//enum
+enum Direction {
+	LEFT, RIGHT
+};
 
 #endif // __DIFINITIONS_H__

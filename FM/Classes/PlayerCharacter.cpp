@@ -7,7 +7,7 @@ PlayerCharacter::PlayerCharacter()
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Warrior/Warrior.plist", "sprites/Warrior/Warrior.png");
 	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Warrior-Idle-0.png");
 	
-	characterSize = frame->getOriginalSize();
+	characterSize = Size(frame->getOriginalSize().width * 0.5f, frame->getOriginalSize().height * 0.8f);
 
 	//create sprites
 	characterSprite = Sprite::create();
@@ -37,6 +37,19 @@ PlayerCharacter::PlayerCharacter()
 	//set Stats
 	characterStats = new Stats();
 	characterStats->SetHeroStats();
+
+	characterAnimate.clear();
+
+	//set skill
+	castingSkill = false;
+	characterSkill = new Skill();
+
+	characterSkill->SetPosition(characterSize);
+
+	characterSprite->addChild(characterSkill->GetSprite());
+
+	//--
+	died = false;
 }
 
 PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
@@ -57,7 +70,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 {
 	if (characterState != actionState) {
 
-		if (attackSprite->getPhysicsBody() != nullptr)
+		if (attackSprite->getPhysicsBody() != nullptr && int(attackSprite->getPhysicsBody()->getShapes().size() > 0))
 			attackSprite->getPhysicsBody()->removeAllShapes();
 
 		const int maxWord = 50;
@@ -102,29 +115,38 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 			numberSprite = 7;
 			sprintf(nameSprite, "Death");
 			break;
+		case PlayerCharacter::State::TAKE_HIT:
+			numberSprite = 3;
+			sprintf(nameSprite, "Take hit");
+			break;
 		default:
 			break;
 		}
 
-		Vector<SpriteFrame*> animFrames;
+		if (characterAnimate[nameSprite] == nullptr) {
+			Vector<SpriteFrame*> animFrames;
 
-		char spriteFrameByName[maxWord] = { 0 };
+			char spriteFrameByName[maxWord] = { 0 };
 
-		for (int index = 0; index < numberSprite; index++)
-		{
-			sprintf(spriteFrameByName, "%s-%s-%d.png", nameCharacter,nameSprite, index);
+			for (int index = 0; index < numberSprite; index++)
+			{
+				sprintf(spriteFrameByName, "%s-%s-%d.png", nameCharacter, nameSprite, index);
 
-			auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameByName);
-			animFrames.pushBack(frame);
+				auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameByName);
+				animFrames.pushBack(frame);
+			}
+
+			Animation* animation = Animation::createWithSpriteFrames(animFrames, repeatForever == true ? ANIMATION_DELAY : FAST_ANIMATION_DELAY);
+			//Animate* animate = Animate::create(animation);
+
+			characterAnimate[nameSprite] = Animate::create(animation);
+			characterAnimate[nameSprite]->retain();
 		}
-
-		Animation* animation = Animation::createWithSpriteFrames(animFrames, ANIMATION_DELAY);
-		Animate* animate = Animate::create(animation);
 
 		if (repeatForever) {
 			characterSpriteAnimation->stopAllActions();
 
-			characterSpriteAnimation->runAction(RepeatForever::create(animate));
+			characterSpriteAnimation->runAction(RepeatForever::create(characterAnimate[nameSprite]));
 
 			characterState = actionState;
 		}
@@ -135,7 +157,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 				CC_CALLBACK_0(PlayerCharacter::reupdateAnimation, this)
 			);
 
-			characterSpriteAnimation->runAction(Sequence::create(animate, callbackAction, nullptr));
+			characterSpriteAnimation->runAction(Sequence::create(characterAnimate[nameSprite], callbackAction, nullptr));
 
 			characterStateOnce = actionState;
 		}
@@ -154,68 +176,75 @@ void PlayerCharacter::updateAction(float dt)
 {
 	//CCLOG("Character velocity: x:%f - y:%f", characterVelocity.x, characterVelocity.y);
 	//CCLOG("PhysicBody velocity: x:%f - y:%f", characterPhysicsBody->getVelocity().x, characterPhysicsBody->getVelocity().y);
+	if (!died) {
+		Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
 
-	Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
+		if (characterStats->HP <= 0.0f) {
+			died = true;
+			updateAnimation(State::DEATH, characterDirection, false);
+			return;
+		}
 
-	//update position
-	if (characterPhysicsBody->getVelocity().y > PADDING_VELOCITY){
-		setJumping();
-	}
-	else if (characterPhysicsBody->getVelocity().y < - PADDING_VELOCITY){
-		setFalling();
-	}
-	else {
-		setGrounded();
-	}
-
-	if (characterVelocity.y > BASE_VELOCITY) {
-		characterPhysicsBody->setVelocity(
-			Vec2(
-				characterPhysicsBody->getVelocity().x, characterVelocity.y
-			)
-		);
-		characterVelocity.y = BASE_VELOCITY;
-	}
-		
-	if (characterVelocity.x != 0.0f) {
-		characterPhysicsBody->setVelocity(
-			Vec2(
-				characterVelocity.x, characterPhysicsBody->getVelocity().y
-			)
-		);
-	}
-	else {
-		characterPhysicsBody->setVelocity(
-			Vec2(
-				0.0f , characterPhysicsBody->getVelocity().y
-			)
-		);
-	}
-
-	//update animation
-	if (falling) {
-		//CCLOG("FALLING");
-		updateAnimation(State::FALLING, direction);
-	}
-
-	if (jumping) {
-		//CCLOG("JUMPING");
-		updateAnimation(State::JUMPING, direction, false);
-	}
-
-	if (grounded) {
-		if (characterPhysicsBody->getVelocity().x > PADDING_VELOCITY || characterPhysicsBody->getVelocity().x < - PADDING_VELOCITY) {
-			//CCLOG("RUNING");
-			updateAnimation(State::RUNING, direction);
+		//update position
+		if (characterPhysicsBody->getVelocity().y > PADDING_VELOCITY) {
+			setJumping();
+		}
+		else if (characterPhysicsBody->getVelocity().y < -PADDING_VELOCITY) {
+			setFalling();
 		}
 		else {
-			//CCLOG("IDLE");
-			updateAnimation(State::IDLE, direction);
-		}	
-	}
+			setGrounded();
+		}
 
-	//update stats
-	characterStats->UpdateStatsBar();
+		if (characterVelocity.y > BASE_VELOCITY) {
+			characterPhysicsBody->setVelocity(
+				Vec2(
+					characterPhysicsBody->getVelocity().x, characterVelocity.y
+				)
+			);
+			characterVelocity.y = BASE_VELOCITY;
+		}
+
+		if (characterVelocity.x != 0.0f) {
+			characterPhysicsBody->setVelocity(
+				Vec2(
+					characterVelocity.x, characterPhysicsBody->getVelocity().y
+				)
+			);
+		}
+		else {
+			characterPhysicsBody->setVelocity(
+				Vec2(
+					0.0f, characterPhysicsBody->getVelocity().y
+				)
+			);
+		}
+
+		//update animation
+		if (falling) {
+			//CCLOG("FALLING");
+			updateAnimation(State::FALLING, direction);
+		}
+
+		if (jumping) {
+			//CCLOG("JUMPING");
+			updateAnimation(State::JUMPING, direction, false);
+		}
+
+		if (grounded) {
+			if (characterPhysicsBody->getVelocity().x > PADDING_VELOCITY || characterPhysicsBody->getVelocity().x < -PADDING_VELOCITY) {
+				//CCLOG("RUNING");
+				updateAnimation(State::RUNING, direction);
+			}
+			else {
+				//CCLOG("IDLE");
+				updateAnimation(State::IDLE, direction);
+			}
+		}
+
+		//update stats
+		characterStats->UpdateStatsBar();
+	}
 }
 
 void PlayerCharacter::reupdateAnimation()
@@ -225,9 +254,14 @@ void PlayerCharacter::reupdateAnimation()
 	if (characterStateOnce != State::DEATH) {
 		updateAnimation(characterState, characterDirection);
 		attackMode++;
+
+		if (castingSkill) {
+			castingSkill = false;
+		}
 	}
 	else {
 		//Death update
+		characterSpriteAnimation->removeFromParentAndCleanup(true);
 	}
 }
 
@@ -269,7 +303,7 @@ void PlayerCharacter::setJumping()
 
 void PlayerCharacter::attack(int mode)
 {
-	CCLOG("ATTACK");
+	//CCLOG("ATTACK");
 
 	if (mode > 0) {
 		attackMode = mode;
@@ -280,14 +314,20 @@ void PlayerCharacter::attack(int mode)
 
 	//update animation
 	if (attackMode == 1) {
-		attackSize = Size(characterSize.width * 1.5f, characterSize.height);
+		attackSize = Size(characterSize.width * 3.0f, characterSize.height);
 		updateAnimation(State::ATTACK1, characterDirection, false);
+
+		attackSkill = Skill::SkillType::Normal;
 	} else if (attackMode == 2) {
-		attackSize = Size(characterSize.width * 2.0f, characterSize.height);
+		attackSize = Size(characterSize.width * 4.0f, characterSize.height);
 		updateAnimation(State::ATTACK2, characterDirection, false);
+
+		attackSkill = Skill::SkillType::Special;
 	} else if (attackMode == 3) {
-		attackSize = Size(characterSize.width * 2.0f, characterSize.height * 2.0f);
+		attackSize = Size(characterSize.width * 4.0f, characterSize.height * 2.0f);
 		updateAnimation(State::ATTACK3, characterDirection, false);
+
+		attackSkill = Skill::SkillType::Ultimate;
 	}	
 
 	//create physic for attack
@@ -300,15 +340,22 @@ void PlayerCharacter::attack(int mode)
 		attackBody->setGravityEnable(false);		
 		attackBody->setMass(0.0f);		
 
-		attackBody->setCategoryBitmask(PLAYER_CATEGORY_BITMASK);
+		attackBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
 		attackBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
 		attackBody->setContactTestBitmask(ALLSET_BITMASK);
 
 		attackSprite->setPhysicsBody(attackBody);
 	}
 	else {
-		
+		characterSkill->CastSkill(attackSkill, characterDirection);
+		castingSkill = true;
 	}
+}
+
+void PlayerCharacter::takeHit(float dame)
+{
+	updateAnimation(State::TAKE_HIT, characterDirection, false);
+	characterStats->HP -= dame;
 }
 
 cocos2d::Sprite * PlayerCharacter::getSprite()
