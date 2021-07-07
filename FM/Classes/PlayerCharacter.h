@@ -36,6 +36,8 @@ public:
 
 	void attack(int mode = 0);
 
+	void takeHit(float dame = 10.0f);
+
 	cocos2d::Sprite* getSprite();
 	Stats* getStats();
 
@@ -67,6 +69,7 @@ private:
 	bool falling;
 	bool grounded;
 	bool jumping;
+	bool died;
 	int attackMode;
 };
 

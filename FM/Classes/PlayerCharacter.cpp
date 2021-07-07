@@ -47,6 +47,9 @@ PlayerCharacter::PlayerCharacter()
 	characterSkill->SetPosition(characterSize);
 
 	characterSprite->addChild(characterSkill->GetSprite());
+
+	//--
+	died = false;
 }
 
 PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
@@ -173,68 +176,75 @@ void PlayerCharacter::updateAction(float dt)
 {
 	//CCLOG("Character velocity: x:%f - y:%f", characterVelocity.x, characterVelocity.y);
 	//CCLOG("PhysicBody velocity: x:%f - y:%f", characterPhysicsBody->getVelocity().x, characterPhysicsBody->getVelocity().y);
+	if (!died) {
+		Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
 
-	Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
+		if (characterStats->HP <= 0.0f) {
+			died = true;
+			updateAnimation(State::DEATH, characterDirection, false);
+			return;
+		}
 
-	//update position
-	if (characterPhysicsBody->getVelocity().y > PADDING_VELOCITY){
-		setJumping();
-	}
-	else if (characterPhysicsBody->getVelocity().y < - PADDING_VELOCITY){
-		setFalling();
-	}
-	else {
-		setGrounded();
-	}
-
-	if (characterVelocity.y > BASE_VELOCITY) {
-		characterPhysicsBody->setVelocity(
-			Vec2(
-				characterPhysicsBody->getVelocity().x, characterVelocity.y
-			)
-		);
-		characterVelocity.y = BASE_VELOCITY;
-	}
-		
-	if (characterVelocity.x != 0.0f) {
-		characterPhysicsBody->setVelocity(
-			Vec2(
-				characterVelocity.x, characterPhysicsBody->getVelocity().y
-			)
-		);
-	}
-	else {
-		characterPhysicsBody->setVelocity(
-			Vec2(
-				0.0f , characterPhysicsBody->getVelocity().y
-			)
-		);
-	}
-
-	//update animation
-	if (falling) {
-		//CCLOG("FALLING");
-		updateAnimation(State::FALLING, direction);
-	}
-
-	if (jumping) {
-		//CCLOG("JUMPING");
-		updateAnimation(State::JUMPING, direction, false);
-	}
-
-	if (grounded) {
-		if (characterPhysicsBody->getVelocity().x > PADDING_VELOCITY || characterPhysicsBody->getVelocity().x < - PADDING_VELOCITY) {
-			//CCLOG("RUNING");
-			updateAnimation(State::RUNING, direction);
+		//update position
+		if (characterPhysicsBody->getVelocity().y > PADDING_VELOCITY) {
+			setJumping();
+		}
+		else if (characterPhysicsBody->getVelocity().y < -PADDING_VELOCITY) {
+			setFalling();
 		}
 		else {
-			//CCLOG("IDLE");
-			updateAnimation(State::IDLE, direction);
-		}	
-	}
+			setGrounded();
+		}
 
-	//update stats
-	characterStats->UpdateStatsBar();
+		if (characterVelocity.y > BASE_VELOCITY) {
+			characterPhysicsBody->setVelocity(
+				Vec2(
+					characterPhysicsBody->getVelocity().x, characterVelocity.y
+				)
+			);
+			characterVelocity.y = BASE_VELOCITY;
+		}
+
+		if (characterVelocity.x != 0.0f) {
+			characterPhysicsBody->setVelocity(
+				Vec2(
+					characterVelocity.x, characterPhysicsBody->getVelocity().y
+				)
+			);
+		}
+		else {
+			characterPhysicsBody->setVelocity(
+				Vec2(
+					0.0f, characterPhysicsBody->getVelocity().y
+				)
+			);
+		}
+
+		//update animation
+		if (falling) {
+			//CCLOG("FALLING");
+			updateAnimation(State::FALLING, direction);
+		}
+
+		if (jumping) {
+			//CCLOG("JUMPING");
+			updateAnimation(State::JUMPING, direction, false);
+		}
+
+		if (grounded) {
+			if (characterPhysicsBody->getVelocity().x > PADDING_VELOCITY || characterPhysicsBody->getVelocity().x < -PADDING_VELOCITY) {
+				//CCLOG("RUNING");
+				updateAnimation(State::RUNING, direction);
+			}
+			else {
+				//CCLOG("IDLE");
+				updateAnimation(State::IDLE, direction);
+			}
+		}
+
+		//update stats
+		characterStats->UpdateStatsBar();
+	}
 }
 
 void PlayerCharacter::reupdateAnimation()
@@ -251,6 +261,7 @@ void PlayerCharacter::reupdateAnimation()
 	}
 	else {
 		//Death update
+		characterSpriteAnimation->removeFromParentAndCleanup(true);
 	}
 }
 
@@ -292,7 +303,7 @@ void PlayerCharacter::setJumping()
 
 void PlayerCharacter::attack(int mode)
 {
-	CCLOG("ATTACK");
+	//CCLOG("ATTACK");
 
 	if (mode > 0) {
 		attackMode = mode;
@@ -329,7 +340,7 @@ void PlayerCharacter::attack(int mode)
 		attackBody->setGravityEnable(false);		
 		attackBody->setMass(0.0f);		
 
-		attackBody->setCategoryBitmask(PLAYER_CATEGORY_BITMASK);
+		attackBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
 		attackBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
 		attackBody->setContactTestBitmask(ALLSET_BITMASK);
 
@@ -339,6 +350,12 @@ void PlayerCharacter::attack(int mode)
 		characterSkill->CastSkill(attackSkill, characterDirection);
 		castingSkill = true;
 	}
+}
+
+void PlayerCharacter::takeHit(float dame)
+{
+	updateAnimation(State::TAKE_HIT, characterDirection, false);
+	characterStats->HP -= dame;
 }
 
 cocos2d::Sprite * PlayerCharacter::getSprite()

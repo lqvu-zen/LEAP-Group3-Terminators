@@ -38,6 +38,10 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _level) {
 	monsterBody->setDynamic(false);
 	monsterBody->setRotationEnable(false);
 
+	monsterBody->setCategoryBitmask(ENEMIES_CATEGORY_BITMASK);
+	monsterBody->setCollisionBitmask(ENEMIES_COLLISION_BITMASK);
+	monsterBody->setContactTestBitmask(ALLSET_BITMASK);
+
 	monster->setPhysicsBody(monsterBody);
 
 	auto animate = Animate::create(MonsterCharacter::createAnimation("Idle-", 16, 0.1));
@@ -78,8 +82,11 @@ void MonsterCharacter::attack() {
 	auto bodyBullet = PhysicsBody::createBox(bullet->getContentSize());
 	bullet->setPhysicsBody(bodyBullet);
 	bodyBullet->setDynamic(false);
-	bodyBullet->setCollisionBitmask(MONSTER_ATTACK_COLLISION_BITMASK);
-	bodyBullet->setContactTestBitmask(false);
+
+	bodyBullet->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+	bodyBullet->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+	bodyBullet->setContactTestBitmask(ALLSET_BITMASK);
+
 	bullet->setPosition(monster->getPosition());
 	bullet->setScale(0.25 * level);
 	scene->addChild(bullet);
