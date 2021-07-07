@@ -1,6 +1,9 @@
 #include "Definitions.h"
 #include "VillageScene.h"
 #include "Popup2.h"
+#include "MainMenuScene.h"
+#include "PlayGameScene.h"
+#include "NPC.h"
 USING_NS_CC;
 
 Scene* VillageScene::createScene()
@@ -34,6 +37,22 @@ bool VillageScene::init()
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
+	//Popup menu
+	popupMenu = new Popup();
+	popupMenu->init();
+	auto mainMenuItem = MenuItemFont::create("Go To Main Menu", CC_CALLBACK_1(VillageScene::onClickMenuItem, this));
+	mainMenuItem->setTag(1);
+	mainMenuItem->setColor(Color3B::BLACK);
+	auto playGameItem = MenuItemFont::create("Go To Play Game", CC_CALLBACK_1(VillageScene::onClickMenuItem, this));
+	playGameItem->setTag(2);
+	playGameItem->setColor(Color3B::BLACK);
+	auto menu = Menu::create(mainMenuItem, playGameItem, nullptr);
+	menu->setPosition(visibleSize / 2);
+	menu->alignItemsVertically();
+	popupMenu->getPopUpLayer()->addChild(menu);
+	buttonNode->addChild(popupMenu, 100);
+	//End Popup menu
+
 	//Add buttons
 #if 1
 	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
@@ -63,8 +82,16 @@ bool VillageScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			auto scene = PlayGameScene::createScene();
-			Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+			if (!isPopUpDisplay)
+			{	//to display the popup menu and to close it.
+				isPopUpDisplay = true;
+				popupMenu->appear();
+			}
+			else
+			{
+				isPopUpDisplay = false;
+				popupMenu->disappear();
+			}
 			break;
 		}
 	});
@@ -164,10 +191,9 @@ bool VillageScene::init()
 	attackMenu->setPosition(Vec2::ZERO);
 	buttonNode->addChild(attackMenu, 100);
 #endif
+	//End add buttons
 
-
-
-
+	
 
 	//map setup + add map
 	//scale map with SCALE_FACTOR
@@ -220,7 +246,7 @@ bool VillageScene::init()
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
 	//NPC
-	anim_NPC.reserve(4);
+	/*anim_NPC.reserve(4);
 	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(0, 0, 48, 48)));
 	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(48, 0, 48, 48)));
 	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(96, 0, 48, 48)));
@@ -229,7 +255,7 @@ bool VillageScene::init()
 	Animate *NPCAnimate = Animate::create(NPCAnimation);
 	NPC = Sprite::createWithSpriteFrame(anim_NPC.front());
 	NPC->setScale(2);
-	NPC->runAction(RepeatForever::create(NPCAnimate));
+	NPC->runAction(RepeatForever::create(NPCAnimate));*/
 	for (auto SpawnPoint : objectGroup->getObjects())
 	{
 		//Spawn NPC
@@ -237,8 +263,9 @@ bool VillageScene::init()
 		{
 			int npcX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
 			int npcY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			NPC->setPosition(npcX, npcY);
-			gameNode->addChild(NPC);
+			NPC* npc = new NPC();
+			npc->getSprite()->setPosition(npcX, npcY);
+			gameNode->addChild(npc->getSprite());
 		}
 	}
 	
@@ -376,16 +403,20 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
-		if (a->getCollisionBitmask() == GEM_COLLISION_BITMASK)
-		{
-			CCLOG("Collected Gem");
-			a->getBody()->getNode()->removeFromParentAndCleanup(true);
-		}
-		else if (b->getCollisionBitmask() == GEM_COLLISION_BITMASK)
-		{
-			CCLOG("Collected Gem");
-			b->getBody()->getNode()->removeFromParentAndCleanup(true);
-		}
+		
 	}
 	return true;
+}
+
+void VillageScene::onClickMenuItem(cocos2d::Ref* sender)
+{
+	auto node = dynamic_cast<Node*>(sender);
+	if (node->getTag() == 1) {//Go to main menu
+		auto scene = MainMenuScene::createScene();
+		Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+	}
+	else if (node->getTag() == 2) {//Go to play game scene
+		auto scene = PlayGameScene::createScene();
+		Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+	}
 }

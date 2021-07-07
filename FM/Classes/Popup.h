@@ -22,7 +22,7 @@ public:
 
 	virtual void disappear();
 	virtual void appear();
-
+	Layer* getPopUpLayer();
 	virtual void setTitlePopup(std::string _titlePopup);
 
 protected:

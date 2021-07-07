@@ -11,8 +11,8 @@ bool Popup::init() {
 	origin = Director::getInstance()->getVisibleOrigin();
 
 	/// init image background
-	auto _background = Sprite::create("popup/spr_background_popup.png");
-	_background->setScale(0.5);
+	auto _background = Sprite::create("popup/popUpBase.png");
+	_background->setScale(1.5);
 	_background->setPosition(visibleSize / 2);
 
 	backgroundContentSize = _background->getContentSize();
@@ -61,4 +61,9 @@ void Popup::setTitlePopup(std::string _titlePopup) {
 	_title->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height * 9 / 10 + origin.y));
 	
 	m_popupLayer->addChild(_title);
+}
+
+Layer* Popup::getPopUpLayer()
+{
+	return m_popupLayer;
 }
