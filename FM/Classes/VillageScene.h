@@ -5,6 +5,7 @@
 #include "PlayerCharacter.h"
 #include "ui//CocosGUI.h"
 #include "Popup.h"
+#include "NPC.h"
 USING_NS_CC;
 class VillageScene: public cocos2d::Scene
 {
@@ -16,6 +17,7 @@ public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	bool isPopUpDisplay = false;
+	bool standAlone = true;
 	CREATE_FUNC(VillageScene);
 	Popup* popupMenu;
 private:
@@ -23,9 +25,8 @@ private:
 	TMXTiledMap *map;
 	Size visibleSize;
 	Vec2 origin;
-	Vector<Node*> pausedActions;
-	Vector<SpriteFrame*> anim_NPC;
 	PlayerCharacter* playerChar;
+	NPC* npc;
 	std::vector<EventKeyboard::KeyCode> heldKeys;
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);

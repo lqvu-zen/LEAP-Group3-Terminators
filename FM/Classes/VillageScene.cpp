@@ -3,7 +3,7 @@
 #include "Popup2.h"
 #include "MainMenuScene.h"
 #include "PlayGameScene.h"
-#include "NPC.h"
+#include "Popup2.h"
 USING_NS_CC;
 
 Scene* VillageScene::createScene()
@@ -167,27 +167,12 @@ bool VillageScene::init()
 
 #if 1
 
-	auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
-	attackItem->setScale(0.7);
+	auto attackItem = MenuItemImage::create("sprites/interact.png", "sprites/interact.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
+	attackItem->setScale(0.5);
 	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
 	attackItem->setTag(1);
 
-	auto skill_1Item = MenuItemImage::create("sprites/skill_1.png", "sprites/skill_1.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
-	skill_1Item->setScale(0.3);
-	skill_1Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.7, attackItem->getContentSize().height * 0.2));
-	skill_1Item->setTag(2);
-
-	auto skill_2Item = MenuItemImage::create("sprites/skill_2.png", "sprites/skill_2.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
-	skill_2Item->setScale(0.3);
-	skill_2Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.65, attackItem->getContentSize().height * 0.55));
-	skill_2Item->setTag(3);
-
-	auto skill_3Item = MenuItemImage::create("sprites/skill_3.png", "sprites/skill_3.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
-	skill_3Item->setScale(0.3);
-	skill_3Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.3, attackItem->getContentSize().height * 0.7));
-	skill_3Item->setTag(4);
-
-	auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
+	auto attackMenu = Menu::create(attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
 	buttonNode->addChild(attackMenu, 100);
 #endif
@@ -225,8 +210,9 @@ bool VillageScene::init()
 				
 				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 				tilePhysics->setDynamic(false);
+				//tilePhysics->setCategoryBitmask(OBSTACLE_COLLISION_BITMASK);
 				tilePhysics->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
-				tilePhysics->setContactTestBitmask(true);
+				tilePhysics->setContactTestBitmask(ALLSET_BITMASK);
 				spriteTile->setPhysicsBody(tilePhysics);
 			}
 		}
@@ -246,16 +232,6 @@ bool VillageScene::init()
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
 	//NPC
-	/*anim_NPC.reserve(4);
-	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(0, 0, 48, 48)));
-	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(48, 0, 48, 48)));
-	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(96, 0, 48, 48)));
-	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(144, 0, 48, 48)));
-	Animation* NPCAnimation = Animation::createWithSpriteFrames(anim_NPC, 0.5f);
-	Animate *NPCAnimate = Animate::create(NPCAnimation);
-	NPC = Sprite::createWithSpriteFrame(anim_NPC.front());
-	NPC->setScale(2);
-	NPC->runAction(RepeatForever::create(NPCAnimate));*/
 	for (auto SpawnPoint : objectGroup->getObjects())
 	{
 		//Spawn NPC
@@ -263,7 +239,7 @@ bool VillageScene::init()
 		{
 			int npcX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
 			int npcY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			NPC* npc = new NPC();
+			npc = new NPC();
 			npc->getSprite()->setPosition(npcX, npcY);
 			gameNode->addChild(npc->getSprite());
 		}
@@ -380,17 +356,18 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	auto node = dynamic_cast<Node*>(sender);
 	CCLOG("%i", node->getTag());
 	if (node->getTag() == 1) {
-		playerChar->attack();
-		CCLOG("Attack");
-	}
-	else if (node->getTag() == 2) {
-		CCLOG("Skill 1");
-	}
-	else if (node->getTag() == 3) {
-		CCLOG("Skill 2");
-	}
-	else if (node->getTag() == 4) {
-		CCLOG("Skill 3");
+		if (standAlone)
+		{
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Standing Alone", "There is no one for you to talk ...");
+			buttonNode->addChild(popup, 100);
+		}
+		else
+		{
+			UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Old man's quest", "Hey Hero\n Can you help me kill 2 toads", [=]() {
+				CCLOG("Mission added!");
+			});
+			buttonNode->addChild(popup, 100);
+		}
 	}
 }
 
@@ -407,8 +384,17 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK))
 		{
 			CCLOG("Hello Hero");
+			standAlone = false;
 			return false;
 		}
+		else
+		{
+			CCLOG("Hello ground");
+		}
+	}
+	else
+	{
+		standAlone = true;
 	}
 	return true;
 }
