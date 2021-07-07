@@ -24,7 +24,8 @@ public:
     State characterState;
     Direction characterDirection;
     cocos2d::Vec2 position;
-
+    int action;
+    
     cocos2d::Sprite* getSprite() {
         return characterSprite;
     };
@@ -48,6 +49,7 @@ public:
     void attack();
     void jumpAttack();
     void run();
+    void walk();
 private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;

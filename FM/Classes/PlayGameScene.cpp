@@ -265,15 +265,14 @@ bool PlayGameScene::init()
 		}
 
 		//Spawn boss
-		/*if (SpawnPoint.asValueMap()["Boss"].asInt() == 1)
+		if (SpawnPoint.asValueMap()["Boss"].asInt() == 1)
 		{
 			int bossX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
 			int bossY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			BossCharacter* boss = new BossCharacter(1);
-			boss->getSprite()->setPosition(bossX, bossY);
-			boss->getSprite()->setPosition(visibleSize / 2);
+			boss = new BossCharacter(1);
+			boss->setPosition(Vec2(bossX, bossY));
 			gameNode->addChild(boss->getSprite());
-		}*/
+		}
 	}
 
 	//Contact test
@@ -297,11 +296,7 @@ bool PlayGameScene::init()
 	this->addChild(buttonNode, 100);
 
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
-	this->scheduleUpdate();
-
-	boss = new BossCharacter(1);
-	boss->setPosition(visibleSize / 2);
-	gameNode->addChild(boss->getSprite());
+	
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
 	this->scheduleUpdate();
 
@@ -439,17 +434,19 @@ void PlayGameScene::monsterAction(float dt) {
 /// </summary>
 /// <param name="dt"></param>
 void PlayGameScene::updateBoss(float dt) {
-	if (abs(boss->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
+	/*if (abs(boss->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
 		if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
 			boss->setDirection(BossCharacter::Direction::LEFT);
 		}
 		else {
 			boss->setDirection(BossCharacter::Direction::RIGHT);
 		}
+	}*/
+	if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
+		boss->setDirection(BossCharacter::Direction::LEFT);
+	}
+	else {
+		boss->setDirection(BossCharacter::Direction::RIGHT);
 	}
 	boss->updateAction(playerChar->getSprite()->getPosition());
-}
-
-void PlayGameScene::bossAction(float dt) {
-	boss->jumpAttack();
 }

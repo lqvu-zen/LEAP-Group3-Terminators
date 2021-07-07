@@ -1,4 +1,4 @@
-#include "BossCharacter.h"
+﻿#include "BossCharacter.h"
 #include "Definitions.h"
 
 USING_NS_CC;
@@ -77,201 +77,7 @@ BossCharacter::BossCharacter(int level) {
 	characterSprite->setScale(0.5);
 	characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
 	characterDirection = Direction::LEFT;
-}
-
-#if 0
-void BossCharacter::attack_1() {
-	//animation->release();
-
-	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Attack_1");
-	attackBody->setDynamic(false);
-	attackBody->setRotationEnable(false);
-	attackBody->setGravityEnable(false);
-	attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
-	attackBody->setContactTestBitmask(false);
-	attackBody->setMass(0.0f);
-
-	attackSprite->setPhysicsBody(attackBody);
-
-
-	//shapeCache->setBodyOnSprite("Attack_1", characterSpriteAnimation);
-
-
-	animation = BossCharacter::createAnimation("Attack_1", 8, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	/*cocos2d::DelayTime* delay = cocos2d::DelayTime::create(0.8);
-	auto seq = Sequence::create(animate, delay, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);*/
-	characterSpriteAnimation->runAction(animate);
-}
-
-void BossCharacter::attack_2() {
-	//animation->release();
-
-	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Attack_2");
-	attackBody->setDynamic(false);
-	attackBody->setRotationEnable(false);
-	attackBody->setGravityEnable(false);
-	attackBody->setCollisionBitmask(BOSS_COLLISION_BITMASK);
-	attackBody->setContactTestBitmask(false);
-	attackBody->setMass(0.0f);
-
-	attackSprite->setPhysicsBody(attackBody);
-
-	animation = BossCharacter::createAnimation("Attack_2", 7, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	/*cocos2d::DelayTime* delay = cocos2d::DelayTime::create(0.7);
-	auto seq = Sequence::create(animate, delay, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);*/
-	characterSpriteAnimation->runAction(animate);
-}
-
-void BossCharacter::jump_attack_1() {
-	//animation->release();
-
-	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Jump_Attack_1");
-	attackBody->setDynamic(false);
-	attackBody->setRotationEnable(false);
-	attackBody->setGravityEnable(false);
-	attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
-	attackBody->setContactTestBitmask(false);
-	attackBody->setMass(0.0f);
-
-	attackSprite->setPhysicsBody(attackBody);
-
-	animation = BossCharacter::createAnimation("Jump_Attack_1", 8, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	/*cocos2d::DelayTime* delay = cocos2d::DelayTime::create(0.8);
-	auto seq = Sequence::create(animate, delay, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);*/
-	characterSpriteAnimation->runAction(animate);
-}
-
-void BossCharacter::jump_attack_2() {
-	//animation->release();
-
-	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Jump_Attack_2");
-	attackBody->setDynamic(false);
-	attackBody->setRotationEnable(false);
-	attackBody->setGravityEnable(false);
-	attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
-	attackBody->setContactTestBitmask(false);
-	attackBody->setMass(0.0f);
-
-	attackSprite->setPhysicsBody(attackBody);
-	animation = BossCharacter::createAnimation("Jump_Attack_2", 7, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	/*cocos2d::DelayTime* delay = cocos2d::DelayTime::create(0.7);
-	auto seq = Sequence::create(animate, delay, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);*/
-	characterSpriteAnimation->runAction(animate);
-}
-
-void BossCharacter::block() {
-	//animation->release();
-	animation = BossCharacter::createAnimation("Block", 9, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	characterSprite->runAction(animate);
-}
-
-void BossCharacter::charge() {
-	//animation->release();
-	cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Charge");
-	attackBody->setDynamic(false);
-	attackBody->setRotationEnable(false);
-	attackBody->setGravityEnable(false);
-	attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
-	attackBody->setContactTestBitmask(false);
-	attackBody->setMass(0.0f);
-
-	attackSprite->setPhysicsBody(attackBody);
-
-	animation = BossCharacter::createAnimation("Charge", 7, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), NULL);
-	characterSpriteAnimation->runAction(seq);
-	auto move = MoveBy::create(0.7, Vec2(-30, 0));
-	characterSprite->runAction(move);
-}
-
-void BossCharacter::death() {
-	//animation->release();
-	animation = BossCharacter::createAnimation("Death", 15, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	characterSprite->runAction(animate);
-}
-
-void BossCharacter::hurt() {
-	//animation->release();
-	animation = BossCharacter::createAnimation("Hurt", 8, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	characterSprite->runAction(animate);
-}
-
-void BossCharacter::idle() {
-	animation->release();
-	if (attackSprite->getPhysicsBody() != nullptr)
-		attackSprite->getPhysicsBody()->removeFromWorld();
-
-	animation = BossCharacter::createAnimation("Idle", 16, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	characterSpriteAnimation->runAction(RepeatForever::create(animate));
-}
-
-void BossCharacter::jump() {
-	//animation->release();
-	animation = BossCharacter::createAnimation("Jump", 10, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	characterSprite->runAction(animate);
-}
-
-void BossCharacter::run() {
-	//animation->release();
-	animation = BossCharacter::createAnimation("Run", 6, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	characterSprite->runAction(animate);
-	auto move = MoveBy::create(0.6, Vec2(-30, 0));
-	characterSprite->runAction(move);
-}
-
-void BossCharacter::shoot_bow() {
-	//animation->release();
-
-	animation = BossCharacter::createAnimation("Shoot_Bow", 12, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	characterSprite->runAction(animate);
-}
-
-void BossCharacter::walk() {
-	//animation->release();
-	animation = BossCharacter::createAnimation("Walk", 12, 0.1);
-	auto animate = Animate::create(animation);
-	animate->retain();
-	characterSprite->runAction(animate);
-	auto move = MoveBy::create(1.2, Vec2(-10, 0));
-	characterSprite->runAction(move);
-}
-
-#endif
-
-void BossCharacter::setDirection(Direction actionDirection) {
-	characterDirection = actionDirection;
-	if (characterDirection == Direction::LEFT) {
-		//characterSprite->setFlippedX(true);
-		characterSprite->setScaleX(-0.5);
-	}
-	else {
-		//characterSprite->setFlippedX(false);
-		characterSprite->setScaleX(0.5);
-	}
+	action = 0;
 }
 
 cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {
@@ -288,7 +94,7 @@ cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFrame
 }
 
 void BossCharacter::updateAnimation(State actionState, bool repeatForever) {
-	if (characterState != actionState) {
+	//if (characterState != actionState) {
 		if (attackSprite->getPhysicsBody() != nullptr)
 			attackSprite->getPhysicsBody()->removeFromWorld();
 
@@ -369,22 +175,76 @@ void BossCharacter::updateAnimation(State actionState, bool repeatForever) {
 			characterSpriteAnimation->runAction(animate);
 			characterState = actionState;
 		}
-	}
+	//}
+}
+
+void BossCharacter::setDirection(Direction actionDirection) {
+	if (action != 1) {
+		characterDirection = actionDirection;
+		if (characterDirection == Direction::LEFT) {
+			characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
+		}
+		else {
+			characterSprite->setScaleX(0.5);//characterSprite->setFlippedX(false);
+		}
+	}	
 }
 
 void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
-	
-	if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 8) {
-		if (positionPlayer.y > characterSprite->getPosition().y + characterSprite->getContentSize().height) {
-			jumpAttack();
+	//Nếu nhân vật chạy ra khỏi nơi đánh nhau thì boss quay lại vị trí ban đầu
+	if (abs(position.x - positionPlayer.x) > visibleSize.width / 2) {
+		/*if (position.x == characterSprite->getPosition().x) {
+			action = 0;
+			updateAnimation(State::IDLE, true);
 		}
 		else {
-			attack();
-		}
+			if (characterDirection == Direction::LEFT) {
+				setDirection(Direction::RIGHT);
+			}
+			else {
+				setDirection(Direction::LEFT);
+			}
+			action = 1;
+			walk();
+		}*/
+		updateAnimation(State::IDLE, true);
+		action = 0;
 	}
 	else {
-		updateAnimation(State::IDLE, true);
+		if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 6) {
+			if (positionPlayer.y > characterSprite->getPosition().y + characterSprite->getContentSize().height) {
+				if (action == 0) {
+					jumpAttack();
+					action = 2;
+				}
+				else if (action == 2) {
+					updateAnimation(State::IDLE, true);
+					action = 0;
+				}
+
+			}
+			else {
+				if (action == 0) {
+					attack();
+					action = 2;
+				}
+				else if (action == 2) {
+					updateAnimation(State::IDLE, true);
+					action = 0;
+				}
+				
+			}
+		}
+		else if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 2) {
+			//action = 0;
+			run();
+		}
+		else {
+			updateAnimation(State::IDLE, true);
+			action = 0;
+		}
 	}
+	
 }
 
 void BossCharacter::attack() {
@@ -454,6 +314,19 @@ void BossCharacter::run() {
 	else
 	{
 		auto move = MoveBy::create(0.7, Vec2(-visibleSize.width / 6, 0));
+		characterSprite->runAction(move);
+	}
+}
+
+void BossCharacter::walk() {
+	updateAnimation(State::WALK, true);
+	if (characterDirection == Direction::RIGHT) {
+		auto move = MoveTo::create(10, Vec2(position.x, position.y));
+		characterSprite->runAction(move);
+	}
+	else
+	{
+		auto move = MoveTo::create(10, Vec2(position.x, position.y));
 		characterSprite->runAction(move);
 	}
 }
