@@ -60,7 +60,5 @@ bool HelloWorld::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
     
-    mission = new Mission();
-    string str = mission->getMission().name;
-    CCLOG("Name: %s", str);
+ 
 }

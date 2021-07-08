@@ -65,9 +65,9 @@ BossCharacter::BossCharacter(int level) {
 	characterPhysicsBody->setDynamic(true);
 	characterPhysicsBody->setRotationEnable(false);
 
-	characterPhysicsBody->setCategoryBitmask(BOSS_CATEGORY_BITMASK);
-	characterPhysicsBody->setCollisionBitmask(BOSS_COLLISION_BITMASK);
-	characterPhysicsBody->setContactTestBitmask(false);
+	characterPhysicsBody->setCategoryBitmask(ENEMIES_CATEGORY_BITMASK);
+	characterPhysicsBody->setCollisionBitmask(ENEMIES_COLLISION_BITMASK);
+	characterPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
 
 	characterSprite->setPhysicsBody(characterPhysicsBody);
 
@@ -255,8 +255,9 @@ void BossCharacter::attack() {
 		attackBody->setDynamic(false);
 		attackBody->setRotationEnable(false);
 		attackBody->setGravityEnable(false);
-		attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(false);
+		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(ALLSET_BITMASK);
 		attackBody->setMass(0.0f);
 
 		attackSprite->setPhysicsBody(attackBody);
@@ -267,8 +268,9 @@ void BossCharacter::attack() {
 		attackBody->setDynamic(false);
 		attackBody->setRotationEnable(false);
 		attackBody->setGravityEnable(false);
-		attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(false);
+		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(ALLSET_BITMASK);
 		attackBody->setMass(0.0f);
 
 		attackSprite->setPhysicsBody(attackBody);
@@ -283,8 +285,9 @@ void BossCharacter::jumpAttack() {
 		attackBody->setDynamic(false);
 		attackBody->setRotationEnable(false);
 		attackBody->setGravityEnable(false);
-		attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(false);
+		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(ALLSET_BITMASK);
 		attackBody->setMass(0.0f);
 		auto move = MoveBy::create(0.8, Vec2(0, visibleSize.height / 4));
 		characterSprite->runAction(move);
@@ -296,8 +299,9 @@ void BossCharacter::jumpAttack() {
 		attackBody->setDynamic(false);
 		attackBody->setRotationEnable(false);
 		attackBody->setGravityEnable(false);
-		attackBody->setCollisionBitmask(BOSS_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(false);
+		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(ALLSET_BITMASK);
 		attackBody->setMass(0.0f);
 		auto move = MoveBy::create(0.7, Vec2(0, visibleSize.height / 4));
 		characterSprite->runAction(move);

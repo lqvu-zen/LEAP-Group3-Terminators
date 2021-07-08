@@ -386,8 +386,10 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			CCLOG("Hello Hero");
 			standAlone = false;
 		}
-		else
+		else if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() != NONPLAYER_CATEGORY_BITMASK)
+			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() != NONPLAYER_CATEGORY_BITMASK))
 		{
+			CCLOG("Hello");
 			standAlone = true;
 		}
 	}
