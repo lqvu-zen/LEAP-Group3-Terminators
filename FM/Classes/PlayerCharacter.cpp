@@ -35,8 +35,7 @@ PlayerCharacter::PlayerCharacter()
 	attackMode = 1;
 
 	//set Stats
-	characterStats = new Stats();
-	characterStats->SetHeroStats();
+	characterStats.SetHeroStats();
 
 	characterAnimate.clear();
 
@@ -136,7 +135,15 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 				animFrames.pushBack(frame);
 			}
 
-			Animation* animation = Animation::createWithSpriteFrames(animFrames, repeatForever == true ? ANIMATION_DELAY : FAST_ANIMATION_DELAY);
+			Animation* animation = Animation::createWithSpriteFrames(animFrames);
+
+			if (repeatForever == true || actionState == State::DEATH) {
+				animation->setDelayPerUnit(ANIMATION_DELAY);
+			}
+			else {
+				animation->setDelayPerUnit(FAST_ANIMATION_DELAY);
+			}
+			//Animation* animation = Animation::createWithSpriteFrames(animFrames, repeatForever == true ? ANIMATION_DELAY : FAST_ANIMATION_DELAY);
 			//Animate* animate = Animate::create(animation);
 
 			characterAnimate[nameSprite] = Animate::create(animation);
@@ -177,9 +184,12 @@ void PlayerCharacter::updateAction(float dt)
 	//CCLOG("Character velocity: x:%f - y:%f", characterVelocity.x, characterVelocity.y);
 	//CCLOG("PhysicBody velocity: x:%f - y:%f", characterPhysicsBody->getVelocity().x, characterPhysicsBody->getVelocity().y);
 	if (!died) {
+		//update stats
+		characterStats.UpdateStatsBar();
+
 		Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
 
-		if (characterStats->HP <= 0.0f) {
+		if (characterStats.HP <= 0.0f) {
 			died = true;
 			updateAnimation(State::DEATH, characterDirection, false);
 			return;
@@ -241,9 +251,6 @@ void PlayerCharacter::updateAction(float dt)
 				updateAnimation(State::IDLE, direction);
 			}
 		}
-
-		//update stats
-		characterStats->UpdateStatsBar();
 	}
 }
 
@@ -261,7 +268,8 @@ void PlayerCharacter::reupdateAnimation()
 	}
 	else {
 		//Death update
-		characterSpriteAnimation->removeFromParentAndCleanup(true);
+		//characterSprite->removeAllChildren();
+		//characterSprite->removeFromParent();
 	}
 }
 
@@ -355,7 +363,7 @@ void PlayerCharacter::attack(int mode)
 void PlayerCharacter::takeHit(float dame)
 {
 	updateAnimation(State::TAKE_HIT, characterDirection, false);
-	characterStats->HP -= dame;
+	characterStats.HP -= dame;
 }
 
 cocos2d::Sprite * PlayerCharacter::getSprite()
@@ -363,7 +371,7 @@ cocos2d::Sprite * PlayerCharacter::getSprite()
 	return characterSprite;
 }
 
-Stats * PlayerCharacter::getStats()
+Stats PlayerCharacter::getStats()
 {
 	return characterStats;
 }

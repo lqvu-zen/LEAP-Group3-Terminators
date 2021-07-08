@@ -54,14 +54,18 @@ Stats::Stats()
 
 void Stats::SetHeroStats(float hp, float mp, float atk, float def)
 {
-	maxHP = 100.0f;
-	maxMP = 100.0f;
-	maxATK = 20.0f;
-	maxDEF = 10.0f;
-	HP = hp;
-	MP = mp;
-	ATK = atk;
-	DEF = def;
+	maxHP = HP = hp;
+	maxMP = MP = mp;
+	maxATK = ATK = atk;
+	maxDEF = DEF = def;
+}
+
+void Stats::SetMonsterStats(float hp, float mp, float atk, float def)
+{
+	maxHP = HP = hp;
+	maxMP = MP = mp;
+	maxATK = ATK = atk;
+	maxDEF = DEF = def;
 }
 
 cocos2d::Sprite * Stats::GetSprite()

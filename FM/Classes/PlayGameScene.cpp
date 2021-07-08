@@ -218,13 +218,13 @@ bool PlayGameScene::init()
 
 	//add healthbar
 	auto playerStats = playerChar->getStats();
-	auto playerStatsSprite = playerStats->GetSprite();
+	auto playerStatsSprite = playerStats.GetSprite();
 	auto scaleRatio = 3.0f;
 	playerStatsSprite->setScale(scaleRatio);
 	playerStatsSprite->setPosition(
 		Vec2(
 			origin.x,
-			visibleSize.height + origin.y - playerStats->GetSpriteSize().height * scaleRatio
+			visibleSize.height + origin.y - playerStats.GetSpriteSize().height * scaleRatio
 		)
 		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
 	);
@@ -420,35 +420,31 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 {
 	auto a = contact.getShapeA()->getBody();
 	auto b = contact.getShapeB()->getBody();
+
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
+		if (a->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK || a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK) {
+			swap(a, b);
+		}
+
 		if (a->getCategoryBitmask() == GEM_CATEGORY_BITMASK)
 		{
 			CCLOG("Collected Gem");
 			a->getNode()->removeFromParentAndCleanup(true);
 		}
-		else if (b->getCategoryBitmask() == GEM_CATEGORY_BITMASK)
-		{
-			CCLOG("Collected Gem");
-			b->getNode()->removeFromParentAndCleanup(true);
-		}
 
 		// check player hit enemies
-		if ((a->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK
-			&& b->getCategoryBitmask() == ENEMIES_CATEGORY_BITMASK) ||
-			(b->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK
-				&& a->getCategoryBitmask() == ENEMIES_CATEGORY_BITMASK))
+		if (b->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK
+				&& a->getCategoryBitmask() == ENEMIES_CATEGORY_BITMASK)
 		{
 			CCLOG("Hit enemies");
-
+			
 		}
 
 		// check player get hit
-		if ((a->getCategoryBitmask() == ENEMIES_ATTACK_CATEGORY_BITMASK
-			&& b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK) ||
-			(b->getCategoryBitmask() == ENEMIES_ATTACK_CATEGORY_BITMASK
-				&& a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK))
+		if (a->getCategoryBitmask() == ENEMIES_ATTACK_CATEGORY_BITMASK
+				&& b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK)
 		{
 			CCLOG("Hit player");
 			playerChar->takeHit();

@@ -18,6 +18,8 @@ public:
 
 	void SetHeroStats(float hp = 100.0f, float mp = 100.0f, float atk = 20.0f, float def = 10.0f);
 
+	void SetMonsterStats(float hp = 100.0f, float mp = 100.0f, float atk = 20.0f, float def = 10.0f);
+
 	cocos2d::Sprite* GetSprite();
 	cocos2d::Size GetSpriteSize();
 

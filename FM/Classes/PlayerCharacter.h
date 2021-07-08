@@ -39,13 +39,13 @@ public:
 	void takeHit(float dame = 10.0f);
 
 	cocos2d::Sprite* getSprite();
-	Stats* getStats();
+	Stats getStats();
 
 	void setVelocity(cocos2d::Vec2 velocity);
 	cocos2d::Vec2 getVolocity();
 	cocos2d::Vec2 getRealtimeVolocity();
 private:
-	Stats* characterStats;
+	Stats characterStats;
 
 	cocos2d::Sprite* characterSprite;
 	cocos2d::Sprite* characterSpriteAnimation;

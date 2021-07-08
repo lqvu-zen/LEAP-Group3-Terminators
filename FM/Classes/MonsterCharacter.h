@@ -4,15 +4,13 @@
 #include "cocos2d.h"
 #include "Character.h"
 #include "PhysicsShapeCache.h"
+#include "Stats.h"
 
 using namespace std;
 
 class MonsterCharacter //: public Character
 {
 public:
-
-    int hp;    
-    int atk;
     int level;
 
     enum class Direction {
@@ -33,12 +31,13 @@ public:
 
     void death();
 
-    void hurt(int dame);
+    void hurt(float dame);
 
     void idle();
 
     void walk();
 private:
+	Stats monsterStats;
 
     cocos2d::Node* scene;
     string floder;

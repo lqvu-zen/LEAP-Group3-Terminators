@@ -76,8 +76,8 @@ void Skill::createAnimation(SkillType actionState, Direction actionDirection)
 		skillPhysicsBody->setDynamic(false);
 		skillPhysicsBody->setRotationEnable(false);
 
-		skillPhysicsBody->setCategoryBitmask(PLAYER_CATEGORY_BITMASK);
-		skillPhysicsBody->setCollisionBitmask(ENEMIES_CATEGORY_BITMASK);
+		skillPhysicsBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
+		skillPhysicsBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
 		skillPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
 
 		if (actionState == Skill::SkillType::Ultimate) {

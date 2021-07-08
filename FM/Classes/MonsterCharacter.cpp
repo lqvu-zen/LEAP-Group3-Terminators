@@ -10,8 +10,7 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _level) {
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-	hp = 100 * _level;
-	atk = 10 * _level;
+	monsterStats.SetMonsterStats(100.0f * _level, 100.0f * _level, 10 * _level, 10 * _level);
 	level = _level;
 
 	floder = StringUtils::format("plist/Monster_%i/", 1);
@@ -48,6 +47,8 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _level) {
 	animate->retain();
 	monster->runAction(RepeatForever::create(animate));
 
+	monster->addChild(monsterStats.GetSprite());
+	monsterStats.GetSprite()->setPosition(Vec2(0.0f, monster->getContentSize().height));
 }
 
 cocos2d::Sprite* MonsterCharacter::getSprite() {
@@ -118,9 +119,11 @@ void MonsterCharacter::death() {
 	monster->runAction(seq);
 }
 
-void MonsterCharacter::hurt(int dame) {
-	hp -= dame;
-	if (hp <= 0) {
+void MonsterCharacter::hurt(float dame) {
+	monsterStats.HP -= dame;
+	monsterStats.UpdateStatsBar();
+
+	if (monsterStats.HP <= 0.0f) {
 		death();
 	}
 	else {
