@@ -7,7 +7,8 @@
 #include "ui//CocosGUI.h"
 #include "BossCharacter.h"
 #include "Gem.h"
-#include "Mission.h"
+#include "GameManager.h"
+
 USING_NS_CC;
 class PlayGameScene : public cocos2d::Scene
 {
@@ -31,7 +32,7 @@ private:
 	Sprite *player;
 	MonsterCharacter* monsters[2];
 	BossCharacter* boss;
-	//Mission* mission;
+
 	void addAt(int x, int y, int type);
 	Vector<Node*> pausedActions;
 	
@@ -46,9 +47,6 @@ private:
 	void onClickAttackMenu(cocos2d::Ref* sender);
 	void updateMonster(float dt);
 	void monsterAction(float dt);
-	void updateBoss(float dt);
-	void bossAction(float dt);
-	
 };
 
 #endif // __PLAYGAME_SCENE_H__

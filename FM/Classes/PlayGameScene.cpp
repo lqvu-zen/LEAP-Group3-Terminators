@@ -203,7 +203,7 @@ bool PlayGameScene::init()
 	auto playerBody = PhysicsBody::createBox(player->getContentSize());
 	player->setPhysicsBody(playerBody);*/
 	
-	playerChar = new PlayerCharacter();
+	playerChar = GameManager::getInstace()->GetPlayerCharacter();
 	playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 	
@@ -243,10 +243,15 @@ bool PlayGameScene::init()
 			int eneY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
 			monsters[numOfMonster] = new MonsterCharacter(gameNode, 1);
 			monsters[numOfMonster]->getSprite()->setPosition(eneX, eneY);
+
+			int tag = GameManager::getInstace()->AddMonsterCharacter(monsters[numOfMonster]);
+
+			monsters[numOfMonster]->getSprite()->setTag(tag);
 			//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
 			//enemy->setPhysicsBody(enemyBody);
 			gameNode->addChild(monsters[numOfMonster]->getSprite());
 			numOfMonster++;
+			
 		}
 
 		//Spawn gem
@@ -411,8 +416,9 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		if (b->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK
 				&& a->getCategoryBitmask() == ENEMIES_CATEGORY_BITMASK)
 		{
-			CCLOG("Hit enemies");
+			CCLOG("Hit enemies %d", a->getNode()->getTag());
 			
+			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
 		}
 
 		// check player get hit
