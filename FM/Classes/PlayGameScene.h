@@ -7,6 +7,8 @@
 #include "ui//CocosGUI.h"
 #include "BossCharacter.h"
 #include "Gem.h"
+#include "GameManager.h"
+
 USING_NS_CC;
 class PlayGameScene : public cocos2d::Scene
 {
