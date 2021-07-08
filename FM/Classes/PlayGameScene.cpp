@@ -45,7 +45,8 @@ bool PlayGameScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", "Defeat 2 toads to become chimpanzees ");
+			mission = new Mission();
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", mission->getNowMission().name);
 			buttonNode->addChild(popup, 100);
 			break;
 		}
@@ -263,9 +264,9 @@ bool PlayGameScene::init()
 		{
 			int bossX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
 			int bossY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			BossCharacter* boss = new BossCharacter(gameNode, 1);
-			boss->get()->setPosition(bossX, bossY);
-			gameNode->addChild(boss->get());
+			boss = new BossCharacter(1);
+			boss->setPosition(Vec2(bossX, bossY));
+			gameNode->addChild(boss->getSprite());
 		}
 	}
 
@@ -290,42 +291,12 @@ bool PlayGameScene::init()
 	this->addChild(buttonNode, 100);
 
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
+	
+	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
 	this->scheduleUpdate();
+
 	return true;
 }
-
-
-/*void PlayGameScene::addAt(int x, int y, int type)
-{
-	//Add new objects based on their type.
-	//1 for enemy; 2 for gem
-	switch (type)
-	{
-	case 1:
-		{
-		monsters[numOfMonster] = new MonsterCharacter(this, 1);
-		monsters[numOfMonster]->get()->setPosition(x, y);
-		//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
-		//enemy->setPhysicsBody(enemyBody);
-		this->addChild(monsters[numOfMonster]->get());
-		numOfMonster++;
-		//this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monster->attack()));
-		}
-		break;
-	case 2:
-		{
-		Sprite *gem = Sprite::create("sprites/Gem.png");
-		gem->setPosition(x, y);
-		auto gemBody = PhysicsBody::createBox(gem->getContentSize());
-		gemBody->setDynamic(false);
-		gem->setPhysicsBody(gemBody);
-		this->addChild(gem);
-		}
-		break;
-	default:
-		break;
-	}
-}*/
 
 void PlayGameScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
@@ -347,6 +318,8 @@ void PlayGameScene::update(float dt)
 	this->updateMonster(dt);
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
+	//this->updateBoss(dt);
+
 	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
 }
 
@@ -454,6 +427,10 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 	return true;
 }
 
+/// <summary>
+/// AI for Monster
+/// </summary>
+/// <param name="dt"></param>
 void PlayGameScene::updateMonster(float dt) {
 	for (int i = 0; i < numOfMonster; i++) {
 		if (monsters[i]->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
@@ -474,4 +451,26 @@ void PlayGameScene::monsterAction(float dt) {
 			monsters[i]->idle();
 		}
 	}
+}
+
+/// <summary>
+/// Boss
+/// </summary>
+/// <param name="dt"></param>
+void PlayGameScene::updateBoss(float dt) {
+	/*if (abs(boss->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
+		if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
+			boss->setDirection(BossCharacter::Direction::LEFT);
+		}
+		else {
+			boss->setDirection(BossCharacter::Direction::RIGHT);
+		}
+	}*/
+	if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
+		boss->setDirection(BossCharacter::Direction::LEFT);
+	}
+	else {
+		boss->setDirection(BossCharacter::Direction::RIGHT);
+	}
+	boss->updateAction(playerChar->getSprite()->getPosition());
 }

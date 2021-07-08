@@ -1,0 +1,36 @@
+{
+  "MISSION": [
+    {
+      "ID": 0,
+      "NAME": "Return to the village to receive the mission",
+      "BEGIN": 0,
+      "TYPE": 0,
+      "END": 0,
+      "STATE": true
+    },
+    {
+      "ID": 1,
+      "NAME": "Defeat 2 toads to become chimpanzees",
+      "BEGIN": 0,
+      "TYPE": 1,
+      "END": 2,
+      "STATE": false
+    },
+    {
+      "ID": 2,
+      "NAME": "Collect 5 red diamonds",
+      "BEGIN": 0,
+      "TYPE": 3,
+      "END": 5,
+      "STATE": false
+    },
+    {
+      "ID": 3,
+      "NAME": "Slay the demon of eyes",
+      "BEGIN": 0,
+      "TYPE": 2,
+      "END": 1,
+      "STATE": false
+    }
+  ]
+}
