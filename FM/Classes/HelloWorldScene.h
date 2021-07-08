@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "BossCharacter.h"
+#include "Mission.h"
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -10,13 +11,11 @@ public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
-  
-    BossCharacter* boss;
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 
-    void action(float dt);
+    Mission* mission;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

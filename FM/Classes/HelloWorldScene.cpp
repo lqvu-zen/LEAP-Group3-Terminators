@@ -29,7 +29,7 @@ USING_NS_CC;
 Scene* HelloWorld::createScene()
 {
     auto scene = HelloWorld::create();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
     return scene;
 }
@@ -46,7 +46,7 @@ bool HelloWorld::init()
 {
     //////////////////////////////
     // 1. super init first
-    if (!Scene::initWithPhysics())
+    if (!Scene::init())
     {
         return false;
     }
@@ -60,20 +60,7 @@ bool HelloWorld::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
     
-    auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
-    //edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
-    edgeBody->setContactTestBitmask(true);
-    auto edgeNode = Node::create();
-    edgeNode->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    edgeNode->setPhysicsBody(edgeBody);
-    this->addChild(edgeNode);
-
-
-    boss = new BossCharacter(1);
-    boss->setPosition(visibleSize / 2);
-    this->addChild(boss->getSprite());
-    this->schedule(CC_SCHEDULE_SELECTOR(HelloWorld::action), 3);
-}
-void HelloWorld::action(float dt) {
-    boss->run();
+    mission = new Mission();
+    string str = mission->getMission().name;
+    CCLOG("Name: %s", str);
 }

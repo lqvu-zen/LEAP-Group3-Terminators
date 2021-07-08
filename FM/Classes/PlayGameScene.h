@@ -6,6 +6,8 @@
 #include "MonsterCharacter.h"
 #include "ui//CocosGUI.h"
 #include "BossCharacter.h"
+#include "Mission.h"
+
 USING_NS_CC;
 class PlayGameScene : public cocos2d::Scene
 {
@@ -45,6 +47,8 @@ private:
 
 	void updateBoss(float dt);
 	void bossAction(float dt);
+
+	Mission* mission;
 };
 
 #endif // __PLAYGAME_SCENE_H__

@@ -45,7 +45,8 @@ bool PlayGameScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", "Defeat 2 toads to become chimpanzees ");
+			mission = new Mission();
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", mission->getNowMission().name);
 			buttonNode->addChild(popup, 100);
 			break;
 		}
