@@ -256,14 +256,14 @@ bool VillageScene::init()
 	gameNode->addChild(playerChar->getSprite());
 
 	//add healthbar
-	auto playerStats = playerChar->getStats();
-	auto playerStatsSprite = playerStats->GetSprite();
+	auto playerStat = playerChar->getStats();
+	auto playerStatsSprite = playerStat.GetSprite();
 	auto scaleRatio = 3.0f;
 	playerStatsSprite->setScale(scaleRatio);
 	playerStatsSprite->setPosition(
 		Vec2(
 			origin.x,
-			visibleSize.height + origin.y - playerStats->GetSpriteSize().height * scaleRatio
+			visibleSize.height + origin.y - playerStat.GetSpriteSize().height * scaleRatio
 		)
 		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
 	);
@@ -385,16 +385,11 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		{
 			CCLOG("Hello Hero");
 			standAlone = false;
-			return false;
 		}
 		else
 		{
-			CCLOG("Hello ground");
+			standAlone = true;
 		}
-	}
-	else
-	{
-		standAlone = true;
 	}
 	return true;
 }
