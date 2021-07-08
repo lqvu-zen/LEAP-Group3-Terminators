@@ -43,7 +43,10 @@ public:
 
     Data getNowMission() {
         if (hasMission) {
-            return mission;
+            if (mission.state == false)
+                return mission;
+            else
+                return data.at(data.size() - 1);
         }
         else {
             return data.at(0);

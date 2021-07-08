@@ -412,6 +412,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		{
 			CCLOG("Collected Gem");
 			a->getNode()->removeFromParentAndCleanup(true);
+			GameManager::getInstace()->getMission()->updateMission(3);
 		}
 
 		// check player hit enemies

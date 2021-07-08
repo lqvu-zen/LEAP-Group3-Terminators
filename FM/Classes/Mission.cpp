@@ -37,6 +37,7 @@ void Mission::updateMission(int type) {
 		mission.begin++;
 		data.at(index).begin++;
 	}
+	submitMission();
 }
 
 void Mission::cancelMission() {

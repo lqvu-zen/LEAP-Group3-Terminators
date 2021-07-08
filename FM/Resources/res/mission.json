@@ -20,11 +20,11 @@
     },
     {
       "ID": 2,
-      "REQUEST": "Hey Hero\n Can you help me collect 5 red diamonds",
-      "NAME": "Collect 5 red diamonds",
+      "REQUEST": "Hey Hero\n Can you help me collect 2 red diamonds",
+      "NAME": "Collect 2 red diamonds",
       "BEGIN": 0,
       "TYPE": 3,
-      "END": 5,
+      "END": 2,
       "STATE": false
     },
     {
@@ -34,6 +34,15 @@
       "BEGIN": 0,
       "TYPE": 2,
       "END": 1,
+      "STATE": false
+    },
+    {
+      "ID": 4,
+      "REQUEST": "Hey Hero\n Thank you for helping us.",
+      "NAME": "You have completed the mission.\n Return to the village to receive the next mission.",
+      "BEGIN": 0,
+      "TYPE": 0,
+      "END": 0,
       "STATE": false
     }
   ]
