@@ -63,6 +63,7 @@ private:
 	Skill::SkillType attackSkill;
 
 	bool castingSkill;
+	bool attacking;
 
 	std::map<std::string, cocos2d::Animate*> characterAnimate;
 

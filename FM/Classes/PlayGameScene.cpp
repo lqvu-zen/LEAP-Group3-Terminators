@@ -6,7 +6,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }

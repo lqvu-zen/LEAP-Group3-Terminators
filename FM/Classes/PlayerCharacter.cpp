@@ -41,6 +41,7 @@ PlayerCharacter::PlayerCharacter()
 
 	//set skill
 	castingSkill = false;
+	attacking = false;
 	characterSkill = new Skill();
 
 	characterSkill->SetPosition(characterSize);
@@ -67,10 +68,7 @@ void PlayerCharacter::setPosition(cocos2d::Vec2 position)
 
 void PlayerCharacter::updateAnimation(State actionState, Direction actionDirection, bool repeatForever)
 {
-	if (characterState != actionState) {
-
-		if (attackSprite->getPhysicsBody() != nullptr && int(attackSprite->getPhysicsBody()->getShapes().size() > 0))
-			attackSprite->getPhysicsBody()->removeAllShapes();
+	if (characterState != actionState && attacking != true) {
 
 		const int maxWord = 50;
 
@@ -259,12 +257,20 @@ void PlayerCharacter::reupdateAnimation()
 	characterState = characterStateOnce;
 
 	if (characterStateOnce != State::DEATH) {
-		updateAnimation(characterState, characterDirection);
-		attackMode++;
+		if (attacking == true) {
+			if (attackSprite->getPhysicsBody() != nullptr && int(attackSprite->getPhysicsBody()->getShapes().size() > 0))
+				attackSprite->getPhysicsBody()->removeAllShapes();
 
-		if (castingSkill) {
-			castingSkill = false;
+
+			attackMode++;
+
+			if (castingSkill || attacking) {
+				castingSkill = false;
+				attacking = false;
+			}
 		}
+		
+		updateAnimation(characterState, characterDirection);
 	}
 	else {
 		//Death update
@@ -312,52 +318,56 @@ void PlayerCharacter::setJumping()
 void PlayerCharacter::attack(int mode)
 {
 	//CCLOG("ATTACK");
+	if (attacking != true) {
+		if (mode > 0) {
+			attackMode = mode;
+		}
+		else {
+			attackMode = (attackMode - 1) % 3 + 1;
+		}
 
-	if (mode > 0) {
-		attackMode = mode;
+		//update animation
+		if (attackMode == 1) {
+			attackSize = Size(characterSize.width * 3.0f, characterSize.height);
+			updateAnimation(State::ATTACK1, characterDirection, false);
+
+			attackSkill = Skill::SkillType::Normal;
+		}
+		else if (attackMode == 2) {
+			attackSize = Size(characterSize.width * 4.0f, characterSize.height);
+			updateAnimation(State::ATTACK2, characterDirection, false);
+
+			attackSkill = Skill::SkillType::Special;
+		}
+		else if (attackMode == 3) {
+			attackSize = Size(characterSize.width * 4.0f, characterSize.height * 2.0f);
+			updateAnimation(State::ATTACK3, characterDirection, false);
+
+			attackSkill = Skill::SkillType::Ultimate;
+		}
+
+		//create physic for attack
+		if (mode == 0) {
+			auto attackBody = PhysicsBody::createBox(attackSize);
+
+			attackBody->setDynamic(false);
+			attackBody->setRotationEnable(false);
+			attackBody->setGravityEnable(false);
+			attackBody->setMass(0.0f);
+
+			attackBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
+			attackBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
+			attackBody->setContactTestBitmask(ALLSET_BITMASK);
+
+			attackSprite->setPhysicsBody(attackBody);
+		}
+		else {
+			characterSkill->CastSkill(attackSkill, characterDirection);
+			castingSkill = true;
+		}
+		attacking = true;
 	}
-	else {
-		attackMode = (attackMode - 1) % 3 + 1;
-	}
-
-	//update animation
-	if (attackMode == 1) {
-		attackSize = Size(characterSize.width * 3.0f, characterSize.height);
-		updateAnimation(State::ATTACK1, characterDirection, false);
-
-		attackSkill = Skill::SkillType::Normal;
-	} else if (attackMode == 2) {
-		attackSize = Size(characterSize.width * 4.0f, characterSize.height);
-		updateAnimation(State::ATTACK2, characterDirection, false);
-
-		attackSkill = Skill::SkillType::Special;
-	} else if (attackMode == 3) {
-		attackSize = Size(characterSize.width * 4.0f, characterSize.height * 2.0f);
-		updateAnimation(State::ATTACK3, characterDirection, false);
-
-		attackSkill = Skill::SkillType::Ultimate;
-	}	
-
-	//create physic for attack
-	if (mode == 0) {
-
-		auto attackBody = PhysicsBody::createBox(attackSize);
-
-		attackBody->setDynamic(false);
-		attackBody->setRotationEnable(false);
-		attackBody->setGravityEnable(false);		
-		attackBody->setMass(0.0f);		
-
-		attackBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
-		attackBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(ALLSET_BITMASK);
-
-		attackSprite->setPhysicsBody(attackBody);
-	}
-	else {
-		characterSkill->CastSkill(attackSkill, characterDirection);
-		castingSkill = true;
-	}
+	
 }
 
 void PlayerCharacter::takeHit(float dame)
