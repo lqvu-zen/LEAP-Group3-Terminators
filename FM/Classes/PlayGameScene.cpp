@@ -6,7 +6,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -155,7 +155,7 @@ bool PlayGameScene::init()
 	//map setup + add map
 	//scale map with SCALE_FACTOR
 	map = TMXTiledMap::create("map/playMap.tmx");
-	map->setScale(SCALE_FACTOR);
+	map->setScale(SCALE_FACTOR );
 	gameNode->addChild(map, 0);
 
 	//collision with map edges
