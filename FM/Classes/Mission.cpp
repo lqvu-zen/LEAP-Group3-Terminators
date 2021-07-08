@@ -19,6 +19,7 @@ Mission::Mission() {
 				//CCLOG("ID: %i, Name: %s, State: %d", mission[i]["ID"].GetInt(), mission[i]["NAME"].GetString(), mission[i]["STATE"].GetBool());
 				Data tmp;
 				tmp.id = mission[i]["ID"].GetInt();
+				tmp.request = mission[i]["REQUEST"].GetString();
 				tmp.name = mission[i]["NAME"].GetString();
 				tmp.begin = mission[i]["BEGIN"].GetInt();
 				tmp.end = mission[i]["END"].GetInt();

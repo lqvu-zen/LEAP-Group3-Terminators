@@ -18,6 +18,13 @@ PlayerCharacter * GameManager::GetPlayerCharacter()
 	return playerCharacter;
 }
 
+Mission* GameManager::getMission() {
+	if (mission == nullptr) {
+		mission = new Mission();
+	}
+	return mission;
+}
+
 MonsterCharacter * GameManager::GetMonsterCharacter(int tag)
 {
 	if (tag >= monsterCharacters.size()) {

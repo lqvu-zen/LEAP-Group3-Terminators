@@ -64,7 +64,7 @@ bool VillageScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", "Defeat 2 toads to become chimpanzees ");
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
 			buttonNode->addChild(popup, 100);
 			break;
 		}
@@ -363,9 +363,11 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 		}
 		else
 		{
-			UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Old man's quest", "Hey Hero\n Can you help me kill 2 toads",NULL, [=]() {
+			UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Old man's quest", GameManager::getInstace()->getMission()->getMission().request,NULL, [=]() {
+				GameManager::getInstace()->getMission()->agreeMission();
 				CCLOG("Accpect Mission!");
 			}, [=]() {
+				GameManager::getInstace()->getMission()->cancelMission();
 				CCLOG("Reject Mission!");
 			});
 			buttonNode->addChild(popup, 100);

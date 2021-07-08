@@ -5,6 +5,7 @@
 #include "Definitions.h"
 #include "PlayerCharacter.h"
 #include "MonsterCharacter.h"
+#include "Mission.h"
 
 USING_NS_CC;
 
@@ -14,6 +15,8 @@ public:
 	static GameManager* getInstace();
 
 	PlayerCharacter* GetPlayerCharacter();
+
+	Mission* getMission();
 
 	MonsterCharacter* GetMonsterCharacter(int tag);
 	int AddMonsterCharacter(MonsterCharacter* ref);
@@ -26,6 +29,8 @@ private:
 
 	int countMonsterCharacter;
 	std::map <int, MonsterCharacter*> monsterCharacters;
+
+	Mission* mission;
 };
 
 #endif // __GAMEMANAGER_H__ 

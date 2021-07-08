@@ -46,7 +46,7 @@ bool PlayGameScene::init()
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			Mission* mission = new Mission();
-			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", mission->getNowMission().name);
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
 			buttonNode->addChild(popup, 100);
 			break;
 		}

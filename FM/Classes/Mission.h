@@ -19,6 +19,7 @@ public:
     struct Data
     {
         int id;
+        string request;
         string name;
         int type; //Monster : 1, Boss :2, Item: 3.
         int begin;

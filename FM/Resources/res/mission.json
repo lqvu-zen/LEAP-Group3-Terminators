@@ -2,6 +2,7 @@
   "MISSION": [
     {
       "ID": 0,
+      "REQUEST": "Hey Hero\n I am the village head ",
       "NAME": "Return to the village to receive the mission",
       "BEGIN": 0,
       "TYPE": 0,
@@ -10,6 +11,7 @@
     },
     {
       "ID": 1,
+      "REQUEST": "Hey Hero\n Can you help me kill 2 toads",
       "NAME": "Defeat 2 toads to become chimpanzees",
       "BEGIN": 0,
       "TYPE": 1,
@@ -18,6 +20,7 @@
     },
     {
       "ID": 2,
+      "REQUEST": "Hey Hero\n Can you help me collect 5 red diamonds",
       "NAME": "Collect 5 red diamonds",
       "BEGIN": 0,
       "TYPE": 3,
@@ -26,6 +29,7 @@
     },
     {
       "ID": 3,
+      "REQUEST": "Hey Hero\n Can you help me slay the demon of eyes",
       "NAME": "Slay the demon of eyes",
       "BEGIN": 0,
       "TYPE": 2,
