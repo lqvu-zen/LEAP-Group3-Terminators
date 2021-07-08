@@ -271,6 +271,7 @@ bool PlayGameScene::init()
 			int bossY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
 			boss = new BossCharacter(1);
 			boss->setPosition(Vec2(bossX, bossY));
+			//boss->setPosition(visibleSize / 2);
 			gameNode->addChild(boss->getSprite());
 		}
 	}
@@ -298,6 +299,7 @@ bool PlayGameScene::init()
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
+	//boss->death();
 	this->scheduleUpdate();
 
 	return true;
