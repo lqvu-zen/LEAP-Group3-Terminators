@@ -5,8 +5,9 @@
 #include "Definitions.h"
 #include "Stats.h"
 #include "Skill.h"
+#include "Character.h"
 
-class PlayerCharacter
+class PlayerCharacter : public Character
 {
 public:
 	enum class State {
@@ -45,8 +46,6 @@ public:
 	cocos2d::Vec2 getVolocity();
 	cocos2d::Vec2 getRealtimeVolocity();
 private:
-	Stats characterStats;
-
 	cocos2d::Sprite* characterSprite;
 	cocos2d::Sprite* characterSpriteAnimation;
 	cocos2d::PhysicsBody* characterPhysicsBody;

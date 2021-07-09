@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class BossCharacter //: public Character
+class BossCharacter : public Character
 {
 public:
 
@@ -51,6 +51,8 @@ public:
     void jumpAttack();
     void run();
     void walk();
+
+	void takeHit(float dame);
 private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;

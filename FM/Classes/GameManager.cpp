@@ -14,7 +14,10 @@ PlayerCharacter * GameManager::GetPlayerCharacter()
 {
 	if (playerCharacter == nullptr) {
 		playerCharacter = new PlayerCharacter();
+
+		this->AddCharacter(playerCharacter);
 	}
+
 	return playerCharacter;
 }
 
@@ -25,25 +28,17 @@ Mission* GameManager::getMission() {
 	return mission;
 }
 
-MonsterCharacter * GameManager::GetMonsterCharacter(int tag)
+void GameManager::AddCharacter(Character * ref)
 {
-	if (tag >= monsterCharacters.size()) {
-		return nullptr;
-	}
-	return monsterCharacters[tag];
-}
+	characterMap[++countCharacter] = ref;
 
-int GameManager::AddMonsterCharacter(MonsterCharacter * ref)
-{
-	monsterCharacters[++countMonsterCharacter] = ref;
-
-	return countMonsterCharacter;
+	ref->getSprite()->setTag(countCharacter);
 }
 
 void GameManager::hit(int attacker, int victim)
 {
 	int dame = playerCharacter->getStats().ATK;
-	monsterCharacters[victim]->hurt(dame);
+	characterMap[victim]->takeHit(dame);
 }
 
 GameManager * GameManager::create()
