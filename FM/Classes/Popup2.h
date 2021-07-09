@@ -54,7 +54,7 @@ namespace UICustom {
 
         //Edit
         static Popup* createAsConfirmRejectDialogue(const std::string& title, const std::string& msg, cocos2d::Label* lbl, const std::function<void()>& YesFunc, const std::function<void()>& NoFunc);
-
+        static Popup* createPauseMenuVillage(const std::function<void()>& MissionFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc);
     private:
         void initBg(const cocos2d::Size size, const std::string& title);
     };

@@ -167,6 +167,34 @@ namespace UICustom {
         return nullptr;
     }
 
+    void Popup::initBg(Size size, const std::string& title)
+    {
+
+        Size winSize = Director::getInstance()->getWinSize();
+
+        _bg = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
+        this->addChild(_bg);
+
+        _bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
+        _bg->setScale9Enabled(true);
+        _bg->setContentSize(size);
+
+        ui::ImageView* fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
+        _bg->addChild(fill);
+        fill->setColor(Color3B(210, 210, 210));
+        fill->setScale9Enabled(true);
+        fill->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
+        fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
+        fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
+
+
+        Label* heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
+        heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET);
+        _bg->addChild(heading);
+        heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
+        heading->enableShadow(Color4B::BLACK, Size(0, -3));
+    }
+
     //Edit
     Popup* Popup::createAsConfirmRejectDialogue(const std::string& title, const std::string& msg, cocos2d::Label* lbl, const std::function<void()>& YesFunc, const std::function<void()>& NoFunc)
     {
@@ -215,33 +243,43 @@ namespace UICustom {
         return nullptr;
     }
 
-    void Popup::initBg(Size size, const std::string& title)
-    {
-
+    Popup* Popup::createPauseMenuVillage(const std::function<void()>& MissionFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc) {
+        Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
+        if (node && node->init())
+        {
+            auto missionButton = MenuItemFont::create("Your Mission", [=](Ref* sender) {
+                MissionFunc();
+                node->dismiss(true);
+            });
 
-        _bg = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
-        this->addChild(_bg);
+            auto settingButton = MenuItemFont::create("Setting", [=](Ref* sender) {
+                SettingFunc();
+                node->dismiss(true);
+            });
 
-        _bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
-        _bg->setScale9Enabled(true);
-        _bg->setContentSize(size);
+            auto menuButton = MenuItemFont::create("Main Menu", [=](Ref* sender) {
+                MenuFunc();
+                node->dismiss(true);
+            });
 
-        ui::ImageView* fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
-        _bg->addChild(fill);
-        fill->setColor(Color3B(210, 210, 210));
-        fill->setScale9Enabled(true);
-        fill->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
-        fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
-        fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
+            auto exitButton = MenuItemFont::create("Exit", [=](Ref* sender) {
+                ExitFunc();
+                node->dismiss(true);
+            });
 
+            Menu* menu = Menu::create(missionButton, settingButton, menuButton, exitButton, NULL);
+            node->addChild(menu, 2);
+            menu->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
+            menu->alignItemsVerticallyWithPadding(FONT::LABEL_OFFSET / 2);
 
-        Label* heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
-        heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET);
-        _bg->addChild(heading);
-        heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
-        heading->enableShadow(Color4B::BLACK, Size(0, -3));
+            node->initBg(Size(400,400), "Pause");
+            node->autorelease();
+            return node;
+        }
+
+        CC_SAFE_DELETE(node);
+        return nullptr;
     }
-
 }
 

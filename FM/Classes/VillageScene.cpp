@@ -64,7 +64,15 @@ bool VillageScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
+			UICustom::Popup* popup = UICustom::Popup::createPauseMenuVillage([=]() {
+				goToMission();
+			}, [=]() {
+				goToSetting();
+			}, [=]() {
+				goToMainMenu();
+			}, [=]() {
+				goToExit();
+			});
 			buttonNode->addChild(popup, 100);
 			break;
 		}
@@ -411,4 +419,23 @@ void VillageScene::onClickMenuItem(cocos2d::Ref* sender)
 		auto scene = PlayGameScene::createScene();
 		Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 	}
+}
+
+//Pause
+void VillageScene::goToMission() {
+	UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
+	buttonNode->addChild(popup, 100);
+}
+void VillageScene::goToSetting() {
+	
+}
+void VillageScene::goToMainMenu() {
+	auto scene = MainMenuScene::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+}
+void VillageScene::goToExit() {
+	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Notify", "Want to Exit game", [=]() {
+		Director::getInstance()->end();
+	});
+	buttonNode->addChild(popup, 100);
 }

@@ -30,6 +30,7 @@ Mission::Mission() {
 		}
 	}
 	hasMission = false;
+	index = 0;
 }
 
 void Mission::updateMission(int type) {
