@@ -6,6 +6,8 @@
 #include "ui//CocosGUI.h"
 #include "Popup.h"
 #include "NPC.h"
+#include "GameManager.h"
+
 USING_NS_CC;
 class VillageScene: public cocos2d::Scene
 {

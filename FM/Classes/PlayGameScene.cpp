@@ -46,7 +46,7 @@ bool PlayGameScene::init()
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			Mission* mission = new Mission();
-			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", mission->getNowMission().name);
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
 			buttonNode->addChild(popup, 100);
 			break;
 		}
@@ -271,6 +271,7 @@ bool PlayGameScene::init()
 			int bossY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
 			boss = new BossCharacter(1);
 			boss->setPosition(Vec2(bossX, bossY));
+			//boss->setPosition(visibleSize / 2);
 			gameNode->addChild(boss->getSprite());
 		}
 	}
@@ -298,6 +299,7 @@ bool PlayGameScene::init()
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
+	//boss->death();
 	this->scheduleUpdate();
 
 	return true;
@@ -410,6 +412,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		{
 			CCLOG("Collected Gem");
 			a->getNode()->removeFromParentAndCleanup(true);
+			GameManager::getInstace()->getMission()->updateMission(3);
 		}
 
 		// check player hit enemies

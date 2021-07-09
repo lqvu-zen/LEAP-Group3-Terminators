@@ -60,5 +60,8 @@ bool HelloWorld::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
     
- 
+    boss = new BossCharacter(1);
+    boss->setPosition(visibleSize / 2);
+    this->addChild(boss->getSprite());
+    boss->death();
 }

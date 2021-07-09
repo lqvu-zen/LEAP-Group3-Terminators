@@ -19,6 +19,7 @@ public:
     struct Data
     {
         int id;
+        string request;
         string name;
         int type; //Monster : 1, Boss :2, Item: 3.
         int begin;
@@ -29,19 +30,27 @@ public:
     Mission();
 
     Data getMission() {
-        int i = 0;
-        while (i < data.size()) {
-            if (data.at(i).state == false) {
-                mission = data.at(i);
-                index = i;
-                return mission;
+        if (hasMission) {
+            return mission;
+            hasMission = false;
+        }
+        else {
+            int i = 0;
+            while (i < data.size()) {
+                if (data.at(i).state == false) {
+                    mission = data.at(i);
+                    index = i;
+                    return mission;
+                }
+                i++;
             }
-            i++;
         }
     }
 
     Data getNowMission() {
         if (hasMission) {
+            if (mission.state == true)
+                mission = data.at(data.size() - 1);
             return mission;
         }
         else {
