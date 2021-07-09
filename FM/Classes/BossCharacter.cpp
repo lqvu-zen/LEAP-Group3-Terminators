@@ -53,6 +53,8 @@ BossCharacter::BossCharacter(int level) {
 
 	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Idle1.png");
 
+	characterStats.SetMonsterStats(100.0f * level, 100.0f * level, 10 * level, 10 * level);
+
 	characterSprite = Sprite::create();
 	characterSpriteAnimation = Sprite::createWithSpriteFrame(frame);
 
@@ -78,6 +80,8 @@ BossCharacter::BossCharacter(int level) {
 	characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
 	characterDirection = Direction::LEFT;
 	action = 0;
+
+	
 }
 
 cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {
@@ -247,6 +251,15 @@ void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 	
 }
 
+void BossCharacter::death()
+{
+	updateAnimation(State::DEATH);
+	auto die = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
+	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(2);
+	auto seq = Sequence::create(delay, die, nullptr);
+	characterSprite->runAction(seq);
+}
+
 void BossCharacter::attack() {
 	int type = rand() % 2 + 1;
 	if (type == 1) {
@@ -335,10 +348,12 @@ void BossCharacter::walk() {
 	}
 }
 
-void BossCharacter::death() {
-	updateAnimation(State::DEATH);
-	auto die = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
-	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(2);
-	auto seq = Sequence::create(delay, die, nullptr);
-	characterSprite->runAction(seq);
+void BossCharacter::takeHit(float dame)
+{
+	characterStats.HP -= dame;
+	characterStats.UpdateStatsBar();
+
+	if (characterStats.HP <= 0.0f) {
+		death();
+	}
 }

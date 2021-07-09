@@ -5,10 +5,11 @@
 #include "Character.h"
 #include "PhysicsShapeCache.h"
 #include "Stats.h"
+#include "Character.h"
 
 using namespace std;
 
-class MonsterCharacter //: public Character
+class MonsterCharacter : public Character
 {
 public:
     int level;
@@ -31,13 +32,12 @@ public:
 
     void death();
 
-    void hurt(float dame);
+    void takeHit(float dame);
 
     void idle();
 
     void walk();
 private:
-	Stats monsterStats;
 
     cocos2d::Node* scene;
     string floder;
