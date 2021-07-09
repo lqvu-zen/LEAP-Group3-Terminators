@@ -16,6 +16,8 @@ public:
     CREATE_FUNC(HelloWorld);
 
     Mission* mission;
+
+    BossCharacter* boss;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

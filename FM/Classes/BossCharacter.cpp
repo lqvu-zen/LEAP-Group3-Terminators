@@ -334,3 +334,11 @@ void BossCharacter::walk() {
 		characterSprite->runAction(move);
 	}
 }
+
+void BossCharacter::death() {
+	updateAnimation(State::DEATH);
+	auto die = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
+	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(2);
+	auto seq = Sequence::create(delay, die, nullptr);
+	characterSprite->runAction(seq);
+}

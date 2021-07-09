@@ -46,6 +46,7 @@ public:
         return characterDirection;
     }
 
+    void death();
     void attack();
     void jumpAttack();
     void run();
