@@ -206,9 +206,6 @@ bool PlayGameScene::init()
 	playerChar = GameManager::getInstace()->GetPlayerCharacter();
 	playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-	
-	
-	
 
 	//cameraTarget for the followCamera to follow the player.
 	cameraTarget = Node::create();
@@ -244,9 +241,8 @@ bool PlayGameScene::init()
 			monsters[numOfMonster] = new MonsterCharacter(gameNode, 1);
 			monsters[numOfMonster]->getSprite()->setPosition(eneX, eneY);
 
-			int tag = GameManager::getInstace()->AddMonsterCharacter(monsters[numOfMonster]);
+			GameManager::getInstace()->AddCharacter(monsters[numOfMonster]);
 
-			monsters[numOfMonster]->getSprite()->setTag(tag);
 			//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
 			//enemy->setPhysicsBody(enemyBody);
 			gameNode->addChild(monsters[numOfMonster]->getSprite());
@@ -271,10 +267,28 @@ bool PlayGameScene::init()
 			int bossY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
 			boss = new BossCharacter(1);
 			boss->setPosition(Vec2(bossX, bossY));
+
+			GameManager::getInstace()->AddCharacter(boss);
+
 			//boss->setPosition(visibleSize / 2);
 			gameNode->addChild(boss->getSprite());
 		}
 	}
+
+	//add boss healthbar
+	auto bossStats = boss->getStats();
+	auto bossStatsSprite = bossStats.GetSprite();
+	scaleRatio = 2.0f;
+	bossStatsSprite->setScale(scaleRatio);
+	bossStatsSprite->setPosition(
+		Vec2(
+			visibleSize.width + origin.x - bossStats.GetSpriteSize().width * 6.0f,
+			visibleSize.height + origin.y - bossStats.GetSpriteSize().height * scaleRatio
+		)
+		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
+	);
+	bossStatsSprite->setVisible(true);
+	buttonNode->addChild(bossStatsSprite, 101);
 
 	//Contact test
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -481,5 +495,6 @@ void PlayGameScene::updateBoss(float dt) {
 	else {
 		boss->setDirection(BossCharacter::Direction::RIGHT);
 	}
+
 	boss->updateAction(playerChar->getSprite()->getPosition());
 }

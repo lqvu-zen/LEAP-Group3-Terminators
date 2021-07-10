@@ -37,12 +37,16 @@ private:
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onClickAttackMenu(cocos2d::Ref* sender);
 	void onClickMenuItem(cocos2d::Ref* sender);
+<<<<<<< HEAD
 
 	//Pause
 	void goToMission();
 	void goToSetting();
 	void goToMainMenu();
 	void goToExit();
+=======
+	void onContactSeperate(cocos2d::PhysicsContact &contact);
+>>>>>>> 9a01d1d9d890fb3cbd5e9bbbd9d7365dcbbdba67
 };
 
 #endif // __VILLAGE_SCENE_H__

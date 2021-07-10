@@ -218,8 +218,8 @@ bool VillageScene::init()
 				
 				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 				tilePhysics->setDynamic(false);
-				//tilePhysics->setCategoryBitmask(OBSTACLE_COLLISION_BITMASK);
-				tilePhysics->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
+				tilePhysics->setCategoryBitmask(OBSTACLE_COLLISION_BITMASK);
+				//tilePhysics->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
 				tilePhysics->setContactTestBitmask(ALLSET_BITMASK);
 				spriteTile->setPhysicsBody(tilePhysics);
 			}
@@ -280,6 +280,7 @@ bool VillageScene::init()
 	//Contact test
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(VillageScene::onContactBegin, this);
+	contactListener->onContactSeparate = CC_CALLBACK_1(VillageScene::onContactSeperate, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
 
@@ -398,12 +399,6 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			CCLOG("Hello Hero");
 			standAlone = false;
 		}
-		else if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() != NONPLAYER_CATEGORY_BITMASK)
-			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() != NONPLAYER_CATEGORY_BITMASK))
-		{
-			CCLOG("Hello");
-			standAlone = true;
-		}
 	}
 	return true;
 }
@@ -421,6 +416,7 @@ void VillageScene::onClickMenuItem(cocos2d::Ref* sender)
 	}
 }
 
+<<<<<<< HEAD
 //Pause
 void VillageScene::goToMission() {
 	UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
@@ -438,4 +434,21 @@ void VillageScene::goToExit() {
 		Director::getInstance()->end();
 	});
 	buttonNode->addChild(popup, 100);
+=======
+//onContactSeperate when two shapes seperate from each other.
+void VillageScene::onContactSeperate(cocos2d::PhysicsContact &contact)
+{
+	auto a = contact.getShapeA();
+	auto b = contact.getShapeB();
+	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
+		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
+	{
+		if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK)
+			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK))
+		{	//If player is far away from the NPC -> no dialogue with NPC will be trigger!
+			CCLOG("Goodbye");
+			standAlone = true;
+		}
+	}
+>>>>>>> 9a01d1d9d890fb3cbd5e9bbbd9d7365dcbbdba67
 }

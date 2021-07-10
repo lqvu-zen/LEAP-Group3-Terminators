@@ -4,6 +4,7 @@ USING_NS_CC;
 
 PlayerCharacter::PlayerCharacter()
 {
+	characterDirection = Direction::RIGHT;
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Warrior/Warrior.plist", "sprites/Warrior/Warrior.png");
 	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Warrior-Idle-0.png");
 	

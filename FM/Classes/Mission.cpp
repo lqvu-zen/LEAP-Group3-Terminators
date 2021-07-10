@@ -30,6 +30,10 @@ Mission::Mission() {
 		}
 	}
 	hasMission = false;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9a01d1d9d890fb3cbd5e9bbbd9d7365dcbbdba67
 	index = 0;
 }
 
