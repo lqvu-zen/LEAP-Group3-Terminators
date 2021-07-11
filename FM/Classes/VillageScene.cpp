@@ -64,7 +64,7 @@ bool VillageScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			UICustom::Popup* popup = UICustom::Popup::createPauseMenuVillage([=]() {
+			/*UICustom::Popup* popup = UICustom::Popup::createPauseMenuVillage([=]() {
 				goToMission();
 			}, [=]() {
 				goToSetting();
@@ -72,7 +72,8 @@ bool VillageScene::init()
 				goToMainMenu();
 			}, [=]() {
 				goToExit();
-			});
+			});*/
+			UICustom::Popup* popup = UICustom::Popup::createSetting();
 			buttonNode->addChild(popup, 100);
 			break;
 		}
@@ -416,7 +417,6 @@ void VillageScene::onClickMenuItem(cocos2d::Ref* sender)
 	}
 }
 
-<<<<<<< HEAD
 //Pause
 void VillageScene::goToMission() {
 	UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
@@ -434,7 +434,8 @@ void VillageScene::goToExit() {
 		Director::getInstance()->end();
 	});
 	buttonNode->addChild(popup, 100);
-=======
+}
+
 //onContactSeperate when two shapes seperate from each other.
 void VillageScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 {
@@ -450,5 +451,4 @@ void VillageScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 			standAlone = true;
 		}
 	}
->>>>>>> 9a01d1d9d890fb3cbd5e9bbbd9d7365dcbbdba67
 }
