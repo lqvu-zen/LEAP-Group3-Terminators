@@ -4,10 +4,37 @@ USING_NS_CC;
 
 PlayerCharacter::PlayerCharacter()
 {
-	characterDirection = Direction::RIGHT;
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Warrior/Warrior.plist", "sprites/Warrior/Warrior.png");
-	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Warrior-Idle-0.png");
+
+	//set Stats
+	characterStats.SetHeroStats();
+
+	characterAnimate.clear();
+
+	characterSprite = nullptr;
+
+	init();
+}
+
+PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
+{
+	PlayerCharacter();
+	setPosition(position);
+}
+
+void PlayerCharacter::init()
+{
+	if (characterSprite != nullptr) {
+		characterSprite->removeAllChildren();
+		characterSprite->removeFromParent();
+
+		characterStats.GetSprite()->setParent(nullptr);
+	}
+
+	characterDirection = Direction::RIGHT;
 	
+	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Warrior-Idle-0.png");
+
 	characterSize = Size(frame->getOriginalSize().width * 0.5f, frame->getOriginalSize().height * 0.8f);
 
 	//create sprites
@@ -35,11 +62,6 @@ PlayerCharacter::PlayerCharacter()
 
 	attackMode = 1;
 
-	//set Stats
-	characterStats.SetHeroStats();
-
-	characterAnimate.clear();
-
 	//set skill
 	castingSkill = false;
 	attacking = false;
@@ -51,12 +73,6 @@ PlayerCharacter::PlayerCharacter()
 
 	//--
 	died = false;
-}
-
-PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
-{
-	PlayerCharacter();
-	setPosition(position);
 }
 
 void PlayerCharacter::setPosition(cocos2d::Vec2 position)

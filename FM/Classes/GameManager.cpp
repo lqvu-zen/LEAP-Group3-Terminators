@@ -17,6 +17,9 @@ PlayerCharacter * GameManager::GetPlayerCharacter()
 
 		this->AddCharacter(playerCharacter);
 	}
+	else {
+		playerCharacter->init();
+	}
 
 	return playerCharacter;
 }
