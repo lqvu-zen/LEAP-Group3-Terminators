@@ -9,7 +9,7 @@ USING_NS_CC;
 Scene* VillageScene::createScene()
 {
 	auto scene = VillageScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -166,12 +166,13 @@ bool VillageScene::init()
 #endif
 
 #if 1
-
-	auto attackItem = MenuItemImage::create("sprites/interact.png", "sprites/interact.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
+	//Interact button setup
+	attackItem = MenuItemImage::create("sprites/interact.png", "sprites/interact.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
 	attackItem->setScale(0.5);
 	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
 	attackItem->setTag(1);
-
+	attackItem->setOpacity(100);
+	attackItem->setEnabled(false);
 	auto attackMenu = Menu::create(attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
 	buttonNode->addChild(attackMenu, 100);
@@ -207,7 +208,7 @@ bool VillageScene::init()
 			auto spriteTile = Foreground->getTileAt(Vec2(i, j));
 			if (spriteTile != NULL)
 			{
-				
+				int tileGid = Foreground->getTileGIDAt(Vec2(i, j));
 				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 				tilePhysics->setDynamic(false);
 				tilePhysics->setCategoryBitmask(OBSTACLE_COLLISION_BITMASK);
@@ -243,6 +244,16 @@ bool VillageScene::init()
 			npc->getSprite()->setPosition(npcX, npcY);
 			gameNode->addChild(npc->getSprite());
 		}
+
+		//Spawn Portal
+		if (SpawnPoint.asValueMap()["Portal"].asInt() == 1)
+		{
+			int portalX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
+			int portalY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			portal = new Portal();
+			portal->getSprite()->setPosition(portalX, portalY);
+			gameNode->addChild(portal->getSprite());
+		}
 	}
 	
 	
@@ -251,7 +262,7 @@ bool VillageScene::init()
 	//cameraTarget for the followCamera to follow the player.
 	cameraTarget = Node::create();
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
-	cameraTarget->setPositionY(visibleSize.height / 2 + origin.y);
+	cameraTarget->setPositionY(visibleSize.height / 2 + origin.y + 150);//Push the camera a bit higher
 	gameNode->addChild(cameraTarget);
 	gameNode->addChild(playerChar->getSprite());
 
@@ -388,8 +399,22 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		if ( (a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK)
 			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK))
 		{
+			//If the player stand in range of the NPC. The button will glow and enable to interact
 			CCLOG("Hello Hero");
 			standAlone = false;
+
+			//Enable the button
+			attackItem->setEnabled(true);
+			attackItem->setOpacity(255);
+		}
+
+		else if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == PORTAL_CATEGORY_BITMASK)
+			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == PORTAL_CATEGORY_BITMASK))
+		{
+			//When Player made contact with the Portal -> Send them to the PlayGameScene;
+			CCLOG("Touched portal");
+			auto scene = PlayGameScene::createScene();
+			Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 		}
 	}
 	return true;
@@ -421,6 +446,10 @@ void VillageScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 		{	//If player is far away from the NPC -> no dialogue with NPC will be trigger!
 			CCLOG("Goodbye");
 			standAlone = true;
+
+			//Disable the button when the Player is not in-range of the NPC
+			attackItem->setOpacity(100);
+			attackItem->setEnabled(false);
 		}
 	}
 }
