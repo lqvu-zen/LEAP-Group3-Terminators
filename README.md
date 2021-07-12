@@ -24,3 +24,14 @@
 * Java jdk: follow system
 * Rename your virtual device in config file 
 * Remember to change path in enviroment path, re-setup cocos and change path in android build.
+
+# Update Note: v.0.0.2
+
+## Adđ some features
+* New map
+* Combat, healthbar, skills
+* Gem collect
+* NPC
+* Change controller
+* Auto attact enemies
+
