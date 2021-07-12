@@ -493,7 +493,8 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK)
 			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK))
 		{
-			//If the player stand in range of the NPC. The button will glow and enable to interact
+			//When the Player trigger the TRIGGER Point. The followCamera action will be stop and the map will be move to the 
+			//middle of the boss arena.
 			CCLOG("TRIGGER!!!");
 			trigger->removeFromParentAndCleanup(true);
 			//stop the followCamera action
