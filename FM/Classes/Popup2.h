@@ -38,11 +38,16 @@ namespace UICustom {
         void setAnimated(const bool animated) { _isAnimated = animated; };
 
         cocos2d::ui::ImageView* _bg = nullptr;
+
     private:
         bool _isAnimated = false;
     };
 
 
+    enum {
+        eSldMusic = 0,
+        eSldSound
+    };
 
     class Popup : public PopupDelegates
     {
@@ -61,10 +66,17 @@ namespace UICustom {
     private:
         void initBg(const cocos2d::Size size, const std::string& title);
 
+        /*
+        //Edit
+        cocos2d::ui::CheckBox* m_checkboxMuteAllSound;
+        cocos2d::ui::Slider* m_sliderOptionMusic[2];
+
         //Edit
         void sliderEvent(Ref* pSender, Slider::EventType type);
         void checkBoxSelectedEvent(Ref* pSender, CheckBox::EventType type);
         void changeVolumeOfAudio(int _typeAudio, float _valueVolume);
+
+        */
     };
 
 }

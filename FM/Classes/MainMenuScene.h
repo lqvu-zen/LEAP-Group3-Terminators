@@ -26,7 +26,6 @@
 #define __MAIN_MENU_SCENE_H__
 
 #include "cocos2d.h"
-#include "PopupSetting.h"
 
 class MainMenuScene : public cocos2d::Scene
 {
@@ -40,8 +39,6 @@ public:
     CREATE_FUNC(MainMenuScene);
 
 private:
-
-    PopupSetting* m_popupSetting;
 
     void onClickMenuItem(cocos2d::Ref* sender);
 

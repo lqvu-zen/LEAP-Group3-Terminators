@@ -37,22 +37,6 @@ bool VillageScene::init()
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-	//Popup menu
-	popupMenu = new Popup();
-	popupMenu->init();
-	auto mainMenuItem = MenuItemFont::create("Go To Main Menu", CC_CALLBACK_1(VillageScene::onClickMenuItem, this));
-	mainMenuItem->setTag(1);
-	mainMenuItem->setColor(Color3B::BLACK);
-	auto playGameItem = MenuItemFont::create("Go To Play Game", CC_CALLBACK_1(VillageScene::onClickMenuItem, this));
-	playGameItem->setTag(2);
-	playGameItem->setColor(Color3B::BLACK);
-	auto menu = Menu::create(mainMenuItem, playGameItem, nullptr);
-	menu->setPosition(visibleSize / 2);
-	menu->alignItemsVertically();
-	popupMenu->getPopUpLayer()->addChild(menu);
-	buttonNode->addChild(popupMenu, 100);
-	//End Popup menu
-
 	//Add buttons
 #if 1
 	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
@@ -64,7 +48,7 @@ bool VillageScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			/*UICustom::Popup* popup = UICustom::Popup::createPauseMenuVillage([=]() {
+			UICustom::Popup* popup = UICustom::Popup::createPauseMenuVillage([=]() {
 				goToMission();
 			}, [=]() {
 				goToSetting();
@@ -72,39 +56,12 @@ bool VillageScene::init()
 				goToMainMenu();
 			}, [=]() {
 				goToExit();
-			});*/
-			UICustom::Popup* popup = UICustom::Popup::createSetting();
+			});
 			buttonNode->addChild(popup, 100);
 			break;
 		}
 	});
 	buttonNode->addChild(pauseButton, 100);
-#endif
-
-#if 1
-	auto playButton = ui::Button::create("sprites/play.png");
-	playButton->setScale(0.07);
-	playButton->setPosition(Vec2(visibleSize.width - pauseButton->getContentSize().width * 0.15, visibleSize.height - pauseButton->getContentSize().height * 0.05));
-	playButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			if (!isPopUpDisplay)
-			{	//to display the popup menu and to close it.
-				isPopUpDisplay = true;
-				popupMenu->appear();
-			}
-			else
-			{
-				isPopUpDisplay = false;
-				popupMenu->disappear();
-			}
-			break;
-		}
-	});
-	buttonNode->addChild(playButton, 100);
 #endif
 
 #if 1

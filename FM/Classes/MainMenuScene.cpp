@@ -79,11 +79,6 @@ bool MainMenuScene::init()
     menu->alignItemsVertically();
     this->addChild(menu);
 #endif 
-    
-    m_popupSetting = PopupSetting::create();
-    m_popupSetting->retain();
-    addChild(m_popupSetting);
-
     return true;
 }
 
@@ -110,7 +105,7 @@ void MainMenuScene::goToNewGame(float dt) {
 }
 
 void MainMenuScene::goToSetting(float dt) {
-    m_popupSetting->appear();
+    
 }
 
 void MainMenuScene::goToAbout(float dt) {

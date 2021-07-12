@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "PlayerCharacter.h"
 #include "ui//CocosGUI.h"
-#include "Popup.h"
+#include "Popup2.h"
 #include "NPC.h"
 #include "GameManager.h"
 
@@ -21,7 +21,6 @@ public:
 	bool isPopUpDisplay = false;
 	bool standAlone = true;
 	CREATE_FUNC(VillageScene);
-	Popup* popupMenu;
 private:
 	
 	TMXTiledMap *map;
