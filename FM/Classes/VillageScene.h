@@ -35,7 +35,6 @@ private:
 	void updateCharacter(float dt);
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onClickAttackMenu(cocos2d::Ref* sender);
-	void onClickMenuItem(cocos2d::Ref* sender);
 
 	//Pause
 	void goToMission();

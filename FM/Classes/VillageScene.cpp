@@ -65,6 +65,24 @@ bool VillageScene::init()
 #endif
 
 #if 1
+	auto playButton = ui::Button::create("sprites/play.png");
+	playButton->setScale(0.07);
+	playButton->setPosition(Vec2(visibleSize.width - pauseButton->getContentSize().width * 0.15, visibleSize.height - pauseButton->getContentSize().height * 0.05));
+	playButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			auto scene = PlayGameScene::createScene();
+			Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+			break;
+		}
+	});
+	buttonNode->addChild(playButton, 100);
+#endif
+
+#if 1
 	auto button = Sprite::create("sprites/button.png");
 	button->setScale(0.2);
 	button->setPosition(Vec2(button->getContentSize().width * 0.1, button->getContentSize().height * 0.05));
@@ -359,19 +377,6 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		}
 	}
 	return true;
-}
-
-void VillageScene::onClickMenuItem(cocos2d::Ref* sender)
-{
-	auto node = dynamic_cast<Node*>(sender);
-	if (node->getTag() == 1) {//Go to main menu
-		auto scene = MainMenuScene::createScene();
-		Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-	}
-	else if (node->getTag() == 2) {//Go to play game scene
-		auto scene = PlayGameScene::createScene();
-		Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-	}
 }
 
 //Pause

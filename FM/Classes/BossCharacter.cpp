@@ -355,5 +355,6 @@ void BossCharacter::takeHit(float dame)
 
 	if (characterStats.HP <= 0.0f) {
 		death();
+		GameManager::getInstace()->getMission()->updateMission(2);
 	}
 }

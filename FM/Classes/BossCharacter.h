@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Character.h"
 #include "PhysicsShapeCache.h"
+#include "GameManager.h"
 
 using namespace std;
 

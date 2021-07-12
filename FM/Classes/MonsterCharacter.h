@@ -6,6 +6,7 @@
 #include "PhysicsShapeCache.h"
 #include "Stats.h"
 #include "Character.h"
+#include "GameManager.h"
 
 using namespace std;
 

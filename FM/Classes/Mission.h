@@ -44,16 +44,24 @@ public:
                 }
                 i++;
             }
+            if (i == data.size()) {
+                index = i;
+                mission = data.at(data.size() - 1);
+                return mission;
+            }
         }
     }
 
     Data getNowMission() {
         if (hasMission) {
             if (mission.state == true)
-                mission = data.at(data.size() - 1);
+                mission = data.at(data.size() - 2);
             return mission;
         }
         else {
+            if (index == data.size()) {
+                return mission;
+            }
             return data.at(0);
         }
     }

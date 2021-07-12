@@ -42,13 +42,18 @@ void Mission::updateMission(int type) {
 }
 
 void Mission::cancelMission() {
-	mission.state = true;
-	data.at(index).state = true;
-	hasMission = false;
+	if (index != data.size()) {
+		mission.state = true;
+		data.at(index).state = true;
+		hasMission = false;
+	}	
 }
 
 void Mission::agreeMission() {
 	hasMission = true;
+	if (mission.id == data.size() - 2) {
+		hasMission = false;
+	}
 }
 
 void Mission::submitMission() {

@@ -108,7 +108,7 @@ void MonsterCharacter::attack() {
 
 void MonsterCharacter::death() {
 	//animation->release();
-	animation = MonsterCharacter::createAnimation("Death-", 24, 0.1);
+	animation = MonsterCharacter::createAnimation("Death-", 24, 0.02);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	monster->runAction(animate);
@@ -123,15 +123,14 @@ void MonsterCharacter::takeHit(float dame) {
 	characterStats.HP -= dame;
 	characterStats.UpdateStatsBar();
 
+	animation = MonsterCharacter::createAnimation("Hurt-", 4, 0.02);
+	auto animate = Animate::create(animation);
+	animate->retain();
+	monster->runAction(animate);
+
 	if (characterStats.HP <= 0.0f) {
 		death();
-	}
-	else {
-		//animation->release();
-		animation = MonsterCharacter::createAnimation("Hurt-", 4, 0.5);
-		auto animate = Animate::create(animation);
-		animate->retain();
-		monster->runAction(animate);
+		GameManager::getInstace()->getMission()->updateMission(1);
 	}
 }
 
