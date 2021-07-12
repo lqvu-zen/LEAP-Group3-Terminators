@@ -8,7 +8,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -176,6 +176,7 @@ bool PlayGameScene::init()
 	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 0.0f), 3);
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(Point(mapSize.width/2, mapSize.height/2));
+	edgeBody->setCategoryBitmask(ALLSET_BITMASK);
 	edgeBody->setCollisionBitmask(ALLSET_BITMASK);
 	edgeBody->setContactTestBitmask(ALLCLEARED_BITMASK);
 
@@ -195,6 +196,7 @@ bool PlayGameScene::init()
 				
 				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 				tilePhysics->setDynamic(false);
+				tilePhysics->setCategoryBitmask(ALLSET_BITMASK);
 				tilePhysics->setCollisionBitmask(ALLSET_BITMASK);
 				tilePhysics->setContactTestBitmask(ALLCLEARED_BITMASK);
 				spriteTile->setPhysicsBody(tilePhysics);
@@ -241,7 +243,7 @@ bool PlayGameScene::init()
 	);
 	buttonNode->addChild(playerStatsSprite, 100);
 
-	//Add enemies here!!
+	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
 	for (auto SpawnPoint : objectGroup->getObjects())
@@ -286,22 +288,34 @@ bool PlayGameScene::init()
 			//boss->setPosition(visibleSize / 2);
 			gameNode->addChild(boss->getSprite());
 		}
-	}
 
-	//add boss healthbar
-	auto bossStats = boss->getStats();
-	auto bossStatsSprite = bossStats.GetSprite();
-	scaleRatio = 2.0f;
-	bossStatsSprite->setScale(scaleRatio);
-	bossStatsSprite->setPosition(
-		Vec2(
-			visibleSize.width + origin.x - bossStats.GetSpriteSize().width * 6.0f,
-			visibleSize.height + origin.y - bossStats.GetSpriteSize().height * scaleRatio
-		)
-		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
-	);
-	bossStatsSprite->setVisible(true);
-	buttonNode->addChild(bossStatsSprite, 101);
+		//Spawn Trigger point
+		if (SpawnPoint.asValueMap()["Trigger"].asInt() == 1)
+		{
+			int triggerX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
+			int triggerY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			trigger = Sprite::create();
+			auto triggerBody = PhysicsBody::createBox(Size(64, mapSize.height));
+			triggerBody->setDynamic(false);
+			triggerBody->setRotationEnable(false);
+			triggerBody->setCategoryBitmask(NONPLAYER_CATEGORY_BITMASK);
+			triggerBody->setContactTestBitmask(ALLSET_BITMASK);
+			trigger->setPhysicsBody(triggerBody);
+			trigger->setPosition(triggerX, triggerY);
+			gameNode->addChild(trigger);
+		}
+
+		//Spawn Dummy point
+		if (SpawnPoint.asValueMap()["Dummy"].asInt() == 1)
+		{
+			int dummyX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
+			int dummyY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			middleOfBossArena = Sprite::create();
+			middleOfBossArena->setPosition(dummyX, dummyY);
+			gameNode->addChild(middleOfBossArena);
+		}
+
+	}
 
 	//Contact test
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -328,6 +342,9 @@ bool PlayGameScene::init()
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
 	//boss->death();
 	this->scheduleUpdate();
+
+	
+
 
 	return true;
 }
@@ -365,7 +382,7 @@ void PlayGameScene::updateCharacter(float dt)
 	}
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (playerChar->isGrounded() && playerChar->getRealtimeVolocity().y <= PADDING_VELOCITY) {
+		if (playerChar->getStats().canJump() && playerChar->getVolocity().y <= PADDING_VELOCITY) {
 			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
 		}
 	}
@@ -457,6 +474,21 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		{
 			CCLOG("Hit player");
 			playerChar->takeHit();
+		}
+
+		//Player collide with trigger point
+		if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK)
+			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK))
+		{
+			//When the Player trigger the TRIGGER Point. The followCamera action will be stop and the map will be move to the 
+			//middle of the boss arena.
+			CCLOG("TRIGGER!!!");
+			trigger->removeFromParentAndCleanup(true);
+			//stop the followCamera action
+			gameNode->stopAction(followCamera);
+			//Using MoveTo to move the gameNode to the middleOfBossArena(x = 4056). The Vec2's y = 0 because we only want to move the x coord. 
+			auto moveTo = MoveTo::create(2, Vec2(-(middleOfBossArena->getPositionX() - visibleSize.width/2), 0));
+			gameNode->runAction(moveTo);
 		}
 	}
 	

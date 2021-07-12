@@ -72,10 +72,16 @@ namespace UICustom {
         //Slider* m_sliderOptionMusic;
 
         //Edit
+<<<<<<< HEAD
         static void sliderEvent(Ref* pSender, Slider::EventType type);
         //void checkBoxSelectedEvent(Ref* pSender, CheckBox::EventType type);
         //void changeVolumeOfAudio(int _typeAudio, float _valueVolume);
      
+=======
+        void sliderEvent(Ref* pSender, cocos2d::ui::Slider::EventType type);
+        void checkBoxSelectedEvent(Ref* pSender, cocos2d::ui::CheckBox::EventType type);
+        void changeVolumeOfAudio(int _typeAudio, float _valueVolume);
+>>>>>>> 3c7e6f1562919064257837ae91dd2913232d2367
     };
 
 }
