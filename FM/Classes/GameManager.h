@@ -8,6 +8,7 @@
 #include "BossCharacter.h"
 #include "Character.h"
 #include "Mission.h"
+#include "PhysicsShapeCache.h"
 
 USING_NS_CC;
 
@@ -27,6 +28,9 @@ public:
 	void AddCharacter(Character* ref);
 
 	void hit(int attacker, int victim);
+
+	PhysicsShapeCache* getPhysicsShapeCache();
+
 private:
 	static GameManager* create();
 
@@ -36,6 +40,8 @@ private:
 	std::map <int, Character*> characterMap;
 
 	Mission* mission;
+
+	PhysicsShapeCache* shapeCache;
 };
 
 #endif // __GAMEMANAGER_H__ 

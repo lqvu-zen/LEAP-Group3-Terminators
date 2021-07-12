@@ -31,6 +31,14 @@ Mission* GameManager::getMission() {
 	return mission;
 }
 
+PhysicsShapeCache* GameManager::getPhysicsShapeCache() {
+	if (shapeCache == nullptr) {
+		shapeCache = PhysicsShapeCache::getInstance();
+		shapeCache->addShapesWithFile("plist/Boss_1/body.plist");
+	}
+	return shapeCache;
+}
+
 void GameManager::AddCharacter(Character * ref)
 {
 	characterMap[++countCharacter] = ref;

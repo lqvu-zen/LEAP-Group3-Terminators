@@ -60,10 +60,10 @@ BossCharacter::BossCharacter(int level) {
 
 	attackSprite = Sprite::create();
 
-	shapeCache = PhysicsShapeCache::getInstance();
-	shapeCache->addShapesWithFile(boss + "body.plist");
-
-	characterPhysicsBody = shapeCache->createBodyWithName("Idle");
+	//shapeCache = PhysicsShapeCache::getInstance();
+	//shapeCache->addShapesWithFile(boss + "body.plist");
+	
+	characterPhysicsBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Idle");
 	characterPhysicsBody->setDynamic(true);
 	characterPhysicsBody->setRotationEnable(false);
 
@@ -266,7 +266,7 @@ void BossCharacter::attack() {
 	int type = rand() % 2 + 1;
 	if (type == 1) {
 		updateAnimation(State::ATTACK1);
-		cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Attack_1");
+		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Attack_1");
 		attackBody->setDynamic(false);
 		attackBody->setRotationEnable(false);
 		attackBody->setGravityEnable(false);
@@ -279,7 +279,7 @@ void BossCharacter::attack() {
 	}
 	else if (type == 2) {
 		updateAnimation(State::ATTACK2);
-		cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Attack_2");
+		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Attack_2");
 		attackBody->setDynamic(false);
 		attackBody->setRotationEnable(false);
 		attackBody->setGravityEnable(false);
@@ -296,7 +296,7 @@ void BossCharacter::jumpAttack() {
 	int type = rand() % 2 + 1;
 	if (type == 1) {
 		updateAnimation(State::JUMPATTACK1);
-		cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Jump_Attack_1");
+		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Jump_Attack_1");
 		attackBody->setDynamic(false);
 		attackBody->setRotationEnable(false);
 		attackBody->setGravityEnable(false);
@@ -310,7 +310,7 @@ void BossCharacter::jumpAttack() {
 	}
 	else if (type == 2) {
 		updateAnimation(State::JUMPATTACK2);
-		cocos2d::PhysicsBody* attackBody = shapeCache->createBodyWithName("Jump_Attack_2");
+		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Jump_Attack_2");
 		attackBody->setDynamic(false);
 		attackBody->setRotationEnable(false);
 		attackBody->setGravityEnable(false);

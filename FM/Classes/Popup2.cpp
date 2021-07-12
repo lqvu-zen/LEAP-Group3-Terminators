@@ -398,19 +398,15 @@ namespace UICustom {
     //    case CheckBox::EventType::SELECTED:
     //        m_sliderOptionMusic[eSldMusic]->setPercent(0);
     //        m_sliderOptionMusic[eSldSound]->setPercent(0);
-
     //        //m_audio->setEffectsVolume(0.0f);
     //        //m_audio->setBackgroundMusicVolume(0.0f);
     //        break;
-
     //    case CheckBox::EventType::UNSELECTED:
     //        m_sliderOptionMusic[eSldSound]->setPercent(50);
     //        m_sliderOptionMusic[eSldMusic]->setPercent(50);
-
     //        //m_audio->setEffectsVolume(0.5f);
     //        //m_audio->setBackgroundMusicVolume(0.5f);
     //        break;
-
     //    default:
     //        break;
     //    }

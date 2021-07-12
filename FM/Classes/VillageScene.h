@@ -23,11 +23,9 @@ public:
 	bool isPopUpDisplay = false;
 	bool standAlone = true;
 	CREATE_FUNC(VillageScene);
-<<<<<<< HEAD
-=======
+
 	cocos2d::MenuItemImage* attackItem;
-	Popup* popupMenu;
->>>>>>> 3c7e6f1562919064257837ae91dd2913232d2367
+
 private:
 	
 	TMXTiledMap *map;
