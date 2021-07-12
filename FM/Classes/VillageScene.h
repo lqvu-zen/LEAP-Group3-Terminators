@@ -41,6 +41,13 @@ private:
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onClickAttackMenu(cocos2d::Ref* sender);
 	void onClickMenuItem(cocos2d::Ref* sender);
+
+	//Pause
+	void goToMission();
+	void goToSetting();
+	void goToMainMenu();
+	void goToExit();
+
 	void onContactSeperate(cocos2d::PhysicsContact &contact);
 };
 

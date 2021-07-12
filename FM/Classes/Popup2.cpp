@@ -167,6 +167,34 @@ namespace UICustom {
         return nullptr;
     }
 
+    void Popup::initBg(Size size, const std::string& title)
+    {
+
+        Size winSize = Director::getInstance()->getWinSize();
+
+        _bg = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
+        this->addChild(_bg);
+
+        _bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
+        _bg->setScale9Enabled(true);
+        _bg->setContentSize(size);
+
+        ui::ImageView* fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
+        _bg->addChild(fill);
+        fill->setColor(Color3B(210, 210, 210));
+        fill->setScale9Enabled(true);
+        fill->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
+        fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
+        fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
+
+
+        Label* heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
+        heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET);
+        _bg->addChild(heading);
+        heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
+        heading->enableShadow(Color4B::BLACK, Size(0, -3));
+    }
+
     //Edit
     Popup* Popup::createAsConfirmRejectDialogue(const std::string& title, const std::string& msg, cocos2d::Label* lbl, const std::function<void()>& YesFunc, const std::function<void()>& NoFunc)
     {
@@ -215,33 +243,147 @@ namespace UICustom {
         return nullptr;
     }
 
-    void Popup::initBg(Size size, const std::string& title)
-    {
-
+    Popup* Popup::createPauseMenuVillage(const std::function<void()>& MissionFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc) {
+        Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
+        if (node && node->init())
+        {
+            auto missionButton = MenuItemFont::create("Your Mission", [=](Ref* sender) {
+                MissionFunc();
+                node->dismiss(true);
+            });
 
-        _bg = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
-        this->addChild(_bg);
+            auto settingButton = MenuItemFont::create("Setting", [=](Ref* sender) {
+                SettingFunc();
+                node->dismiss(true);
+            });
 
-        _bg->setPosition(Point(winSize.width / 2, winSize.height / 2));
-        _bg->setScale9Enabled(true);
-        _bg->setContentSize(size);
+            auto menuButton = MenuItemFont::create("Main Menu", [=](Ref* sender) {
+                MenuFunc();
+                node->dismiss(true);
+            });
 
-        ui::ImageView* fill = ui::ImageView::create(IMAGEPATH::BACKGROUND_IMAGE);
-        _bg->addChild(fill);
-        fill->setColor(Color3B(210, 210, 210));
-        fill->setScale9Enabled(true);
-        fill->setAnchorPoint(Point::ANCHOR_BOTTOM_LEFT);
-        fill->setPosition(Point(FONT::LABEL_OFFSET / 4, FONT::LABEL_OFFSET / 4));
-        fill->setContentSize(Size(size.width - FONT::LABEL_OFFSET / 2, size.height - FONT::LABEL_OFFSET * 2));
+            auto exitButton = MenuItemFont::create("Exit", [=](Ref* sender) {
+                ExitFunc();
+                node->dismiss(true);
+            });
 
+            Menu* menu = Menu::create(missionButton, settingButton, menuButton, exitButton, NULL);
+            node->addChild(menu, 2);
+            menu->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
+            menu->alignItemsVerticallyWithPadding(FONT::LABEL_OFFSET / 2);
 
-        Label* heading = Label::createWithTTF(title, FONT::GAME_FONT, FONT::TITLE_TEXT_SIZE);
-        heading->setPosition(_bg->getContentSize().width / 2, _bg->getContentSize().height - FONT::LABEL_OFFSET);
-        _bg->addChild(heading);
-        heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
-        heading->enableShadow(Color4B::BLACK, Size(0, -3));
+            node->initBg(Size(400,400), "Pause");
+            node->autorelease();
+            return node;
+        }
+
+        CC_SAFE_DELETE(node);
+        return nullptr;
     }
 
+    Popup* Popup::createPauseMenuPlayGame(const std::function<void()>& MissionFunc, const std::function<void()>& VillageFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc) {
+        Popup* node = new (std::nothrow)Popup();
+        Size winSize = Director::getInstance()->getWinSize();
+        if (node && node->init())
+        {
+            auto missionButton = MenuItemFont::create("Your Mission", [=](Ref* sender) {
+                MissionFunc();
+                node->dismiss(true);
+            });
+
+            auto villageButton = MenuItemFont::create("Return Village", [=](Ref* sender) {
+                VillageFunc();
+                node->dismiss(true);
+            });
+
+            auto settingButton = MenuItemFont::create("Setting", [=](Ref* sender) {
+                SettingFunc();
+                node->dismiss(true);
+            });
+
+            auto menuButton = MenuItemFont::create("Main Menu", [=](Ref* sender) {
+                MenuFunc();
+                node->dismiss(true);
+            });
+
+            auto exitButton = MenuItemFont::create("Exit", [=](Ref* sender) {
+                ExitFunc();
+                node->dismiss(true);
+            });
+
+            Menu* menu = Menu::create(missionButton, villageButton, settingButton, menuButton, exitButton, NULL);
+            node->addChild(menu, 2);
+            menu->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
+            menu->alignItemsVerticallyWithPadding(FONT::LABEL_OFFSET / 2);
+
+            node->initBg(Size(400, 450), "Pause");
+            node->autorelease();
+            return node;
+        }
+
+        CC_SAFE_DELETE(node);
+        return nullptr;
+    }
+
+    Popup* Popup::createSetting() {
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+        Popup* node = new (std::nothrow)Popup();
+        Size winSize = Director::getInstance()->getWinSize();
+        if (node && node->init())
+        {
+            const char* SRT_SETTING[] = { "Music", "Sound" };
+
+            for (int index = 0; index < 2; index++) {
+                // label
+                auto  _label = Label::createWithTTF(SRT_SETTING[index], "fonts/arial.ttf", 30);
+                _label->setPosition(Vec2(winSize.width / 2, (winSize.height - FONT::LABEL_OFFSET / 2) * (7 - index * 2) / 10));
+                node->addChild(_label, 2);
+
+                // slider bar
+                Slider* m_sliderOptionMusic = Slider::create();
+                m_sliderOptionMusic->setTag(index);
+                m_sliderOptionMusic->setScale(0.5);
+                m_sliderOptionMusic->loadBarTexture("popup/spr_slidebar_off.png");
+                m_sliderOptionMusic->loadSlidBallTextures(
+                    "popup/spr_slidebar_button_normal.png",
+                    "popup/spr_slidebar_button_selected.png",
+                    "popup/spr_slidebar_button_selected.png");
+                m_sliderOptionMusic->loadProgressBarTexture("popup/spr_slidebar_on.png");
+
+                m_sliderOptionMusic->setPosition(Vec2(winSize.width / 2, (winSize.height - FONT::LABEL_OFFSET / 2) * (6 - index * 2) / 10));
+
+                //node->m_sliderOptionMusic[index]->addEventListener(CC_CALLBACK_2(PopupSetting::sliderEvent, this));
+                node->addChild(m_sliderOptionMusic, 2);
+            }
+
+
+            /// init checkbox
+            // label
+            auto  _labelMuteAllSound = Label::createWithTTF("Mute On Sound", "fonts/arial.ttf", 30);
+            _labelMuteAllSound->setPosition(Vec2(winSize.width * 4 / 10, (winSize.height / 2 - FONT::LABEL_OFFSET / 2) * 4 / 10));
+            node->addChild(_labelMuteAllSound, 2);
+
+            // checkbox
+            CheckBox* m_checkboxMuteAllSound = CheckBox::create("popup/spr_checkbox_normal.png",
+                "popup/spr_checkbox_normal_press.png",
+                "popup/spr_checkbox_active.png",
+                "popup/spr_checkbox_normal_press.png",
+                "popup/spr_checkbox_active.png");
+            m_checkboxMuteAllSound->setScale(0.5);
+            m_checkboxMuteAllSound->setPosition(Vec2(winSize.width * 6 / 10, (winSize.height / 2 - FONT::LABEL_OFFSET / 2) * 4 / 10));
+            //node->m_checkboxMuteAllSound->addEventListener(CC_CALLBACK_2(PopupSetting::checkBoxSelectedEvent, this));
+            node->addChild(m_checkboxMuteAllSound, 2);
+
+            node->initBg(Size(500, 500), "Setting");
+            node->autorelease();
+            return node;
+        }
+
+        CC_SAFE_DELETE(node);
+        return nullptr;
+    }
 }
 

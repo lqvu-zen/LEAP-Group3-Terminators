@@ -54,9 +54,17 @@ namespace UICustom {
 
         //Edit
         static Popup* createAsConfirmRejectDialogue(const std::string& title, const std::string& msg, cocos2d::Label* lbl, const std::function<void()>& YesFunc, const std::function<void()>& NoFunc);
+        static Popup* createPauseMenuVillage(const std::function<void()>& MissionFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc);
+        static Popup* createPauseMenuPlayGame(const std::function<void()>& MissionFunc, const std::function<void()>& VillageFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc);
+        static Popup* createSetting();
 
     private:
         void initBg(const cocos2d::Size size, const std::string& title);
+
+        //Edit
+        void sliderEvent(Ref* pSender, cocos2d::ui::Slider::EventType type);
+        void checkBoxSelectedEvent(Ref* pSender, cocos2d::ui::CheckBox::EventType type);
+        void changeVolumeOfAudio(int _typeAudio, float _valueVolume);
     };
 
 }
