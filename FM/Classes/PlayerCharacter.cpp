@@ -201,17 +201,22 @@ void PlayerCharacter::updateAction(float dt)
 		else if (characterPhysicsBody->getVelocity().y < -PADDING_VELOCITY) {
 			setFalling();
 		}
-		else {
+		else{
+			if (isFalling()) {
+				//reset after fall, i want to reset when player contact with ground or wall
+				resetJump();
+			}
 			setGrounded();
 		}
 
-		if (characterVelocity.y > BASE_VELOCITY) {
+		if (characterVelocity.y > PADDING_VELOCITY && characterStats.canJump() && characterPhysicsBody->getVelocity().y <= PLAYER_JUMP_VELOCITY * 0.5f) {
+			characterStats.jump++;
+			CCLOG("Jump from: %f", characterPhysicsBody->getVelocity().y);
 			characterPhysicsBody->setVelocity(
 				Vec2(
 					characterPhysicsBody->getVelocity().x, characterVelocity.y
 				)
 			);
-			characterVelocity.y = BASE_VELOCITY;
 		}
 
 		if (characterVelocity.x != 0.0f) {
@@ -228,6 +233,8 @@ void PlayerCharacter::updateAction(float dt)
 				)
 			);
 		}
+
+		characterVelocity = Vec2::ZERO;
 
 		//update animation
 		if (falling) {
@@ -314,6 +321,11 @@ void PlayerCharacter::setJumping()
 	falling = false;
 	jumping = true;
 	grounded = false;
+}
+
+void PlayerCharacter::resetJump()
+{
+	if (characterStats.jump > 0) characterStats.jump = 0;
 }
 
 void PlayerCharacter::attack(int mode)

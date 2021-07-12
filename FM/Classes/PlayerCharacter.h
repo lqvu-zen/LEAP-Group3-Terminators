@@ -35,6 +35,8 @@ public:
 	void setGrounded();
 	void setJumping();
 
+	void resetJump();
+
 	void attack(int mode = 0);
 
 	void takeHit(float dame = 10.0f);

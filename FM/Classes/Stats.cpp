@@ -58,6 +58,8 @@ void Stats::SetHeroStats(float hp, float mp, float atk, float def)
 	maxMP = MP = mp;
 	maxATK = ATK = atk;
 	maxDEF = DEF = def;
+	maxJump = 1;
+	jump = 0;
 }
 
 void Stats::SetMonsterStats(float hp, float mp, float atk, float def)
@@ -82,4 +84,14 @@ void Stats::UpdateStatsBar()
 {
 	statsHP->setPercentage(HP / maxHP * 100.0f);
 	statsMP->setPercentage(MP / maxMP * 100.0f);
+}
+
+bool Stats::canJump()
+{
+	return jump < maxJump;
+}
+
+void Stats::upgradeJump()
+{
+	maxJump = 2;
 }

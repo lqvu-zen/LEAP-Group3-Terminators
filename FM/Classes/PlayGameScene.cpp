@@ -6,7 +6,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -163,6 +163,7 @@ bool PlayGameScene::init()
 	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 0.0f), 3);
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(Point(mapSize.width/2, mapSize.height/2));
+	edgeBody->setCategoryBitmask(ALLSET_BITMASK);
 	edgeBody->setCollisionBitmask(ALLSET_BITMASK);
 	edgeBody->setContactTestBitmask(ALLCLEARED_BITMASK);
 
@@ -182,6 +183,7 @@ bool PlayGameScene::init()
 				
 				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 				tilePhysics->setDynamic(false);
+				tilePhysics->setCategoryBitmask(ALLSET_BITMASK);
 				tilePhysics->setCollisionBitmask(ALLSET_BITMASK);
 				tilePhysics->setContactTestBitmask(ALLCLEARED_BITMASK);
 				spriteTile->setPhysicsBody(tilePhysics);
@@ -337,7 +339,7 @@ void PlayGameScene::updateCharacter(float dt)
 	}
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (playerChar->isGrounded() && playerChar->getRealtimeVolocity().y <= PADDING_VELOCITY) {
+		if (playerChar->getStats().canJump() && playerChar->getVolocity().y <= PADDING_VELOCITY) {
 			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
 		}
 	}
