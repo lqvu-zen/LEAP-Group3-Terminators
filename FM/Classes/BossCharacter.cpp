@@ -81,7 +81,9 @@ BossCharacter::BossCharacter(int level) {
 	characterDirection = Direction::LEFT;
 	action = 0;
 
-	
+	characterSprite->addChild(characterStats.GetSprite());
+	characterStats.GetSprite()->setScale(2.0f);
+	characterStats.GetSprite()->setPosition(Vec2(0.0f, characterSpriteAnimation->getContentSize().height));
 }
 
 cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {

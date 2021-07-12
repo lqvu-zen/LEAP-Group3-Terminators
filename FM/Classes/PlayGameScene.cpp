@@ -275,21 +275,6 @@ bool PlayGameScene::init()
 		}
 	}
 
-	//add boss healthbar
-	auto bossStats = boss->getStats();
-	auto bossStatsSprite = bossStats.GetSprite();
-	scaleRatio = 2.0f;
-	bossStatsSprite->setScale(scaleRatio);
-	bossStatsSprite->setPosition(
-		Vec2(
-			visibleSize.width + origin.x - bossStats.GetSpriteSize().width * 6.0f,
-			visibleSize.height + origin.y - bossStats.GetSpriteSize().height * scaleRatio
-		)
-		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
-	);
-	bossStatsSprite->setVisible(true);
-	buttonNode->addChild(bossStatsSprite, 101);
-
 	//Contact test
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(PlayGameScene::onContactBegin, this);
