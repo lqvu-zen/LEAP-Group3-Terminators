@@ -17,12 +17,14 @@ public:
 	Follow *followCamera;
 	Node *buttonNode;
 	Node *gameNode;
+	Sprite* trigger;
+	Sprite* middleOfBossArena;
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	bool isLocked = false;
 	CREATE_FUNC(PlayGameScene);
 	Node *lockNode;
-	void attackMonster(float dt);
+	//void attackMonster(float dt);
 	int numOfMonster = 0;
 private:
 	
@@ -33,7 +35,7 @@ private:
 	MonsterCharacter* monsters[2];
 	BossCharacter* boss;
 
-	void addAt(int x, int y, int type);
+	//void addAt(int x, int y, int type);
 	Vector<Node*> pausedActions;
 	
 	PlayerCharacter* playerChar;
@@ -42,7 +44,7 @@ private:
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void update(float dt);
 	void updateCharacter(float dt);
-	void onClickMoveMenu(cocos2d::Ref* sender);
+	//void onClickMoveMenu(cocos2d::Ref* sender);
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onClickAttackMenu(cocos2d::Ref* sender);
 	void updateMonster(float dt);
