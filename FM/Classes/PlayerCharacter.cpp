@@ -4,10 +4,37 @@ USING_NS_CC;
 
 PlayerCharacter::PlayerCharacter()
 {
-	characterDirection = Direction::RIGHT;
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Warrior/Warrior.plist", "sprites/Warrior/Warrior.png");
-	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Warrior-Idle-0.png");
+
+	//set Stats
+	characterStats.SetHeroStats();
+
+	characterAnimate.clear();
+
+	characterSprite = nullptr;
+
+	init();
+}
+
+PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
+{
+	PlayerCharacter();
+	setPosition(position);
+}
+
+void PlayerCharacter::init()
+{
+	if (characterSprite != nullptr) {
+		characterSprite->removeAllChildren();
+		characterSprite->removeFromParent();
+
+		characterStats.GetSprite()->setParent(nullptr);
+	}
+
+	characterDirection = Direction::RIGHT;
 	
+	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Warrior-Idle-0.png");
+
 	characterSize = Size(frame->getOriginalSize().width * 0.5f, frame->getOriginalSize().height * 0.8f);
 
 	//create sprites
@@ -35,11 +62,6 @@ PlayerCharacter::PlayerCharacter()
 
 	attackMode = 1;
 
-	//set Stats
-	characterStats.SetHeroStats();
-
-	characterAnimate.clear();
-
 	//set skill
 	castingSkill = false;
 	attacking = false;
@@ -51,12 +73,6 @@ PlayerCharacter::PlayerCharacter()
 
 	//--
 	died = false;
-}
-
-PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
-{
-	PlayerCharacter();
-	setPosition(position);
 }
 
 void PlayerCharacter::setPosition(cocos2d::Vec2 position)
@@ -201,17 +217,22 @@ void PlayerCharacter::updateAction(float dt)
 		else if (characterPhysicsBody->getVelocity().y < -PADDING_VELOCITY) {
 			setFalling();
 		}
-		else {
+		else{
+			if (isFalling()) {
+				//reset after fall, i want to reset when player contact with ground or wall
+				resetJump();
+			}
 			setGrounded();
 		}
 
-		if (characterVelocity.y > BASE_VELOCITY) {
+		if (characterVelocity.y > PADDING_VELOCITY && characterStats.canJump() && characterPhysicsBody->getVelocity().y <= PLAYER_JUMP_VELOCITY * 0.5f) {
+			characterStats.jump++;
+			CCLOG("Jump from: %f", characterPhysicsBody->getVelocity().y);
 			characterPhysicsBody->setVelocity(
 				Vec2(
 					characterPhysicsBody->getVelocity().x, characterVelocity.y
 				)
 			);
-			characterVelocity.y = BASE_VELOCITY;
 		}
 
 		if (characterVelocity.x != 0.0f) {
@@ -228,6 +249,8 @@ void PlayerCharacter::updateAction(float dt)
 				)
 			);
 		}
+
+		characterVelocity = Vec2::ZERO;
 
 		//update animation
 		if (falling) {
@@ -314,6 +337,11 @@ void PlayerCharacter::setJumping()
 	falling = false;
 	jumping = true;
 	grounded = false;
+}
+
+void PlayerCharacter::resetJump()
+{
+	if (characterStats.jump > 0) characterStats.jump = 0;
 }
 
 void PlayerCharacter::attack(int mode)

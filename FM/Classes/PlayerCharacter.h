@@ -21,6 +21,8 @@ public:
 	PlayerCharacter();
 	PlayerCharacter(cocos2d::Vec2 position);
 
+	void init();
+
 	void setPosition(cocos2d::Vec2 position);
 
 	void updateAnimation(State actionState, Direction actionDirection = Direction::RIGHT, bool repeatForever = true);
@@ -34,6 +36,8 @@ public:
 	void setFalling();
 	void setGrounded();
 	void setJumping();
+
+	void resetJump();
 
 	void attack(int mode = 0);
 

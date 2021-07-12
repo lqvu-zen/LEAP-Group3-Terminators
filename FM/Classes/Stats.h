@@ -14,6 +14,8 @@ public:
 	float ATK;
 	float DEF;
 
+	int jump;
+
 	Stats();
 
 	void SetHeroStats(float hp = 100.0f, float mp = 100.0f, float atk = 20.0f, float def = 10.0f);
@@ -25,11 +27,16 @@ public:
 
 	void UpdateStatsBar();
 
+	bool canJump();
+	void upgradeJump();
+
 private:
 	float maxHP;
 	float maxMP;
 	float maxATK;
 	float maxDEF;
+
+	int maxJump;
 
 	cocos2d::Sprite* statsSprite;
 	cocos2d::Sprite* statsEmblemSpace;
