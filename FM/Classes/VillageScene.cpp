@@ -385,7 +385,8 @@ void VillageScene::goToMission() {
 	buttonNode->addChild(popup, 100);
 }
 void VillageScene::goToSetting() {
-	
+	UICustom::Popup* popup = UICustom::Popup::createSetting();
+	buttonNode->addChild(popup, 100);
 }
 void VillageScene::goToMainMenu() {
 	auto scene = MainMenuScene::createScene();

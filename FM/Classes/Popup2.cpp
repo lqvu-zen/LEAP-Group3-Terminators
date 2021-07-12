@@ -327,7 +327,7 @@ namespace UICustom {
         return nullptr;
     }
 
-#if 0 
+#if 1 
     Popup* Popup::createSetting() {
         Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
@@ -342,20 +342,20 @@ namespace UICustom {
                 node->addChild(_label, 2);
 
                 // slider bar
-                m_sliderOptionMusic[index] = ui::Slider::create();
-                m_sliderOptionMusic[index]->setTag(index);
-                m_sliderOptionMusic[index]->setScale(0.5);
-                m_sliderOptionMusic[index]->loadBarTexture("popup/spr_slidebar_off.png");
-                m_sliderOptionMusic[index]->loadSlidBallTextures(
+                Slider* m_sliderOptionMusic = Slider::create();
+                m_sliderOptionMusic->setTag(index);
+                m_sliderOptionMusic->setScale(0.5);
+                m_sliderOptionMusic->loadBarTexture("popup/spr_slidebar_off.png");
+                m_sliderOptionMusic->loadSlidBallTextures(
                     "popup/spr_slidebar_button_normal.png",
                     "popup/spr_slidebar_button_selected.png",
                     "popup/spr_slidebar_button_selected.png");
-                m_sliderOptionMusic[index]->loadProgressBarTexture("popup/spr_slidebar_on.png");
+                m_sliderOptionMusic->loadProgressBarTexture("popup/spr_slidebar_on.png");
 
-                m_sliderOptionMusic[index]->setPosition(Vec2(winSize.width / 2, (winSize.height - FONT::LABEL_OFFSET / 2) * (6 - index * 2) / 10));
+                m_sliderOptionMusic->setPosition(Vec2(winSize.width / 2, (winSize.height - FONT::LABEL_OFFSET / 2) * (6 - index * 2) / 10));
 
-                m_sliderOptionMusic[index]->addEventListener(CC_CALLBACK_2(Popup::sliderEvent, node));
-                node->addChild(m_sliderOptionMusic[index], 2);
+                //m_sliderOptionMusic->addEventListener(CC_CALLBACK_2(Popup::sliderEvent, node));
+                node->addChild(m_sliderOptionMusic, 2);
             }
 
 
@@ -366,14 +366,14 @@ namespace UICustom {
             node->addChild(_labelMuteAllSound, 2);
 
             // checkbox
-            m_checkboxMuteAllSound = ui::CheckBox::create("popup/spr_checkbox_normal.png",
+            CheckBox* m_checkboxMuteAllSound = CheckBox::create("popup/spr_checkbox_normal.png",
                 "popup/spr_checkbox_normal_press.png",
                 "popup/spr_checkbox_active.png",
                 "popup/spr_checkbox_normal_press.png",
                 "popup/spr_checkbox_active.png");
             m_checkboxMuteAllSound->setScale(0.5);
             m_checkboxMuteAllSound->setPosition(Vec2(winSize.width * 6 / 10, (winSize.height / 2 - FONT::LABEL_OFFSET / 2) * 4 / 10));
-            m_checkboxMuteAllSound->addEventListener(CC_CALLBACK_2(Popup::checkBoxSelectedEvent, node));
+            //m_checkboxMuteAllSound->addEventListener(CC_CALLBACK_2(Popup::checkBoxSelectedEvent, node));
             node->addChild(m_checkboxMuteAllSound, 2);
 
             node->initBg(Size(500, 500), "Setting");
@@ -385,42 +385,42 @@ namespace UICustom {
         return nullptr;
     }
     
-    void Popup::sliderEvent(Ref* pSender, Slider::EventType type) {
-        if (type == Slider::EventType::ON_PERCENTAGE_CHANGED) {
-            Slider* _slider = dynamic_cast<Slider*>(pSender);
-            float _valueVolume = float(_slider->getPercent()) / 100;
-            changeVolumeOfAudio(_slider->getTag(), _valueVolume);
-        }
-    }
-    void Popup::checkBoxSelectedEvent(Ref* pSender, CheckBox::EventType type) {
-        switch (type)
-        {
-        case CheckBox::EventType::SELECTED:
-            m_sliderOptionMusic[eSldMusic]->setPercent(0);
-            m_sliderOptionMusic[eSldSound]->setPercent(0);
+    //void Popup::sliderEvent(Ref* pSender, Slider::EventType type) {
+    //    if (type == Slider::EventType::ON_PERCENTAGE_CHANGED) {
+    //        Slider* _slider = dynamic_cast<Slider*>(pSender);
+    //        float _valueVolume = float(_slider->getPercent()) / 100;
+    //        changeVolumeOfAudio(_slider->getTag(), _valueVolume);
+    //    }
+    //}
+    //void Popup::checkBoxSelectedEvent(Ref* pSender, CheckBox::EventType type) {
+    //    switch (type)
+    //    {
+    //    case CheckBox::EventType::SELECTED:
+    //        m_sliderOptionMusic[eSldMusic]->setPercent(0);
+    //        m_sliderOptionMusic[eSldSound]->setPercent(0);
 
-            //m_audio->setEffectsVolume(0.0f);
-            //m_audio->setBackgroundMusicVolume(0.0f);
-            break;
+    //        //m_audio->setEffectsVolume(0.0f);
+    //        //m_audio->setBackgroundMusicVolume(0.0f);
+    //        break;
 
-        case CheckBox::EventType::UNSELECTED:
-            m_sliderOptionMusic[eSldSound]->setPercent(50);
-            m_sliderOptionMusic[eSldMusic]->setPercent(50);
+    //    case CheckBox::EventType::UNSELECTED:
+    //        m_sliderOptionMusic[eSldSound]->setPercent(50);
+    //        m_sliderOptionMusic[eSldMusic]->setPercent(50);
 
-            //m_audio->setEffectsVolume(0.5f);
-            //m_audio->setBackgroundMusicVolume(0.5f);
-            break;
+    //        //m_audio->setEffectsVolume(0.5f);
+    //        //m_audio->setBackgroundMusicVolume(0.5f);
+    //        break;
 
-        default:
-            break;
-        }
-    }
-    void Popup::changeVolumeOfAudio(int _typeAudio, float _valueVolume) {
-        /*if (_typeAudio == eSldSound)
-            m_audio->setEffectsVolume(_valueVolume);
-        else
-            m_audio->setBackgroundMusicVolume(_valueVolume);*/
-    }
+    //    default:
+    //        break;
+    //    }
+    //}
+    //void Popup::changeVolumeOfAudio(int _typeAudio, float _valueVolume) {
+    //    /*if (_typeAudio == eSldSound)
+    //        m_audio->setEffectsVolume(_valueVolume);
+    //    else
+    //        m_audio->setBackgroundMusicVolume(_valueVolume);*/
+    //}
 #endif
 }
 

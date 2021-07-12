@@ -66,17 +66,16 @@ namespace UICustom {
     private:
         void initBg(const cocos2d::Size size, const std::string& title);
 
-        /*
+        
         //Edit
-        cocos2d::ui::CheckBox* m_checkboxMuteAllSound;
-        cocos2d::ui::Slider* m_sliderOptionMusic[2];
+        //CheckBox* m_checkboxMuteAllSound;
+        //Slider* m_sliderOptionMusic;
 
         //Edit
-        void sliderEvent(Ref* pSender, Slider::EventType type);
-        void checkBoxSelectedEvent(Ref* pSender, CheckBox::EventType type);
-        void changeVolumeOfAudio(int _typeAudio, float _valueVolume);
-
-        */
+        static void sliderEvent(Ref* pSender, Slider::EventType type);
+        //void checkBoxSelectedEvent(Ref* pSender, CheckBox::EventType type);
+        //void changeVolumeOfAudio(int _typeAudio, float _valueVolume);
+     
     };
 
 }
