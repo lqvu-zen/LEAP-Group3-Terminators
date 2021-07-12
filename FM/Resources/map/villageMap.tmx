@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="13">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="14">
  <tileset firstgid="1" source="PlayTileSet1.tsx"/>
  <tileset firstgid="325" source="BackgroundTileSet.tsx"/>
  <tileset firstgid="1166" source="BackgroundTileSetMountain.tsx"/>
@@ -33,6 +33,11 @@
   <object id="12" name="NPC" x="493" y="343" width="50" height="50">
    <properties>
     <property name="NPC" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="13" name="Portal" x="750" y="350" width="50" height="50">
+   <properties>
+    <property name="Portal" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>

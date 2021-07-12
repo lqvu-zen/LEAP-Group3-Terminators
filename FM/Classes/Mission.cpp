@@ -30,7 +30,6 @@ Mission::Mission() {
 		}
 	}
 	hasMission = false;
-
 	index = 0;
 }
 

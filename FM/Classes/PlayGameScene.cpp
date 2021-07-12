@@ -1,5 +1,7 @@
 #include "Definitions.h"
 #include "PlayGameScene.h"
+#include "MainMenuScene.h"
+#include "VillageScene.h"
 #include "Popup2.h"
 USING_NS_CC;
 
@@ -45,8 +47,19 @@ bool PlayGameScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			Mission* mission = new Mission();
-			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
+			UICustom::Popup* popup = UICustom::Popup::createPauseMenuPlayGame([=]() {
+				goToMission();
+			}, [=]() {
+				goToVillage();
+			}, [=]() {
+				goToSetting();
+			}, [=]() {
+				goToMainMenu();
+			}, [=]() {
+				goToExit();
+			});
+			/*Mission* mission = new Mission();
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);*/
 			buttonNode->addChild(popup, 100);
 			break;
 		}
@@ -484,4 +497,27 @@ void PlayGameScene::updateBoss(float dt) {
 	}
 
 	boss->updateAction(playerChar->getSprite()->getPosition());
+}
+
+//Pause
+void PlayGameScene::goToMission() {
+	UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
+	buttonNode->addChild(popup, 100);
+}
+void PlayGameScene::goToVillage() {
+	auto scene = VillageScene::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+}
+void PlayGameScene::goToSetting() {
+
+}
+void PlayGameScene::goToMainMenu() {
+	auto scene = MainMenuScene::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+}
+void PlayGameScene::goToExit() {
+	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Notify", "Want to Exit game", [=]() {
+		Director::getInstance()->end();
+	});
+	buttonNode->addChild(popup, 100);
 }

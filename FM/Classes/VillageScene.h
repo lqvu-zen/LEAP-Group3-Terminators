@@ -7,6 +7,8 @@
 #include "Popup.h"
 #include "NPC.h"
 #include "GameManager.h"
+#include "Portal.h"
+
 
 USING_NS_CC;
 class VillageScene: public cocos2d::Scene
@@ -21,6 +23,7 @@ public:
 	bool isPopUpDisplay = false;
 	bool standAlone = true;
 	CREATE_FUNC(VillageScene);
+	cocos2d::MenuItemImage* attackItem;
 	Popup* popupMenu;
 private:
 	
@@ -29,6 +32,7 @@ private:
 	Vec2 origin;
 	PlayerCharacter* playerChar;
 	NPC* npc;
+	Portal* portal;
 	std::vector<EventKeyboard::KeyCode> heldKeys;
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
@@ -37,6 +41,13 @@ private:
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onClickAttackMenu(cocos2d::Ref* sender);
 	void onClickMenuItem(cocos2d::Ref* sender);
+
+	//Pause
+	void goToMission();
+	void goToSetting();
+	void goToMainMenu();
+	void goToExit();
+
 	void onContactSeperate(cocos2d::PhysicsContact &contact);
 };
 

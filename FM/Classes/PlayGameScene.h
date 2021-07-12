@@ -48,6 +48,13 @@ private:
 	void updateMonster(float dt);
 	void monsterAction(float dt);
 	void updateBoss(float dt);
+
+	//Pause
+	void goToMission();
+	void goToVillage();
+	void goToSetting();
+	void goToMainMenu();
+	void goToExit();
 };
 
 #endif // __PLAYGAME_SCENE_H__
