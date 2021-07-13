@@ -9,7 +9,7 @@ USING_NS_CC;
 Scene* VillageScene::createScene()
 {
 	auto scene = VillageScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -215,6 +215,8 @@ bool VillageScene::init()
 			npc = new NPC();
 			npc->getSprite()->setPosition(npcX, npcY);
 			gameNode->addChild(npc->getSprite());
+
+			GameManager::getInstace()->AddCharacter(npc);
 		}
 
 		//Spawn Portal
@@ -368,8 +370,13 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 //onContactBegin to check for collisions happening in the VillageScene.
 bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 {
-	auto a = contact.getShapeA();
-	auto b = contact.getShapeB();
+	auto a = contact.getShapeA()->getBody();
+	auto b = contact.getShapeB()->getBody();
+
+	if (a->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK || a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK) {
+		swap(a, b);
+	}
+
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
@@ -383,6 +390,15 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			//Enable the button
 			attackItem->setEnabled(true);
 			attackItem->setOpacity(255);
+		}
+
+		// check player hit enemies
+		if (b->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK
+			&& a->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK)
+		{
+			CCLOG("Hit enemies %d", a->getNode()->getTag());
+
+			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
 		}
 
 		else if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == PORTAL_CATEGORY_BITMASK)

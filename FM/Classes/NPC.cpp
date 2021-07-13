@@ -8,10 +8,10 @@ NPC::NPC()
 	
 	//Animation
 	anim_NPC.reserve(4);
-	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(0, 0, 48, 48)));
-	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(48, 0, 48, 48)));
-	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(96, 0, 48, 48)));
-	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(144, 0, 48, 48)));
+	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(0, 0, 19, 32)));
+	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(19, 0, 19, 32)));
+	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(38, 0, 19, 32)));
+	anim_NPC.pushBack(SpriteFrame::create("sprites/NPC/Old_man_idle.png", Rect(57, 0, 19, 32)));
 	Animation* NPCAnimation = Animation::createWithSpriteFrames(anim_NPC, 0.5f);
 	Animate *NPCAnimate = Animate::create(NPCAnimation);
 	characterSpriteAnimation = Sprite::createWithSpriteFrame(anim_NPC.front());

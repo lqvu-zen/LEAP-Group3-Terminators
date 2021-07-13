@@ -33,6 +33,9 @@ public:
 
 	PhysicsShapeCache* getPhysicsShapeCache();
 
+	bool onContactBegin(cocos2d::PhysicsContact &contact);
+	void onContactSeperate(cocos2d::PhysicsContact &contact);
+
 private:
 	static GameManager* create();
 
