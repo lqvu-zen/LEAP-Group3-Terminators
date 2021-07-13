@@ -26,9 +26,6 @@ Stats::Stats()
 	statsHP->setType(cocos2d::ProgressTimer::Type::BAR);
 	statsMP->setType(cocos2d::ProgressTimer::Type::BAR);
 
-	statsHP->setPercentage(100.0f);
-	statsMP->setPercentage(100.0f);
-
 	statsHP->setBarChangeRate(Vec2(1.0f, 0.f));
 	statsMP->setBarChangeRate(Vec2(1.0f, 0.f));
 
@@ -51,6 +48,9 @@ Stats::Stats()
 	statsSprite->addChild(statsHP, 1);
 	statsSprite->addChild(statsMP, 2);
 
+	statsHP->setPercentage(100.0f);
+	statsMP->setPercentage(100.0f);
+
 	//Karma
 	auto scaleRatio = 0.7f;
 	karmaSprite = Sprite::create();
@@ -66,11 +66,9 @@ Stats::Stats()
 
 	karmaPoint->setType(cocos2d::ProgressTimer::Type::BAR);
 
-	karmaPoint->setPercentage(100.0f);
+	karmaPoint->setBarChangeRate(Vec2(0.0f, 1.0f));
 
-	karmaPoint->setBarChangeRate(Vec2(1.0f, 0.f));
-
-	karmaPoint->setMidpoint(Vec2(-1.0f, 0.0f));
+	karmaPoint->setMidpoint(Vec2(0.0f, -1.0f));
 
 	karmaPoint->setPosition(
 		Vec2::ZERO
@@ -85,6 +83,9 @@ Stats::Stats()
 	karmaSprite->setScale(scaleRatio);
 
 	statsSprite->addChild(karmaSprite);
+
+	karmaPoint->setPercentage(0.0f);
+	karmaSprite->setVisible(false);
 }
 
 void Stats::SetHeroStats(float hp, float mp, float atk, float def)
@@ -121,6 +122,14 @@ void Stats::UpdateStatsBar()
 {
 	statsHP->setPercentage(HP / maxHP * 100.0f);
 	statsMP->setPercentage(MP / maxMP * 100.0f);
+
+	karmaPoint->setPercentage(Karma * 1.0f);
+	if (Karma >= 50 && karmaSprite->isVisible() == false) {
+		karmaSprite->setVisible(true);
+	}
+	else if (Karma < 50) {
+		karmaSprite->setVisible(false);
+	}
 }
 
 bool Stats::canJump()
