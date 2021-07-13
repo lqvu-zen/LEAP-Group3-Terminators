@@ -88,24 +88,22 @@ Stats::Stats()
 	karmaSprite->setVisible(false);
 }
 
-void Stats::SetHeroStats(float hp, float mp, float atk, float def)
+void Stats::SetStats(float hp, float mp, float atk, float def)
 {
+	//Normal stats
 	maxHP = HP = hp;
 	maxMP = MP = mp;
 	maxATK = ATK = atk;
 	maxDEF = DEF = def;
+
+	//Player stats
 	maxJump = 1;
 	jump = 0;
 
 	Karma = 0;
-}
 
-void Stats::SetMonsterStats(float hp, float mp, float atk, float def)
-{
-	maxHP = HP = hp;
-	maxMP = MP = mp;
-	maxATK = ATK = atk;
-	maxDEF = DEF = def;
+	//NPC stats
+	Affection = 10;
 }
 
 cocos2d::Sprite * Stats::GetSprite()

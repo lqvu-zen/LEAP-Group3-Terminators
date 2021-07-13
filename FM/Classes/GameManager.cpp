@@ -48,6 +48,15 @@ PhysicsShapeCache* GameManager::getPhysicsShapeCache() {
 	return shapeCache;
 }
 
+bool GameManager::onContactBegin(cocos2d::PhysicsContact & contact)
+{
+	return false;
+}
+
+void GameManager::onContactSeperate(cocos2d::PhysicsContact & contact)
+{
+}
+
 void GameManager::AddCharacter(Character * ref)
 {
 	characterMap[++countCharacter] = ref;

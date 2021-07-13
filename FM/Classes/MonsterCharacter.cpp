@@ -10,7 +10,7 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _level) {
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-	characterStats.SetMonsterStats(100.0f * _level, 100.0f * _level, 10 * _level, 10 * _level);
+	characterStats.SetStats(100.0f * _level, 100.0f * _level, 10 * _level, 10 * _level);
 	level = _level;
 
 	floder = StringUtils::format("plist/Monster_%i/", 1);
