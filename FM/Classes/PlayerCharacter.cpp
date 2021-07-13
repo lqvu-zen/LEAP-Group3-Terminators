@@ -79,8 +79,6 @@ void PlayerCharacter::setPosition(cocos2d::Vec2 position)
 {
 	characterSprite->setPosition(position);
 	characterSpriteAnimation->setPosition(Vec2::ZERO);
-	attackSprite->setPosition(Vec2::ZERO);
-	
 }
 
 void PlayerCharacter::updateAnimation(State actionState, Direction actionDirection, bool repeatForever)
@@ -357,19 +355,19 @@ void PlayerCharacter::attack(int mode)
 
 		//update animation
 		if (attackMode == 1) {
-			attackSize = Size(characterSize.width * 3.0f, characterSize.height);
+			attackSize = Size(characterSize.width * 2.0f, characterSize.height);
 			updateAnimation(State::ATTACK1, characterDirection, false);
 
 			attackSkill = Skill::SkillType::Normal;
 		}
 		else if (attackMode == 2) {
-			attackSize = Size(characterSize.width * 4.0f, characterSize.height);
+			attackSize = Size(characterSize.width * 2.5f, characterSize.height);
 			updateAnimation(State::ATTACK2, characterDirection, false);
 
 			attackSkill = Skill::SkillType::Special;
 		}
 		else if (attackMode == 3) {
-			attackSize = Size(characterSize.width * 4.0f, characterSize.height * 2.0f);
+			attackSize = Size(characterSize.width * 3.0f, characterSize.height * 2.0f);
 			updateAnimation(State::ATTACK3, characterDirection, false);
 
 			attackSkill = Skill::SkillType::Ultimate;
@@ -387,6 +385,14 @@ void PlayerCharacter::attack(int mode)
 			attackBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
 			attackBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
 			attackBody->setContactTestBitmask(ALLSET_BITMASK);
+
+			//attackSprite->setAnchorPoint(Vec2::ZERO);
+			if (characterDirection == Direction::RIGHT) {
+				attackSprite->setPosition(Vec2(characterSize.width, (attackSize.height - characterSize.height) / 2));
+			}
+			else {
+				attackSprite->setPosition(Vec2(-characterSize.width, (attackSize.height - characterSize.height) / 2));
+			}
 
 			attackSprite->setPhysicsBody(attackBody);
 		}
