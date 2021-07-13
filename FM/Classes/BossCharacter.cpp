@@ -80,7 +80,7 @@ BossCharacter::BossCharacter(int level) {
 	characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
 	characterDirection = Direction::LEFT;
 	action = 0;
-	numAttack = 0;
+	numAttack = 5;
 
 	characterSprite->addChild(characterStats.GetSprite());
 	characterStats.GetSprite()->setScale(2.0f);
@@ -390,7 +390,9 @@ void BossCharacter::skill(int type) {
 	else if (type == 2) {
 		updateAnimation(State::SHOOTBOW);
 		Sprite* arrow = Sprite::create(floder + "arrow.png");
-		arrow->setPosition(characterSprite->getPosition());
+		arrow->setScale(0.5);
+		arrow->setPosition(Vec2::ZERO);
+		characterSprite->addChild(arrow);
 		PhysicsBody* arrowBody = PhysicsBody::createBox(arrow->getContentSize());
 		arrowBody->setDynamic(false);
 		arrowBody->setRotationEnable(false);
@@ -401,14 +403,14 @@ void BossCharacter::skill(int type) {
 		arrowBody->setMass(0.0f);
 		arrow->setPhysicsBody(arrowBody);
 		if (characterDirection == Direction::RIGHT) {
-			auto move = MoveBy::create(1, Vec2(visibleSize.width / 2, 0));
+			auto move = MoveBy::create(1, Vec2(-visibleSize.width, 0));
 			auto disappear = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
 			auto seq = Sequence::create(move, disappear, nullptr);
 			arrow->runAction(seq);
 		}
 		else
 		{
-			auto move = MoveBy::create(1, Vec2(-visibleSize.width / 2, 0));
+			auto move = MoveBy::create(1, Vec2(visibleSize.width, 0));
 			auto disappear = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
 			auto seq = Sequence::create(move, disappear, nullptr);
 			arrow->runAction(seq);
