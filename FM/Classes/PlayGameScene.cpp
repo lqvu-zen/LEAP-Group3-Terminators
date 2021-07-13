@@ -184,8 +184,14 @@ bool PlayGameScene::init()
 	edgeNode->setPhysicsBody(edgeBody);
 	gameNode->addChild(edgeNode);
 
-	//setup map physics. Since we are doing a 60x34 map so width = 60 and height = 34 (2 loops)
-	TMXLayer *Foreground = map->getLayer("Foreground");
+	//a list to store the location of the hidden tiles.
+	//HiddenTiles = new std::list<Vec2>();
+
+	//setup map physics. Since we are doing a 60x34 map so width = 146 and height = 34 (2 loops)
+	//Hidden is the layer for the hiddenTiles
+	//Foreground is the layer for the ground tiles that will have physical interaction.
+	Foreground = map->getLayer("Foreground");
+	Hidden = map->getLayer("Hidden");
 	for (int i = 0; i < 146; i++)
 	{
 		for (int j = 0; j < 34; j++)
@@ -305,14 +311,20 @@ bool PlayGameScene::init()
 			gameNode->addChild(trigger);
 		}
 
-		//Spawn Dummy point
-		if (SpawnPoint.asValueMap()["Dummy"].asInt() == 1)
+		//Spawn Trigger hidden area point
+		if (SpawnPoint.asValueMap()["TriggerHidden"].asInt() == 1)
 		{
-			int dummyX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
-			int dummyY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			middleOfBossArena = Sprite::create();
-			middleOfBossArena->setPosition(dummyX, dummyY);
-			gameNode->addChild(middleOfBossArena);
+			int triggerX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
+			int triggerY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			auto triggerHidden = Sprite::create();
+			auto triggerBody = PhysicsBody::createBox(Size(96 * SCALE_FACTOR, 80 * SCALE_FACTOR));
+			triggerBody->setDynamic(false);
+			triggerBody->setRotationEnable(false);
+			triggerBody->setCategoryBitmask(HIDDEN_TILE_CATEGORY_BITMASK);
+			triggerBody->setContactTestBitmask(ALLSET_BITMASK);
+			triggerHidden->setPhysicsBody(triggerBody);
+			triggerHidden->setPosition(triggerX, triggerY);
+			gameNode->addChild(triggerHidden);
 		}
 
 	}
@@ -320,6 +332,7 @@ bool PlayGameScene::init()
 	//Contact test
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(PlayGameScene::onContactBegin, this);
+	contactListener->onContactSeparate = CC_CALLBACK_1(PlayGameScene::onContactSeperate, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
 
@@ -486,13 +499,58 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			trigger->removeFromParentAndCleanup(true);
 			//stop the followCamera action
 			gameNode->stopAction(followCamera);
-			//Using MoveTo to move the gameNode to the middleOfBossArena(x = 4056). The Vec2's y = 0 because we only want to move the x coord. 
-			auto moveTo = MoveTo::create(2, Vec2(-(middleOfBossArena->getPositionX() - visibleSize.width/2), 0));
+			//Using MoveTo to move the gameNode to the middle of the boss arena(the boss X position). The Vec2's y = 0 because we only want to move the x coord. 
+			auto moveTo = MoveTo::create(2, Vec2(-(boss->getSprite()->getPositionX() - visibleSize.width/2), 0));
 			gameNode->runAction(moveTo);
+		}
+
+		//Player collide with the hidden area in the map
+		if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK))
+		{
+			
+			if (b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			{
+				CCLOG("Hidden area");
+				hideTiles();
+			}
+			else if (a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			{
+				CCLOG("Hidden area");
+				hideTiles();
+
+			}
 		}
 	}
 	
 	return true;
+}
+
+//onContactSeperate to handle after collision exit.
+void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
+{
+	auto a = contact.getShapeA()->getBody();
+	auto b = contact.getShapeB()->getBody();
+	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
+		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
+	{
+		if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK))
+		{
+
+			if (b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			{
+				CCLOG("Out Hidden area");
+				showTiles();
+			}
+			else if (a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			{
+				CCLOG("Out Hidden area");
+				showTiles();
+				
+			}
+		}
+	}
 }
 
 /// <summary>
@@ -565,4 +623,17 @@ void PlayGameScene::goToExit() {
 		Director::getInstance()->end();
 	});
 	buttonNode->addChild(popup, 100);
+}
+
+//Hide and show the hiddenTiles
+void PlayGameScene::hideTiles()
+{	//just run through the list, and hide each tiles in the list
+	CCLOG("Hide tile");
+	Hidden->setVisible(false);
+}
+
+void PlayGameScene::showTiles()
+{
+	CCLOG("Show tile");
+	Hidden->setVisible(true);
 }
