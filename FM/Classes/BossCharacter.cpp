@@ -53,7 +53,7 @@ BossCharacter::BossCharacter(int level) {
 
 	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Idle1.png");
 
-	characterStats.SetMonsterStats(100.0f * level, 100.0f * level, 10 * level, 10 * level);
+	characterStats.SetStats(100.0f * level, 100.0f * level, 10 * level, 10 * level);
 
 	characterSprite = Sprite::create();
 	characterSpriteAnimation = Sprite::createWithSpriteFrame(frame);

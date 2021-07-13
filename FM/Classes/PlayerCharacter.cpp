@@ -7,7 +7,7 @@ PlayerCharacter::PlayerCharacter()
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Warrior/Warrior.plist", "sprites/Warrior/Warrior.png");
 
 	//set Stats
-	characterStats.SetHeroStats();
+	characterStats.SetStats(100.0f, 100.0f, 20.0f, 10.0f);
 
 	characterAnimate.clear();
 

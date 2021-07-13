@@ -6,7 +6,7 @@
 #include "Character.h"
 
 
-class NPC
+class NPC : public Character
 {
 public:
 
@@ -14,6 +14,8 @@ public:
 	NPC(cocos2d::Vec2 position);
 
 	void setPosition(cocos2d::Vec2 position);
+
+	void takeHit(float dame = 10.0f);
 
 	cocos2d::Sprite* getSprite();
 private:

@@ -28,6 +28,9 @@ NPC::NPC()
 	characterPhysicsBody->setCollisionBitmask(NONPLAYER_COLLISION_BITMASK);
 	characterPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
 	characterSprite->setPhysicsBody(characterPhysicsBody);
+
+	//Stats
+	characterStats.SetStats();
 }
 
 NPC::NPC(cocos2d::Vec2 position)
@@ -43,7 +46,16 @@ void NPC::setPosition(cocos2d::Vec2 position)
 	
 }
 
+void NPC::takeHit(float dame)
+{
+	characterStats.HP -= dame;
 
+	characterStats.Affection -= 10;
+
+	if (characterStats.HP <= 0.0f) {
+		//NPC death
+	}
+}
 
 cocos2d::Sprite * NPC::getSprite()
 {
