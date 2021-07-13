@@ -50,6 +50,41 @@ Stats::Stats()
 
 	statsSprite->addChild(statsHP, 1);
 	statsSprite->addChild(statsMP, 2);
+
+	//Karma
+	auto scaleRatio = 0.7f;
+	karmaSprite = Sprite::create();
+	karmaBorder = Sprite::create("sprites/KB_Border.png");
+
+	karmaSprite->addChild(karmaBorder, 5);
+
+	karmaBorder->setPosition(
+		Vec2::ZERO
+	);
+
+	karmaPoint = cocos2d::ProgressTimer::create(cocos2d::Sprite::create("sprites/KB_Karma.png"));
+
+	karmaPoint->setType(cocos2d::ProgressTimer::Type::BAR);
+
+	karmaPoint->setPercentage(100.0f);
+
+	karmaPoint->setBarChangeRate(Vec2(1.0f, 0.f));
+
+	karmaPoint->setMidpoint(Vec2(-1.0f, 0.0f));
+
+	karmaPoint->setPosition(
+		Vec2::ZERO
+	);
+
+	karmaSprite->addChild(karmaPoint, 6);
+
+	karmaSprite->setPosition(
+		Vec2(karmaBorder->getContentSize().width / 2, -karmaBorder->getContentSize().height * scaleRatio / 2)
+	);
+
+	karmaSprite->setScale(scaleRatio);
+
+	statsSprite->addChild(karmaSprite);
 }
 
 void Stats::SetHeroStats(float hp, float mp, float atk, float def)
@@ -60,6 +95,8 @@ void Stats::SetHeroStats(float hp, float mp, float atk, float def)
 	maxDEF = DEF = def;
 	maxJump = 1;
 	jump = 0;
+
+	Karma = 0;
 }
 
 void Stats::SetMonsterStats(float hp, float mp, float atk, float def)

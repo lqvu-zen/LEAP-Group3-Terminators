@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Definitions.h"
+#include "Character.h"
 
 
 class NPC
