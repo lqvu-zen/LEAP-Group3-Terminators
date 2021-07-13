@@ -54,6 +54,7 @@ void NPC::takeHit(float dame)
 
 	if (characterStats.HP <= 0.0f) {
 		//NPC death
+		characterSprite->removeFromParent();
 	}
 }
 

@@ -18,12 +18,9 @@ public:
 	Node *buttonNode;
 	Node *gameNode;
 	Sprite* trigger;
-	Sprite* middleOfBossArena;
 	static cocos2d::Scene* createScene();
 	virtual bool init();
-	bool isLocked = false;
 	CREATE_FUNC(PlayGameScene);
-	Node *lockNode;
 	//void attackMonster(float dt);
 	int numOfMonster = 0;
 private:
@@ -34,7 +31,8 @@ private:
 	Sprite *player;
 	MonsterCharacter* monsters[2];
 	BossCharacter* boss;
-
+	TMXLayer* Foreground;
+	TMXLayer* Hidden;
 	//void addAt(int x, int y, int type);
 	Vector<Node*> pausedActions;
 	
@@ -46,6 +44,9 @@ private:
 	void updateCharacter(float dt);
 	//void onClickMoveMenu(cocos2d::Ref* sender);
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
+	void onContactSeperate(cocos2d::PhysicsContact &contact);
+	void hideTiles();
+	void showTiles();
 	void onClickAttackMenu(cocos2d::Ref* sender);
 	void updateMonster(float dt);
 	void monsterAction(float dt);

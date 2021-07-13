@@ -9,7 +9,7 @@ USING_NS_CC;
 Scene* VillageScene::createScene()
 {
 	auto scene = VillageScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -139,7 +139,13 @@ bool VillageScene::init()
 	attackItem->setTag(1);
 	attackItem->setOpacity(100);
 	attackItem->setEnabled(false);
-	auto attackMenu = Menu::create(attackItem, nullptr);
+
+	auto skill_1Item = MenuItemImage::create("sprites/attack.png", "sprites/skill_1.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
+	skill_1Item->setScale(0.3);
+	skill_1Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.7, attackItem->getContentSize().height * 0.2));
+	skill_1Item->setTag(2);
+
+	auto attackMenu = Menu::create(skill_1Item, attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
 	buttonNode->addChild(attackMenu, 100);
 #endif
@@ -350,6 +356,11 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 			});
 			buttonNode->addChild(popup, 100);
 		}
+	}
+
+	if (node->getTag() == 2) {
+		playerChar->attack();
+		CCLOG("Attack");
 	}
 }
 
