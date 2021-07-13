@@ -4,24 +4,27 @@ Skill::Skill()
 {
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Skill/Skill-Water.plist", "sprites/Skill/Skill-Water.png");
 
-	skillSprite = cocos2d::Sprite::create();
+	//skillSprite = cocos2d::Sprite::create();
 
 	skillSize = cocos2d::Size(64.0f, 80.0f);
 }
 
 void Skill::CastSkill(Skill::SkillType skillType, Direction direction)
 {
-	if (direction == Direction::RIGHT) {
+	/*if (direction == Direction::RIGHT) {
 		skillSprite->setPositionX(characterSize.width);
 	}
 	else {
 		skillSprite->setPositionX(- characterSize.width);
-	}
+	}*/
+	
+
 	createAnimation(skillType, direction);
 }
 
 cocos2d::Sprite * Skill::GetSprite()
 {
+	skillSprite = Sprite::create();
 	return skillSprite;
 }
 
@@ -101,11 +104,10 @@ void Skill::createAnimation(SkillType actionState, Direction actionDirection)
 		skillAnimation->stopAllActions();
 
 		auto callbackAction = CallFunc::create(
-			CC_CALLBACK_0(Skill::cancelAnimation, this)
+			CC_CALLBACK_0(Skill::cancelAnimation, this, skillSprite)
 		);
 
 		skillAnimation->runAction(Sequence::create(animate, callbackAction, nullptr));
-	
 	}
 
 	if (actionDirection == Direction::LEFT) {
@@ -120,8 +122,9 @@ void Skill::createAnimation(SkillType actionState, Direction actionDirection)
 	skillSprite->addChild(skillAnimation);
 }
 
-void Skill::cancelAnimation()
+void Skill::cancelAnimation(cocos2d::Sprite* ref)
 {
-	skillSprite->getPhysicsBody()->removeAllShapes();
-	skillSprite->removeAllChildren();
+	ref->getPhysicsBody()->removeAllShapes();
+	ref->removeAllChildren();
+	ref->removeFromParent();
 }

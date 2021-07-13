@@ -41,6 +41,7 @@ void PlayerCharacter::init()
 	characterSprite = Sprite::create();
 	characterSpriteAnimation = Sprite::createWithSpriteFrame(frame);
 	attackSprite = Sprite::create();
+	skillSprite = Sprite::create();
 
 	characterPhysicsBody = PhysicsBody::createBox(characterSize);
 	//set collision bitmask
@@ -59,6 +60,7 @@ void PlayerCharacter::init()
 
 	characterSprite->addChild(characterSpriteAnimation);
 	characterSprite->addChild(attackSprite);
+	characterSprite->addChild(skillSprite);
 
 	attackMode = 1;
 
@@ -67,9 +69,9 @@ void PlayerCharacter::init()
 	attacking = false;
 	characterSkill = new Skill();
 
-	characterSkill->SetPosition(characterSize);
+	//characterSkill->SetPosition(characterSize);
 
-	characterSprite->addChild(characterSkill->GetSprite());
+	//characterSprite->addChild(characterSkill->GetSprite());
 
 	//--
 	died = false;
@@ -373,6 +375,8 @@ void PlayerCharacter::attack(int mode)
 			attackSkill = Skill::SkillType::Ultimate;
 		}
 
+		auto attackPos = Vec2((attackSize.width - characterSize.width) / 2, (attackSize.height - characterSize.height) / 2);
+
 		//create physic for attack
 		if (mode == 0) {
 			auto attackBody = PhysicsBody::createBox(attackSize);
@@ -388,16 +392,26 @@ void PlayerCharacter::attack(int mode)
 
 			//attackSprite->setAnchorPoint(Vec2::ZERO);
 			if (characterDirection == Direction::RIGHT) {
-				attackSprite->setPosition(Vec2(characterSize.width, (attackSize.height - characterSize.height) / 2));
+				attackSprite->setPosition(Vec2(attackPos.x, attackPos.y));
 			}
 			else {
-				attackSprite->setPosition(Vec2(-characterSize.width, (attackSize.height - characterSize.height) / 2));
+				attackSprite->setPosition(Vec2(-attackPos.x, attackPos.y));
 			}
 
 			attackSprite->setPhysicsBody(attackBody);
 		}
 		else {
+			//skillSprite->setAnchorPoint(Vec2::ZERO);
+			if (characterDirection == Direction::RIGHT) {
+				skillSprite->setPosition(Vec2(attackPos.x + attackSize.width, attackPos.y));
+			}
+			else {
+				skillSprite->setPosition(Vec2(-attackPos.x - attackSize.width, attackPos.y));
+			}
+
+			skillSprite->addChild(characterSkill->GetSprite());
 			characterSkill->CastSkill(attackSkill, characterDirection);
+
 			castingSkill = true;
 		}
 		attacking = true;

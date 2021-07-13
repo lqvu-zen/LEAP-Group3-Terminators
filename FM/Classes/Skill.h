@@ -32,7 +32,7 @@ private:
 
 	void createAnimation(SkillType actionState, Direction actionDirection = Direction::RIGHT);
 
-	void cancelAnimation();
+	void cancelAnimation(cocos2d::Sprite* ref);
 };
 
 #endif // __SKILL_H__ 
