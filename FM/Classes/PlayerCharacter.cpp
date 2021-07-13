@@ -218,7 +218,7 @@ void PlayerCharacter::updateAction(float dt)
 			setFalling();
 		}
 		else{
-			if (isFalling()) {
+			if (isFalling() || isGrounded()) {
 				//reset after fall, i want to reset when player contact with ground or wall
 				resetJump();
 			}

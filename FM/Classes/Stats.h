@@ -13,6 +13,7 @@ public:
 	float MP;
 	float ATK;
 	float DEF;
+	int Karma;
 
 	int jump;
 
@@ -44,6 +45,12 @@ private:
 
 	cocos2d::ProgressTimer* statsHP;
 	cocos2d::ProgressTimer* statsMP;
+
+	//Karma
+	cocos2d::Sprite* karmaSprite;
+	cocos2d::Sprite* karmaBorder;
+
+	cocos2d::ProgressTimer* karmaPoint;
 
 	cocos2d::Size spriteSize;
 };
