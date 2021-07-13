@@ -8,7 +8,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -76,6 +76,7 @@ bool PlayGameScene::init()
 	auto upItem = ui::Button::create("sprites/up.png");
 	upItem->setScale(0.4);
 	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.2 / 4));
+	upItem->setOpacity(200);
 	buttonNode->addChild(upItem, 100);
 	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -96,6 +97,7 @@ bool PlayGameScene::init()
 	auto leftItem = ui::Button::create("sprites/left.png");
 	leftItem->setScale(0.1);
 	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.2 / 4, button->getPosition().y));
+	leftItem->setOpacity(200);
 	buttonNode->addChild(leftItem, 100);
 	leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -116,6 +118,7 @@ bool PlayGameScene::init()
 	auto rightItem = ui::Button::create("sprites/right.png");
 	rightItem->setScale(0.1);
 	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.2 / 4, button->getPosition().y));
+	rightItem->setOpacity(200);
 	buttonNode->addChild(rightItem, 100);
 	rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -158,6 +161,7 @@ bool PlayGameScene::init()
 
 	auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
+	attackMenu->setOpacity(200);
 	buttonNode->addChild(attackMenu, 100);
 #endif
 
@@ -192,6 +196,7 @@ bool PlayGameScene::init()
 	//Foreground is the layer for the ground tiles that will have physical interaction.
 	Foreground = map->getLayer("Foreground");
 	Hidden = map->getLayer("Hidden");
+	Hidden->setGlobalZOrder(5); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
 	for (int i = 0; i < 146; i++)
 	{
 		for (int j = 0; j < 34; j++)
