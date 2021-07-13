@@ -6,46 +6,46 @@ USING_NS_CC;
 BossCharacter::BossCharacter(int level) {
 
 #if 1
-	string boss = StringUtils::format("plist/Boss_%i/", level);
+	floder = StringUtils::format("plist/Boss_%i/", level);
 
-	SpriteBatchNode* spriteNode = SpriteBatchNode::create(boss + "Attack_1.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Attack_1.plist");
+	SpriteBatchNode* spriteNode = SpriteBatchNode::create(floder + "Attack_1.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Attack_1.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Attack_2.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Attack_2.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Attack_2.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Attack_2.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Block.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Block.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Block.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Block.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Charge.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Charge.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Charge.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Charge.plist");
 
-	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(boss + "Death.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Death.plist");
+	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(floder + "Death.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Death.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Hurt.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Hurt.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Hurt.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Hurt.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Jump.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Jump.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Jump.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Jump.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Jump_Attack_1.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Jump_Attack_1.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Jump_Attack_1.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Jump_Attack_1.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Jump_Attack_2.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Jump_Attack_2.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Jump_Attack_2.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Jump_Attack_2.plist");
 
-	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(boss + "Idle.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Idle.plist");
+	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(floder + "Idle.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Idle.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Run.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Run.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Run.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Run.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Shoot_Bow.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Shoot_Bow.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Shoot_Bow.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Shoot_Bow.plist");
 
-	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(boss + "Walk.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(boss + "Walk.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + "Walk.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + "Walk.plist");
 #endif
 
 	visibleSize = Director::getInstance()->getVisibleSize();
@@ -80,10 +80,11 @@ BossCharacter::BossCharacter(int level) {
 	characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
 	characterDirection = Direction::LEFT;
 	action = 0;
+	numAttack = 0;
 
 	characterSprite->addChild(characterStats.GetSprite());
 	characterStats.GetSprite()->setScale(2.0f);
-	characterStats.GetSprite()->setPosition(Vec2(0.0f, characterSpriteAnimation->getContentSize().height));
+	characterStats.GetSprite()->setPosition(Vec2(0, characterSpriteAnimation->getContentSize().height / 6));
 }
 
 cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {
@@ -217,7 +218,7 @@ void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 		action = 0;
 	}
 	else {
-		if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 6) {
+		if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 8) {
 			if (positionPlayer.y > characterSprite->getPosition().y + characterSprite->getContentSize().height) {
 				if (action == 0) {
 					jumpAttack();
@@ -241,9 +242,21 @@ void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 				
 			}
 		}
+		else if(abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 4){
+			if (numAttack >= 5) {
+				skill(1);
+			}
+			else {
+				walk();
+			}
+		}
 		else if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 2) {
-			//action = 0;
-			run();
+			if (numAttack >= 5) {
+				skill(2);
+			}
+			else {
+				run();
+			}
 		}
 		else {
 			updateAnimation(State::IDLE, true);
@@ -290,6 +303,7 @@ void BossCharacter::attack() {
 
 		attackSprite->setPhysicsBody(attackBody);
 	}
+	numAttack++;
 }
 
 void BossCharacter::jumpAttack() {
@@ -322,6 +336,7 @@ void BossCharacter::jumpAttack() {
 		characterSprite->runAction(move);
 		attackSprite->setPhysicsBody(attackBody);
 	}
+	numAttack++;
 }
 
 void BossCharacter::run() {
@@ -340,14 +355,66 @@ void BossCharacter::run() {
 void BossCharacter::walk() {
 	updateAnimation(State::WALK, true);
 	if (characterDirection == Direction::RIGHT) {
-		auto move = MoveTo::create(10, Vec2(position.x, position.y));
+		auto move = MoveBy::create(0.7, Vec2(visibleSize.width / 8, 0));
 		characterSprite->runAction(move);
 	}
 	else
 	{
-		auto move = MoveTo::create(10, Vec2(position.x, position.y));
+		auto move = MoveBy::create(0.7, Vec2(-visibleSize.width / 8, 0));
 		characterSprite->runAction(move);
 	}
+}
+
+void BossCharacter::skill(int type) {
+	if (type == 1) {
+		updateAnimation(State::CHARGE);
+		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Charge");
+		attackBody->setDynamic(false);
+		attackBody->setRotationEnable(false);
+		attackBody->setGravityEnable(false);
+		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(ALLSET_BITMASK);
+		attackBody->setMass(0.0f);
+		if (characterDirection == Direction::RIGHT) {
+			auto move = MoveBy::create(0.7, Vec2(visibleSize.width / 3, 0));
+			characterSprite->runAction(move);
+		}
+		else
+		{
+			auto move = MoveBy::create(0.7, Vec2(-visibleSize.width / 3, 0));
+			characterSprite->runAction(move);
+		}
+		attackSprite->setPhysicsBody(attackBody);
+	}
+	else if (type == 2) {
+		updateAnimation(State::SHOOTBOW);
+		Sprite* arrow = Sprite::create(floder + "arrow.png");
+		arrow->setPosition(characterSprite->getPosition());
+		PhysicsBody* arrowBody = PhysicsBody::createBox(arrow->getContentSize());
+		arrowBody->setDynamic(false);
+		arrowBody->setRotationEnable(false);
+		arrowBody->setGravityEnable(false);
+		arrowBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+		arrowBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+		arrowBody->setContactTestBitmask(ALLSET_BITMASK);
+		arrowBody->setMass(0.0f);
+		arrow->setPhysicsBody(arrowBody);
+		if (characterDirection == Direction::RIGHT) {
+			auto move = MoveBy::create(1, Vec2(visibleSize.width / 2, 0));
+			auto disappear = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
+			auto seq = Sequence::create(move, disappear, nullptr);
+			arrow->runAction(seq);
+		}
+		else
+		{
+			auto move = MoveBy::create(1, Vec2(-visibleSize.width / 2, 0));
+			auto disappear = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
+			auto seq = Sequence::create(move, disappear, nullptr);
+			arrow->runAction(seq);
+		}
+	}
+	numAttack=0;
 }
 
 void BossCharacter::takeHit(float dame)

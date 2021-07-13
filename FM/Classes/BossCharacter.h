@@ -52,11 +52,15 @@ public:
     void jumpAttack();
     void run();
     void walk();
+    void skill(int type);
 
 	void takeHit(float dame);
 private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
+
+    string floder;
+    //string boss;
 
     cocos2d::Sprite* characterSprite;
     cocos2d::Sprite* characterSpriteAnimation;
@@ -69,6 +73,7 @@ private:
     cocos2d::Animation* animation;
     cocos2d::Animation* createAnimation(string prefixName, int pFrames, float delay);
 
+    int numAttack;
 };
 
 #endif // __BOSS_CHARACTER_H__
