@@ -10,6 +10,15 @@ GameManager * GameManager::getInstace()
 	return _shareGameManager;
 }
 
+void GameManager::init()
+{
+	//load from here, when saving
+	playerCharacter = nullptr;
+
+	characterMap.clear();
+	countCharacter = 0;
+}
+
 PlayerCharacter * GameManager::GetPlayerCharacter()
 {
 	if (playerCharacter == nullptr) {

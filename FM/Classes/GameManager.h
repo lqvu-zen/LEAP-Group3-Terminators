@@ -21,6 +21,8 @@ public:
 
 	static GameManager* getInstace();
 
+	void init();
+
 	PlayerCharacter* GetPlayerCharacter();
 
 	Mission* getMission();
