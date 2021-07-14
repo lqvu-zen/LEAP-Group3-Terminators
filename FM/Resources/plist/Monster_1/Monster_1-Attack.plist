@@ -4,260 +4,290 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>Jump-0.png</key>
+            <key>Monster_1-Attack-0.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-40,-44}</string>
+                <string>{11,-20}</string>
                 <key>spriteSize</key>
-                <string>{172,117}</string>
+                <string>{172,116}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{237,899},{172,117}}</string>
+                <string>{{299,873},{172,116}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Jump-1.png</key>
+            <key>Monster_1-Attack-1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-42,-28}</string>
+                <string>{16,-20}</string>
                 <key>spriteSize</key>
-                <string>{186,149}</string>
+                <string>{170,120}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{257,748},{186,149}}</string>
+                <string>{{127,835},{170,120}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Jump-10.png</key>
+            <key>Monster_1-Attack-10.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{15,9}</string>
+                <string>{-5,-4}</string>
                 <key>spriteSize</key>
-                <string>{274,113}</string>
+                <string>{204,150}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{1,114},{274,113}}</string>
+                <string>{{1,1},{204,150}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Jump-11.png</key>
+            <key>Monster_1-Attack-11.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-6,-20}</string>
+                <string>{-5,-4}</string>
                 <key>spriteSize</key>
-                <string>{234,133}</string>
+                <string>{204,150}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{1,883},{234,133}}</string>
+                <string>{{1,1},{204,150}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Jump-12.png</key>
+            <key>Monster_1-Attack-12.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-30,-38}</string>
+                <string>{-5,-4}</string>
                 <key>spriteSize</key>
-                <string>{192,131}</string>
+                <string>{204,150}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{277,184},{192,131}}</string>
+                <string>{{1,1},{204,150}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Jump-13.png</key>
+            <key>Monster_1-Attack-13.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-44,-48}</string>
+                <string>{-9,-9}</string>
                 <key>spriteSize</key>
-                <string>{168,119}</string>
+                <string>{214,140}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{1,1018},{168,119}}</string>
+                <string>{{207,1},{214,140}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>Monster_1-Attack-14.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-9,-9}</string>
+                <key>spriteSize</key>
+                <string>{214,140}</string>
+                <key>spriteSourceSize</key>
+                <string>{232,166}</string>
+                <key>textureRect</key>
+                <string>{{207,143},{214,140}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>Monster_1-Attack-15.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-9,-9}</string>
+                <key>spriteSize</key>
+                <string>{212,140}</string>
+                <key>spriteSourceSize</key>
+                <string>{232,166}</string>
+                <key>textureRect</key>
+                <string>{{1,153},{212,140}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Jump-14.png</key>
+            <key>Monster_1-Attack-16.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-43,-53}</string>
+                <string>{-8,-10}</string>
                 <key>spriteSize</key>
-                <string>{168,113}</string>
+                <string>{210,140}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{362,1018},{168,113}}</string>
+                <string>{{143,285},{210,140}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>Monster_1-Attack-17.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-4,-13}</string>
+                <key>spriteSize</key>
+                <string>{198,136}</string>
+                <key>spriteSourceSize</key>
+                <string>{232,166}</string>
+                <key>textureRect</key>
+                <string>{{1,367},{198,136}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Jump-15.png</key>
+            <key>Monster_1-Attack-18.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-40,-53}</string>
+                <string>{1,-16}</string>
                 <key>spriteSize</key>
-                <string>{168,117}</string>
+                <string>{186,128}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{243,1018},{168,117}}</string>
+                <string>{{1,567},{186,128}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Jump-16.png</key>
+            <key>Monster_1-Attack-2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-38,-51}</string>
+                <string>{20,-20}</string>
                 <key>spriteSize</key>
-                <string>{168,119}</string>
+                <string>{172,122}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{122,1018},{168,119}}</string>
+                <string>{{303,749},{172,122}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>Monster_1-Attack-3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{25,-19}</string>
+                <key>spriteSize</key>
+                <string>{170,124}</string>
+                <key>spriteSourceSize</key>
+                <string>{232,166}</string>
+                <key>textureRect</key>
+                <string>{{1,755},{170,124}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Jump-2.png</key>
+            <key>Monster_1-Attack-4.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-46,-13}</string>
+                <string>{29,-18}</string>
                 <key>spriteSize</key>
-                <string>{196,181}</string>
+                <string>{172,126}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{279,1},{196,181}}</string>
+                <string>{{305,621},{172,126}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Jump-3.png</key>
+            <key>Monster_1-Attack-5.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-45,-8}</string>
+                <string>{31,-16}</string>
                 <key>spriteSize</key>
-                <string>{200,205}</string>
+                <string>{170,126}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{273,317},{200,205}}</string>
+                <string>{{131,707},{170,126}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Jump-4.png</key>
+            <key>Monster_1-Attack-6.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-32,0}</string>
+                <string>{18,-15}</string>
                 <key>spriteSize</key>
-                <string>{222,203}</string>
+                <string>{172,134}</string>
                 <key>spriteSourceSize</key>
-                <string>{304,245}</string>
+                <string>{232,166}</string>
                 <key>textureRect</key>
-                <string>{{261,524},{222,203}}</string>
+                <string>{{131,571},{172,134}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>Monster_1-Attack-7.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{5,-12}</string>
+                <key>spriteSize</key>
+                <string>{172,138}</string>
+                <key>spriteSourceSize</key>
+                <string>{232,166}</string>
+                <key>textureRect</key>
+                <string>{{323,481},{172,138}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>Monster_1-Attack-8.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-1,-9}</string>
+                <key>spriteSize</key>
+                <string>{182,142}</string>
+                <key>spriteSourceSize</key>
+                <string>{232,166}</string>
+                <key>textureRect</key>
+                <string>{{139,427},{182,142}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>Monster_1-Attack-9.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-3,-6}</string>
+                <key>spriteSize</key>
+                <string>{194,148}</string>
+                <key>spriteSourceSize</key>
+                <string>{232,166}</string>
+                <key>textureRect</key>
+                <string>{{355,285},{194,148}}</string>
                 <key>textureRotated</key>
                 <true/>
-            </dict>
-            <key>Jump-5.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-15,17}</string>
-                <key>spriteSize</key>
-                <string>{254,179}</string>
-                <key>spriteSourceSize</key>
-                <string>{304,245}</string>
-                <key>textureRect</key>
-                <string>{{1,702},{254,179}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>Jump-6.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-10,9}</string>
-                <key>spriteSize</key>
-                <string>{258,171}</string>
-                <key>spriteSourceSize</key>
-                <string>{304,245}</string>
-                <key>textureRect</key>
-                <string>{{1,366},{258,171}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>Jump-7.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-5,2}</string>
-                <key>spriteSize</key>
-                <string>{258,161}</string>
-                <key>spriteSourceSize</key>
-                <string>{304,245}</string>
-                <key>textureRect</key>
-                <string>{{1,539},{258,161}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>Jump-8.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{7,9}</string>
-                <key>spriteSize</key>
-                <string>{270,135}</string>
-                <key>spriteSourceSize</key>
-                <string>{304,245}</string>
-                <key>textureRect</key>
-                <string>{{1,229},{270,135}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>Jump-9.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{14,17}</string>
-                <key>spriteSize</key>
-                <string>{276,111}</string>
-                <key>spriteSourceSize</key>
-                <string>{304,245}</string>
-                <key>textureRect</key>
-                <string>{{1,1},{276,111}}</string>
-                <key>textureRotated</key>
-                <false/>
             </dict>
         </dict>
         <key>metadata</key>
@@ -269,13 +299,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>Jump.png</string>
+            <string>Monster_1-Attack.png</string>
             <key>size</key>
-            <string>{476,1187}</string>
+            <string>{504,990}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:fa83d5d98c43fbb4a335e4a3254ce1ba:a27eb29c3f8760c6fa4464dfb51e805e:9f2b93a6dfdd09b8f66aa3ab0849d73e$</string>
+            <string>$TexturePacker:SmartUpdate:a026a8aa3dbd79f59efa50f391881b68:54e26f52b20ac0436fbd85c03df9ade4:1b9b21a0b615adb0cc3ede44d2cabce9$</string>
             <key>textureFileName</key>
-            <string>Jump.png</string>
+            <string>Monster_1-Attack.png</string>
         </dict>
     </dict>
 </plist>
