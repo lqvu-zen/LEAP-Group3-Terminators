@@ -30,7 +30,7 @@
   </data>
  </layer>
  <objectgroup id="14" name="Objects">
-  <object id="12" name="NPC" x="493" y="343" width="50" height="50">
+  <object id="12" name="NPC" x="479.5" y="364" width="50" height="50">
    <properties>
     <property name="NPC" type="int" value="1"/>
    </properties>

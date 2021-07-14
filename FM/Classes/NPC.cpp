@@ -31,6 +31,11 @@ NPC::NPC()
 
 	//Stats
 	characterStats.SetStats();
+	exclamation = Sprite::create("sprites/NPC/exclamationMark.png");
+	exclamation->setScale(0.1);
+	characterSprite->addChild(exclamation);
+	exclamation->setPosition(Vec2(0.0f, characterSpriteAnimation->getContentSize().height));
+	exclamation->setVisible(false);
 }
 
 NPC::NPC(cocos2d::Vec2 position)
@@ -54,6 +59,7 @@ void NPC::takeHit(float dame)
 
 	if (characterStats.HP <= 0.0f) {
 		//NPC death
+		//exclamation = nullptr;
 		characterSprite->removeFromParent();
 	}
 }
@@ -63,3 +69,19 @@ cocos2d::Sprite * NPC::getSprite()
 	return characterSprite;
 }
 
+void NPC::showExclamation()
+{
+	if (characterStats.HP > 0)
+	{
+		exclamation->setVisible(true);
+	}
+	
+}
+
+void NPC::hideExclamation()
+{
+	if (characterStats.HP > 0)
+	{
+		exclamation->setVisible(false);
+	}
+}

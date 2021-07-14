@@ -304,6 +304,16 @@ void VillageScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2
 
 void VillageScene::update(float dt)
 {
+	//Mission check for NPC
+	if (GameManager::getInstace()->getMission()->getNowMission().id < 4)
+	{
+		npc->showExclamation();
+	}
+	else
+	{
+		npc->hideExclamation();
+	}
+
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
 	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());

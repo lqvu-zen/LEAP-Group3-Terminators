@@ -73,13 +73,13 @@ public:
     void updateMission(int type);
 
     void submitMission();
-
+	bool hasMission;
 private:
     vector<Data> data;
     Data mission;
     int index;
 
-    bool hasMission;
+    
 };
 
 #endif // __MISSION_H__

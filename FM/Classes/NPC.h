@@ -16,7 +16,8 @@ public:
 	void setPosition(cocos2d::Vec2 position);
 
 	void takeHit(float dame = 10.0f);
-
+	void showExclamation();
+	void hideExclamation();
 	cocos2d::Sprite* getSprite();
 private:
 	
@@ -25,8 +26,9 @@ private:
 	cocos2d::Sprite* characterSpriteAnimation;
 	cocos2d::PhysicsBody* characterPhysicsBody;
 	cocos2d::Vector<cocos2d::SpriteFrame*> anim_NPC;
-
+	cocos2d::Sprite* exclamation;
 	cocos2d::Size characterSize;
+	
 
 };
 

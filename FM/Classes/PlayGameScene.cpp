@@ -8,7 +8,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -173,6 +173,8 @@ bool PlayGameScene::init()
 	//scale map with SCALE_FACTOR
 	map = TMXTiledMap::create("map/playMap.tmx");
 	map->setScale(SCALE_FACTOR );
+	Hidden = map->getLayer("Hidden");
+	Hidden->setLocalZOrder(2); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
 	gameNode->addChild(map, 0);
 
 	//collision with map edges
@@ -195,8 +197,7 @@ bool PlayGameScene::init()
 	//Hidden is the layer for the hiddenTiles
 	//Foreground is the layer for the ground tiles that will have physical interaction.
 	Foreground = map->getLayer("Foreground");
-	Hidden = map->getLayer("Hidden");
-	Hidden->setGlobalZOrder(5); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
+	
 	for (int i = 0; i < map->getMapSize().width; i++)
 	{
 		for (int j = 0; j < map->getMapSize().height; j++)
@@ -280,7 +281,7 @@ bool PlayGameScene::init()
 			int gemY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
 			auto gem = new Gem();
 			gem->getSprite()->setPosition(gemX, gemY);
-			gameNode->addChild(gem->getSprite());
+			gameNode->addChild(gem->getSprite(), 1);
 		}
 
 		//Spawn boss
@@ -349,7 +350,7 @@ bool PlayGameScene::init()
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
 	gameNode->runAction(followCamera);
-	this->addChild(gameNode);
+	this->addChild(gameNode, 0);
 	this->addChild(buttonNode, 100);
 
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
