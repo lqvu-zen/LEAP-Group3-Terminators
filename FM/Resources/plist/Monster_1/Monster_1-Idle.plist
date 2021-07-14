@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>Idle-0.png</key>
+            <key>Monster_1-Idle-0.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -19,7 +19,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-1.png</key>
+            <key>Monster_1-Idle-1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -34,7 +34,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-10.png</key>
+            <key>Monster_1-Idle-10.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -49,7 +49,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-11.png</key>
+            <key>Monster_1-Idle-11.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -64,7 +64,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-12.png</key>
+            <key>Monster_1-Idle-12.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -79,7 +79,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-13.png</key>
+            <key>Monster_1-Idle-13.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -94,7 +94,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-14.png</key>
+            <key>Monster_1-Idle-14.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -109,7 +109,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-15.png</key>
+            <key>Monster_1-Idle-15.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -124,7 +124,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-16.png</key>
+            <key>Monster_1-Idle-16.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -139,7 +139,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-17.png</key>
+            <key>Monster_1-Idle-17.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -154,7 +154,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-18.png</key>
+            <key>Monster_1-Idle-18.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -169,7 +169,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-19.png</key>
+            <key>Monster_1-Idle-19.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -184,7 +184,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-2.png</key>
+            <key>Monster_1-Idle-2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -199,7 +199,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-20.png</key>
+            <key>Monster_1-Idle-20.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -214,7 +214,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-21.png</key>
+            <key>Monster_1-Idle-21.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -229,7 +229,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Idle-22.png</key>
+            <key>Monster_1-Idle-22.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -244,7 +244,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-23.png</key>
+            <key>Monster_1-Idle-23.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -259,7 +259,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-24.png</key>
+            <key>Monster_1-Idle-24.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -274,7 +274,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-25.png</key>
+            <key>Monster_1-Idle-25.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -289,7 +289,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-26.png</key>
+            <key>Monster_1-Idle-26.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -304,7 +304,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-27.png</key>
+            <key>Monster_1-Idle-27.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -319,7 +319,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Idle-28.png</key>
+            <key>Monster_1-Idle-28.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -334,7 +334,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Idle-29.png</key>
+            <key>Monster_1-Idle-29.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -349,7 +349,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-3.png</key>
+            <key>Monster_1-Idle-3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -364,7 +364,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Idle-30.png</key>
+            <key>Monster_1-Idle-30.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -379,7 +379,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-31.png</key>
+            <key>Monster_1-Idle-31.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -394,7 +394,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-32.png</key>
+            <key>Monster_1-Idle-32.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -409,7 +409,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-33.png</key>
+            <key>Monster_1-Idle-33.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -424,7 +424,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-34.png</key>
+            <key>Monster_1-Idle-34.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -439,7 +439,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-35.png</key>
+            <key>Monster_1-Idle-35.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -454,7 +454,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-36.png</key>
+            <key>Monster_1-Idle-36.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -469,7 +469,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-37.png</key>
+            <key>Monster_1-Idle-37.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -484,7 +484,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-38.png</key>
+            <key>Monster_1-Idle-38.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -499,7 +499,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-39.png</key>
+            <key>Monster_1-Idle-39.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -514,7 +514,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-4.png</key>
+            <key>Monster_1-Idle-4.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -529,7 +529,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Idle-40.png</key>
+            <key>Monster_1-Idle-40.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -544,7 +544,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-41.png</key>
+            <key>Monster_1-Idle-41.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -559,7 +559,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-42.png</key>
+            <key>Monster_1-Idle-42.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -574,7 +574,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-43.png</key>
+            <key>Monster_1-Idle-43.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -589,7 +589,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-44.png</key>
+            <key>Monster_1-Idle-44.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -604,7 +604,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-45.png</key>
+            <key>Monster_1-Idle-45.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -619,7 +619,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-46.png</key>
+            <key>Monster_1-Idle-46.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -634,7 +634,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-47.png</key>
+            <key>Monster_1-Idle-47.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -649,7 +649,7 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>Idle-5.png</key>
+            <key>Monster_1-Idle-5.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -664,7 +664,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-6.png</key>
+            <key>Monster_1-Idle-6.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -679,7 +679,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-7.png</key>
+            <key>Monster_1-Idle-7.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -694,7 +694,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-8.png</key>
+            <key>Monster_1-Idle-8.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -709,7 +709,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Idle-9.png</key>
+            <key>Monster_1-Idle-9.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -734,13 +734,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>Idle.png</string>
+            <string>Monster_1-Idle.png</string>
             <key>size</key>
             <string>{994,1081}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:766bd35be4d924f5b65681aaddf2ea4b:99b126f8f7c3d2d28cc7cd7031c20f04:f4a1cbca3384d0685fe55d1d95fabf79$</string>
+            <string>$TexturePacker:SmartUpdate:1a32c80f3044aaa30096d1f4b0674c95:99b126f8f7c3d2d28cc7cd7031c20f04:d82f2093e59c8e0806c244f444e9a48e$</string>
             <key>textureFileName</key>
-            <string>Idle.png</string>
+            <string>Monster_1-Idle.png</string>
         </dict>
     </dict>
 </plist>

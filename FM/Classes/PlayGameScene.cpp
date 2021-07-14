@@ -253,8 +253,8 @@ bool PlayGameScene::init()
 		{
 			int eneX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
 			int eneY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			monsters[numOfMonster] = new MonsterCharacter(gameNode, 1);
-			monsters[numOfMonster]->getSprite()->setPosition(eneX, eneY);
+			monsters[numOfMonster] = new MonsterCharacter(gameNode, 2, 1);
+			monsters[numOfMonster]->setPosition(Vec2(eneX, eneY));
 
 			GameManager::getInstace()->AddCharacter(monsters[numOfMonster]);
 

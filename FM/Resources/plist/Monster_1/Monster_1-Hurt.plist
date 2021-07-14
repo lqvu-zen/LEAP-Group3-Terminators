@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>Hurt-0.png</key>
+            <key>Monster_1-Hurt-0.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -19,7 +19,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Hurt-1.png</key>
+            <key>Monster_1-Hurt-1.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -34,7 +34,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Hurt-2.png</key>
+            <key>Monster_1-Hurt-2.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -49,7 +49,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>Hurt-3.png</key>
+            <key>Monster_1-Hurt-3.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -74,13 +74,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>Hurt.png</string>
+            <string>Monster_1-Hurt.png</string>
             <key>size</key>
             <string>{704,137}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:9f423399de9ba934f2d4c41adf4ab088:d3ecf1a57be99915d86a9e4221ce1ab8:c824c835982a0baf44dabb892aeea54f$</string>
+            <string>$TexturePacker:SmartUpdate:c1073819f58527f74c34a5f4ca1af6db:d3ecf1a57be99915d86a9e4221ce1ab8:e9b62556b31412f784ce37f8a5cef4c8$</string>
             <key>textureFileName</key>
-            <string>Hurt.png</string>
+            <string>Monster_1-Hurt.png</string>
         </dict>
     </dict>
 </plist>

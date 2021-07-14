@@ -13,13 +13,16 @@ using namespace std;
 class MonsterCharacter : public Character
 {
 public:
-    int level;
 
     enum class Direction {
         LEFT, RIGHT
     };
 
-    MonsterCharacter(cocos2d::Node* _scene, int _level);
+    enum class Species {
+        MELEE, RANGED
+    };
+
+    MonsterCharacter(cocos2d::Node* _scene, int _type, int _level);
 
     cocos2d::Sprite* getSprite();
 
@@ -29,7 +32,7 @@ public:
 
     void attack();
 
-    void attackAction(float dt);
+    void updateAction();
 
     void death();
 
@@ -41,13 +44,28 @@ public:
 private:
 
     cocos2d::Node* scene;
+    
+    int level;
+    int type;
+    Species species;
+    
+    vector<int> numSprite;
     string floder;
+    string name;
 
-    cocos2d::PhysicsBody* monsterBody;
+    cocos2d::Size characterSize;
+    //cocos2d::PhysicsBody* monsterBody;
+
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
 
-    cocos2d::Sprite* monster;
+    cocos2d::Sprite* characterSprite;
+    cocos2d::Sprite* characterSpriteAnimation;
+    cocos2d::PhysicsBody* characterPhysicsBody;
+
+    cocos2d::Sprite* attackSprite;
+
+    //cocos2d::Sprite* monster;
     cocos2d::Vec2 position;
     cocos2d::Sprite* bullet;
     Direction actionDirection;
@@ -55,6 +73,10 @@ private:
     cocos2d::Animation* animation;
 
     cocos2d::Animation *createAnimation(string prefixName, int pFrames, float delay);
+
+    //Attack
+    void attackForRanged();
+    void attackForMelee();
 };
 
 #endif // __MONSTER_CHARACTER_H__
