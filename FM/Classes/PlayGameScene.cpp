@@ -8,7 +8,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -254,6 +254,8 @@ bool PlayGameScene::init()
 	);
 	buttonNode->addChild(playerStatsSprite, 100);
 
+	playerChar->showInventory();
+
 	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
@@ -281,7 +283,7 @@ bool PlayGameScene::init()
 		{
 			int gemX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
 			int gemY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			auto gem = new Gem();
+			auto gem = new Item(Item::ItemType::GEM);
 			gem->getSprite()->setPosition(gemX, gemY);
 			gameNode->addChild(gem->getSprite());
 		}
@@ -470,9 +472,9 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
-		if (a->getCategoryBitmask() == GEM_CATEGORY_BITMASK)
+		if (a->getCategoryBitmask() == ITEM_CATEGORY_BITMASK)
 		{
-			CCLOG("Collected Gem");
+			CCLOG("Collected item");
 			a->getNode()->removeFromParentAndCleanup(true);
 			GameManager::getInstace()->getMission()->updateMission(3);
 		}

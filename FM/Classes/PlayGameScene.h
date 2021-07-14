@@ -6,7 +6,7 @@
 #include "MonsterCharacter.h"
 #include "ui//CocosGUI.h"
 #include "BossCharacter.h"
-#include "Gem.h"
+#include "Item.h"
 #include "GameManager.h"
 #include "Mission.h"
 USING_NS_CC;

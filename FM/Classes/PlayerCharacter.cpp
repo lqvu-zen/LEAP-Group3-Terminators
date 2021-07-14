@@ -75,6 +75,9 @@ void PlayerCharacter::init()
 
 	//--
 	died = false;
+
+	//init inventory 
+	characterInventory.init();
 }
 
 void PlayerCharacter::setPosition(cocos2d::Vec2 position)
@@ -378,35 +381,35 @@ void PlayerCharacter::attack(int mode)
 		auto attackPos = Vec2((attackSize.width - characterSize.width) / 2, (attackSize.height - characterSize.height) / 2);
 
 		//create physic for attack
-		if (mode == 0) {
-			auto attackBody = PhysicsBody::createBox(attackSize);
+		 
+		auto attackBody = PhysicsBody::createBox(attackSize);
 
-			attackBody->setDynamic(false);
-			attackBody->setRotationEnable(false);
-			attackBody->setGravityEnable(false);
-			attackBody->setMass(0.0f);
+		attackBody->setDynamic(false);
+		attackBody->setRotationEnable(false);
+		attackBody->setGravityEnable(false);
+		attackBody->setMass(0.0f);
 
-			attackBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
-			attackBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
-			attackBody->setContactTestBitmask(ALLSET_BITMASK);
+		attackBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
+		attackBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
+		attackBody->setContactTestBitmask(ALLSET_BITMASK);
 
-			//attackSprite->setAnchorPoint(Vec2::ZERO);
-			if (characterDirection == Direction::RIGHT) {
-				attackSprite->setPosition(Vec2(attackPos.x, attackPos.y));
-			}
-			else {
-				attackSprite->setPosition(Vec2(-attackPos.x, attackPos.y));
-			}
-
-			attackSprite->setPhysicsBody(attackBody);
+		//attackSprite->setAnchorPoint(Vec2::ZERO);
+		if (characterDirection == Direction::RIGHT) {
+			attackSprite->setPosition(Vec2(attackPos.x, attackPos.y));
 		}
 		else {
+			attackSprite->setPosition(Vec2(-attackPos.x, attackPos.y));
+		}
+
+		attackSprite->setPhysicsBody(attackBody);
+		
+		if (mode != 0) {
 			//skillSprite->setAnchorPoint(Vec2::ZERO);
 			if (characterDirection == Direction::RIGHT) {
-				skillSprite->setPosition(Vec2(attackPos.x + attackSize.width, attackPos.y));
+				skillSprite->setPosition(attackSprite->getPosition().x + attackSize.width / 2, attackSprite->getPosition().y);
 			}
 			else {
-				skillSprite->setPosition(Vec2(-attackPos.x - attackSize.width, attackPos.y));
+				skillSprite->setPosition(attackSprite->getPosition().x - attackSize.width / 2, attackSprite->getPosition().y);
 			}
 
 			skillSprite->addChild(characterSkill->GetSprite());
@@ -423,6 +426,20 @@ void PlayerCharacter::takeHit(float dame)
 {
 	updateAnimation(State::TAKE_HIT, characterDirection, false);
 	characterStats.HP -= dame;
+}
+
+void PlayerCharacter::showInventory()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto origin = Director::getInstance()->getVisibleOrigin();
+
+	characterStats.GetSprite()->getParent()->addChild(characterInventory.getSprite(), 200);
+
+	characterInventory.getSprite()->setPosition(Vec2(
+		visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y
+	));
+
+	characterInventory.getSprite()->setVisible(false);
 }
 
 cocos2d::Sprite * PlayerCharacter::getSprite()

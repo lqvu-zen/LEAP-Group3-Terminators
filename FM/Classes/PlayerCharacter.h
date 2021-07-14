@@ -6,6 +6,7 @@
 #include "Stats.h"
 #include "Skill.h"
 #include "Character.h"
+#include "Inventory.h"
 
 class PlayerCharacter : public Character
 {
@@ -43,6 +44,8 @@ public:
 
 	void takeHit(float dame = 10.0f);
 
+	void showInventory();
+
 	cocos2d::Sprite* getSprite();
 	Stats getStats();
 
@@ -50,15 +53,19 @@ public:
 	cocos2d::Vec2 getVolocity();
 	cocos2d::Vec2 getRealtimeVolocity();
 private:
+	//character body
 	cocos2d::Sprite* characterSprite;
 	cocos2d::Sprite* characterSpriteAnimation;
 	cocos2d::PhysicsBody* characterPhysicsBody;
 
-	cocos2d::Sprite* attackSprite;
-	cocos2d::Sprite* skillSprite;
-
 	cocos2d::Size characterSize;
 	cocos2d::Vec2 characterVelocity;
+
+	std::map<std::string, cocos2d::Animate*> characterAnimate;
+
+	//character attack
+	cocos2d::Sprite* attackSprite;
+	cocos2d::Sprite* skillSprite;
 
 	cocos2d::Size attackSize;
 
@@ -66,16 +73,17 @@ private:
 
 	Skill::SkillType attackSkill;
 
+	//character state
 	bool castingSkill;
 	bool attacking;
-
-	std::map<std::string, cocos2d::Animate*> characterAnimate;
-
 	bool falling;
 	bool grounded;
 	bool jumping;
 	bool died;
 	int attackMode;
+
+	//character inventory
+	Inventory characterInventory;
 };
 
 #endif // __PLAYERCHARACTER_H__
