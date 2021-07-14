@@ -47,6 +47,7 @@ private:
 	void goToSetting();
 	void goToMainMenu();
 	void goToExit();
+	void goToMap1();
 
 	void onContactSeperate(cocos2d::PhysicsContact &contact);
 };

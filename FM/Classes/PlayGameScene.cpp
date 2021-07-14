@@ -8,7 +8,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -197,9 +197,9 @@ bool PlayGameScene::init()
 	Foreground = map->getLayer("Foreground");
 	Hidden = map->getLayer("Hidden");
 	Hidden->setGlobalZOrder(5); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
-	for (int i = 0; i < 146; i++)
+	for (int i = 0; i < map->getMapSize().width; i++)
 	{
-		for (int j = 0; j < 34; j++)
+		for (int j = 0; j < map->getMapSize().height; j++)
 		{
 			auto spriteTile = Foreground->getTileAt(Vec2(i, j));
 			if (spriteTile != NULL)
@@ -264,15 +264,12 @@ bool PlayGameScene::init()
 		{
 			int eneX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
 			int eneY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			monsters[numOfMonster] = new MonsterCharacter(gameNode, 1);
-			monsters[numOfMonster]->getSprite()->setPosition(eneX, eneY);
-
-			GameManager::getInstace()->AddCharacter(monsters[numOfMonster]);
-
-			//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
-			//enemy->setPhysicsBody(enemyBody);
-			gameNode->addChild(monsters[numOfMonster]->getSprite());
-			numOfMonster++;
+			auto monster = new MonsterCharacter(gameNode, 1);
+			monster->getSprite()->setPosition(eneX, eneY);
+			//Using a list to  store the monsters
+			monsters.push_back(monster);
+			GameManager::getInstace()->AddCharacter(monsters.back());
+			gameNode->addChild(monsters.back()->getSprite());
 			
 		}
 
@@ -563,23 +560,25 @@ void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 /// </summary>
 /// <param name="dt"></param>
 void PlayGameScene::updateMonster(float dt) {
-	for (int i = 0; i < numOfMonster; i++) {
-		if (monsters[i]->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
-			monsters[i]->setDirection(MonsterCharacter::Direction::LEFT);
+	std::list<MonsterCharacter*> ::iterator it;
+	for (it = monsters.begin(); it != monsters.end() ; ++it) {
+		if ( (*it)->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
+			(*it)->setDirection(MonsterCharacter::Direction::LEFT);
 		}
 		else {
-			monsters[i]->setDirection(MonsterCharacter::Direction::RIGHT);
+			(*it)->setDirection(MonsterCharacter::Direction::RIGHT);
 		}
 	}
 }
 
 void PlayGameScene::monsterAction(float dt) {
-	for (int i = 0; i < numOfMonster; i++) {
-		if (abs(monsters[i]->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
-			monsters[i]->attack();
+	std::list<MonsterCharacter*> ::iterator it;
+	for (it = monsters.begin(); it != monsters.end(); ++it) {
+		if (abs((*it)->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
+			(*it)->attack();
 		}
 		else {
-			monsters[i]->idle();
+			(*it)->idle();
 		}
 	}
 }

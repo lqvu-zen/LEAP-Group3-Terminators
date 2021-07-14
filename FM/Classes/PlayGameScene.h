@@ -22,14 +22,13 @@ public:
 	virtual bool init();
 	CREATE_FUNC(PlayGameScene);
 	//void attackMonster(float dt);
-	int numOfMonster = 0;
 private:
 	
 	TMXTiledMap *map;
 	Size visibleSize;
 	Vec2 origin;
 	Sprite *player;
-	MonsterCharacter* monsters[2];
+	std::list<MonsterCharacter*> monsters;
 	BossCharacter* boss;
 	TMXLayer* Foreground;
 	TMXLayer* Hidden;

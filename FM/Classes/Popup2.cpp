@@ -327,6 +327,36 @@ namespace UICustom {
         return nullptr;
     }
 
+	Popup* Popup::createSelectMapInVillage(const std::function<void()>& GoToMap1Func, const std::function<void()>& GoToMap2Func)
+	{
+		Popup* node = new (std::nothrow)Popup();
+		Size winSize = Director::getInstance()->getWinSize();
+		if (node && node->init())
+		{
+			auto map1Button = MenuItemFont::create("Go To Map 1", [=](Ref* sender) {
+				GoToMap1Func();
+				node->dismiss(true);
+			});
+
+			auto map2Button = MenuItemFont::create("Go To Map 2", [=](Ref* sender) {
+				GoToMap2Func();
+				node->dismiss(true);
+			});
+
+			Menu* menu = Menu::create(map1Button, map2Button, NULL);
+			node->addChild(menu, 2);
+			menu->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
+			menu->alignItemsVerticallyWithPadding(FONT::LABEL_OFFSET / 2);
+
+			node->initBg(Size(400, 450), "Pause");
+			node->autorelease();
+			return node;
+		}
+
+		CC_SAFE_DELETE(node);
+		return nullptr;
+	}
+
 #if 1 
     Popup* Popup::createSetting() {
         Popup* node = new (std::nothrow)Popup();
