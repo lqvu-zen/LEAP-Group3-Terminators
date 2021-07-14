@@ -57,6 +57,7 @@ bool VillageScene::init()
 			}, [=]() {
 				goToExit();
 			});
+			
 			buttonNode->addChild(popup, 100);
 			break;
 		}
@@ -303,6 +304,16 @@ void VillageScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2
 
 void VillageScene::update(float dt)
 {
+	//Mission check for NPC
+	if (GameManager::getInstace()->getMission()->getNowMission().id < 4)
+	{
+		npc->showExclamation();
+	}
+	else
+	{
+		npc->hideExclamation();
+	}
+
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
 	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
@@ -410,8 +421,15 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		{
 			//When Player made contact with the Portal -> Send them to the PlayGameScene;
 			CCLOG("Touched portal");
-			auto scene = PlayGameScene::createScene();
-			Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+			UICustom::Popup* popup = UICustom::Popup::createSelectMapInVillage([=]() {
+				goToMap1();
+			}, [=]() {
+				goToMap1();
+			});
+
+			buttonNode->addChild(popup, 100);
+			/*auto scene = PlayGameScene::createScene();
+			Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));*/
 		}
 	}
 	return true;
@@ -435,6 +453,11 @@ void VillageScene::goToExit() {
 		Director::getInstance()->end();
 	});
 	buttonNode->addChild(popup, 100);
+}
+
+void VillageScene::goToMap1() {
+	auto scene = PlayGameScene::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 //onContactSeperate when two shapes seperate from each other.

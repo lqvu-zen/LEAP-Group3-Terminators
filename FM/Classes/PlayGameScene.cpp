@@ -173,6 +173,10 @@ bool PlayGameScene::init()
 	//scale map with SCALE_FACTOR
 	map = TMXTiledMap::create("map/playMap.tmx");
 	map->setScale(SCALE_FACTOR );
+	Hidden = map->getLayer("Hidden");
+	//remove the Hidden Layer and then add it again at line 356
+	map->removeChild(Hidden, true);
+	//Hidden->setLocalZOrder(2); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
 	gameNode->addChild(map, 0);
 
 	//collision with map edges
@@ -195,11 +199,10 @@ bool PlayGameScene::init()
 	//Hidden is the layer for the hiddenTiles
 	//Foreground is the layer for the ground tiles that will have physical interaction.
 	Foreground = map->getLayer("Foreground");
-	Hidden = map->getLayer("Hidden");
-	Hidden->setGlobalZOrder(5); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
-	for (int i = 0; i < 146; i++)
+	
+	for (int i = 0; i < map->getMapSize().width; i++)
 	{
-		for (int j = 0; j < 34; j++)
+		for (int j = 0; j < map->getMapSize().height; j++)
 		{
 			auto spriteTile = Foreground->getTileAt(Vec2(i, j));
 			if (spriteTile != NULL)
@@ -266,15 +269,12 @@ bool PlayGameScene::init()
 		{
 			int eneX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
 			int eneY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			monsters[numOfMonster] = new MonsterCharacter(gameNode, 2, 1);
-			monsters[numOfMonster]->setPosition(Vec2(eneX, eneY));
-
-			GameManager::getInstace()->AddCharacter(monsters[numOfMonster]);
-
-			//auto enemyBody = PhysicsBody::createBox(enemy->getContentSize());
-			//enemy->setPhysicsBody(enemyBody);
-			gameNode->addChild(monsters[numOfMonster]->getSprite());
-			numOfMonster++;
+			auto monster = new MonsterCharacter(gameNode, 1);
+			monster->getSprite()->setPosition(eneX, eneY);
+			//Using a list to  store the monsters
+			monsters.push_back(monster);
+			GameManager::getInstace()->AddCharacter(monsters.back());
+			gameNode->addChild(monsters.back()->getSprite());
 			
 		}
 
@@ -285,7 +285,7 @@ bool PlayGameScene::init()
 			int gemY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
 			auto gem = new Item(Item::ItemType::GEM);
 			gem->getSprite()->setPosition(gemX, gemY);
-			gameNode->addChild(gem->getSprite());
+			gameNode->addChild(gem->getSprite(), 1);
 		}
 
 		//Spawn boss
@@ -354,7 +354,12 @@ bool PlayGameScene::init()
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
 	gameNode->runAction(followCamera);
-	this->addChild(gameNode);
+
+	//re-add the Hidden layer from the map.
+	Hidden->setScale(SCALE_FACTOR);
+	gameNode->addChild(Hidden, 5);
+
+	this->addChild(gameNode, 0);
 	this->addChild(buttonNode, 100);
 
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
@@ -565,23 +570,25 @@ void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 /// </summary>
 /// <param name="dt"></param>
 void PlayGameScene::updateMonster(float dt) {
-	for (int i = 0; i < numOfMonster; i++) {
-		if (monsters[i]->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
-			monsters[i]->setDirection(MonsterCharacter::Direction::LEFT);
+	std::list<MonsterCharacter*> ::iterator it;
+	for (it = monsters.begin(); it != monsters.end() ; ++it) {
+		if ( (*it)->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
+			(*it)->setDirection(MonsterCharacter::Direction::LEFT);
 		}
 		else {
-			monsters[i]->setDirection(MonsterCharacter::Direction::RIGHT);
+			(*it)->setDirection(MonsterCharacter::Direction::RIGHT);
 		}
 	}
 }
 
 void PlayGameScene::monsterAction(float dt) {
-	for (int i = 0; i < numOfMonster; i++) {
-		if (abs(monsters[i]->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
-			monsters[i]->attack();
+	std::list<MonsterCharacter*> ::iterator it;
+	for (it = monsters.begin(); it != monsters.end(); ++it) {
+		if (abs((*it)->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
+			(*it)->attack();
 		}
 		else {
-			monsters[i]->idle();
+			(*it)->idle();
 		}
 	}
 }
