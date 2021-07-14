@@ -7,7 +7,7 @@ PlayerCharacter::PlayerCharacter()
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Warrior/Warrior.plist", "sprites/Warrior/Warrior.png");
 
 	//set Stats
-	characterStats.SetHeroStats();
+	characterStats.SetStats(100.0f, 100.0f, 20.0f, 10.0f);
 
 	characterAnimate.clear();
 
@@ -41,6 +41,7 @@ void PlayerCharacter::init()
 	characterSprite = Sprite::create();
 	characterSpriteAnimation = Sprite::createWithSpriteFrame(frame);
 	attackSprite = Sprite::create();
+	skillSprite = Sprite::create();
 
 	characterPhysicsBody = PhysicsBody::createBox(characterSize);
 	//set collision bitmask
@@ -59,6 +60,7 @@ void PlayerCharacter::init()
 
 	characterSprite->addChild(characterSpriteAnimation);
 	characterSprite->addChild(attackSprite);
+	characterSprite->addChild(skillSprite);
 
 	attackMode = 1;
 
@@ -67,9 +69,9 @@ void PlayerCharacter::init()
 	attacking = false;
 	characterSkill = new Skill();
 
-	characterSkill->SetPosition(characterSize);
+	//characterSkill->SetPosition(characterSize);
 
-	characterSprite->addChild(characterSkill->GetSprite());
+	//characterSprite->addChild(characterSkill->GetSprite());
 
 	//--
 	died = false;
@@ -79,8 +81,6 @@ void PlayerCharacter::setPosition(cocos2d::Vec2 position)
 {
 	characterSprite->setPosition(position);
 	characterSpriteAnimation->setPosition(Vec2::ZERO);
-	attackSprite->setPosition(Vec2::ZERO);
-	
 }
 
 void PlayerCharacter::updateAnimation(State actionState, Direction actionDirection, bool repeatForever)
@@ -218,7 +218,7 @@ void PlayerCharacter::updateAction(float dt)
 			setFalling();
 		}
 		else{
-			if (isFalling()) {
+			if (isFalling() || isGrounded()) {
 				//reset after fall, i want to reset when player contact with ground or wall
 				resetJump();
 			}
@@ -357,23 +357,25 @@ void PlayerCharacter::attack(int mode)
 
 		//update animation
 		if (attackMode == 1) {
-			attackSize = Size(characterSize.width * 3.0f, characterSize.height);
+			attackSize = Size(characterSize.width * 2.0f, characterSize.height);
 			updateAnimation(State::ATTACK1, characterDirection, false);
 
 			attackSkill = Skill::SkillType::Normal;
 		}
 		else if (attackMode == 2) {
-			attackSize = Size(characterSize.width * 4.0f, characterSize.height);
+			attackSize = Size(characterSize.width * 2.5f, characterSize.height);
 			updateAnimation(State::ATTACK2, characterDirection, false);
 
 			attackSkill = Skill::SkillType::Special;
 		}
 		else if (attackMode == 3) {
-			attackSize = Size(characterSize.width * 4.0f, characterSize.height * 2.0f);
+			attackSize = Size(characterSize.width * 3.0f, characterSize.height * 2.0f);
 			updateAnimation(State::ATTACK3, characterDirection, false);
 
 			attackSkill = Skill::SkillType::Ultimate;
 		}
+
+		auto attackPos = Vec2((attackSize.width - characterSize.width) / 2, (attackSize.height - characterSize.height) / 2);
 
 		//create physic for attack
 		if (mode == 0) {
@@ -388,10 +390,28 @@ void PlayerCharacter::attack(int mode)
 			attackBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
 			attackBody->setContactTestBitmask(ALLSET_BITMASK);
 
+			//attackSprite->setAnchorPoint(Vec2::ZERO);
+			if (characterDirection == Direction::RIGHT) {
+				attackSprite->setPosition(Vec2(attackPos.x, attackPos.y));
+			}
+			else {
+				attackSprite->setPosition(Vec2(-attackPos.x, attackPos.y));
+			}
+
 			attackSprite->setPhysicsBody(attackBody);
 		}
 		else {
+			//skillSprite->setAnchorPoint(Vec2::ZERO);
+			if (characterDirection == Direction::RIGHT) {
+				skillSprite->setPosition(Vec2(attackPos.x + attackSize.width, attackPos.y));
+			}
+			else {
+				skillSprite->setPosition(Vec2(-attackPos.x - attackSize.width, attackPos.y));
+			}
+
+			skillSprite->addChild(characterSkill->GetSprite());
 			characterSkill->CastSkill(attackSkill, characterDirection);
+
 			castingSkill = true;
 		}
 		attacking = true;

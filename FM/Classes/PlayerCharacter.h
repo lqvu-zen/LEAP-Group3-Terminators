@@ -55,6 +55,7 @@ private:
 	cocos2d::PhysicsBody* characterPhysicsBody;
 
 	cocos2d::Sprite* attackSprite;
+	cocos2d::Sprite* skillSprite;
 
 	cocos2d::Size characterSize;
 	cocos2d::Vec2 characterVelocity;

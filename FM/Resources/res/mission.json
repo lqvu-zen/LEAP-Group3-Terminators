@@ -20,11 +20,11 @@
     },
     {
       "ID": 2,
-      "REQUEST": "Hey Hero\n Can you help me collect 2 red diamonds",
-      "NAME": "Collect 2 red diamonds",
+      "REQUEST": "Hey Hero\n Can you help me collect 3 red diamonds",
+      "NAME": "Collect 3 red diamonds",
       "BEGIN": 0,
       "TYPE": 3,
-      "END": 2,
+      "END": 3,
       "STATE": false
     },
     {

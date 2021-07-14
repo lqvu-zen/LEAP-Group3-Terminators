@@ -9,7 +9,7 @@ USING_NS_CC;
 Scene* VillageScene::createScene()
 {
 	auto scene = VillageScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -73,6 +73,7 @@ bool VillageScene::init()
 	auto upItem = ui::Button::create("sprites/up.png");
 	upItem->setScale(0.4);
 	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.2 / 4));
+	upItem->setOpacity(200);
 	buttonNode->addChild(upItem, 100);
 	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -93,6 +94,7 @@ bool VillageScene::init()
 	auto leftItem = ui::Button::create("sprites/left.png");
 	leftItem->setScale(0.1);
 	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.2 / 4, button->getPosition().y));
+	leftItem->setOpacity(200);
 	buttonNode->addChild(leftItem, 100);
 	leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -113,6 +115,7 @@ bool VillageScene::init()
 	auto rightItem = ui::Button::create("sprites/right.png");
 	rightItem->setScale(0.1);
 	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.2 / 4, button->getPosition().y));
+	rightItem->setOpacity(200);
 	buttonNode->addChild(rightItem, 100);
 	rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -139,8 +142,15 @@ bool VillageScene::init()
 	attackItem->setTag(1);
 	attackItem->setOpacity(100);
 	attackItem->setEnabled(false);
-	auto attackMenu = Menu::create(attackItem, nullptr);
+
+	auto skill_1Item = MenuItemImage::create("sprites/attack.png", "sprites/skill_1.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
+	skill_1Item->setScale(0.3);
+	skill_1Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.7, attackItem->getContentSize().height * 0.2));
+	skill_1Item->setTag(2);
+
+	auto attackMenu = Menu::create(skill_1Item, attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
+	attackMenu->setOpacity(200);
 	buttonNode->addChild(attackMenu, 100);
 #endif
 	//End add buttons
@@ -209,6 +219,8 @@ bool VillageScene::init()
 			npc = new NPC();
 			npc->getSprite()->setPosition(npcX, npcY);
 			gameNode->addChild(npc->getSprite());
+
+			GameManager::getInstace()->AddCharacter(npc);
 		}
 
 		//Spawn Portal
@@ -351,14 +363,24 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 			buttonNode->addChild(popup, 100);
 		}
 	}
+
+	if (node->getTag() == 2) {
+		playerChar->attack();
+		CCLOG("Attack");
+	}
 }
 
 
 //onContactBegin to check for collisions happening in the VillageScene.
 bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 {
-	auto a = contact.getShapeA();
-	auto b = contact.getShapeB();
+	auto a = contact.getShapeA()->getBody();
+	auto b = contact.getShapeB()->getBody();
+
+	if (a->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK || a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK) {
+		swap(a, b);
+	}
+
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
@@ -372,6 +394,15 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			//Enable the button
 			attackItem->setEnabled(true);
 			attackItem->setOpacity(255);
+		}
+
+		// check player hit enemies
+		if (b->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK
+			&& a->getCategoryBitmask() == NONPLAYER_CATEGORY_BITMASK)
+		{
+			CCLOG("Hit enemies %d", a->getNode()->getTag());
+
+			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
 		}
 
 		else if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == PORTAL_CATEGORY_BITMASK)

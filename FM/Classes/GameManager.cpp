@@ -10,6 +10,15 @@ GameManager * GameManager::getInstace()
 	return _shareGameManager;
 }
 
+void GameManager::init()
+{
+	//load from here, when saving
+	playerCharacter = nullptr;
+
+	characterMap.clear();
+	countCharacter = 0;
+}
+
 PlayerCharacter * GameManager::GetPlayerCharacter()
 {
 	if (playerCharacter == nullptr) {
@@ -37,6 +46,15 @@ PhysicsShapeCache* GameManager::getPhysicsShapeCache() {
 		shapeCache->addShapesWithFile("plist/Boss_1/body.plist");
 	}
 	return shapeCache;
+}
+
+bool GameManager::onContactBegin(cocos2d::PhysicsContact & contact)
+{
+	return false;
+}
+
+void GameManager::onContactSeperate(cocos2d::PhysicsContact & contact)
+{
 }
 
 void GameManager::AddCharacter(Character * ref)

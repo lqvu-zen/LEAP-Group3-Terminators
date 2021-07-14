@@ -8,7 +8,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -76,6 +76,7 @@ bool PlayGameScene::init()
 	auto upItem = ui::Button::create("sprites/up.png");
 	upItem->setScale(0.4);
 	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.2 / 4));
+	upItem->setOpacity(200);
 	buttonNode->addChild(upItem, 100);
 	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -96,6 +97,7 @@ bool PlayGameScene::init()
 	auto leftItem = ui::Button::create("sprites/left.png");
 	leftItem->setScale(0.1);
 	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.2 / 4, button->getPosition().y));
+	leftItem->setOpacity(200);
 	buttonNode->addChild(leftItem, 100);
 	leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -116,6 +118,7 @@ bool PlayGameScene::init()
 	auto rightItem = ui::Button::create("sprites/right.png");
 	rightItem->setScale(0.1);
 	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.2 / 4, button->getPosition().y));
+	rightItem->setOpacity(200);
 	buttonNode->addChild(rightItem, 100);
 	rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -158,6 +161,7 @@ bool PlayGameScene::init()
 
 	auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
+	attackMenu->setOpacity(200);
 	buttonNode->addChild(attackMenu, 100);
 #endif
 
@@ -184,8 +188,15 @@ bool PlayGameScene::init()
 	edgeNode->setPhysicsBody(edgeBody);
 	gameNode->addChild(edgeNode);
 
-	//setup map physics. Since we are doing a 60x34 map so width = 60 and height = 34 (2 loops)
-	TMXLayer *Foreground = map->getLayer("Foreground");
+	//a list to store the location of the hidden tiles.
+	//HiddenTiles = new std::list<Vec2>();
+
+	//setup map physics. Since we are doing a 60x34 map so width = 146 and height = 34 (2 loops)
+	//Hidden is the layer for the hiddenTiles
+	//Foreground is the layer for the ground tiles that will have physical interaction.
+	Foreground = map->getLayer("Foreground");
+	Hidden = map->getLayer("Hidden");
+	Hidden->setGlobalZOrder(5); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
 	for (int i = 0; i < 146; i++)
 	{
 		for (int j = 0; j < 34; j++)
@@ -305,14 +316,20 @@ bool PlayGameScene::init()
 			gameNode->addChild(trigger);
 		}
 
-		//Spawn Dummy point
-		if (SpawnPoint.asValueMap()["Dummy"].asInt() == 1)
+		//Spawn Trigger hidden area point
+		if (SpawnPoint.asValueMap()["TriggerHidden"].asInt() == 1)
 		{
-			int dummyX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
-			int dummyY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			middleOfBossArena = Sprite::create();
-			middleOfBossArena->setPosition(dummyX, dummyY);
-			gameNode->addChild(middleOfBossArena);
+			int triggerX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
+			int triggerY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			auto triggerHidden = Sprite::create();
+			auto triggerBody = PhysicsBody::createBox(Size(96 * SCALE_FACTOR, 80 * SCALE_FACTOR));
+			triggerBody->setDynamic(false);
+			triggerBody->setRotationEnable(false);
+			triggerBody->setCategoryBitmask(HIDDEN_TILE_CATEGORY_BITMASK);
+			triggerBody->setContactTestBitmask(ALLSET_BITMASK);
+			triggerHidden->setPhysicsBody(triggerBody);
+			triggerHidden->setPosition(triggerX, triggerY);
+			gameNode->addChild(triggerHidden);
 		}
 
 	}
@@ -320,6 +337,7 @@ bool PlayGameScene::init()
 	//Contact test
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(PlayGameScene::onContactBegin, this);
+	contactListener->onContactSeparate = CC_CALLBACK_1(PlayGameScene::onContactSeperate, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
 
@@ -382,7 +400,7 @@ void PlayGameScene::updateCharacter(float dt)
 	}
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (playerChar->getStats().canJump() && playerChar->getVolocity().y <= PADDING_VELOCITY) {
+		if (playerChar->isGrounded() && playerChar->getStats().canJump() && playerChar->getVolocity().y <= PADDING_VELOCITY) {
 			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
 		}
 	}
@@ -445,13 +463,13 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 	auto a = contact.getShapeA()->getBody();
 	auto b = contact.getShapeB()->getBody();
 
+	if (a->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK || a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK) {
+		swap(a, b);
+	}
+
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
-		if (a->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK || a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK) {
-			swap(a, b);
-		}
-
 		if (a->getCategoryBitmask() == GEM_CATEGORY_BITMASK)
 		{
 			CCLOG("Collected Gem");
@@ -486,13 +504,58 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			trigger->removeFromParentAndCleanup(true);
 			//stop the followCamera action
 			gameNode->stopAction(followCamera);
-			//Using MoveTo to move the gameNode to the middleOfBossArena(x = 4056). The Vec2's y = 0 because we only want to move the x coord. 
-			auto moveTo = MoveTo::create(2, Vec2(-(middleOfBossArena->getPositionX() - visibleSize.width/2), 0));
+			//Using MoveTo to move the gameNode to the middle of the boss arena(the boss X position). The Vec2's y = 0 because we only want to move the x coord. 
+			auto moveTo = MoveTo::create(2, Vec2(-(boss->getSprite()->getPositionX() - visibleSize.width/2), 0));
 			gameNode->runAction(moveTo);
+		}
+
+		//Player collide with the hidden area in the map
+		if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK))
+		{
+			
+			if (b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			{
+				CCLOG("Hidden area");
+				hideTiles();
+			}
+			else if (a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			{
+				CCLOG("Hidden area");
+				hideTiles();
+
+			}
 		}
 	}
 	
 	return true;
+}
+
+//onContactSeperate to handle after collision exit.
+void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
+{
+	auto a = contact.getShapeA()->getBody();
+	auto b = contact.getShapeB()->getBody();
+	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
+		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
+	{
+		if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK))
+		{
+
+			if (b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			{
+				CCLOG("Out Hidden area");
+				showTiles();
+			}
+			else if (a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
+			{
+				CCLOG("Out Hidden area");
+				showTiles();
+				
+			}
+		}
+	}
 }
 
 /// <summary>
@@ -565,4 +628,17 @@ void PlayGameScene::goToExit() {
 		Director::getInstance()->end();
 	});
 	buttonNode->addChild(popup, 100);
+}
+
+//Hide and show the hiddenTiles
+void PlayGameScene::hideTiles()
+{	//just run through the list, and hide each tiles in the list
+	CCLOG("Hide tile");
+	Hidden->setVisible(false);
+}
+
+void PlayGameScene::showTiles()
+{
+	CCLOG("Show tile");
+	Hidden->setVisible(true);
 }

@@ -21,6 +21,8 @@ public:
 
 	static GameManager* getInstace();
 
+	void init();
+
 	PlayerCharacter* GetPlayerCharacter();
 
 	Mission* getMission();
@@ -30,6 +32,9 @@ public:
 	void hit(int attacker, int victim);
 
 	PhysicsShapeCache* getPhysicsShapeCache();
+
+	bool onContactBegin(cocos2d::PhysicsContact &contact);
+	void onContactSeperate(cocos2d::PhysicsContact &contact);
 
 private:
 	static GameManager* create();
