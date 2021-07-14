@@ -174,7 +174,9 @@ bool PlayGameScene::init()
 	map = TMXTiledMap::create("map/playMap.tmx");
 	map->setScale(SCALE_FACTOR );
 	Hidden = map->getLayer("Hidden");
-	Hidden->setLocalZOrder(2); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
+	//remove the Hidden Layer and then add it again at line 356
+	map->removeChild(Hidden, true);
+	//Hidden->setLocalZOrder(2); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
 	gameNode->addChild(map, 0);
 
 	//collision with map edges
@@ -350,6 +352,11 @@ bool PlayGameScene::init()
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
 	gameNode->runAction(followCamera);
+
+	//re-add the Hidden layer from the map.
+	Hidden->setScale(SCALE_FACTOR);
+	gameNode->addChild(Hidden, 5);
+
 	this->addChild(gameNode, 0);
 	this->addChild(buttonNode, 100);
 
