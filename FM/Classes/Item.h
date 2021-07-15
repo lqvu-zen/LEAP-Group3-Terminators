@@ -9,7 +9,7 @@ class Item
 {
 public:
 	enum class ItemType {
-		GEM, HP_POTION, MP_POTION
+		GEM, HP_POTION, MP_POTION, GOLD
 	};
 
 	Item(ItemType _itemType);
@@ -17,6 +17,9 @@ public:
 	cocos2d::Sprite* getSprite();
 
 	Item::ItemType getType();
+
+	void setPosition(cocos2d::Vec2 position);
+
 private:
 	cocos2d::Sprite* itemSprite;
 	cocos2d::Sprite* itemImage;

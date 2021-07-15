@@ -157,7 +157,8 @@ void MonsterCharacter::attack() {
 void MonsterCharacter::death() {
 	if (attackSprite->getPhysicsBody() != nullptr)
 		attackSprite->getPhysicsBody()->removeFromWorld();
-
+	if (characterSprite->getPhysicsBody() != nullptr)
+		characterSprite->getPhysicsBody()->removeFromWorld();
 	//animation->release();
 	characterSpriteAnimation->stopAllActions();
 	animation = MonsterCharacter::createAnimation(name + "-Death-", numSprite[1], 0.02);
@@ -169,6 +170,25 @@ void MonsterCharacter::death() {
 	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(numSprite[1] * 0.02);
 	auto seq = Sequence::create(delay, dieAction, nullptr);
 	characterSprite->runAction(seq);
+
+	auto gold = new Item(Item::ItemType::GOLD);
+	gold->getSprite()->setPosition(position);
+	characterSprite->getParent()->addChild(gold->getSprite());
+
+	/*auto gold = Sprite::create("sprites/item/Coins_00.png");
+	gold->setScale(0.15);
+	gold->setPosition(position);
+
+	auto goldBody = PhysicsBody::createBox(gold->getContentSize() * 0.15);
+	goldBody->setDynamic(true);
+
+	goldBody->setCategoryBitmask(ITEM_CATEGORY_BITMASK);
+	goldBody->setCollisionBitmask(ITEM_COLLISION_BITMASK);
+	goldBody->setContactTestBitmask(ALLSET_BITMASK);
+
+	gold->setPhysicsBody(goldBody);
+
+	characterSprite->getParent()->addChild(gold);*/
 }
 
 void MonsterCharacter::takeHit(float dame) {
@@ -281,7 +301,7 @@ cocos2d::Animation* MonsterCharacter::createAnimation(string prefixName, int pFr
 void MonsterCharacter::attackForRanged() {
 	if (characterStats.HP > 0.0f) {
 		characterSpriteAnimation->stopAllActions();
-		characterPhysicsBody->setDynamic(false);
+		//characterPhysicsBody->setDynamic(false);
 		animation = MonsterCharacter::createAnimation(name + "-Attack-", numSprite[0], 0.02);
 		auto animate = Animate::create(animation);
 		animate->retain();
