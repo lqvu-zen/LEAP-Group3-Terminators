@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Definitions.h"
+#include "ui//CocosGUI.h"
 
 USING_NS_CC;
 
@@ -28,6 +29,8 @@ public:
 
 	void UpdateStatsBar();
 
+	void AddPlayerButton();
+
 	bool canJump();
 	void upgradeJump();
 
@@ -45,6 +48,8 @@ private:
 
 	cocos2d::ProgressTimer* statsHP;
 	cocos2d::ProgressTimer* statsMP;
+
+	//ui::Button* statsButton;
 
 	//Karma
 	cocos2d::Sprite* karmaSprite;

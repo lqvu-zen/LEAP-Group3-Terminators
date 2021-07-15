@@ -19,14 +19,14 @@ void GameManager::init()
 	countCharacter = 0;
 }
 
-PlayerCharacter * GameManager::GetPlayerCharacter()
+PlayerCharacter * GameManager::GetPlayerCharacter(bool withInit)
 {
 	if (playerCharacter == nullptr) {
 		playerCharacter = new PlayerCharacter();
 
 		this->AddCharacter(playerCharacter);
 	}
-	else {
+	else if (withInit) {
 		playerCharacter->init();
 	}
 

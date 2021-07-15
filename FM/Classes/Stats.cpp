@@ -1,9 +1,10 @@
 #include "Stats.h"
+#include "GameManager.h"
 
 Stats::Stats()
 {
 	statsSprite = Sprite::create();
-	statsEmblemSpace = Sprite::create("sprites/HB_EmblemSpace.png");
+	statsEmblemSpace = Sprite::create("sprites/HB_EmblemSpace_Enemies.png");
 	statsBorder = Sprite::create("sprites/HB_Border.png");
 
 	statsSprite->addChild(statsEmblemSpace, 4);
@@ -86,6 +87,9 @@ Stats::Stats()
 
 	karmaPoint->setPercentage(0.0f);
 	karmaSprite->setVisible(false);
+
+	//add button
+	//AddPlayerButton();
 }
 
 void Stats::SetStats(float hp, float mp, float atk, float def)
@@ -108,6 +112,8 @@ void Stats::SetStats(float hp, float mp, float atk, float def)
 
 cocos2d::Sprite * Stats::GetSprite()
 {
+	
+
 	return statsSprite;
 }
 
@@ -128,6 +134,38 @@ void Stats::UpdateStatsBar()
 	else if (Karma < 50) {
 		karmaSprite->setVisible(false);
 	}
+}
+
+void Stats::AddPlayerButton()
+{
+	auto statsButton = ui::Button::create("sprites/HB_EmblemSpace_Player.png");
+
+	statsButton->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+	statsButton->setPosition(statsSprite->getPosition());
+	statsButton->setScale(statsSprite->getScale());
+
+	statsButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		auto playerCharacter = GameManager::getInstace()->GetPlayerCharacter(false);
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			//CCLOG("Open inventory");
+			if (playerCharacter->getInventory().GetSprite()->isVisible() == true) {
+				playerCharacter->closeInventory();
+			}
+			else {
+				playerCharacter->openInventory();
+			}
+			break;
+		default:
+			break;
+		}
+	});
+
+	statsSprite->getParent()->addChild(statsButton, 1);
 }
 
 bool Stats::canJump()
