@@ -44,10 +44,12 @@ public:
 
 	void takeHit(float dame = 10.0f);
 
-	void showInventory();
+	void openInventory();
+	void closeInventory();
 
 	cocos2d::Sprite* getSprite();
 	Stats getStats();
+	Inventory getInventory();
 
 	void setVelocity(cocos2d::Vec2 velocity);
 	cocos2d::Vec2 getVolocity();

@@ -23,7 +23,7 @@ public:
 
 	void init();
 
-	PlayerCharacter* GetPlayerCharacter();
+	PlayerCharacter* GetPlayerCharacter(bool withInit = true);
 
 	Mission* getMission();
 

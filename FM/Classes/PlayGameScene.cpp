@@ -60,24 +60,24 @@ bool PlayGameScene::init()
 			});
 			/*Mission* mission = new Mission();
 			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);*/
-			buttonNode->addChild(popup, 100);
+			buttonNode->addChild(popup);
 			break;
 		}
 	});
-	buttonNode->addChild(pauseButton, 100);
+	buttonNode->addChild(pauseButton);
 #endif
 
 #if 1
 	auto button = Sprite::create("sprites/button.png");
 	button->setScale(0.2);
 	button->setPosition(Vec2(button->getContentSize().width * 0.1, button->getContentSize().height * 0.05));
-	//buttonNode->addChild(button, -100);
+	//buttonNode->addChild(button);
 
 	auto upItem = ui::Button::create("sprites/up.png");
 	upItem->setScale(0.4);
 	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.2 / 4));
 	upItem->setOpacity(200);
-	buttonNode->addChild(upItem, 100);
+	buttonNode->addChild(upItem);
 	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -98,7 +98,7 @@ bool PlayGameScene::init()
 	leftItem->setScale(0.1);
 	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.2 / 4, button->getPosition().y));
 	leftItem->setOpacity(200);
-	buttonNode->addChild(leftItem, 100);
+	buttonNode->addChild(leftItem);
 	leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -119,7 +119,7 @@ bool PlayGameScene::init()
 	rightItem->setScale(0.1);
 	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.2 / 4, button->getPosition().y));
 	rightItem->setOpacity(200);
-	buttonNode->addChild(rightItem, 100);
+	buttonNode->addChild(rightItem);
 	rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -162,7 +162,7 @@ bool PlayGameScene::init()
 	auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
 	attackMenu->setOpacity(200);
-	buttonNode->addChild(attackMenu, 100);
+	buttonNode->addChild(attackMenu);
 #endif
 
 
@@ -177,7 +177,7 @@ bool PlayGameScene::init()
 	//remove the Hidden Layer and then add it again at line 356
 	map->removeChild(Hidden, true);
 	//Hidden->setLocalZOrder(2); //Make the Hidden are Z order a bit higher to hide some stuffs under it.
-	gameNode->addChild(map, 0);
+	gameNode->addChild(map);
 
 	//collision with map edges
 	auto mapSize = Size((map->getMapSize().width * map->getTileSize().width) * SCALE_FACTOR, ((map->getMapSize().height * map->getTileSize().height) * SCALE_FACTOR) );
@@ -255,9 +255,9 @@ bool PlayGameScene::init()
 		)
 		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
 	);
-	buttonNode->addChild(playerStatsSprite, 100);
+	buttonNode->addChild(playerStatsSprite);
 
-	playerChar->showInventory();
+	playerStats.AddPlayerButton();
 
 	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
@@ -357,19 +357,16 @@ bool PlayGameScene::init()
 
 	//re-add the Hidden layer from the map.
 	Hidden->setScale(SCALE_FACTOR);
-	gameNode->addChild(Hidden, 5);
+	gameNode->addChild(Hidden, 1);
 
-	this->addChild(gameNode, 0);
-	this->addChild(buttonNode, 100);
+	this->addChild(gameNode);
+	this->addChild(buttonNode, 1);
 
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
 	//boss->death();
 	this->scheduleUpdate();
-
-	
-
 
 	return true;
 }
@@ -619,7 +616,7 @@ void PlayGameScene::updateBoss(float dt) {
 //Pause
 void PlayGameScene::goToMission() {
 	UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
-	buttonNode->addChild(popup, 100);
+	buttonNode->addChild(popup);
 }
 void PlayGameScene::goToVillage() {
 	auto scene = VillageScene::createScene();
@@ -636,7 +633,7 @@ void PlayGameScene::goToExit() {
 	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Notify", "Want to Exit game", [=]() {
 		Director::getInstance()->end();
 	});
-	buttonNode->addChild(popup, 100);
+	buttonNode->addChild(popup);
 }
 
 //Hide and show the hiddenTiles

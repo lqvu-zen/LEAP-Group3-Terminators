@@ -14,13 +14,7 @@ void Inventory::init()
 
 	gold = 100;
 
-	//load sprites
-	inventorySprite = cocos2d::Sprite::create();
-	inventoryImage = cocos2d::Sprite::create("sprites/Inventory.png");
-
-	inventorySprite->addChild(inventoryImage);
-
-	inventorySprite->setScale(3.0f);
+	inventorySprite = nullptr;
 }
 
 void Inventory::addItem(Item * _item)
@@ -29,7 +23,20 @@ void Inventory::addItem(Item * _item)
 	itemMap[_item->getType()].push_back(_item);
 }
 
-cocos2d::Sprite * Inventory::getSprite()
+cocos2d::Sprite * Inventory::GetSprite()
 {
+	if (inventorySprite == nullptr) {
+		//init sprites
+		inventorySprite = cocos2d::Sprite::create();
+
+		//init map
+		inventoryMap = TMXTiledMap::create("map/Inventory.tmx");
+		//inventoryMap->setScale(SCALE_RATIO);
+
+		inventoryMap->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+
+		inventorySprite->addChild(inventoryMap);
+	}
+
 	return inventorySprite;
 }

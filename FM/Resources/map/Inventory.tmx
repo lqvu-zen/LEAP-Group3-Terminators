@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="87">
+ <tileset firstgid="1" source="Inventory.tsx"/>
+ <layer id="1" name="Inventory Layer" width="15" height="10" offsetx="2.84217e-14" offsety="0.639075">
+  <data encoding="base64" compression="zlib">
+   eJwNwwc3FgAAAMCPjKzISkK2kqxCRokyMxMyUqREGZWQoiI7VOT3dvfeBQUCgWDPGWKoYYZ73ggjjTLaGC8Ya5wXjTfBRJNM9pIpXjbVK6aZboZXzTTLbHPMNc98C7zmdQu9YZE3LbbEUsss95a3rbDSKu9YbY211nnXe9Z73wYbfeBDm2y2xVbbbPeRHXbaZbc99vrYPp/Y74CDPnXIYUcc9ZljPveF40740klf+dop3zjtjG9956xzzrvgez/40UU/ueSyK3521S9+dc11v/ndH2646U+33HbHXffc98BfHnrksb/9419PPPWfZ/4HCgUsPg==
+  </data>
+ </layer>
+ <objectgroup id="3" name="Items Layer">
+  <object id="1" name="Item" x="126.5" y="21.1667" width="16" height="16"/>
+  <object id="32" name="Item" x="143" y="21.17" width="16" height="16"/>
+  <object id="33" name="Item" x="158.25" y="21.17" width="16" height="16"/>
+  <object id="34" name="Item" x="174.75" y="21.17" width="16" height="16"/>
+  <object id="39" name="Item" x="190.875" y="21.17" width="16" height="16"/>
+  <object id="40" name="Item" x="206.125" y="21.17" width="16" height="16"/>
+  <object id="41" name="Item" x="222.625" y="21.17" width="16" height="16"/>
+  <object id="42" name="Item" x="126.563" y="36.9984" width="16" height="16"/>
+  <object id="43" name="Item" x="143.063" y="37.0016" width="16" height="16"/>
+  <object id="44" name="Item" x="158.313" y="37.0016" width="16" height="16"/>
+  <object id="45" name="Item" x="174.813" y="37.0016" width="16" height="16"/>
+  <object id="46" name="Item" x="190.938" y="37.0016" width="16" height="16"/>
+  <object id="47" name="Item" x="206.188" y="37.0016" width="16" height="16"/>
+  <object id="48" name="Item" x="222.688" y="37.0016" width="16" height="16"/>
+  <object id="49" name="Item" x="126.406" y="53.4575" width="16" height="16"/>
+  <object id="50" name="Item" x="142.906" y="53.4609" width="16" height="16"/>
+  <object id="51" name="Item" x="158.156" y="53.4609" width="16" height="16"/>
+  <object id="52" name="Item" x="174.656" y="53.4609" width="16" height="16"/>
+  <object id="53" name="Item" x="190.781" y="53.4609" width="16" height="16"/>
+  <object id="54" name="Item" x="206.031" y="53.4609" width="16" height="16"/>
+  <object id="55" name="Item" x="222.531" y="53.4609" width="16" height="16"/>
+  <object id="56" name="Item" x="126.469" y="69.2892" width="16" height="16"/>
+  <object id="57" name="Item" x="142.969" y="69.2925" width="16" height="16"/>
+  <object id="58" name="Item" x="158.219" y="69.2925" width="16" height="16"/>
+  <object id="59" name="Item" x="174.719" y="69.2925" width="16" height="16"/>
+  <object id="60" name="Item" x="190.844" y="69.2925" width="16" height="16"/>
+  <object id="61" name="Item" x="206.094" y="69.2925" width="16" height="16"/>
+  <object id="62" name="Item" x="222.594" y="69.2925" width="16" height="16"/>
+  <object id="63" name="Item" x="126.391" y="85.1029" width="16" height="16"/>
+  <object id="64" name="Item" x="142.891" y="85.1062" width="16" height="16"/>
+  <object id="65" name="Item" x="158.141" y="85.1062" width="16" height="16"/>
+  <object id="66" name="Item" x="174.641" y="85.1062" width="16" height="16"/>
+  <object id="67" name="Item" x="190.766" y="85.1062" width="16" height="16"/>
+  <object id="68" name="Item" x="206.016" y="85.1062" width="16" height="16"/>
+  <object id="69" name="Item" x="222.516" y="85.1062" width="16" height="16"/>
+  <object id="70" name="Item" x="126.234" y="101.562" width="16" height="16"/>
+  <object id="71" name="Item" x="142.734" y="101.565" width="16" height="16"/>
+  <object id="72" name="Item" x="157.984" y="101.565" width="16" height="16"/>
+  <object id="73" name="Item" x="174.484" y="101.565" width="16" height="16"/>
+  <object id="74" name="Item" x="190.609" y="101.565" width="16" height="16"/>
+  <object id="75" name="Item" x="205.859" y="101.565" width="16" height="16"/>
+  <object id="76" name="Item" x="222.359" y="101.565" width="16" height="16"/>
+  <object id="77" name="Item" x="126.297" y="117.394" width="16" height="16"/>
+  <object id="78" name="Item" x="142.797" y="117.397" width="16" height="16"/>
+  <object id="79" name="Item" x="158.047" y="117.397" width="16" height="16"/>
+  <object id="80" name="Item" x="174.547" y="117.397" width="16" height="16"/>
+  <object id="81" name="Item" x="190.672" y="117.397" width="16" height="16"/>
+  <object id="82" name="Item" x="205.922" y="117.397" width="16" height="16"/>
+  <object id="83" name="Item" x="222.422" y="117.397" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="4" name="Character Layer">
+  <object id="85" name="Gold" x="84" y="107.75" width="28.25" height="15.5"/>
+ </objectgroup>
+</map>
