@@ -198,7 +198,6 @@ void BossCharacter::setDirection(Direction actionDirection) {
 }
 
 void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
-	//Nếu nhân vật chạy ra khỏi nơi đánh nhau thì boss quay lại vị trí ban đầu
 	if (abs(position.x - positionPlayer.x) > visibleSize.width / 2) {
 		/*if (position.x == characterSprite->getPosition().x) {
 			action = 0;
@@ -423,7 +422,7 @@ void BossCharacter::takeHit(float dame)
 {
 	characterStats.HP -= dame;
 	characterStats.UpdateStatsBar();
-
+	updateAnimation(State::SHOOTBOW);
 	if (characterStats.HP <= 0.0f) {
 		death();
 		GameManager::getInstace()->getMission()->updateMission(2);

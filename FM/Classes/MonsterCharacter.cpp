@@ -29,11 +29,17 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _type, int _level)
 	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + name + "-Hurt.png");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + name + "-Hurt.plist");
 
+	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(floder + name + "-Idle.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + name + "-Idle.plist");
+
 	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + name + "-Jump.png");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + name + "-Jump.plist");
 
-	/*SpriteBatchNode**/ spriteNode = SpriteBatchNode::create(floder + name + "-Idle.png");
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + name + "-Idle.plist");
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + name + "-Run.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + name + "-Run.plist");
+
+	/*SpriteBatchNode* */spriteNode = SpriteBatchNode::create(floder + name + "-Walk.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(floder + name + "-Walk.plist");
 
 	characterSprite = Sprite::create();
 	characterSpriteAnimation = Sprite::createWithSpriteFrameName(name + "-Idle-0.png");
@@ -120,6 +126,25 @@ void MonsterCharacter::setDirection(Direction _actionDirection) {
 	}
 }
 
+void MonsterCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
+	if (abs(position.x - positionPlayer.x) <= visibleSize.width / 3) {
+		if (species == Species::RANGED) {
+			attackForRanged();
+		}
+		else {
+			if (abs(position.x - positionPlayer.x) <= visibleSize.width / 8) {
+				attackForMelee();
+			}
+			else if (abs(position.x - positionPlayer.x) <= visibleSize.width / 6) {
+				walk();
+			}
+			else {
+				run();
+			}
+		}
+	}
+}
+
 void MonsterCharacter::attack() {
 	if (species == Species::RANGED) {
 		attackForRanged();
@@ -141,7 +166,7 @@ void MonsterCharacter::death() {
 	characterSpriteAnimation->runAction(animate);
 
 	auto dieAction = MoveTo::create(0, Vec2(-100 * visibleSize.width, 0));
-	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(2.4);
+	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(numSprite[1] * 0.02);
 	auto seq = Sequence::create(delay, dieAction, nullptr);
 	characterSprite->runAction(seq);
 }
@@ -179,6 +204,43 @@ void MonsterCharacter::idle() {
 	characterSpriteAnimation->runAction(RepeatForever::create(animate));
 }
 
+void MonsterCharacter::jump() {
+	//animation->release();
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+	animation = MonsterCharacter::createAnimation(name + "-Jump-", numSprite[4], 0.1);
+	auto animate = Animate::create(animation);
+	animate->retain();
+
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(MonsterCharacter::idle, this)), nullptr);
+	characterSpriteAnimation->runAction(seq);
+}
+
+void MonsterCharacter::run() {
+	//animation->release();
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+	animation = MonsterCharacter::createAnimation(name + "-Run-", numSprite[5], 0.1);
+	auto animate = Animate::create(animation);
+	animate->retain();
+
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(MonsterCharacter::idle, this)), nullptr);
+	characterSpriteAnimation->runAction(seq);
+
+	if (actionDirection == Direction::RIGHT) {
+		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(visibleSize.width / 8, 0));
+		characterSprite->runAction(move);
+	}
+	else {
+		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(-visibleSize.width / 8, 0));
+		characterSprite->runAction(move);
+	}
+}
+
 void MonsterCharacter::walk() {
 	//animation->release();
 	if (attackSprite->getPhysicsBody() != nullptr)
@@ -191,6 +253,15 @@ void MonsterCharacter::walk() {
 	
 	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(MonsterCharacter::idle, this)), nullptr);
 	characterSpriteAnimation->runAction(seq);
+
+	if (actionDirection == Direction::RIGHT) {
+		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(visibleSize.width / 12, 0));
+		characterSprite->runAction(move);
+	}
+	else {
+		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(-visibleSize.width / 12, 0));
+		characterSprite->runAction(move);
+	}
 }
 
 cocos2d::Animation* MonsterCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {
@@ -250,7 +321,7 @@ void MonsterCharacter::attackForRanged() {
 void MonsterCharacter::attackForMelee() {
 	if (characterStats.HP > 0.0f) {
 		characterSpriteAnimation->stopAllActions();
-		//characterPhysicsBody->setDynamic(false);
+		characterPhysicsBody->setDynamic(false);
 		animation = MonsterCharacter::createAnimation(name + "-Attack-", numSprite[0], 0.02);
 		auto animate = Animate::create(animation);
 		animate->retain();
