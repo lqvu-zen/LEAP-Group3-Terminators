@@ -264,12 +264,12 @@ bool PlayGameScene::init()
 	//If true -> add enemey at the EnemySpawn.
 	for (auto SpawnPoint : objectGroup->getObjects())
 	{
-		//Spawn enemy
-		if (SpawnPoint.asValueMap()["Enemy"].asInt() == 1)
+		//Spawn enemy. Enemy1 for range monster and Enemy2 for melee monster
+		if (SpawnPoint.asValueMap()["Enemy1"].asInt() == 1)
 		{
-			int eneX = SpawnPoint.asValueMap()["x"].asInt() * SCALE_FACTOR;
-			int eneY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
-			auto monster = new MonsterCharacter(gameNode, 2, 1);
+			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
+			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
+			auto monster = new MonsterCharacter(gameNode, 1, 1);
 			monster->getSprite()->setPosition(eneX, eneY);
 			//Using a list to  store the monsters
 			monsters.push_back(monster);
@@ -278,11 +278,24 @@ bool PlayGameScene::init()
 			
 		}
 
+		if (SpawnPoint.asValueMap()["Enemy2"].asInt() == 1)
+		{
+			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
+			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
+			auto monster = new MonsterCharacter(gameNode, 2, 1);
+			monster->getSprite()->setPosition(eneX, eneY);
+			//Using a list to  store the monsters
+			monsters.push_back(monster);
+			GameManager::getInstace()->AddCharacter(monsters.back());
+			gameNode->addChild(monsters.back()->getSprite());
+
+		}
+
 		//Spawn gem
 		if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
 		{
-			int gemX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
-			int gemY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			auto gemX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
+			auto gemY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 			auto gem = new Item(Item::ItemType::GEM);
 			gem->getSprite()->setPosition(gemX, gemY);
 			gameNode->addChild(gem->getSprite(), 1);
@@ -291,8 +304,8 @@ bool PlayGameScene::init()
 		//Spawn boss
 		if (SpawnPoint.asValueMap()["Boss"].asInt() == 1)
 		{
-			int bossX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
-			int bossY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			auto bossX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
+			auto bossY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 			boss = new BossCharacter(1);
 			boss->setPosition(Vec2(bossX, bossY));
 
@@ -305,8 +318,8 @@ bool PlayGameScene::init()
 		//Spawn Trigger point
 		if (SpawnPoint.asValueMap()["Trigger"].asInt() == 1)
 		{
-			int triggerX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
-			int triggerY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			auto triggerX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
+			auto triggerY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 			trigger = Sprite::create();
 			auto triggerBody = PhysicsBody::createBox(Size(64, mapSize.height));
 			triggerBody->setDynamic(false);
@@ -321,8 +334,8 @@ bool PlayGameScene::init()
 		//Spawn Trigger hidden area point
 		if (SpawnPoint.asValueMap()["TriggerHidden"].asInt() == 1)
 		{
-			int triggerX = SpawnPoint.asValueMap()["x"].asInt()* SCALE_FACTOR;
-			int triggerY = SpawnPoint.asValueMap()["y"].asInt() * SCALE_FACTOR;
+			auto triggerX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
+			auto triggerY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 			auto triggerHidden = Sprite::create();
 			auto triggerBody = PhysicsBody::createBox(Size(96 * SCALE_FACTOR, 80 * SCALE_FACTOR));
 			triggerBody->setDynamic(false);

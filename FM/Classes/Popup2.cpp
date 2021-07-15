@@ -348,7 +348,7 @@ namespace UICustom {
 			menu->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
 			menu->alignItemsVerticallyWithPadding(FONT::LABEL_OFFSET / 2);
 
-			node->initBg(Size(400, 450), "Pause");
+			node->initBg(Size(400, 450), "Select Map");
 			node->autorelease();
 			return node;
 		}
