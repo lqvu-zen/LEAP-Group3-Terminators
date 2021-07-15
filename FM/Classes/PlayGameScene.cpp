@@ -184,7 +184,7 @@ bool PlayGameScene::init()
 	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 0.0f), 3);
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(Point(mapSize.width/2, mapSize.height/2));
-	edgeBody->setCategoryBitmask(ALLSET_BITMASK);
+	edgeBody->setCategoryBitmask(OBSTACLE_COLLISION_BITMASK);
 	edgeBody->setCollisionBitmask(ALLSET_BITMASK);
 	edgeBody->setContactTestBitmask(ALLCLEARED_BITMASK);
 
@@ -239,7 +239,7 @@ bool PlayGameScene::init()
 	//cameraTarget for the followCamera to follow the player.
 	cameraTarget = Node::create();
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
-	cameraTarget->setPositionY(visibleSize.height / 2 + origin.y);
+	cameraTarget->setPositionY(visibleSize.height / 2 + origin.y +(32 * SCALE_FACTOR));
 	gameNode->addChild(cameraTarget);
 	gameNode->addChild(playerChar->getSprite());
 
@@ -283,7 +283,7 @@ bool PlayGameScene::init()
 			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
 			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 			auto monster = new MonsterCharacter(gameNode, 2, 1);
-			monster->getSprite()->setPosition(eneX, eneY);
+			monster->setPosition(Vec2(eneX, eneY));
 			//Using a list to  store the monsters
 			monsters.push_back(monster);
 			GameManager::getInstace()->AddCharacter(monsters.back());
@@ -409,7 +409,7 @@ void PlayGameScene::update(float dt)
 	this->updateCharacter(dt);
 	//this->updateBoss(dt);
 
-	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
+	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
 }
 
 void PlayGameScene::updateCharacter(float dt)
@@ -461,18 +461,22 @@ void PlayGameScene::updateCharacter(float dt)
 void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	auto node = dynamic_cast<Node*>(sender);
 	CCLOG("%i", node->getTag());
+	//Attack with buttons
 	if (node->getTag() == 1) {
 		playerChar->attack();
 		CCLOG("Attack");
 	}
 	else if (node->getTag() == 2) {
 		CCLOG("Skill 1");
+		playerChar->attack(3);
 	}
 	else if (node->getTag() == 3) {
 		CCLOG("Skill 2");
+		playerChar->attack(2);
 	}
 	else if (node->getTag() == 4) {
 		CCLOG("Skill 3");
+		playerChar->attack(1);
 	}
 }
 
@@ -490,6 +494,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
+		
 		if (a->getCategoryBitmask() == ITEM_CATEGORY_BITMASK)
 		{
 			CCLOG("Collected item");
@@ -525,7 +530,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			//stop the followCamera action
 			gameNode->stopAction(followCamera);
 			//Using MoveTo to move the gameNode to the middle of the boss arena(the boss X position). The Vec2's y = 0 because we only want to move the x coord. 
-			auto moveTo = MoveTo::create(2, Vec2(-(boss->getSprite()->getPositionX() - visibleSize.width/2), 0));
+			auto moveTo = MoveTo::create(2, Vec2(-(boss->getSprite()->getPositionX() - visibleSize.width/2), -(32 * SCALE_FACTOR)));
 			gameNode->runAction(moveTo);
 		}
 
@@ -546,6 +551,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 
 			}
 		}
+
 	}
 	
 	return true;

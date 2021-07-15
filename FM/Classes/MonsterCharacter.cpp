@@ -74,7 +74,8 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _type, int _level)
 	characterPhysicsBody->setCategoryBitmask(ENEMIES_CATEGORY_BITMASK);
 	characterPhysicsBody->setCollisionBitmask(ENEMIES_COLLISION_BITMASK);
 	characterPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
-
+	//set linear damping so the monster won't slide of the map
+	characterPhysicsBody->setLinearDamping(1.0f);
 	characterSprite->setPhysicsBody(characterPhysicsBody);
 	
 	characterSprite->addChild(characterSpriteAnimation);
@@ -127,7 +128,7 @@ void MonsterCharacter::setDirection(Direction _actionDirection) {
 }
 
 void MonsterCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
-	if (abs(position.x - positionPlayer.x) <= visibleSize.width / 3) {
+	
 		if (species == Species::RANGED) {
 			attackForRanged();
 		}
@@ -142,7 +143,7 @@ void MonsterCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 				run();
 			}
 		}
-	}
+	
 }
 
 void MonsterCharacter::attack() {
