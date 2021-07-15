@@ -283,7 +283,7 @@ bool PlayGameScene::init()
 			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
 			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 			auto monster = new MonsterCharacter(gameNode, 2, 1);
-			monster->getSprite()->setPosition(eneX, eneY);
+			monster->setPosition(Vec2(eneX, eneY));
 			//Using a list to  store the monsters
 			monsters.push_back(monster);
 			GameManager::getInstace()->AddCharacter(monsters.back());
