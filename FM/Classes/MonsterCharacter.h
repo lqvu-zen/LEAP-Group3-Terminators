@@ -7,6 +7,7 @@
 #include "Stats.h"
 #include "Character.h"
 #include "GameManager.h"
+#include "Item.h"
 
 using namespace std;
 

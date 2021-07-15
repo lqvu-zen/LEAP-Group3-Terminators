@@ -58,24 +58,24 @@ bool VillageScene::init()
 				goToExit();
 			});
 			
-			buttonNode->addChild(popup, 100);
+			buttonNode->addChild(popup);
 			break;
 		}
 	});
-	buttonNode->addChild(pauseButton, 100);
+	buttonNode->addChild(pauseButton);
 #endif
 
 #if 1
 	auto button = Sprite::create("sprites/button.png");
 	button->setScale(0.2);
 	button->setPosition(Vec2(button->getContentSize().width * 0.1, button->getContentSize().height * 0.05));
-	//buttonNode->addChild(button, -100);
+	//buttonNode->addChild(button);
 
 	auto upItem = ui::Button::create("sprites/up.png");
 	upItem->setScale(0.4);
 	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.2 / 4));
 	upItem->setOpacity(200);
-	buttonNode->addChild(upItem, 100);
+	buttonNode->addChild(upItem);
 	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -96,7 +96,7 @@ bool VillageScene::init()
 	leftItem->setScale(0.1);
 	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.2 / 4, button->getPosition().y));
 	leftItem->setOpacity(200);
-	buttonNode->addChild(leftItem, 100);
+	buttonNode->addChild(leftItem);
 	leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -117,7 +117,7 @@ bool VillageScene::init()
 	rightItem->setScale(0.1);
 	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.2 / 4, button->getPosition().y));
 	rightItem->setOpacity(200);
-	buttonNode->addChild(rightItem, 100);
+	buttonNode->addChild(rightItem);
 	rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -152,7 +152,7 @@ bool VillageScene::init()
 	auto attackMenu = Menu::create(skill_1Item, attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
 	attackMenu->setOpacity(200);
-	buttonNode->addChild(attackMenu, 100);
+	buttonNode->addChild(attackMenu);
 #endif
 	//End add buttons
 
@@ -257,7 +257,9 @@ bool VillageScene::init()
 		)
 		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
 	);
-	buttonNode->addChild(playerStatsSprite, 100);
+	buttonNode->addChild(playerStatsSprite);
+
+	playerStat.AddPlayerButton();
 
 	//Contact test
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -278,7 +280,7 @@ bool VillageScene::init()
 	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
 	gameNode->runAction(followCamera);
 	this->addChild(gameNode);
-	this->addChild(buttonNode, 100);
+	this->addChild(buttonNode, 1);
 
 	this->scheduleUpdate();
 	return true;
@@ -360,7 +362,7 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 		if (standAlone)
 		{
 			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Standing Alone", "There is no one for you to talk ...");
-			buttonNode->addChild(popup, 100);
+			buttonNode->addChild(popup);
 		}
 		else
 		{
@@ -371,7 +373,7 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 				GameManager::getInstace()->getMission()->cancelMission();
 				CCLOG("Reject Mission!");
 			});
-			buttonNode->addChild(popup, 100);
+			buttonNode->addChild(popup);
 		}
 	}
 
@@ -427,7 +429,7 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 				goToMap1();
 			});
 
-			buttonNode->addChild(popup, 100);
+			buttonNode->addChild(popup);
 			/*auto scene = PlayGameScene::createScene();
 			Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));*/
 		}
@@ -438,11 +440,11 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 //Pause
 void VillageScene::goToMission() {
 	UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
-	buttonNode->addChild(popup, 100);
+	buttonNode->addChild(popup);
 }
 void VillageScene::goToSetting() {
 	UICustom::Popup* popup = UICustom::Popup::createSetting();
-	buttonNode->addChild(popup, 100);
+	buttonNode->addChild(popup);
 }
 void VillageScene::goToMainMenu() {
 	auto scene = MainMenuScene::createScene();
@@ -452,7 +454,7 @@ void VillageScene::goToExit() {
 	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Notify", "Want to Exit game", [=]() {
 		Director::getInstance()->end();
 	});
-	buttonNode->addChild(popup, 100);
+	buttonNode->addChild(popup);
 }
 
 void VillageScene::goToMap1() {

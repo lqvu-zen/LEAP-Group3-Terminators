@@ -14,6 +14,18 @@ PlayerCharacter::PlayerCharacter()
 	characterSprite = nullptr;
 
 	init();
+
+	//init inventory 
+	characterInventory.init();
+
+	//set inventory
+	characterStats.GetSprite()->addChild(characterInventory.GetSprite(), 200);
+
+	characterInventory.GetSprite()->setPosition(Vec2(
+		characterStats.GetSpriteSize().width * SCALE_RATIO * 1.1f, -characterStats.GetSpriteSize().height * 1.5f
+	));
+
+	characterInventory.GetSprite()->setVisible(false);
 }
 
 PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
@@ -76,8 +88,7 @@ void PlayerCharacter::init()
 	//--
 	died = false;
 
-	//init inventory 
-	characterInventory.init();
+	
 }
 
 void PlayerCharacter::setPosition(cocos2d::Vec2 position)
@@ -428,18 +439,14 @@ void PlayerCharacter::takeHit(float dame)
 	characterStats.HP -= dame;
 }
 
-void PlayerCharacter::showInventory()
+void PlayerCharacter::openInventory()
 {
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto origin = Director::getInstance()->getVisibleOrigin();
+	characterInventory.GetSprite()->setVisible(true);
+}
 
-	characterStats.GetSprite()->getParent()->addChild(characterInventory.getSprite(), 200);
-
-	characterInventory.getSprite()->setPosition(Vec2(
-		visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y
-	));
-
-	characterInventory.getSprite()->setVisible(false);
+void PlayerCharacter::closeInventory()
+{
+	characterInventory.GetSprite()->setVisible(false);
 }
 
 cocos2d::Sprite * PlayerCharacter::getSprite()
@@ -450,6 +457,11 @@ cocos2d::Sprite * PlayerCharacter::getSprite()
 Stats PlayerCharacter::getStats()
 {
 	return characterStats;
+}
+
+Inventory PlayerCharacter::getInventory()
+{
+	return characterInventory;
 }
 
 void PlayerCharacter::setVelocity(cocos2d::Vec2 velocity)

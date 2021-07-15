@@ -17,7 +17,7 @@ public:
 
 	void addItem(Item* _item);
 
-	cocos2d::Sprite* getSprite();
+	cocos2d::Sprite* GetSprite();
 private:
 	int gold;
 
@@ -25,7 +25,8 @@ private:
 	std::map<Item::ItemType, std::list<Item *>> itemMap;
 
 	cocos2d::Sprite* inventorySprite;
-	cocos2d::Sprite* inventoryImage;
+
+	cocos2d::TMXTiledMap* inventoryMap;
 };
 
 #endif // __INVENTORY_H__
