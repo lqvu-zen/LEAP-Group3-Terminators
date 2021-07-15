@@ -198,78 +198,65 @@ void BossCharacter::setDirection(Direction actionDirection) {
 }
 
 void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
-	if (abs(position.x - positionPlayer.x) > visibleSize.width / 2) {
-		/*if (position.x == characterSprite->getPosition().x) {
-			action = 0;
+	if (characterStats.HP > 0) {
+		if (abs(position.x - positionPlayer.x) > visibleSize.width / 2) {
 			updateAnimation(State::IDLE, true);
+			action = 0;
 		}
 		else {
-			if (characterDirection == Direction::LEFT) {
-				setDirection(Direction::RIGHT);
-			}
-			else {
-				setDirection(Direction::LEFT);
-			}
-			action = 1;
-			walk();
-		}*/
-		updateAnimation(State::IDLE, true);
-		action = 0;
-	}
-	else {
-		if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 8) {
-			if (positionPlayer.y > characterSprite->getPosition().y + characterSprite->getContentSize().height) {
-				if (action == 0) {
-					jumpAttack();
-					action = 2;
-				}
-				else if (action == 2) {
-					updateAnimation(State::IDLE, true);
-					action = 0;
-				}
+			if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 8) {
+				if (positionPlayer.y > characterSprite->getPosition().y + characterSprite->getContentSize().height) {
+					if (action == 0) {
+						jumpAttack();
+						action = 2;
+					}
+					else if (action == 2) {
+						updateAnimation(State::IDLE, true);
+						action = 0;
+					}
 
-			}
-			else {
-				if (action == 0) {
-					attack();
-					action = 2;
 				}
-				else if (action == 2) {
-					updateAnimation(State::IDLE, true);
-					action = 0;
+				else {
+					if (action == 0) {
+						attack();
+						action = 2;
+					}
+					else if (action == 2) {
+						updateAnimation(State::IDLE, true);
+						action = 0;
+					}
+
 				}
-				
 			}
-		}
-		else if(abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 4){
-			if (numAttack >= 5) {
-				skill(1);
+			else if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 4) {
+				if (numAttack >= 5) {
+					skill(1);
+				}
+				else {
+					walk();
+				}
+			}
+			else if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 2) {
+				if (numAttack >= 5) {
+					skill(2);
+				}
+				else {
+					run();
+				}
 			}
 			else {
-				walk();
+				updateAnimation(State::IDLE, true);
+				action = 0;
 			}
-		}
-		else if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 2) {
-			if (numAttack >= 5) {
-				skill(2);
-			}
-			else {
-				run();
-			}
-		}
-		else {
-			updateAnimation(State::IDLE, true);
-			action = 0;
 		}
 	}
-	
 }
 
 void BossCharacter::death()
 {
 	updateAnimation(State::DEATH);
 	auto die = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
-	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(2);
+	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(3);
 	auto seq = Sequence::create(delay, die, nullptr);
 	characterSprite->runAction(seq);
 }
@@ -422,7 +409,7 @@ void BossCharacter::takeHit(float dame)
 {
 	characterStats.HP -= dame;
 	characterStats.UpdateStatsBar();
-	updateAnimation(State::SHOOTBOW);
+	updateAnimation(State::HURT);
 	if (characterStats.HP <= 0.0f) {
 		death();
 		GameManager::getInstace()->getMission()->updateMission(2);

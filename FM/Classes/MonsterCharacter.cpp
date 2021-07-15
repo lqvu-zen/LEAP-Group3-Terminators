@@ -132,10 +132,10 @@ void MonsterCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 			attackForRanged();
 		}
 		else {
-			if (abs(position.x - positionPlayer.x) <= visibleSize.width / 8) {
+			if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 12) {
 				attackForMelee();
 			}
-			else if (abs(position.x - positionPlayer.x) <= visibleSize.width / 6) {
+			else if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 6) {
 				walk();
 			}
 			else {
@@ -321,7 +321,7 @@ void MonsterCharacter::attackForRanged() {
 void MonsterCharacter::attackForMelee() {
 	if (characterStats.HP > 0.0f) {
 		characterSpriteAnimation->stopAllActions();
-		characterPhysicsBody->setDynamic(false);
+		//characterPhysicsBody->setDynamic(false);
 		animation = MonsterCharacter::createAnimation(name + "-Attack-", numSprite[0], 0.02);
 		auto animate = Animate::create(animation);
 		animate->retain();
