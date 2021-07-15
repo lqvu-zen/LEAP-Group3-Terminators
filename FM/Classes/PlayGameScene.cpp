@@ -598,7 +598,7 @@ void PlayGameScene::monsterAction(float dt) {
 	std::list<MonsterCharacter*> ::iterator it;
 	for (it = monsters.begin(); it != monsters.end(); ++it) {
 		if (abs((*it)->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
-			(*it)->attack();
+			(*it)->updateAction(playerChar->getSprite()->getPosition());
 		}
 		else {
 			(*it)->idle();

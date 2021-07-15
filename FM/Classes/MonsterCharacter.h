@@ -30,15 +30,19 @@ public:
 
     void setDirection(Direction _actionDirection);
 
-    void attack();
+    void updateAction(cocos2d::Vec2 positionPlayer);
 
-    void updateAction();
+    void attack();
 
     void death();
 
     void takeHit(float dame);
 
     void idle();
+
+    void jump();
+
+    void run();
 
     void walk();
 private:
