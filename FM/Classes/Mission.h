@@ -24,7 +24,7 @@ public:
         int type; //Monster : 1, Boss :2, Item: 3.
         int begin;
         int end;
-        bool state;
+        int state; //0 - to do mission 1 - doing mission 2 - complete the mission 3 - cancel the mission 4 - notice 
     };
     
     Mission();
@@ -37,7 +37,7 @@ public:
         else {
             int i = 0;
             while (i < data.size()) {
-                if (data.at(i).state == false) {
+                if (data.at(i).state == 0) {
                     mission = data.at(i);
                     index = i;
                     return mission;
@@ -46,7 +46,7 @@ public:
             }
             if (i == data.size()) {
                 index = i;
-                mission = data.at(data.size() - 1);
+                mission = data.at(index - 1);
                 return mission;
             }
         }
@@ -54,8 +54,9 @@ public:
 
     Data getNowMission() {
         if (hasMission) {
-            if (mission.state == true)
+            if (mission.state == 2) {
                 mission = data.at(data.size() - 2);
+            }
             return mission;
         }
         else {
@@ -64,6 +65,7 @@ public:
             }
             return data.at(0);
         }
+        
     }
 
     void agreeMission();
@@ -73,13 +75,14 @@ public:
     void updateMission(int type);
 
     void submitMission();
-	bool hasMission;
+
+    int getState();
 private:
     vector<Data> data;
     Data mission;
     int index;
 
-    
+    bool hasMission;
 };
 
 #endif // __MISSION_H__

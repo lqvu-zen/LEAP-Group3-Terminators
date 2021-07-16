@@ -2,39 +2,39 @@
   "MISSION": [
     {
       "ID": 0,
-      "REQUEST": "Hey Hero\n I am the village head ",
-      "NAME": "Return to the village to receive the mission",
+      "REQUEST": "Hey Hero\n I am the village head.",
+      "NAME": "Return to the village to receive the mission.",
       "BEGIN": 0,
       "TYPE": 0,
       "END": 0,
-      "STATE": true
+      "STATE": 4
     },
     {
       "ID": 1,
-      "REQUEST": "Hey Hero\n Can you help me kill 2 toads",
-      "NAME": "Defeat 2 toads to become chimpanzees",
+      "REQUEST": "Hey Hero\n Can you help me kill 2 toads.",
+      "NAME": "Defeat 2 toads to become chimpanzees.",
       "BEGIN": 0,
       "TYPE": 1,
       "END": 2,
-      "STATE": false
+      "STATE": 0
     },
     {
       "ID": 2,
-      "REQUEST": "Hey Hero\n Can you help me collect 3 red diamonds",
-      "NAME": "Collect 3 red diamonds",
+      "REQUEST": "Hey Hero\n Can you help me collect 3 red diamonds.",
+      "NAME": "Collect 3 red diamonds.",
       "BEGIN": 0,
       "TYPE": 3,
       "END": 3,
-      "STATE": false
+      "STATE": 0
     },
     {
       "ID": 3,
-      "REQUEST": "Hey Hero\n Can you help me slay the demon of eyes",
-      "NAME": "Slay the demon of eyes",
+      "REQUEST": "Hey Hero\n Can you help me slay the demon of eyes.",
+      "NAME": "Slay the demon of eyes.",
       "BEGIN": 0,
       "TYPE": 2,
       "END": 1,
-      "STATE": false
+      "STATE": 0
     },
     {
       "ID": 4,
@@ -43,16 +43,16 @@
       "BEGIN": 0,
       "TYPE": 0,
       "END": 0,
-      "STATE": true
+      "STATE": 4
     },
     {
       "ID": 5,
-      "REQUEST": "Hey Hero\n I am the village head ",
-      "NAME": "Congratulation\n You have completed all the missions",
+      "REQUEST": "Hey Hero\n I am the village head.",
+      "NAME": "Congratulation\n You have completed all the missions.",
       "BEGIN": 0,
       "TYPE": 0,
       "END": 0,
-      "STATE": true
+      "STATE": 4
     }
   ]
 }

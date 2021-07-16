@@ -307,7 +307,14 @@ void VillageScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2
 void VillageScene::update(float dt)
 {
 	//Mission check for NPC
-	if (GameManager::getInstace()->getMission()->getNowMission().id < 4)
+	if (GameManager::getInstace()->getMission()->getState() == 0)
+	{
+		npc->showExclamation();
+	}
+	if (GameManager::getInstace()->getMission()->getState() == 1) {
+		npc->changeExclamation();
+	}
+	else if (GameManager::getInstace()->getMission()->getState() == 0)
 	{
 		npc->showExclamation();
 	}
@@ -457,6 +464,7 @@ void VillageScene::goToExit() {
 	buttonNode->addChild(popup);
 }
 
+//Map
 void VillageScene::goToMap1() {
 	auto scene = PlayGameScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));

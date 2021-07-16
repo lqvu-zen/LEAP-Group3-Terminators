@@ -23,14 +23,15 @@ Mission::Mission() {
 				tmp.name = mission[i]["NAME"].GetString();
 				tmp.begin = mission[i]["BEGIN"].GetInt();
 				tmp.end = mission[i]["END"].GetInt();
-				tmp.state = mission[i]["STATE"].GetBool();
+				tmp.state = mission[i]["STATE"].GetInt();
 				tmp.type = mission[i]["TYPE"].GetInt();
 				data.push_back(tmp);
 			}
 		}
 	}
 	hasMission = false;
-	index = 0;
+	mission = data.at(0);
+	index = 2;
 }
 
 void Mission::updateMission(int type) {
@@ -43,22 +44,46 @@ void Mission::updateMission(int type) {
 
 void Mission::cancelMission() {
 	if (index != data.size()) {
-		mission.state = true;
-		data.at(index).state = true;
+		mission.state = 3;
+		data.at(index).state = 3;
 		hasMission = false;
 	}	
 }
 
 void Mission::agreeMission() {
-	hasMission = true;
 	if (mission.id == data.size() - 2) {
 		hasMission = false;
+	}
+	else {
+		hasMission = true;
+		data.at(index).state = 1;
+		mission.state = 1;
 	}
 }
 
 void Mission::submitMission() {
 	if (mission.begin == mission.end) {
-		mission.state = true;
-		data.at(index).state = true;
+		mission.state = 2;
+		data.at(index).state = 2;
+	}
+}
+
+int Mission::getState() {
+	if (hasMission == false) {
+		if (mission.id == data.size() - 1) {
+			return 2;
+		}
+		else if (mission.id == data.size() - 3) {
+			if (mission.state != 0) {
+				return 2;
+			}
+		}
+		return 0;
+	}
+	else {
+		if (mission.id == data.size() - 2) {
+			return 1;
+		}
+		return 2;
 	}
 }

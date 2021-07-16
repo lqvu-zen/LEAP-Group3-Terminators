@@ -73,9 +73,18 @@ void NPC::showExclamation()
 {
 	if (characterStats.HP > 0)
 	{
+		exclamation->setColor(Color3B::WHITE);
 		exclamation->setVisible(true);
 	}
 	
+}
+
+void NPC::changeExclamation() {
+	if (characterStats.HP > 0)
+	{
+		exclamation->setColor(Color3B::YELLOW);
+		exclamation->setVisible(true);
+	}
 }
 
 void NPC::hideExclamation()

@@ -17,6 +17,7 @@ public:
 
 	void takeHit(float dame = 10.0f);
 	void showExclamation();
+	void changeExclamation();
 	void hideExclamation();
 	cocos2d::Sprite* getSprite();
 private:

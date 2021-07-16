@@ -58,9 +58,13 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _type, int _level)
 		characterSize = Size(characterSpriteAnimation->getContentSize().width * 0.5f, characterSpriteAnimation->getContentSize().height * 0.85f);
 		break;
 	case 3:
+		numSprite = { 30,30,12,12,30,24,36 }; //Attack - 0, Death - 1, Hurt - 2, Idle - 3, Jump - 4, Run - 5, Walk - 6
+		characterSize = Size(characterSpriteAnimation->getContentSize().width * 0.5f, characterSpriteAnimation->getContentSize().height * 0.85f);
 		species = Species::MELEE;
 		break;
 	case 4:
+		numSprite = { 20,20,8,8,20,20,24 }; //Attack - 0, Death - 1, Hurt - 2, Idle - 3, Jump - 4, Run - 5, Walk - 6
+		characterSize = Size(characterSpriteAnimation->getContentSize().width * 0.5f, characterSpriteAnimation->getContentSize().height * 0.85f);
 		species = Species::MELEE;
 		break;
 	default:
@@ -158,7 +162,8 @@ void MonsterCharacter::attack() {
 void MonsterCharacter::death() {
 	if (attackSprite->getPhysicsBody() != nullptr)
 		attackSprite->getPhysicsBody()->removeFromWorld();
-
+	if (characterSprite->getPhysicsBody() != nullptr)
+		characterSprite->getPhysicsBody()->removeFromWorld();
 	//animation->release();
 	characterSpriteAnimation->stopAllActions();
 	animation = MonsterCharacter::createAnimation(name + "-Death-", numSprite[1], 0.02);
@@ -170,6 +175,10 @@ void MonsterCharacter::death() {
 	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(numSprite[1] * 0.02);
 	auto seq = Sequence::create(delay, dieAction, nullptr);
 	characterSprite->runAction(seq);
+
+	auto gold = new Item(Item::ItemType::GOLD);
+	gold->getSprite()->setPosition(position);
+	characterSprite->getParent()->addChild(gold->getSprite());
 }
 
 void MonsterCharacter::takeHit(float dame) {
@@ -286,7 +295,7 @@ cocos2d::Animation* MonsterCharacter::createAnimation(string prefixName, int pFr
 void MonsterCharacter::attackForRanged() {
 	if (characterStats.HP > 0.0f) {
 		characterSpriteAnimation->stopAllActions();
-		characterPhysicsBody->setDynamic(false);
+		//characterPhysicsBody->setDynamic(false);
 		animation = MonsterCharacter::createAnimation(name + "-Attack-", numSprite[0], 0.02);
 		auto animate = Animate::create(animation);
 		animate->retain();

@@ -12,18 +12,29 @@ Item::Item(ItemType _itemType)
 	switch (itemType)
 	{
 	case Item::ItemType::GEM:
-		itemImage = Sprite::create("sprites/Gem.png");
+		itemImage = Sprite::create("sprites/item/Gem.png");
 		itemBody = PhysicsBody::createBox(itemImage->getContentSize());
 		break;
 	case Item::ItemType::HP_POTION:
+		itemImage = Sprite::create("sprites/item/Red_Potion.png");
+		itemImage->setScale(0.15);
+		itemBody = PhysicsBody::createBox(itemImage->getContentSize() * 0.15);
 		break;
 	case Item::ItemType::MP_POTION:
+		itemImage = Sprite::create("sprites/item/Blue_Potion.png");
+		itemImage->setScale(0.15);
+		itemBody = PhysicsBody::createBox(itemImage->getContentSize() * 0.15);
+		break;
+	case Item::ItemType::GOLD:
+		itemImage = Sprite::create("sprites/item/Coins_00.png");
+		itemImage->setScale(0.15);
+		itemBody = PhysicsBody::createBox(itemImage->getContentSize() * 0.15);
 		break;
 	default:
 		break;
 	}
 
-	itemBody->setDynamic(true);
+	itemBody->setDynamic(false);
 
 	itemBody->setCategoryBitmask(ITEM_CATEGORY_BITMASK);
 	itemBody->setCollisionBitmask(ITEM_COLLISION_BITMASK);
@@ -41,4 +52,9 @@ cocos2d::Sprite* Item::getSprite()
 Item::ItemType Item::getType()
 {
 	return itemType;
+}
+
+void Item::setPosition(cocos2d::Vec2 position) {
+	itemSprite->setPosition(position);
+	itemImage->setPosition(Vec2::ZERO);
 }
