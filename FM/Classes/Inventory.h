@@ -18,8 +18,12 @@ public:
 	void addItem(Item* _item);
 
 	cocos2d::Sprite* GetSprite();
+
+	void updateInventory();
 private:
 	int gold;
+
+	cocos2d::Label* goldLabel;
 
 	int itemCount;
 	std::map<Item::ItemType, std::list<Item *>> itemMap;
