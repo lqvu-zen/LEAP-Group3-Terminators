@@ -58,9 +58,13 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _type, int _level)
 		characterSize = Size(characterSpriteAnimation->getContentSize().width * 0.5f, characterSpriteAnimation->getContentSize().height * 0.85f);
 		break;
 	case 3:
+		numSprite = { 30,30,12,12,30,24,36 }; //Attack - 0, Death - 1, Hurt - 2, Idle - 3, Jump - 4, Run - 5, Walk - 6
+		characterSize = Size(characterSpriteAnimation->getContentSize().width * 0.5f, characterSpriteAnimation->getContentSize().height * 0.85f);
 		species = Species::MELEE;
 		break;
 	case 4:
+		numSprite = { 20,20,8,8,20,20,24 }; //Attack - 0, Death - 1, Hurt - 2, Idle - 3, Jump - 4, Run - 5, Walk - 6
+		characterSize = Size(characterSpriteAnimation->getContentSize().width * 0.5f, characterSpriteAnimation->getContentSize().height * 0.85f);
 		species = Species::MELEE;
 		break;
 	default:
@@ -175,21 +179,6 @@ void MonsterCharacter::death() {
 	auto gold = new Item(Item::ItemType::GOLD);
 	gold->getSprite()->setPosition(position);
 	characterSprite->getParent()->addChild(gold->getSprite());
-
-	/*auto gold = Sprite::create("sprites/item/Coins_00.png");
-	gold->setScale(0.15);
-	gold->setPosition(position);
-
-	auto goldBody = PhysicsBody::createBox(gold->getContentSize() * 0.15);
-	goldBody->setDynamic(true);
-
-	goldBody->setCategoryBitmask(ITEM_CATEGORY_BITMASK);
-	goldBody->setCollisionBitmask(ITEM_COLLISION_BITMASK);
-	goldBody->setContactTestBitmask(ALLSET_BITMASK);
-
-	gold->setPhysicsBody(goldBody);
-
-	characterSprite->getParent()->addChild(gold);*/
 }
 
 void MonsterCharacter::takeHit(float dame) {
