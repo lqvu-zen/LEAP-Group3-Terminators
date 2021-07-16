@@ -254,6 +254,12 @@ bool PlayGameScene::init()
 
 	playerStats.AddPlayerButton();
 
+	//Mission description
+	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
+	missionLabel = Label::createWithTTF(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
+	missionLabel->setColor(Color3B::WHITE);
+	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width/2, playerStatsSprite->getPositionY() - playerStats.GetSpriteSize().height);
+	buttonNode->addChild(missionLabel);
 	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
@@ -399,6 +405,8 @@ void PlayGameScene::update(float dt)
 	this->updateMonster(dt);
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
+	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
+	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
 	//this->updateBoss(dt);
 
 	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
@@ -501,6 +509,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			CCLOG("Hit enemies %d", a->getNode()->getTag());
 			
 			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
+			
 		}
 
 		// check player get hit

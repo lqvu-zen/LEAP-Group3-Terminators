@@ -20,6 +20,7 @@ public:
 	Sprite* trigger;
 	static cocos2d::Scene* createScene();
 	virtual bool init();
+	cocos2d::Label* missionLabel;
 	CREATE_FUNC(PlayGameScene);
 	//void attackMonster(float dt);
 private:
