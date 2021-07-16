@@ -199,7 +199,7 @@ void MonsterCharacter::idle() {
 
 	//animation->release();
 	characterSpriteAnimation->stopAllActions();
-	animation = MonsterCharacter::createAnimation(name + "-Idle-", numSprite[3], 0.1);
+	animation = MonsterCharacter::createAnimation(name + "-Idle-", numSprite[3], 0.08);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	characterSpriteAnimation->runAction(RepeatForever::create(animate));
@@ -233,11 +233,11 @@ void MonsterCharacter::run() {
 	characterSpriteAnimation->runAction(seq);
 
 	if (actionDirection == Direction::RIGHT) {
-		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(visibleSize.width / 8, 0));
+		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(visibleSize.width / 6, 0));
 		characterSprite->runAction(move);
 	}
 	else {
-		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(-visibleSize.width / 8, 0));
+		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(-visibleSize.width / 6, 0));
 		characterSprite->runAction(move);
 	}
 }
@@ -256,11 +256,11 @@ void MonsterCharacter::walk() {
 	characterSpriteAnimation->runAction(seq);
 
 	if (actionDirection == Direction::RIGHT) {
-		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(visibleSize.width / 12, 0));
+		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(visibleSize.width / 8, 0));
 		characterSprite->runAction(move);
 	}
 	else {
-		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(-visibleSize.width / 12, 0));
+		auto move = MoveBy::create(0.1 * numSprite[5], Vec2(-visibleSize.width / 8, 0));
 		characterSprite->runAction(move);
 	}
 }

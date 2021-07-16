@@ -8,7 +8,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -195,7 +195,7 @@ bool PlayGameScene::init()
 	//a list to store the location of the hidden tiles.
 	//HiddenTiles = new std::list<Vec2>();
 
-	//setup map physics. Since we are doing a 60x34 map so width = 146 and height = 34 (2 loops)
+	//setup map physics. Just loop through the map size in tiles (2 loops)
 	//Hidden is the layer for the hiddenTiles
 	//Foreground is the layer for the ground tiles that will have physical interaction.
 	Foreground = map->getLayer("Foreground");
@@ -227,11 +227,6 @@ bool PlayGameScene::init()
 
 	//Change to spawn Player Character always in the middle of the map
 	//Add character here!!!
-	/*player = Sprite::create("sprites/yellowbird-midflap.png");
-	player->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-	auto playerBody = PhysicsBody::createBox(player->getContentSize());
-	player->setPhysicsBody(playerBody);*/
-	
 	playerChar = GameManager::getInstace()->GetPlayerCharacter();
 	playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
