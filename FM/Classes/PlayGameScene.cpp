@@ -405,8 +405,11 @@ void PlayGameScene::update(float dt)
 	this->updateMonster(dt);
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
+
+	//update
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
+	
 	//this->updateBoss(dt);
 
 	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
