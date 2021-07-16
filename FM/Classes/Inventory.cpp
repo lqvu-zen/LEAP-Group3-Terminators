@@ -12,7 +12,7 @@ void Inventory::init()
 	itemCount = 0;
 	itemMap.clear();
 
-	gold = 100;
+	gold = 10;
 
 	inventorySprite = nullptr;
 }
@@ -36,7 +36,44 @@ cocos2d::Sprite * Inventory::GetSprite()
 		inventoryMap->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 
 		inventorySprite->addChild(inventoryMap);
+
+		auto characterGroup = inventoryMap->getObjectGroup("Character");
+		auto characterObjects = characterGroup->getObjects();
+
+		//add gold
+		TTFConfig labelConfig;
+		labelConfig.fontFilePath = "fonts/arial.ttf";
+		labelConfig.fontSize = 8;
+		labelConfig.glyphs = GlyphCollection::DYNAMIC;
+		labelConfig.outlineSize = 0;
+		labelConfig.customGlyphs = nullptr;
+		labelConfig.distanceFieldEnabled = false;
+
+		std::string goldCount = StringUtils::format("%d", gold);
+
+		goldLabel = Label::createWithTTF(labelConfig, goldCount);
+
+		for (auto obj : characterObjects) {
+			auto dict = obj.asValueMap();
+
+			if (dict["name"].asString() == "Gold") {
+				goldLabel->setPosition(
+					Vec2(
+						dict["x"].asFloat(), dict["y"].asFloat()
+					)
+				);
+
+				inventoryMap->addChild(goldLabel);
+			}
+		}
 	}
 
 	return inventorySprite;
+}
+
+void Inventory::updateInventory()
+{
+	std::string goldCount = StringUtils::format("%d", gold);
+
+	goldLabel->setString(goldCount);
 }
