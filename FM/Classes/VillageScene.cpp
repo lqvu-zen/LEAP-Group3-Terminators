@@ -311,8 +311,12 @@ void VillageScene::update(float dt)
 	{
 		npc->showExclamation();
 	}
-	else if (GameManager::getInstace()->getMission()->getState() == 1) {
+	if (GameManager::getInstace()->getMission()->getState() == 1) {
 		npc->changeExclamation();
+	}
+	else if (GameManager::getInstace()->getMission()->getState() == 0)
+	{
+		npc->showExclamation();
 	}
 	else
 	{
