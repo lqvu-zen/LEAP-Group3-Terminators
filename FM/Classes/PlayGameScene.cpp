@@ -8,7 +8,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -225,7 +225,7 @@ bool PlayGameScene::init()
 	//a list to store the location of the hidden tiles.
 	//HiddenTiles = new std::list<Vec2>();
 
-	//setup map physics. Since we are doing a 60x34 map so width = 146 and height = 34 (2 loops)
+	//setup map physics. Just loop through the map size in tiles (2 loops)
 	//Hidden is the layer for the hiddenTiles
 	//Foreground is the layer for the ground tiles that will have physical interaction.
 	Foreground = map->getLayer("Foreground");
@@ -257,11 +257,6 @@ bool PlayGameScene::init()
 
 	//Change to spawn Player Character always in the middle of the map
 	//Add character here!!!
-	/*player = Sprite::create("sprites/yellowbird-midflap.png");
-	player->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-	auto playerBody = PhysicsBody::createBox(player->getContentSize());
-	player->setPhysicsBody(playerBody);*/
-	
 	playerChar = GameManager::getInstace()->GetPlayerCharacter();
 	playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
@@ -289,6 +284,12 @@ bool PlayGameScene::init()
 
 	playerStats.AddPlayerButton();
 
+	//Mission description
+	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
+	missionLabel = Label::createWithTTF(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
+	missionLabel->setColor(Color3B::WHITE);
+	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width/2, playerStatsSprite->getPositionY() - playerStats.GetSpriteSize().height);
+	buttonNode->addChild(missionLabel);
 	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
@@ -434,6 +435,8 @@ void PlayGameScene::update(float dt)
 	this->updateMonster(dt);
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
+	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
+	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
 	//this->updateBoss(dt);
 
 	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
@@ -536,6 +539,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			CCLOG("Hit enemies %d", a->getNode()->getTag());
 			
 			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
+			
 		}
 
 		// check player get hit

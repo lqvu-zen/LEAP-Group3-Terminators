@@ -6,7 +6,7 @@
    eJwNwwc3FgAAAMCPjKzISkK2kqxCRokyMxMyUqREGZWQoiI7VOT3dvfeBQUCgWDPGWKoYYZ73ggjjTLaGC8Ya5wXjTfBRJNM9pIpXjbVK6aZboZXzTTLbHPMNc98C7zmdQu9YZE3LbbEUsss95a3rbDSKu9YbY211nnXe9Z73wYbfeBDm2y2xVbbbPeRHXbaZbc99vrYPp/Y74CDPnXIYUcc9ZljPveF40740klf+dop3zjtjG9956xzzrvgez/40UU/ueSyK3521S9+dc11v/ndH2646U+33HbHXffc98BfHnrksb/9419PPPWfZ/4HCgUsPg==
   </data>
  </layer>
- <objectgroup id="3" name="Items Layer">
+ <objectgroup id="3" name="Items">
   <object id="1" name="Item" x="126.5" y="21.1667" width="16" height="16"/>
   <object id="32" name="Item" x="143" y="21.17" width="16" height="16"/>
   <object id="33" name="Item" x="158.25" y="21.17" width="16" height="16"/>
@@ -57,7 +57,7 @@
   <object id="82" name="Item" x="205.922" y="117.397" width="16" height="16"/>
   <object id="83" name="Item" x="222.422" y="117.397" width="16" height="16"/>
  </objectgroup>
- <objectgroup id="4" name="Character Layer">
-  <object id="85" name="Gold" x="84" y="107.75" width="28.25" height="15.5"/>
+ <objectgroup id="4" name="Character">
+  <object id="85" name="Gold" x="101.293" y="110.006" width="5.19236" height="6.9787"/>
  </objectgroup>
 </map>

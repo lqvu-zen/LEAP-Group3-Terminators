@@ -441,6 +441,7 @@ void PlayerCharacter::takeHit(float dame)
 
 void PlayerCharacter::openInventory()
 {
+	characterInventory.updateInventory();
 	characterInventory.GetSprite()->setVisible(true);
 }
 
