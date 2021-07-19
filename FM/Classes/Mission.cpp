@@ -29,9 +29,47 @@ Mission::Mission() {
 			}
 		}
 	}
+	//load reward
+	loadReward();
+	
 	hasMission = false;
 	mission = data.at(0);
-	index = 2;
+	index = 0;
+}
+
+void Mission::loadReward() {
+	std::string str = FileUtils::getInstance()->getStringFromFile("res/reward.json");
+	CCLOG("s", str.c_str());
+	rapidjson::Document doc;
+	doc.Parse<0>(str.c_str());
+	if (doc.HasParseError()) {
+		CCLOG("ERROR!!");
+	}
+	else {
+		if (doc.HasMember("REWARD")) {
+			rapidjson::Value& reward = doc["REWARD"];
+			for (rapidjson::SizeType i = 0; i < reward.Size(); i++) {
+				//CCLOG("ID: %i, Name: %s, State: %d", mission[i]["ID"].GetInt(), mission[i]["NAME"].GetString(), mission[i]["STATE"].GetBool());
+				Reward tmp;
+				tmp.id = reward[i]["ID"].GetInt();
+				tmp.idMission = reward[i]["IDMISSION"].GetInt();
+				tmp.name = reward[i]["NAME"].GetString();
+				tmp.number = reward[i]["NUMBER"].GetInt();
+				tmp.type = reward[i]["TYPE"].GetString();
+				rewards.push_back(tmp);
+			}
+		}
+	}
+}
+
+vector<Mission::Reward> Mission::getReward() {
+	vector<Mission::Reward> res;
+	for (int i = 0; i < rewards.size(); i++) {
+		if (rewards.at(i).idMission == data.at(index).id) {
+			res.push_back(rewards.at(i));
+		}
+	}
+	return res;
 }
 
 void Mission::updateMission(int type) {

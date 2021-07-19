@@ -144,7 +144,7 @@ void MonsterCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 				skillForMelee();
 			}
 			else {
-				if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 12) {
+				if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 8) {
 					attackForMelee();
 				}
 				else if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 6) {
@@ -328,15 +328,24 @@ void MonsterCharacter::attackForRanged() {
 		if (actionDirection == Direction::LEFT) {
 			auto shootAction = MoveBy::create(5, Vec2(-visibleSize.width / 3, 0));
 			auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
-			auto seq = Sequence::create(shootAction, disappearAction, nullptr);
+			auto callback = CallFunc::create([this]() {
+				bullet->removeFromParent();
+			});
+
+			auto seq = Sequence::create(shootAction, disappearAction, callback, nullptr);
 			bullet->runAction(seq);
 		}
 		else {
 			auto shootAction = MoveBy::create(5, Vec2(visibleSize.width / 3, 0));
 			auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
-			auto seq = Sequence::create(shootAction, disappearAction, nullptr);
+			auto callback = CallFunc::create([this]() {
+				bullet->removeFromParent();
+			});
+			auto seq = Sequence::create(shootAction, disappearAction, callback, nullptr);
+			bullet->setFlippedX(true);
 			bullet->runAction(seq);
 		}
+		
 	}
 }
 

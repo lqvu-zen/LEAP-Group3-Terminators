@@ -12,19 +12,26 @@ using namespace std;
 class Mission : public cocos2d::Scene
 {
 public:
-   /* enum class TYPE {
+    enum class TYPE {
         MONSTER, BOSS, ITEM
-    };*/
+    };
     
-    struct Data
-    {
+    struct Reward {
+        int id;
+        int idMission;
+        string name;
+        int number;
+        string type;
+    };
+
+    struct Data {
         int id;
         string request;
         string name;
         int type; //Monster : 1, Boss :2, Item: 3.
         int begin;
         int end;
-        int state; //0 - to do mission 1 - doing mission 2 - complete the mission 3 - cancel the mission 4 - notice 
+        int state; //0 - to do mission //1 - doing mission //2 - complete the mission //3 - cancel the mission //4 - notice //5- get rewarded. 
     };
     
     Mission();
@@ -77,12 +84,18 @@ public:
     void submitMission();
 
     int getState();
+
+    vector<Reward> getReward();
 private:
     vector<Data> data;
     Data mission;
     int index;
 
+    vector<Reward> rewards;
+
     bool hasMission;
+
+    void loadReward();
 };
 
 #endif // __MISSION_H__
