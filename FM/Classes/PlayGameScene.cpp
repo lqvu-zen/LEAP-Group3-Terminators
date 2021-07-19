@@ -280,7 +280,7 @@ bool PlayGameScene::init()
 		)
 		//Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y)
 	);
-	buttonNode->addChild(playerStatsSprite);
+	buttonNode->addChild(playerStatsSprite, 1);
 
 	playerStats.AddPlayerButton();
 
