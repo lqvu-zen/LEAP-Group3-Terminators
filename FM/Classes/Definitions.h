@@ -44,6 +44,8 @@
 #define ALLSET_BITMASK 0xFFFFFFFF
 #define ALLCLEARED_BITMASK 0x00000000
 
+#define TAG_PADDING 1
+
 // KEYBOARD
 const cocos2d::EventKeyboard::KeyCode ENTER = cocos2d::EventKeyboard::KeyCode::KEY_KP_ENTER;
 const cocos2d::EventKeyboard::KeyCode UP_ARROW = cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW;

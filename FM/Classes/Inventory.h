@@ -28,6 +28,8 @@ private:
 	int itemCount;
 	std::map<Item::ItemType, std::list<Item *>> itemMap;
 
+	int itemSlot;
+
 	cocos2d::Sprite* inventorySprite;
 
 	cocos2d::TMXTiledMap* inventoryMap;

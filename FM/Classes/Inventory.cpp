@@ -12,6 +12,8 @@ void Inventory::init()
 	itemCount = 0;
 	itemMap.clear();
 
+	itemSlot = 0;
+
 	gold = 10;
 
 	inventorySprite = nullptr;
@@ -34,7 +36,7 @@ cocos2d::Sprite * Inventory::GetSprite()
 		//inventoryMap->setScale(SCALE_RATIO);
 
 		inventoryMap->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-
+		
 		inventorySprite->addChild(inventoryMap);
 
 		auto characterGroup = inventoryMap->getObjectGroup("Character");
@@ -63,6 +65,7 @@ cocos2d::Sprite * Inventory::GetSprite()
 					)
 				);
 
+				goldLabel->setTag(int(Item::ItemType::GOLD) + TAG_PADDING);
 				inventoryMap->addChild(goldLabel);
 			}
 		}
@@ -73,7 +76,58 @@ cocos2d::Sprite * Inventory::GetSprite()
 
 void Inventory::updateInventory()
 {
+	TTFConfig labelConfig;
+	labelConfig.fontFilePath = "fonts/arial.ttf";
+	labelConfig.fontSize = 8;
+	labelConfig.glyphs = GlyphCollection::DYNAMIC;
+	labelConfig.outlineSize = 1;
+	labelConfig.customGlyphs = nullptr;
+	labelConfig.distanceFieldEnabled = false;
+
+	//update gold
 	std::string goldCount = StringUtils::format("%d", gold);
 
 	goldLabel->setString(goldCount);
+
+	//update item
+	auto itemGroup = inventoryMap->getObjectGroup("Items");
+	auto itemObjects = itemGroup->getObjects();
+
+	for (auto itemList : itemMap) {
+		//update
+		if (inventoryMap->getChildByTag(int(itemList.first) + TAG_PADDING) != nullptr) {
+			auto itemImage = inventoryMap->getChildByTag(int(itemList.first) + TAG_PADDING);
+			auto countLabel = static_cast<Label*>(itemImage->getChildByName("CountItem"));
+
+			int itemCounting = int(itemList.second.size());
+			std::string itemCount = StringUtils::format("%d", itemCounting);
+
+			countLabel->setString(itemCount);
+		} else {
+			if (itemList.second.size() > 0) {
+				auto dict = itemObjects[itemSlot++].asValueMap();
+				
+				auto itemImage = itemList.second.front()->getSprite();
+				itemImage->setPosition(
+					Vec2(
+						dict["x"].asFloat(), dict["y"].asFloat()
+					)
+				);
+				
+				itemImage->setScale(0.5f);
+
+				itemImage->setTag(int(itemList.first) + TAG_PADDING);
+				inventoryMap->addChild(itemImage);
+
+				//add count item
+				std::string itemCount = StringUtils::format("%d", 1);
+
+				auto itemCountLabel = Label::createWithTTF(labelConfig, itemCount);
+				itemCountLabel->setScale(1.5f);
+
+				itemCountLabel->setName("CountItem");
+				itemImage->addChild(itemCountLabel);
+			}
+		}
+	}
 }

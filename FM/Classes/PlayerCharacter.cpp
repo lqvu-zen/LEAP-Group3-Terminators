@@ -53,7 +53,7 @@ void PlayerCharacter::init()
 	characterSprite = Sprite::create();
 	characterSpriteAnimation = Sprite::createWithSpriteFrame(frame);
 	attackSprite = Sprite::create();
-	skillSprite = Sprite::create();
+	
 
 	characterPhysicsBody = PhysicsBody::createBox(characterSize);
 	//set collision bitmask
@@ -72,7 +72,8 @@ void PlayerCharacter::init()
 
 	characterSprite->addChild(characterSpriteAnimation);
 	characterSprite->addChild(attackSprite);
-	characterSprite->addChild(skillSprite);
+	
+	skillSprite = nullptr;
 
 	attackMode = 1;
 
@@ -295,14 +296,13 @@ void PlayerCharacter::reupdateAnimation()
 	characterState = characterStateOnce;
 
 	if (characterStateOnce != State::DEATH) {
-		if (attacking == true) {
+		if (attacking == true || castingSkill == true) {
 			if (attackSprite->getPhysicsBody() != nullptr && int(attackSprite->getPhysicsBody()->getShapes().size() > 0))
 				attackSprite->getPhysicsBody()->removeAllShapes();
 
-
 			attackMode++;
 
-			if (castingSkill || attacking) {
+			if (attacking == true || castingSkill == true) {
 				castingSkill = false;
 				attacking = false;
 			}
@@ -416,11 +416,18 @@ void PlayerCharacter::attack(int mode)
 		
 		if (mode != 0) {
 			//skillSprite->setAnchorPoint(Vec2::ZERO);
+			if (skillSprite == nullptr) {
+				skillSprite = Sprite::create();
+				characterSprite->getParent()->addChild(skillSprite, 1);
+			}
+
 			if (characterDirection == Direction::RIGHT) {
-				skillSprite->setPosition(attackSprite->getPosition().x + attackSize.width / 2, attackSprite->getPosition().y);
+				skillSprite->setPosition(characterSprite->getPositionX() + attackSprite->getPosition().x + attackSize.width / 2, 
+					characterSprite->getPositionY() + attackSprite->getPosition().y);
 			}
 			else {
-				skillSprite->setPosition(attackSprite->getPosition().x - attackSize.width / 2, attackSprite->getPosition().y);
+				skillSprite->setPosition(characterSprite->getPositionX() + attackSprite->getPosition().x - attackSize.width / 2,
+					characterSprite->getPositionY() + attackSprite->getPosition().y);
 			}
 
 			skillSprite->addChild(characterSkill->GetSprite());
@@ -448,6 +455,11 @@ void PlayerCharacter::openInventory()
 void PlayerCharacter::closeInventory()
 {
 	characterInventory.GetSprite()->setVisible(false);
+}
+
+void PlayerCharacter::colectItem(Item * item)
+{
+	characterInventory.addItem(item);
 }
 
 cocos2d::Sprite * PlayerCharacter::getSprite()

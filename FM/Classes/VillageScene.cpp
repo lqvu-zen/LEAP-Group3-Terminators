@@ -169,7 +169,7 @@ bool VillageScene::init()
 	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 0.0f), 3);
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(Point(mapSize.width/2, mapSize.height/2));
-	edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
+	edgeBody->setCollisionBitmask(ALLSET_BITMASK);
 	edgeBody->setContactTestBitmask(true);
 
 	edgeBody->setDynamic(false);
@@ -188,7 +188,7 @@ bool VillageScene::init()
 				int tileGid = Foreground->getTileGIDAt(Vec2(i, j));
 				PhysicsBody* tilePhysics = PhysicsBody::createBox(spriteTile->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 				tilePhysics->setDynamic(false);
-				tilePhysics->setCategoryBitmask(OBSTACLE_COLLISION_BITMASK);
+				tilePhysics->setCategoryBitmask(ALLSET_BITMASK);
 				//tilePhysics->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
 				tilePhysics->setContactTestBitmask(ALLSET_BITMASK);
 				spriteTile->setPhysicsBody(tilePhysics);
