@@ -450,6 +450,11 @@ void PlayerCharacter::closeInventory()
 	characterInventory.GetSprite()->setVisible(false);
 }
 
+void PlayerCharacter::colectItem(Item * item)
+{
+	characterInventory.addItem(item);
+}
+
 cocos2d::Sprite * PlayerCharacter::getSprite()
 {
 	return characterSprite;

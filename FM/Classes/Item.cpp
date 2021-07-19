@@ -12,27 +12,21 @@ Item::Item(ItemType _itemType)
 	switch (itemType)
 	{
 	case Item::ItemType::GEM:
-		itemImage = Sprite::create("sprites/item/Gem.png");
-		itemBody = PhysicsBody::createBox(itemImage->getContentSize());
+		itemImage = Sprite::create("sprites/item/Gem.png");		
 		break;
 	case Item::ItemType::HP_POTION:
-		itemImage = Sprite::create("sprites/item/Red_Potion.png");
-		itemImage->setScale(0.15);
-		itemBody = PhysicsBody::createBox(itemImage->getContentSize() * 0.15);
+		itemImage = Sprite::create("sprites/item/StaticBigHealthPotion.png");
 		break;
 	case Item::ItemType::MP_POTION:
-		itemImage = Sprite::create("sprites/item/Blue_Potion.png");
-		itemImage->setScale(0.15);
-		itemBody = PhysicsBody::createBox(itemImage->getContentSize() * 0.15);
+		itemImage = Sprite::create("sprites/item/StaticBigManaPotion.png");
 		break;
 	case Item::ItemType::GOLD:
-		itemImage = Sprite::create("sprites/item/Coins_00.png");
-		itemImage->setScale(0.15);
-		itemBody = PhysicsBody::createBox(itemImage->getContentSize() * 0.15);
+		itemImage = Sprite::create("sprites/item/StaticCoin.png");
 		break;
 	default:
 		break;
 	}
+	itemBody = PhysicsBody::createBox(itemImage->getContentSize());
 
 	itemBody->setDynamic(false);
 

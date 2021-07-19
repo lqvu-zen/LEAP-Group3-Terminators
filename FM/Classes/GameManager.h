@@ -7,6 +7,7 @@
 #include "MonsterCharacter.h"
 #include "BossCharacter.h"
 #include "Character.h"
+#include "Item.h"
 #include "Mission.h"
 #include "PhysicsShapeCache.h"
 
@@ -28,8 +29,10 @@ public:
 	Mission* getMission();
 
 	void AddCharacter(Character* ref);
+	void AddItem(Item* ref);
 
 	void hit(int attacker, int victim);
+	void colect(int item);
 
 	PhysicsShapeCache* getPhysicsShapeCache();
 
@@ -43,6 +46,9 @@ private:
 
 	int countCharacter;
 	std::map <int, Character*> characterMap;
+
+	int countItem;
+	std::map <int, Item*> itemMap;
 
 	Mission* mission;
 

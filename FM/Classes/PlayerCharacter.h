@@ -47,6 +47,8 @@ public:
 	void openInventory();
 	void closeInventory();
 
+	void colectItem(Item* item);
+
 	cocos2d::Sprite* getSprite();
 	Stats getStats();
 	Inventory getInventory();

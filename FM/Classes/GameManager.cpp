@@ -17,6 +17,9 @@ void GameManager::init()
 
 	characterMap.clear();
 	countCharacter = 0;
+
+	itemMap.clear();
+	countItem = 0;
 }
 
 PlayerCharacter * GameManager::GetPlayerCharacter(bool withInit)
@@ -64,10 +67,22 @@ void GameManager::AddCharacter(Character * ref)
 	ref->getSprite()->setTag(countCharacter);
 }
 
+void GameManager::AddItem(Item * ref)
+{
+	itemMap[++countItem] = ref;
+
+	ref->getSprite()->setTag(countItem);
+}
+
 void GameManager::hit(int attacker, int victim)
 {
 	int dame = playerCharacter->getStats().ATK;
 	characterMap[victim]->takeHit(dame);
+}
+
+void GameManager::colect(int item)
+{
+	playerCharacter->colectItem(itemMap[item]);
 }
 
 GameManager * GameManager::create()
