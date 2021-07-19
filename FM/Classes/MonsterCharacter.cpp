@@ -144,7 +144,7 @@ void MonsterCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 				skillForMelee();
 			}
 			else {
-				if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 12) {
+				if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 8) {
 					attackForMelee();
 				}
 				else if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 6) {
