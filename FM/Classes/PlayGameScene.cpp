@@ -549,7 +549,6 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 				&& a->getCategoryBitmask() == ENEMIES_CATEGORY_BITMASK)
 		{
 			CCLOG("Hit enemies %d", a->getNode()->getTag());
-			
 			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
 			
 		}
@@ -560,6 +559,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		{
 			CCLOG("Hit player");
 			playerChar->takeHit();
+			a->getNode()->setPosition(Vec2(-100 * visibleSize.width, 0));
 		}
 
 		//Player collide with trigger point
