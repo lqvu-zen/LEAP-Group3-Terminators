@@ -184,9 +184,7 @@ void MonsterCharacter::death() {
 	auto seq = Sequence::create(delay, dieAction, nullptr);
 	characterSprite->runAction(seq);
 
-	auto gold = new Item(Item::ItemType::GOLD);
-	gold->getSprite()->setPosition(position);
-	characterSprite->getParent()->addChild(gold->getSprite());
+	GameManager::getInstace()->AddReward(characterSprite->getPosition());
 }
 
 void MonsterCharacter::takeHit(float dame) {
