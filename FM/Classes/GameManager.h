@@ -10,6 +10,7 @@
 #include "Item.h"
 #include "Mission.h"
 #include "PhysicsShapeCache.h"
+#include <vector>
 
 USING_NS_CC;
 
@@ -38,6 +39,8 @@ public:
 
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onContactSeperate(cocos2d::PhysicsContact &contact);
+	
+	vector<int>lockedSkills = { 1,2,3 };
 
 private:
 	static GameManager* create();

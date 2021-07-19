@@ -9,6 +9,8 @@
 #include "Item.h"
 #include "GameManager.h"
 #include "Mission.h"
+#include <vector>
+
 USING_NS_CC;
 class PlayGameScene : public cocos2d::Scene
 {
@@ -59,6 +61,11 @@ private:
 	void goToSetting();
 	void goToMainMenu();
 	void goToExit();
+
+	//Unlock Skill
+	void unlockSkill(int index);
+
+	bool checkVector(vector<int>list, int num);
 };
 
 #endif // __PLAYGAME_SCENE_H__

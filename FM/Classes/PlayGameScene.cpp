@@ -165,6 +165,35 @@ bool PlayGameScene::init()
 	buttonNode->addChild(attackMenu);
 #endif
 
+#if 1
+	MenuItemImage* lockskill_1Item = MenuItemImage::create();
+	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
+		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
+		lockskill_1Item->setScale(0.3);
+		lockskill_1Item->setPosition(skill_1Item->getPosition());
+		lockskill_1Item->setTag(1);
+	}
+	MenuItemImage* lockskill_2Item = MenuItemImage::create();
+	if (checkVector(GameManager::getInstace()->lockedSkills, 2)) {
+		lockskill_2Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
+		lockskill_2Item->setScale(0.3);
+		lockskill_2Item->setPosition(skill_2Item->getPosition());
+		lockskill_2Item->setTag(2);
+	}
+	MenuItemImage* lockskill_3Item = MenuItemImage::create();
+	if (checkVector(GameManager::getInstace()->lockedSkills, 3)) {
+		lockskill_3Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
+		lockskill_3Item->setScale(0.3);
+		lockskill_3Item->setPosition(skill_3Item->getPosition());
+		lockskill_3Item->setTag(2);
+	}
+	auto lockMenu = Menu::create(lockskill_1Item, lockskill_2Item, lockskill_3Item, nullptr);
+	lockMenu->setPosition(Vec2::ZERO);
+	lockMenu->setOpacity(200);
+	buttonNode->addChild(lockMenu);
+
+#endif
+
 #if 0
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
 	mpButton->setScale(0.1);
@@ -716,4 +745,18 @@ void PlayGameScene::showTiles()
 {
 	CCLOG("Show tile");
 	Hidden->setVisible(true);
+}
+
+//Unlock Skill
+void PlayGameScene::unlockSkill(int index) {
+
+}
+
+bool PlayGameScene::checkVector(vector<int>list, int num) {
+	for (int i = 0; i < list.size(); i++) {
+		if (num == list[i]) {
+			return true;
+		}
+	}
+	return false;
 }

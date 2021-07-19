@@ -24,7 +24,7 @@ public:
 	bool standAlone = true;
 	CREATE_FUNC(VillageScene);
 
-	cocos2d::MenuItemImage* attackItem;
+	cocos2d::MenuItemImage* interactiveItem;
 
 private:
 	
@@ -50,6 +50,9 @@ private:
 	void goToMap1();
 
 	void onContactSeperate(cocos2d::PhysicsContact &contact);
+
+	//UnlockSkill
+	void unlockSkill(int index);
 };
 
 #endif // __VILLAGE_SCENE_H__

@@ -137,19 +137,19 @@ bool VillageScene::init()
 
 #if 1
 	//Interact button setup
-	attackItem = MenuItemImage::create("sprites/interact.png", "sprites/interact.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
-	attackItem->setScale(0.5);
-	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
-	attackItem->setTag(1);
-	attackItem->setOpacity(100);
-	attackItem->setEnabled(false);
+	interactiveItem = MenuItemImage::create("sprites/interact.png", "sprites/interact.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
+	interactiveItem->setScale(0.5);
+	interactiveItem->setPosition(Vec2(visibleSize.width - interactiveItem->getContentSize().width * 0.35, interactiveItem->getContentSize().height * 0.35));
+	interactiveItem->setTag(1);
+	interactiveItem->setOpacity(100);
+	interactiveItem->setEnabled(false);
 
-	auto skill_1Item = MenuItemImage::create("sprites/attack.png", "sprites/skill_1.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
-	skill_1Item->setScale(0.3);
-	skill_1Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.7, attackItem->getContentSize().height * 0.2));
-	skill_1Item->setTag(2);
+	auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
+	attackItem->setScale(0.3);
+	attackItem->setPosition(Vec2(visibleSize.width - interactiveItem->getContentSize().width * 0.8, interactiveItem->getContentSize().height * 0.2));
+	attackItem->setTag(2);
 
-	auto attackMenu = Menu::create(skill_1Item, attackItem, nullptr);
+	auto attackMenu = Menu::create(attackItem, interactiveItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
 	attackMenu->setOpacity(200);
 	buttonNode->addChild(attackMenu);
@@ -401,6 +401,7 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 						if (rewards.at(i).type == "Skill") {
 							//Unlock Skill rewards.at(i).number;
 							CCLOG("Unlock Skill %i", rewards.at(i).number);
+							unlockSkill(rewards.at(i).number);
 						}
 						else if (rewards.at(i).type == "Gold") {
 							//Add rewards.at(i).number Gold;
@@ -422,16 +423,6 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 					buttonNode->addChild(popup);
 				}
 			}
-			
-
-			/*UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Old man's quest", request,NULL, [=]() {
-				GameManager::getInstace()->getMission()->agreeMission();
-				CCLOG("Accpect Mission!");
-			}, [=]() {
-				GameManager::getInstace()->getMission()->cancelMission();
-				CCLOG("Reject Mission!");
-			});
-			buttonNode->addChild(popup);*/
 		}
 	}
 
@@ -463,8 +454,8 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			standAlone = false;
 
 			//Enable the button
-			attackItem->setEnabled(true);
-			attackItem->setOpacity(255);
+			interactiveItem->setEnabled(true);
+			interactiveItem->setOpacity(255);
 		}
 
 		// check player hit enemies
@@ -536,8 +527,22 @@ void VillageScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 			standAlone = true;
 
 			//Disable the button when the Player is not in-range of the NPC
-			attackItem->setOpacity(100);
-			attackItem->setEnabled(false);
+			interactiveItem->setOpacity(100);
+			interactiveItem->setEnabled(false);
 		}
 	}
+}
+
+//UnlockSkill
+void VillageScene::unlockSkill(int index) {
+	std::vector<int>::iterator iter = GameManager::getInstace()->lockedSkills.begin();
+	std::vector<int>::iterator endIter = GameManager::getInstace()->lockedSkills.end();
+	while (iter != endIter) {
+		if (*iter == index) {
+			GameManager::getInstace()->lockedSkills.erase(iter);
+			break;
+		}
+		iter++;
+	}
+	
 }
