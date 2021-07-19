@@ -336,6 +336,7 @@ void MonsterCharacter::attackForRanged() {
 			auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
 			auto seq = Sequence::create(shootAction, disappearAction, nullptr);
 			bullet->runAction(seq);
+			bullet->removeFromParent();
 		}
 	}
 }
