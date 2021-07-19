@@ -330,6 +330,8 @@ bool PlayGameScene::init()
 			auto gem = new Item(Item::ItemType::GEM);
 			gem->getSprite()->setPosition(gemX, gemY);
 			gameNode->addChild(gem->getSprite(), 1);
+
+			GameManager::getInstace()->AddItem(gem);
 		}
 
 		//Spawn boss
@@ -531,8 +533,12 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		if (a->getCategoryBitmask() == ITEM_CATEGORY_BITMASK)
 		{
 			CCLOG("Collected item");
-			a->getNode()->removeFromParentAndCleanup(true);
-			GameManager::getInstace()->getMission()->updateMission(3);
+			a->getNode()->retain();
+			a->getNode()->removeFromParent();
+
+			GameManager::getInstace()->colect(a->getNode()->getTag());
+
+			//GameManager::getInstace()->getMission()->updateMission(3);
 		}
 
 		// check player hit enemies
