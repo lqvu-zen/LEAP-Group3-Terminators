@@ -91,7 +91,10 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _type, int _level)
 		characterSprite->setScaleX(-0.5);
 	}
 	
+	//Skill
+	numAttack = 0;
 
+	//Animation
 	auto animate = Animate::create(MonsterCharacter::createAnimation(name + "-Idle-", numSprite[3], 0.1));
 	animate->retain();
 	characterSpriteAnimation->runAction(RepeatForever::create(animate));
@@ -137,15 +140,20 @@ void MonsterCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 			attackForRanged();
 		}
 		else {
-			if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 12) {
-				attackForMelee();
-			}
-			else if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 6) {
-				walk();
+			if (numAttack == 3) {
+				skillForMelee();
 			}
 			else {
-				run();
-			}
+				if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 12) {
+					attackForMelee();
+				}
+				else if (abs(characterSprite->getPosition().x - positionPlayer.x) <= visibleSize.width / 6) {
+					walk();
+				}
+				else {
+					run();
+				}
+			}		
 		}
 	
 }
@@ -361,5 +369,39 @@ void MonsterCharacter::attackForMelee() {
 		attackBody->setMass(0.0f);
 
 		attackSprite->setPhysicsBody(attackBody);
+		numAttack++;
+	}
+}
+
+//Skill
+void MonsterCharacter::skillForMelee() {
+	numAttack = 0;
+	bullet = Sprite::create(floder + "protoplast.png");
+	
+	auto bodyBullet = PhysicsBody::createBox(bullet->getContentSize());
+	bullet->setPhysicsBody(bodyBullet);
+	bodyBullet->setDynamic(false);
+
+	bodyBullet->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+	bodyBullet->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+	bodyBullet->setContactTestBitmask(ALLSET_BITMASK);
+
+	bullet->setPosition(characterSprite->getPosition());
+	bullet->setScale(0.1);
+	scene->addChild(bullet);
+
+	if (actionDirection == Direction::LEFT) {
+		bullet->setFlippedX(false);
+		auto shootAction = MoveBy::create(5, Vec2(-visibleSize.width / 3, 0));
+		auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
+		auto seq = Sequence::create(shootAction, disappearAction, nullptr);
+		bullet->runAction(seq);
+	}
+	else {
+		bullet->setFlippedX(true);
+		auto shootAction = MoveBy::create(5, Vec2(visibleSize.width / 3, 0));
+		auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
+		auto seq = Sequence::create(shootAction, disappearAction, nullptr);
+		bullet->runAction(seq);
 	}
 }

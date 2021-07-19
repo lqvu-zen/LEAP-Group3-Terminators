@@ -1,0 +1,32 @@
+{
+  "REWARD": [
+    {
+      "ID": 0,
+      "IDMISSION": 1,
+      "NAME": "Unclock skill 1",
+      "NUMBER": 1,
+      "TYPE":  "Skill"
+    },
+    {
+      "ID": 1,
+      "IDMISSION": 2,
+      "NAME": "500 Gold",
+      "NUMBER": 500,
+      "TYPE": "Gold"
+    },
+    {
+      "ID": 2,
+      "IDMISSION": 3,
+      "NAME": "Unclock skill 2",
+      "NUMBER": 2,
+      "TYPE": "Skill"
+    },
+    {
+      "ID": 3,
+      "IDMISSION": 3,
+      "NAME": "500 Gold",
+      "NUMBER": 500,
+      "TYPE": "Gold"
+    }
+  ]
+}

@@ -373,14 +373,65 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 		}
 		else
 		{
-			UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Old man's quest", GameManager::getInstace()->getMission()->getMission().request,NULL, [=]() {
+			string request = "";
+			Mission::Data yourMission = GameManager::getInstace()->getMission()->getMission();
+			if (yourMission.state == 4) {
+				request = yourMission.request;
+			}
+			else {
+				vector<Mission::Reward> rewards = GameManager::getInstace()->getMission()->getReward();
+
+				string tmp = "";
+				int i = 0;
+				for (int j = 0; j < rewards.size(); j++) {
+					if (i == 0) {
+						tmp += rewards.at(j).name;
+					}
+					else {
+						tmp += ", " + rewards.at(j).name;
+					}
+					i++;
+				}
+
+				if (yourMission.state == 5) {
+					request = yourMission.request + "\n You receive: " + tmp;
+					UICustom::Popup* popup = UICustom::Popup::createAsMessage("Old man's quest", request);
+					buttonNode->addChild(popup);
+					for (int i = 0; i < rewards.size(); i++) {
+						if (rewards.at(i).type == "Skill") {
+							//Unlock Skill rewards.at(i).number;
+							CCLOG("Unlock Skill %i", rewards.at(i).number);
+						}
+						else if (rewards.at(i).type == "Gold") {
+							//Add rewards.at(i).number Gold;
+							CCLOG("Add %i gold", rewards.at(i).number);
+						}
+					}
+
+
+				}
+				else {
+					request = yourMission.request + "\n Mission reward: " + tmp;
+					UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Old man's quest", request, NULL, [=]() {
+						GameManager::getInstace()->getMission()->agreeMission();
+						CCLOG("Accpect Mission!");
+					}, [=]() {
+						GameManager::getInstace()->getMission()->cancelMission();
+						CCLOG("Reject Mission!");
+					});
+					buttonNode->addChild(popup);
+				}
+			}
+			
+
+			/*UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Old man's quest", request,NULL, [=]() {
 				GameManager::getInstace()->getMission()->agreeMission();
 				CCLOG("Accpect Mission!");
 			}, [=]() {
 				GameManager::getInstace()->getMission()->cancelMission();
 				CCLOG("Reject Mission!");
 			});
-			buttonNode->addChild(popup);
+			buttonNode->addChild(popup);*/
 		}
 	}
 
