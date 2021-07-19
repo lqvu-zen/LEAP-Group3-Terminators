@@ -344,7 +344,6 @@ void MonsterCharacter::attackForRanged() {
 			auto seq = Sequence::create(shootAction, disappearAction, callback, nullptr);
 			bullet->setFlippedX(true);
 			bullet->runAction(seq);
-			bullet->removeFromParent();
 		}
 		
 	}

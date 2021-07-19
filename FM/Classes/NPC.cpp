@@ -53,6 +53,7 @@ void NPC::setPosition(cocos2d::Vec2 position)
 
 void NPC::takeHit(float dame)
 {
+	dame = 0;
 	characterStats.HP -= dame;
 
 	characterStats.Affection -= 10;
