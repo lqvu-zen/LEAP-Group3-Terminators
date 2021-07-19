@@ -214,7 +214,7 @@ bool PlayGameScene::init()
 	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 0.0f), 3);
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(Point(mapSize.width/2, mapSize.height/2));
-	edgeBody->setCategoryBitmask(OBSTACLE_COLLISION_BITMASK);
+	edgeBody->setCategoryBitmask(ALLSET_BITMASK);
 	edgeBody->setCollisionBitmask(ALLSET_BITMASK);
 	edgeBody->setContactTestBitmask(ALLCLEARED_BITMASK);
 
@@ -264,13 +264,13 @@ bool PlayGameScene::init()
 	//cameraTarget for the followCamera to follow the player.
 	cameraTarget = Node::create();
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
-	cameraTarget->setPositionY(visibleSize.height / 2 + origin.y +(32 * SCALE_FACTOR));
+	cameraTarget->setPositionY(playerChar->getSprite()->getPositionY() +(32 * SCALE_FACTOR));
 	gameNode->addChild(cameraTarget);
 	gameNode->addChild(playerChar->getSprite());
 
 	//add healthbar
 	auto playerStats = playerChar->getStats();
-	auto playerStatsSprite = playerStats.GetSprite();
+	playerStatsSprite = playerStats.GetSprite();
 	auto scaleRatio = 3.0f;
 	playerStatsSprite->setScale(scaleRatio);
 	playerStatsSprite->setPosition(
@@ -288,7 +288,6 @@ bool PlayGameScene::init()
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel = Label::createWithTTF(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
 	missionLabel->setColor(Color3B::WHITE);
-	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width/2, playerStatsSprite->getPositionY() - playerStats.GetSpriteSize().height);
 	buttonNode->addChild(missionLabel);
 	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
@@ -395,8 +394,8 @@ bool PlayGameScene::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 	
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
-	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
-	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y, mapSize.width, mapSize.height));
+	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels). (32 * SCALE_FACTOR) is the out of map boundaries
+	followCamera = Follow::create(cameraTarget, Rect(origin.x, origin.y + (32 * SCALE_FACTOR), mapSize.width, mapSize.height));
 	gameNode->runAction(followCamera);
 
 	//re-add the Hidden layer from the map.
@@ -434,14 +433,14 @@ void PlayGameScene::update(float dt)
 {
 	this->updateMonster(dt);
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
+	cameraTarget->setPositionY(playerChar->getSprite()->getPositionY());
 	this->updateCharacter(dt);
 
-	//update
+	//update label
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
-	
+	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width / 2, playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//this->updateBoss(dt);
-
 	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
 }
 
@@ -484,6 +483,16 @@ void PlayGameScene::updateCharacter(float dt)
 
 	//keys action
 
+	//Character fall off the map 
+	if (playerChar->getStats().HP > 0)
+	{
+		if (playerChar->getSprite()->getPositionY() < 36)
+		{
+			CCLOG("DEAD");
+			playerChar->takeHit(playerChar->getStats().HP);
+		}
+	}
+	
 	playerChar->updateAction(dt);
 }
 
@@ -585,9 +594,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 
 			}
 		}
-
 	}
-	
 	return true;
 }
 
@@ -606,12 +613,12 @@ void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 			if (b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
 			{
 				CCLOG("Out Hidden area");
-				showTiles();
+				//showTiles();
 			}
 			else if (a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
 			{
 				CCLOG("Out Hidden area");
-				showTiles();
+				//showTiles();
 				
 			}
 		}
