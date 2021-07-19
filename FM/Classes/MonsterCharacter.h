@@ -82,6 +82,10 @@ private:
     //Attack
     void attackForRanged();
     void attackForMelee();
+
+    //Skill
+    int numAttack;
+    void skillForMelee();
 };
 
 #endif // __MONSTER_CHARACTER_H__
