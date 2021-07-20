@@ -154,6 +154,42 @@ bool VillageScene::init()
 	attackMenu->setOpacity(200);
 	buttonNode->addChild(attackMenu);
 #endif
+
+	//Buton recuperate
+#if 1
+	auto mpButton = ui::Button::create("sprites/mpButton.png");
+	mpButton->setScale(0.1);
+	//mpButton->setAnchorPoint(Vec2::ZERO);
+	mpButton->setPosition(Vec2(visibleSize.width - 7 * mpButton->getContentSize().width * 0.05, mpButton->getContentSize().height * 0.05));
+	mpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			//Your function
+			break;
+		}
+	});
+	buttonNode->addChild(mpButton, 1);
+
+	auto hpButton = ui::Button::create("sprites/hpButton.png");
+	hpButton->setScale(0.1);
+	hpButton->setPosition(Vec2(visibleSize.width - 9.5 * hpButton->getContentSize().width * 0.05, hpButton->getContentSize().height * 0.05));
+	hpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			//Your function
+			break;
+		}
+	});
+	buttonNode->addChild(hpButton, 1);
+
+#endif
+
 	//End add buttons
 
 	
@@ -208,7 +244,6 @@ bool VillageScene::init()
 	playerChar = GameManager::getInstace()->GetPlayerCharacter();
 	playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
 	//NPC
 	for (auto SpawnPoint : objectGroup->getObjects())
 	{
@@ -260,7 +295,6 @@ bool VillageScene::init()
 	buttonNode->addChild(playerStatsSprite);
 
 	playerStat.AddPlayerButton();
-
 	//Contact test
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(VillageScene::onContactBegin, this);

@@ -37,7 +37,7 @@ private:
 	TMXLayer* Hidden;
 	//void addAt(int x, int y, int type);
 	Vector<Node*> pausedActions;
-	
+	bool isDeadNoticePopUp = false;
 	PlayerCharacter* playerChar;
 	Sprite* playerStatsSprite;
 	std::vector<EventKeyboard::KeyCode> heldKeys;
@@ -61,6 +61,7 @@ private:
 	void goToSetting();
 	void goToMainMenu();
 	void goToExit();
+	void playerDeadNotice();
 
 	//Unlock Skill
 	void unlockSkill(int index);

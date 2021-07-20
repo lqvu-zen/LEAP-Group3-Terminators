@@ -60,7 +60,8 @@ bool PlayGameScene::init()
 			});
 			/*Mission* mission = new Mission();
 			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);*/
-			buttonNode->addChild(popup);
+			buttonNode->addChild(popup, 2);
+			//Pause will be onto of everything in the buttonNode
 			break;
 		}
 	});
@@ -165,6 +166,7 @@ bool PlayGameScene::init()
 	buttonNode->addChild(attackMenu);
 #endif
 
+	//Lock Skill
 #if 1
 	MenuItemImage* lockskill_1Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
@@ -479,54 +481,68 @@ void PlayGameScene::update(float dt)
 
 void PlayGameScene::updateCharacter(float dt)
 {
-	//keys movement
-	if (heldKeys.empty()) {
-		playerChar->setVelocity(Vec2::ZERO);
-	}
-
-	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (playerChar->isGrounded() && playerChar->getStats().canJump() && playerChar->getVolocity().y <= PADDING_VELOCITY) {
-			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
+	if (playerChar->isDead() == true)
+	{	//Player is dead
+		if (isDeadNoticePopUp == false)
+		{
+			PlayGameScene::playerDeadNotice();
+			isDeadNoticePopUp = true;
 		}
 	}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), RIGHT_ARROW) != heldKeys.end()) {
-		playerChar->setVelocity(Vec2(PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
-	}
+	else
+	{	//Player is alive
+		//keys movement
+		if (heldKeys.empty()) {
+			playerChar->setVelocity(Vec2::ZERO);
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
-		playerChar->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
+			if (playerChar->isGrounded() && playerChar->getStats().canJump() && playerChar->getVolocity().y <= PADDING_VELOCITY) {
+				playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
+			}
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), ATTACK) != heldKeys.end()) {
-		playerChar->attack();
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), RIGHT_ARROW) != heldKeys.end()) {
+			playerChar->setVelocity(Vec2(PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), SKILL1) != heldKeys.end()) {
-		playerChar->attack(1);
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
+			playerChar->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), SKILL2) != heldKeys.end()) {
-		playerChar->attack(2);
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), ATTACK) != heldKeys.end()) {
+			playerChar->attack();
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), SKILL3) != heldKeys.end()) {
-		playerChar->attack(3);
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), SKILL1) != heldKeys.end()) {
+			playerChar->attack(1);
+		}
 
-	//keys action
+		if (std::find(heldKeys.begin(), heldKeys.end(), SKILL2) != heldKeys.end()) {
+			playerChar->attack(2);
+		}
 
-	//Character fall off the map 
-	if (playerChar->getStats().HP > 0)
-	{
+		if (std::find(heldKeys.begin(), heldKeys.end(), SKILL3) != heldKeys.end()) {
+			playerChar->attack(3);
+		}
+
+		//keys action
+
+		//Character fall off the map 
 		if (playerChar->getSprite()->getPositionY() < 36)
 		{
 			CCLOG("DEAD");
-			playerChar->takeHit(playerChar->getStats().HP);
+			while (playerChar->getStats().HP > 0)
+			{
+				playerChar->takeHit();
+			}
+			//playerChar->takeHit(playerChar->getStats().HP);
+			//PlayGameScene::playerDeadNotice();
 		}
+		playerChar->updateAction(dt);
 	}
 	
-	playerChar->updateAction(dt);
 }
 
 /// <summary>
@@ -544,14 +560,41 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	else if (node->getTag() == 2) {
 		CCLOG("Skill 1");
 		playerChar->attack(3);
+		Sprite* lockskill = Sprite::create("sprites/lock.png");
+		lockskill->setScale(0.3);
+		lockskill->setPosition(node->getPosition());
+		buttonNode->addChild(lockskill);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);//Delay time after use an ability
+		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
+		auto seq = Sequence::create(delay, move, nullptr);
+		lockskill->runAction(seq);
+		//lockskill->removeFromParent();
 	}
 	else if (node->getTag() == 3) {
 		CCLOG("Skill 2");
 		playerChar->attack(2);
+		Sprite* lockskill = Sprite::create("sprites/lock.png");
+		lockskill->setScale(0.3);
+		lockskill->setPosition(node->getPosition());
+		buttonNode->addChild(lockskill);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
+		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
+		auto seq = Sequence::create(delay, move, nullptr);
+		lockskill->runAction(seq);
+		//lockskill->removeFromParent();
 	}
 	else if (node->getTag() == 4) {
 		CCLOG("Skill 3");
 		playerChar->attack(1);
+		Sprite* lockskill = Sprite::create("sprites/lock.png");
+		lockskill->setScale(0.3);
+		lockskill->setPosition(node->getPosition());
+		buttonNode->addChild(lockskill);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
+		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
+		auto seq = Sequence::create(delay, move, nullptr);
+		lockskill->runAction(seq);
+		//lockskill->removeFromParent();
 	}
 }
 
@@ -564,6 +607,14 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 
 	if (a->getCategoryBitmask() == PLAYER_ATTACK_CATEGORY_BITMASK || a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK) {
 		swap(a, b);
+	}
+
+	//check if player is standing on the enemies
+	if (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK
+		&& a->getCategoryBitmask() == ENEMIES_CATEGORY_BITMASK)
+	{
+		playerChar->takeHit();
+		CCLOG("Standing on enemies");
 	}
 
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
@@ -589,6 +640,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
 			
 		}
+
 
 		// check player get hit
 		if (a->getCategoryBitmask() == ENEMIES_ATTACK_CATEGORY_BITMASK
@@ -640,6 +692,13 @@ void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 {
 	auto a = contact.getShapeA()->getBody();
 	auto b = contact.getShapeB()->getBody();
+
+	if (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK
+		&& a->getCategoryBitmask() == ENEMIES_CATEGORY_BITMASK)
+	{
+		CCLOG("Not Standing on enemies");
+	}
+
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
@@ -719,6 +778,7 @@ void PlayGameScene::goToMission() {
 	buttonNode->addChild(popup);
 }
 void PlayGameScene::goToVillage() {
+	playerChar->revive();
 	auto scene = VillageScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
@@ -733,7 +793,16 @@ void PlayGameScene::goToExit() {
 	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Notify", "Want to Exit game", [=]() {
 		Director::getInstance()->end();
 	});
-	buttonNode->addChild(popup);
+	buttonNode->addChild(popup, 2);
+}
+
+void PlayGameScene::playerDeadNotice()
+{
+	
+	UICustom::Popup * popup = UICustom::Popup::createAsConfirmDialogue("YOU DIED", "Return to the village? ", [=]() {
+		PlayGameScene::goToVillage();
+	});
+	buttonNode->addChild(popup, 2);
 }
 
 //Hide and show the hiddenTiles
