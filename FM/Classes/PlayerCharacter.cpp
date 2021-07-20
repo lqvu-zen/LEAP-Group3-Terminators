@@ -332,6 +332,11 @@ bool PlayerCharacter::isJumping()
 	return jumping;
 }
 
+bool PlayerCharacter::isDead()
+{
+	return died;
+}
+
 void PlayerCharacter::setFalling()
 {
 	falling = true;
@@ -444,6 +449,7 @@ void PlayerCharacter::takeHit(float dame)
 {
 	updateAnimation(State::TAKE_HIT, characterDirection, false);
 	characterStats.HP -= dame;
+	
 }
 
 void PlayerCharacter::openInventory()

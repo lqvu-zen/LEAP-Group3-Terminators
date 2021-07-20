@@ -61,6 +61,7 @@ private:
 	void goToSetting();
 	void goToMainMenu();
 	void goToExit();
+	void playerDeadNotice();
 
 	//Unlock Skill
 	void unlockSkill(int index);

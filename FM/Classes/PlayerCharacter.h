@@ -33,7 +33,7 @@ public:
 	bool isFalling();
 	bool isGrounded();
 	bool isJumping();
-
+	bool isDead();
 	void setFalling();
 	void setGrounded();
 	void setJumping();

@@ -477,54 +477,64 @@ void PlayGameScene::update(float dt)
 
 void PlayGameScene::updateCharacter(float dt)
 {
-	//keys movement
-	if (heldKeys.empty()) {
-		playerChar->setVelocity(Vec2::ZERO);
+	if (playerChar->isDead() == true)
+	{	//Player is dead
+		PlayGameScene::playerDeadNotice();
 	}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (playerChar->isGrounded() && playerChar->getStats().canJump() && playerChar->getVolocity().y <= PADDING_VELOCITY) {
-			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
+	else
+	{	//Player is alive
+		//keys movement
+		if (heldKeys.empty()) {
+			playerChar->setVelocity(Vec2::ZERO);
 		}
-	}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), RIGHT_ARROW) != heldKeys.end()) {
-		playerChar->setVelocity(Vec2(PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
+			if (playerChar->isGrounded() && playerChar->getStats().canJump() && playerChar->getVolocity().y <= PADDING_VELOCITY) {
+				playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
+			}
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
-		playerChar->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), RIGHT_ARROW) != heldKeys.end()) {
+			playerChar->setVelocity(Vec2(PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), ATTACK) != heldKeys.end()) {
-		playerChar->attack();
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), LEFT_ARROW) != heldKeys.end()) {
+			playerChar->setVelocity(Vec2(-PLAYER_MAX_VELOCITY, playerChar->getVolocity().y));
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), SKILL1) != heldKeys.end()) {
-		playerChar->attack(1);
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), ATTACK) != heldKeys.end()) {
+			playerChar->attack();
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), SKILL2) != heldKeys.end()) {
-		playerChar->attack(2);
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), SKILL1) != heldKeys.end()) {
+			playerChar->attack(1);
+		}
 
-	if (std::find(heldKeys.begin(), heldKeys.end(), SKILL3) != heldKeys.end()) {
-		playerChar->attack(3);
-	}
+		if (std::find(heldKeys.begin(), heldKeys.end(), SKILL2) != heldKeys.end()) {
+			playerChar->attack(2);
+		}
 
-	//keys action
+		if (std::find(heldKeys.begin(), heldKeys.end(), SKILL3) != heldKeys.end()) {
+			playerChar->attack(3);
+		}
 
-	//Character fall off the map 
-	if (playerChar->getStats().HP > 0)
-	{
+		//keys action
+
+		//Character fall off the map 
 		if (playerChar->getSprite()->getPositionY() < 36)
 		{
 			CCLOG("DEAD");
-			playerChar->takeHit(playerChar->getStats().HP);
+			while (playerChar->getStats().HP > 0)
+			{
+				playerChar->takeHit();
+			}
+			//playerChar->takeHit(playerChar->getStats().HP);
+			//PlayGameScene::playerDeadNotice();
 		}
+		playerChar->updateAction(dt);
 	}
 	
-	playerChar->updateAction(dt);
 }
 
 /// <summary>
@@ -564,6 +574,14 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		swap(a, b);
 	}
 
+	//check if player is standing on the enemies
+	if (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK
+		&& a->getCategoryBitmask() == ENEMIES_CATEGORY_BITMASK)
+	{
+		playerChar->takeHit();
+		CCLOG("Standing on enemies");
+	}
+
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
@@ -587,6 +605,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
 			
 		}
+
 
 		// check player get hit
 		if (a->getCategoryBitmask() == ENEMIES_ATTACK_CATEGORY_BITMASK
@@ -638,6 +657,13 @@ void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 {
 	auto a = contact.getShapeA()->getBody();
 	auto b = contact.getShapeB()->getBody();
+
+	if (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK
+		&& a->getCategoryBitmask() == ENEMIES_CATEGORY_BITMASK)
+	{
+		CCLOG("Not Standing on enemies");
+	}
+
 	if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
@@ -730,6 +756,14 @@ void PlayGameScene::goToMainMenu() {
 void PlayGameScene::goToExit() {
 	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Notify", "Want to Exit game", [=]() {
 		Director::getInstance()->end();
+	});
+	buttonNode->addChild(popup);
+}
+
+void PlayGameScene::playerDeadNotice()
+{
+	UICustom::Popup * popup = UICustom::Popup::createAsConfirmDialogue("YOU DIED", "Return to the village? ", [=]() {
+		PlayGameScene::goToVillage();
 	});
 	buttonNode->addChild(popup);
 }
