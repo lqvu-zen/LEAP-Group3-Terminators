@@ -155,6 +155,7 @@ bool VillageScene::init()
 	buttonNode->addChild(attackMenu);
 #endif
 
+	//Buton recuperate
 #if 1
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
 	mpButton->setScale(0.1);
@@ -166,6 +167,7 @@ bool VillageScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			//Your function
 			break;
 		}
 	});
@@ -180,6 +182,7 @@ bool VillageScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			//Your function
 			break;
 		}
 	});

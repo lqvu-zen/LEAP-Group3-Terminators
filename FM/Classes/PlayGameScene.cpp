@@ -194,6 +194,7 @@ bool PlayGameScene::init()
 
 #endif
 
+	//Buton recuperate
 #if 1
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
 	mpButton->setScale(0.1);
@@ -205,6 +206,7 @@ bool PlayGameScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			//Your function
 			break;
 		}
 	});
@@ -219,6 +221,7 @@ bool PlayGameScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			//Your function
 			break;
 		}
 	});
