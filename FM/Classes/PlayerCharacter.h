@@ -44,6 +44,8 @@ public:
 
 	void takeHit(float dame = 10.0f);
 
+	void revive();
+
 	void openInventory();
 	void closeInventory();
 

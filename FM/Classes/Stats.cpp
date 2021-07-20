@@ -40,6 +40,24 @@ void Stats::SetSkillStats(float _ATK, float _MP, float _countdown)
 	countdown = _countdown;
 }
 
+void Stats::ResetCharacterStats()
+{
+	//Normal stats
+	maxHP = HP;
+	maxMP = MP;
+	maxATK = ATK;
+	maxDEF = DEF;
+
+	//Player stats
+	//maxJump = 1;
+	jump = 0;
+
+	//Karma = 0;
+
+	//NPC stats
+	Affection = 10;
+}
+
 
 
 cocos2d::Sprite * Stats::GetSprite()

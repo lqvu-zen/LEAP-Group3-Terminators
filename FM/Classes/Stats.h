@@ -31,6 +31,8 @@ public:
 
 	void SetSkillStats(float _ATK, float _MP, float _countdown);
 
+	void ResetCharacterStats();
+
 	cocos2d::Sprite* GetSprite();
 	cocos2d::Size GetSpriteSize();
 

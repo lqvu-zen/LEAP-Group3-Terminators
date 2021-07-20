@@ -470,6 +470,14 @@ void PlayerCharacter::takeHit(float dame)
 	characterStats.HP -= dame;
 }
 
+void PlayerCharacter::revive()
+{
+	died = false;
+	characterStats.ResetCharacterStats();
+
+	updateAnimation(State::IDLE, characterDirection);
+}
+
 void PlayerCharacter::openInventory()
 {
 	characterInventory.updateInventory();
