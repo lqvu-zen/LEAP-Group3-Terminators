@@ -58,11 +58,6 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _type, int _level)
 		characterSize = Size(characterSpriteAnimation->getContentSize().width * 0.5f, characterSpriteAnimation->getContentSize().height * 0.85f);
 		break;
 	case 3:
-		numSprite = { 30,30,12,12,30,24,36 }; //Attack - 0, Death - 1, Hurt - 2, Idle - 3, Jump - 4, Run - 5, Walk - 6
-		characterSize = Size(characterSpriteAnimation->getContentSize().width * 0.5f, characterSpriteAnimation->getContentSize().height * 0.85f);
-		species = Species::MELEE;
-		break;
-	case 4:
 		numSprite = { 20,20,8,8,20,20,24 }; //Attack - 0, Death - 1, Hurt - 2, Idle - 3, Jump - 4, Run - 5, Walk - 6
 		characterSize = Size(characterSpriteAnimation->getContentSize().width * 0.5f, characterSpriteAnimation->getContentSize().height * 0.85f);
 		species = Species::MELEE;
@@ -375,32 +370,37 @@ void MonsterCharacter::attackForMelee() {
 //Skill
 void MonsterCharacter::skillForMelee() {
 	numAttack = 0;
-	bullet = Sprite::create(floder + "protoplast.png");
-	
-	auto bodyBullet = PhysicsBody::createBox(bullet->getContentSize());
-	bullet->setPhysicsBody(bodyBullet);
-	bodyBullet->setDynamic(false);
+	if (type == 2) {
+		bullet = Sprite::create(floder + "protoplast.png");
 
-	bodyBullet->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
-	bodyBullet->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
-	bodyBullet->setContactTestBitmask(ALLSET_BITMASK);
+		auto bodyBullet = PhysicsBody::createBox(bullet->getContentSize());
+		bullet->setPhysicsBody(bodyBullet);
+		bodyBullet->setDynamic(false);
 
-	bullet->setPosition(characterSprite->getPosition());
-	bullet->setScale(0.1);
-	scene->addChild(bullet);
+		bodyBullet->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+		bodyBullet->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+		bodyBullet->setContactTestBitmask(ALLSET_BITMASK);
 
-	if (actionDirection == Direction::LEFT) {
-		bullet->setFlippedX(false);
-		auto shootAction = MoveBy::create(5, Vec2(-visibleSize.width / 3, 0));
-		auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
-		auto seq = Sequence::create(shootAction, disappearAction, nullptr);
-		bullet->runAction(seq);
+		bullet->setPosition(characterSprite->getPosition());
+		bullet->setScale(0.1);
+		scene->addChild(bullet);
+
+		if (actionDirection == Direction::LEFT) {
+			bullet->setFlippedX(false);
+			auto shootAction = MoveBy::create(5, Vec2(-visibleSize.width / 3, 0));
+			auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
+			auto seq = Sequence::create(shootAction, disappearAction, nullptr);
+			bullet->runAction(seq);
+		}
+		else {
+			bullet->setFlippedX(true);
+			auto shootAction = MoveBy::create(5, Vec2(visibleSize.width / 3, 0));
+			auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
+			auto seq = Sequence::create(shootAction, disappearAction, nullptr);
+			bullet->runAction(seq);
+		}
 	}
-	else {
-		bullet->setFlippedX(true);
-		auto shootAction = MoveBy::create(5, Vec2(visibleSize.width / 3, 0));
-		auto disappearAction = MoveBy::create(0, Vec2(-100 * visibleSize.width, 0));
-		auto seq = Sequence::create(shootAction, disappearAction, nullptr);
-		bullet->runAction(seq);
+	else if (type == 3) {
+
 	}
 }
