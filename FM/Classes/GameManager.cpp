@@ -74,6 +74,21 @@ void GameManager::AddItem(Item * ref)
 	ref->getSprite()->setTag(countItem);
 }
 
+void GameManager::AddReward(cocos2d::Vec2 position, int type)
+{
+	switch (type)
+	{
+	default:
+		auto gold = new Item(Item::ItemType::GOLD);
+		
+		gold->getSprite()->setPosition(position);
+		playerCharacter->getSprite()->getParent()->addChild(gold->getSprite());
+
+		GameManager::getInstace()->AddItem(gold);
+		break;
+	}
+}
+
 void GameManager::hit(int attacker, int victim)
 {
 	int dame = playerCharacter->getStats().ATK;

@@ -21,6 +21,11 @@ void Inventory::init()
 
 void Inventory::addItem(Item * _item)
 {
+	if (_item->getType() == Item::ItemType::GOLD) {
+		gold++;
+		return;
+	}
+
 	itemCount++;
 	itemMap[_item->getType()].push_back(_item);
 }
