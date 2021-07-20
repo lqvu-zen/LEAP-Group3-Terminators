@@ -51,6 +51,7 @@ public:
 
 	void colectItem(Item* item);
 	void addGold(int num);
+	void useItem(Item::ItemType itemType);
 
 	cocos2d::Sprite* getSprite();
 	Stats getStats();

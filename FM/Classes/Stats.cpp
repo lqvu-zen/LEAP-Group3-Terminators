@@ -5,10 +5,21 @@ Stats::Stats()
 {
 	statsSprite = nullptr;
 
+	//init variable
 	maxHP = HP = 0;
 	maxMP = MP = 0;
 	maxATK = ATK = 0;
 	maxDEF = DEF = 0;
+
+	maxJump = jump = 0;
+
+	Karma = 0;
+
+	Affection = 0;
+
+	value = 0;
+
+	countdown = 0;
 }
 
 void Stats::SetStats(float hp, float mp, float atk, float def)
@@ -29,8 +40,21 @@ void Stats::SetStats(float hp, float mp, float atk, float def)
 	Affection = 10;
 }
 
-void Stats::SetItemStats(float hp, float mp, float atk, float def)
+void Stats::SetCItemStats(float _hp, float _mp, float _atk, float _def)
 {
+	HP = _hp;
+	MP = _mp;
+	ATK = _atk;
+	DEF = _def;
+}
+
+void Stats::SetNCItemStats(float _hp, float _mp, float _atk, float _def, int _jump)
+{
+	maxHP = _hp;
+	maxMP = _mp;
+	maxATK = _atk;
+	maxDEF = _def;
+	maxJump = _jump;
 }
 
 void Stats::SetSkillStats(float _ATK, float _MP, float _countdown)
@@ -43,10 +67,10 @@ void Stats::SetSkillStats(float _ATK, float _MP, float _countdown)
 void Stats::ResetCharacterStats()
 {
 	//Normal stats
-	maxHP = HP;
-	maxMP = MP;
-	maxATK = ATK;
-	maxDEF = DEF;
+	HP = maxHP;
+	MP = maxMP;
+	ATK = maxATK;
+	DEF = maxDEF;
 
 	//Player stats
 	//maxJump = 1;
@@ -56,6 +80,26 @@ void Stats::ResetCharacterStats()
 
 	//NPC stats
 	Affection = 10;
+}
+
+void Stats::BuffStats(Stats _stats)
+{
+	//update max value
+	maxHP += _stats.maxHP;
+	maxMP += _stats.maxMP;
+	maxATK += _stats.maxATK;
+	maxDEF += _stats.maxDEF;
+
+	maxJump += _stats.maxJump;
+
+	//update current value
+	Affection += _stats.Affection;
+	Karma += _stats.Karma;
+
+	HP += _stats.HP;
+	MP += _stats.MP;
+	ATK += _stats.ATK;
+	DEF += _stats.DEF;
 }
 
 

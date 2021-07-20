@@ -194,7 +194,7 @@ bool PlayGameScene::init()
 
 #endif
 
-#if 0
+#if 1
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
 	mpButton->setScale(0.1);
 	//mpButton->setAnchorPoint(Vec2::ZERO);
@@ -205,6 +205,7 @@ bool PlayGameScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			playerChar->useItem(Item::ItemType::MP_POTION);
 			break;
 		}
 	});
@@ -219,6 +220,7 @@ bool PlayGameScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
+			playerChar->useItem(Item::ItemType::HP_POTION);
 			break;
 		}
 	});

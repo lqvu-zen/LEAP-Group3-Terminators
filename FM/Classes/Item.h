@@ -2,6 +2,7 @@
 #define __ITEM_H__
 
 #include "cocos2d.h"
+#include "Stats.h"
 
 using namespace std;
 
@@ -18,6 +19,8 @@ public:
 
 	Item::ItemType getType();
 
+	Stats getStats();
+
 	void setPosition(cocos2d::Vec2 position);
 
 private:
@@ -26,6 +29,8 @@ private:
 	cocos2d::PhysicsBody* itemBody;
     
 	Item::ItemType itemType;
+
+	Stats itemStats;
 };
 
 #endif // __ITEM_H__

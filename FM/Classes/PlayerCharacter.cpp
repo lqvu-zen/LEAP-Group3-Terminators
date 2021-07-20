@@ -475,6 +475,8 @@ void PlayerCharacter::revive()
 	died = false;
 	characterStats.ResetCharacterStats();
 
+	setGrounded();
+
 	updateAnimation(State::IDLE, characterDirection);
 }
 
@@ -496,6 +498,15 @@ void PlayerCharacter::colectItem(Item * item)
 
 void PlayerCharacter::addGold(int num) {
 	characterInventory.addGold(num);
+}
+
+void PlayerCharacter::useItem(Item::ItemType itemType)
+{
+	auto item = characterInventory.getItem(itemType);
+
+	if (item != nullptr) {
+		characterStats.BuffStats(item->getStats());
+	}
 }
 
 cocos2d::Sprite * PlayerCharacter::getSprite()
