@@ -208,7 +208,6 @@ bool VillageScene::init()
 	playerChar = GameManager::getInstace()->GetPlayerCharacter();
 	playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
 	//NPC
 	for (auto SpawnPoint : objectGroup->getObjects())
 	{
@@ -260,7 +259,6 @@ bool VillageScene::init()
 	buttonNode->addChild(playerStatsSprite);
 
 	playerStat.AddPlayerButton();
-
 	//Contact test
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(VillageScene::onContactBegin, this);

@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Definitions.h"
+#include "Stats.h"
 
 USING_NS_CC;
 
@@ -17,11 +18,15 @@ public:
 
 	void CastSkill(Skill::SkillType skillType, Direction direction = Direction::RIGHT);
 
+	Stats SkillCost(Skill::SkillType skillType);
+
 	cocos2d::Sprite* GetSprite();
 
 	void SetPosition(cocos2d::Vec2 position);
 	
 private:
+	std::map<Skill::SkillType, Stats> skillStats;
+
 	cocos2d::Sprite* skillSprite;
 	cocos2d::Sprite* skillAnimation;
 

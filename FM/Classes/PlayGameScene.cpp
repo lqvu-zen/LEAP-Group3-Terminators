@@ -60,7 +60,8 @@ bool PlayGameScene::init()
 			});
 			/*Mission* mission = new Mission();
 			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);*/
-			buttonNode->addChild(popup);
+			buttonNode->addChild(popup, 2);
+			//Pause will be onto of everything in the buttonNode
 			break;
 		}
 	});
@@ -479,7 +480,11 @@ void PlayGameScene::updateCharacter(float dt)
 {
 	if (playerChar->isDead() == true)
 	{	//Player is dead
-		PlayGameScene::playerDeadNotice();
+		if (isDeadNoticePopUp == false)
+		{
+			PlayGameScene::playerDeadNotice();
+			isDeadNoticePopUp = true;
+		}
 	}
 
 	else
@@ -743,6 +748,7 @@ void PlayGameScene::goToMission() {
 	buttonNode->addChild(popup);
 }
 void PlayGameScene::goToVillage() {
+	playerChar->revive();
 	auto scene = VillageScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
@@ -757,15 +763,16 @@ void PlayGameScene::goToExit() {
 	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Notify", "Want to Exit game", [=]() {
 		Director::getInstance()->end();
 	});
-	buttonNode->addChild(popup);
+	buttonNode->addChild(popup, 2);
 }
 
 void PlayGameScene::playerDeadNotice()
 {
+	
 	UICustom::Popup * popup = UICustom::Popup::createAsConfirmDialogue("YOU DIED", "Return to the village? ", [=]() {
 		PlayGameScene::goToVillage();
 	});
-	buttonNode->addChild(popup);
+	buttonNode->addChild(popup, 2);
 }
 
 //Hide and show the hiddenTiles

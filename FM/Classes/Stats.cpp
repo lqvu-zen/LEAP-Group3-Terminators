@@ -29,6 +29,37 @@ void Stats::SetStats(float hp, float mp, float atk, float def)
 	Affection = 10;
 }
 
+void Stats::SetItemStats(float hp, float mp, float atk, float def)
+{
+}
+
+void Stats::SetSkillStats(float _ATK, float _MP, float _countdown)
+{
+	ATK = _ATK;
+	MP = _MP;
+	countdown = _countdown;
+}
+
+void Stats::ResetCharacterStats()
+{
+	//Normal stats
+	HP = maxHP;
+	MP = maxMP;
+	ATK = maxATK;
+	DEF = maxDEF;
+
+	//Player stats
+	//maxJump = 1;
+	jump = 0;
+
+	//Karma = 0;
+
+	//NPC stats
+	Affection = 10;
+}
+
+
+
 cocos2d::Sprite * Stats::GetSprite()
 {
 	if (statsSprite == nullptr) {

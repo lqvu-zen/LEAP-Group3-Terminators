@@ -82,9 +82,9 @@ void PlayerCharacter::init()
 	attacking = false;
 	characterSkill = new Skill();
 
-	//characterSkill->SetPosition(characterSize);
-
-	//characterSprite->addChild(characterSkill->GetSprite());
+	characterSkillCountdown[Skill::SkillType::Normal] = 0.0f;
+	characterSkillCountdown[Skill::SkillType::Special] = 0.0f;
+	characterSkillCountdown[Skill::SkillType::Ultimate] = 0.0f;
 
 	//--
 	died = false;
@@ -216,6 +216,11 @@ void PlayerCharacter::updateAction(float dt)
 	if (!died) {
 		//update stats
 		characterStats.UpdateStatsBar();
+
+		//update countdown
+		characterSkillCountdown[Skill::SkillType::Normal] -= (characterSkillCountdown[Skill::SkillType::Normal] > 0.0f ? dt : 0.0f);
+		characterSkillCountdown[Skill::SkillType::Special] -= (characterSkillCountdown[Skill::SkillType::Special] > 0.0f ? dt : 0.0f);
+		characterSkillCountdown[Skill::SkillType::Ultimate] -= (characterSkillCountdown[Skill::SkillType::Ultimate] > 0.0f ? dt : 0.0f);
 
 		Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
 
@@ -369,6 +374,29 @@ void PlayerCharacter::attack(int mode)
 	if (attacking != true) {
 		if (mode > 0) {
 			attackMode = mode;
+
+			switch (attackMode)
+			{
+			case 1:
+				attackSkill = Skill::SkillType::Normal;
+				break;
+			case 2:
+				attackSkill = Skill::SkillType::Special;
+				break;
+			case 3:
+				attackSkill = Skill::SkillType::Ultimate;
+				break;
+			default:
+				break;
+			}
+
+			if (characterSkill->SkillCost(attackSkill).MP <= characterStats.MP && characterSkillCountdown[attackSkill] <= 0.0f) {
+				characterStats.MP -= characterSkill->SkillCost(attackSkill).MP;
+				characterSkillCountdown[attackSkill] = characterSkill->SkillCost(attackSkill).countdown;
+			}
+			else {
+				return;
+			}
 		}
 		else {
 			attackMode = (attackMode - 1) % 3 + 1;
@@ -378,23 +406,17 @@ void PlayerCharacter::attack(int mode)
 		if (attackMode == 1) {
 			attackSize = Size(characterSize.width * 2.0f, characterSize.height);
 			updateAnimation(State::ATTACK1, characterDirection, false);
-
-			attackSkill = Skill::SkillType::Normal;
 		}
 		else if (attackMode == 2) {
 			attackSize = Size(characterSize.width * 2.5f, characterSize.height);
 			updateAnimation(State::ATTACK2, characterDirection, false);
-
-			attackSkill = Skill::SkillType::Special;
 		}
 		else if (attackMode == 3) {
 			attackSize = Size(characterSize.width * 3.0f, characterSize.height * 2.0f);
 			updateAnimation(State::ATTACK3, characterDirection, false);
-
-			attackSkill = Skill::SkillType::Ultimate;
 		}
 
-		auto attackPos = Vec2((attackSize.width - characterSize.width) / 2, (attackSize.height - characterSize.height) / 2);
+		auto attackPos = Vec2((attackSize.width - characterSize.width) / 2, (attackSize.height - characterSize.height) / 2);	
 
 		//create physic for attack
 		 
@@ -419,7 +441,11 @@ void PlayerCharacter::attack(int mode)
 
 		attackSprite->setPhysicsBody(attackBody);
 		
+		attacking = true;
+
 		if (mode != 0) {
+			castingSkill = true;
+
 			//skillSprite->setAnchorPoint(Vec2::ZERO);
 			if (skillSprite == nullptr) {
 				skillSprite = Sprite::create();
@@ -437,10 +463,8 @@ void PlayerCharacter::attack(int mode)
 
 			skillSprite->addChild(characterSkill->GetSprite());
 			characterSkill->CastSkill(attackSkill, characterDirection);
-
-			castingSkill = true;
 		}
-		attacking = true;
+		
 	}
 	
 }
@@ -450,6 +474,13 @@ void PlayerCharacter::takeHit(float dame)
 	updateAnimation(State::TAKE_HIT, characterDirection, false);
 	characterStats.HP -= dame;
 	
+}
+
+void PlayerCharacter::revive()
+{
+	died = false;
+	characterStats.ResetCharacterStats();
+	updateAnimation(State::IDLE, characterDirection);
 }
 
 void PlayerCharacter::openInventory()
