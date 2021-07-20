@@ -29,6 +29,19 @@ void Stats::SetStats(float hp, float mp, float atk, float def)
 	Affection = 10;
 }
 
+void Stats::SetItemStats(float hp, float mp, float atk, float def)
+{
+}
+
+void Stats::SetSkillStats(float _ATK, float _MP, float _countdown)
+{
+	ATK = _ATK;
+	MP = _MP;
+	countdown = _countdown;
+}
+
+
+
 cocos2d::Sprite * Stats::GetSprite()
 {
 	if (statsSprite == nullptr) {

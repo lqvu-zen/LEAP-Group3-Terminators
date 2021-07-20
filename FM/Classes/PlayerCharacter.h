@@ -77,6 +77,8 @@ private:
 
 	Skill::SkillType attackSkill;
 
+	std::map<Skill::SkillType, float> characterSkillCountdown;
+
 	//character state
 	bool castingSkill;
 	bool attacking;

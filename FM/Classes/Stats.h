@@ -20,9 +20,16 @@ public:
 
 	int jump;
 
+	int value;
+	float countdown;
+
 	Stats();
 
 	void SetStats(float hp = 10.0f, float mp = 0.0f, float atk = 0.0f, float def = 0.0f);
+
+	void SetItemStats(float hp = 10.0f, float mp = 0.0f, float atk = 0.0f, float def = 0.0f);
+
+	void SetSkillStats(float _ATK, float _MP, float _countdown);
 
 	cocos2d::Sprite* GetSprite();
 	cocos2d::Size GetSpriteSize();
