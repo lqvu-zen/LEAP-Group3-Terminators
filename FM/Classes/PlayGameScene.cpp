@@ -165,7 +165,8 @@ bool PlayGameScene::init()
 	buttonNode->addChild(attackMenu);
 #endif
 
-#if 1
+	//Lock Skill
+#if 0
 	MenuItemImage* lockskill_1Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
 		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
@@ -545,14 +546,41 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	else if (node->getTag() == 2) {
 		CCLOG("Skill 1");
 		playerChar->attack(3);
+		Sprite* lockskill = Sprite::create("sprites/lock.png");
+		lockskill->setScale(0.3);
+		lockskill->setPosition(node->getPosition());
+		buttonNode->addChild(lockskill);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
+		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
+		auto seq = Sequence::create(delay, move, nullptr);
+		lockskill->runAction(seq);
+		//lockskill->removeFromParent();
 	}
 	else if (node->getTag() == 3) {
 		CCLOG("Skill 2");
 		playerChar->attack(2);
+		Sprite* lockskill = Sprite::create("sprites/lock.png");
+		lockskill->setScale(0.3);
+		lockskill->setPosition(node->getPosition());
+		buttonNode->addChild(lockskill);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
+		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
+		auto seq = Sequence::create(delay, move, nullptr);
+		lockskill->runAction(seq);
+		//lockskill->removeFromParent();
 	}
 	else if (node->getTag() == 4) {
 		CCLOG("Skill 3");
 		playerChar->attack(1);
+		Sprite* lockskill = Sprite::create("sprites/lock.png");
+		lockskill->setScale(0.3);
+		lockskill->setPosition(node->getPosition());
+		buttonNode->addChild(lockskill);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
+		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
+		auto seq = Sequence::create(delay, move, nullptr);
+		lockskill->runAction(seq);
+		//lockskill->removeFromParent();
 	}
 }
 
