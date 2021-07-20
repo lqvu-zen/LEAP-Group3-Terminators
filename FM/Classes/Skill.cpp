@@ -7,6 +7,10 @@ Skill::Skill()
 	//skillSprite = cocos2d::Sprite::create();
 
 	skillSize = cocos2d::Size(64.0f, 80.0f);
+
+	skillStats[Skill::SkillType::Normal].SetSkillStats(10.0f, 10.0f, 2.0f);
+	skillStats[Skill::SkillType::Special].SetSkillStats(15.0f, 15.0f, 3.0f);
+	skillStats[Skill::SkillType::Ultimate].SetSkillStats(40.0f, 20.0f, 5.0f);
 }
 
 void Skill::CastSkill(Skill::SkillType skillType, Direction direction)
@@ -20,6 +24,11 @@ void Skill::CastSkill(Skill::SkillType skillType, Direction direction)
 	
 
 	createAnimation(skillType, direction);
+}
+
+Stats Skill::SkillCost(Skill::SkillType skillType)
+{
+	return skillStats[skillType];
 }
 
 cocos2d::Sprite * Skill::GetSprite()

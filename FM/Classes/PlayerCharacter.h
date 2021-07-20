@@ -44,6 +44,8 @@ public:
 
 	void takeHit(float dame = 10.0f);
 
+	void revive();
+
 	void openInventory();
 	void closeInventory();
 
@@ -77,6 +79,8 @@ private:
 	Skill* characterSkill;
 
 	Skill::SkillType attackSkill;
+
+	std::map<Skill::SkillType, float> characterSkillCountdown;
 
 	//character state
 	bool castingSkill;
