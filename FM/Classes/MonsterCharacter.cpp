@@ -365,7 +365,8 @@ void MonsterCharacter::attackForMelee() {
 		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
 		attackBody->setContactTestBitmask(ALLSET_BITMASK);
 		attackBody->setMass(0.0f);
-
+		//Reset melee monster attackSprite hitbox.
+		attackSprite->setPosition(Vec2::ZERO);
 		attackSprite->setPhysicsBody(attackBody);
 		numAttack++;
 	}

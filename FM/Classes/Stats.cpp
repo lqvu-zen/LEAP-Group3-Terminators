@@ -43,10 +43,10 @@ void Stats::SetSkillStats(float _ATK, float _MP, float _countdown)
 void Stats::ResetCharacterStats()
 {
 	//Normal stats
-	maxHP = HP;
-	maxMP = MP;
-	maxATK = ATK;
-	maxDEF = DEF;
+	HP = maxHP;
+	MP = maxMP;
+	ATK = maxATK;
+	DEF = maxDEF;
 
 	//Player stats
 	//maxJump = 1;
