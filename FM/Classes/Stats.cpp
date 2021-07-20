@@ -93,13 +93,13 @@ void Stats::BuffStats(Stats _stats)
 	maxJump += _stats.maxJump;
 
 	//update current value
-	Affection += _stats.Affection;
-	Karma += _stats.Karma;
+	Affection = min(Affection + _stats.Affection, 100);
+	Karma = min(Karma + _stats.Karma, 100);
 
-	HP += _stats.HP;
-	MP += _stats.MP;
-	ATK += _stats.ATK;
-	DEF += _stats.DEF;
+	HP = min(HP + _stats.HP, maxHP);
+	MP = min(MP + _stats.MP, maxMP);
+	ATK = min(ATK + _stats.ATK, maxATK);
+	DEF = min(DEF + _stats.DEF, maxDEF);
 }
 
 
