@@ -406,6 +406,7 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 						else if (rewards.at(i).type == "Gold") {
 							//Add rewards.at(i).number Gold;
 							CCLOG("Add %i gold", rewards.at(i).number);
+							playerChar->addGold(rewards.at(i).number);
 						}
 					}
 
