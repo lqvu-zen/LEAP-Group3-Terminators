@@ -48,6 +48,7 @@ public:
 	void closeInventory();
 
 	void colectItem(Item* item);
+	void addGold(int num);
 
 	cocos2d::Sprite* getSprite();
 	Stats getStats();

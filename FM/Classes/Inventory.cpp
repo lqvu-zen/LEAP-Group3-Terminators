@@ -136,3 +136,7 @@ void Inventory::updateInventory()
 		}
 	}
 }
+
+void Inventory::addGold(int num) {
+	gold += num;
+}

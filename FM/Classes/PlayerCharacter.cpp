@@ -486,6 +486,10 @@ void PlayerCharacter::colectItem(Item * item)
 	characterInventory.addItem(item);
 }
 
+void PlayerCharacter::addGold(int num) {
+	characterInventory.addGold(num);
+}
+
 cocos2d::Sprite * PlayerCharacter::getSprite()
 {
 	return characterSprite;

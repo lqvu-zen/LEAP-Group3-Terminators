@@ -20,6 +20,8 @@ public:
 	cocos2d::Sprite* GetSprite();
 
 	void updateInventory();
+
+	void addGold(int num);
 private:
 	int gold;
 
