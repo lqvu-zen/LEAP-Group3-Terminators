@@ -154,6 +154,39 @@ bool VillageScene::init()
 	attackMenu->setOpacity(200);
 	buttonNode->addChild(attackMenu);
 #endif
+
+#if 1
+	auto mpButton = ui::Button::create("sprites/mpButton.png");
+	mpButton->setScale(0.1);
+	//mpButton->setAnchorPoint(Vec2::ZERO);
+	mpButton->setPosition(Vec2(visibleSize.width - 7 * mpButton->getContentSize().width * 0.05, mpButton->getContentSize().height * 0.05));
+	mpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			break;
+		}
+	});
+	buttonNode->addChild(mpButton, 1);
+
+	auto hpButton = ui::Button::create("sprites/hpButton.png");
+	hpButton->setScale(0.1);
+	hpButton->setPosition(Vec2(visibleSize.width - 9.5 * hpButton->getContentSize().width * 0.05, hpButton->getContentSize().height * 0.05));
+	hpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			break;
+		}
+	});
+	buttonNode->addChild(hpButton, 1);
+
+#endif
+
 	//End add buttons
 
 	
