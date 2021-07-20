@@ -73,6 +73,7 @@ private:
     //cocos2d::Sprite* monster;
     cocos2d::Vec2 position;
     cocos2d::Sprite* bullet;
+
     Direction actionDirection;
 
     cocos2d::Animation* animation;
@@ -85,7 +86,7 @@ private:
 
     //Skill
     int numAttack;
-    void skillForMelee();
+    void skillForMelee(cocos2d::Vec2 positionPlayer);
 };
 
 #endif // __MONSTER_CHARACTER_H__
