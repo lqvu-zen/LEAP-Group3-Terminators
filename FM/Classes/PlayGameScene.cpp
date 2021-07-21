@@ -291,7 +291,7 @@ bool PlayGameScene::init()
 	//Change to spawn Player Character always in the middle of the map
 	//Add character here!!!
 	playerChar = GameManager::getInstace()->GetPlayerCharacter();
-	playerChar->getSprite()->setScale(1.5);
+	//playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
 	//cameraTarget for the followCamera to follow the player.

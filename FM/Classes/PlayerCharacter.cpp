@@ -2,18 +2,28 @@
 
 USING_NS_CC;
 
-PlayerCharacter::PlayerCharacter()
+PlayerCharacter::PlayerCharacter(int characterType)
 {
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Warrior/Warrior.plist", "sprites/Warrior/Warrior.png");
+	getValue(characterType);
+
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(
+		characterValue["SPRITES"]["PLIST"].GetString(), 
+		characterValue["SPRITES"]["PNG"].GetString()
+	);
 
 	//set Stats
-	characterStats.SetStats(100.0f, 100.0f, 20.0f, 10.0f);
+	characterStats.SetStats(
+		characterValue["STATS"]["HP"].GetFloat(), 
+		characterValue["STATS"]["MP"].GetFloat(), 
+		characterValue["STATS"]["ATK"].GetFloat(), 
+		characterValue["STATS"]["DEF"].GetFloat()
+	);
 
 	characterAnimate.clear();
 
 	characterSprite = nullptr;
 
-	init();
+	init(characterType);
 
 	//init inventory 
 	characterInventory.init();
@@ -26,16 +36,12 @@ PlayerCharacter::PlayerCharacter()
 	));
 
 	characterInventory.GetSprite()->setVisible(false);
+
 }
 
-PlayerCharacter::PlayerCharacter(cocos2d::Vec2 position)
+void PlayerCharacter::init(int characterType)
 {
-	PlayerCharacter();
-	setPosition(position);
-}
-
-void PlayerCharacter::init()
-{
+	
 	if (characterSprite != nullptr) {
 		characterSprite->removeAllChildren();
 		characterSprite->removeFromParent();
@@ -44,14 +50,15 @@ void PlayerCharacter::init()
 	}
 
 	characterDirection = Direction::RIGHT;
-	
-	auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName("Warrior-Idle-0.png");
 
-	characterSize = Size(frame->getOriginalSize().width * 0.5f, frame->getOriginalSize().height * 0.8f);
+	characterSize = Size(
+		characterValue["SPRITES"]["SIZE_X"].GetFloat(), 
+		characterValue["SPRITES"]["SIZE_Y"].GetFloat()
+	);
 
 	//create sprites
 	characterSprite = Sprite::create();
-	characterSpriteAnimation = Sprite::createWithSpriteFrame(frame);
+	characterSpriteAnimation = Sprite::create();
 	attackSprite = Sprite::create();
 	
 
@@ -87,9 +94,11 @@ void PlayerCharacter::init()
 	characterSkillCountdown[Skill::SkillType::Ultimate] = 0.0f;
 
 	//--
+	takingHit = false;
 	died = false;
 
-	
+	//set scale
+	characterSprite->setScale(characterValue["SPRITES"]["SCALE"].GetFloat());
 }
 
 void PlayerCharacter::setPosition(cocos2d::Vec2 position)
@@ -100,7 +109,7 @@ void PlayerCharacter::setPosition(cocos2d::Vec2 position)
 
 void PlayerCharacter::updateAnimation(State actionState, Direction actionDirection, bool repeatForever)
 {
-	if (characterState != actionState && attacking != true) {
+	if (characterState != actionState && attacking != true && takingHit != true) {
 
 		const int maxWord = 50;
 
@@ -108,45 +117,46 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 		char nameSprite[maxWord] = { 0 };
 		char nameCharacter[maxWord] = { 0 };
 
-		sprintf(nameCharacter, "Warrior");
+		sprintf(nameCharacter, characterValue["NAME"].GetString());
 
 		switch (actionState)
 		{
 		case PlayerCharacter::State::IDLE:
-			numberSprite = 10;
+			numberSprite = characterValue["SPRITES"]["COUNT_IDLE"].GetInt();
 			sprintf(nameSprite, "Idle");
 			break;
 		case PlayerCharacter::State::JUMPING:
-			numberSprite = 3;
+			numberSprite = characterValue["SPRITES"]["COUNT_JUMP"].GetInt();
 			sprintf(nameSprite, "Jump");
 			break;
 		case PlayerCharacter::State::FALLING:
-			numberSprite = 3;
+			numberSprite = characterValue["SPRITES"]["COUNT_FALL"].GetInt();
 			sprintf(nameSprite, "Fall");
 			break;
 		case PlayerCharacter::State::RUNING:
-			numberSprite = 8;
+			numberSprite = characterValue["SPRITES"]["COUNT_RUN"].GetInt();
 			sprintf(nameSprite, "Run");
 			break;
 		case PlayerCharacter::State::ATTACK1:
-			numberSprite = 7;
+			numberSprite = characterValue["SPRITES"]["COUNT_ATTACK1"].GetInt();
 			sprintf(nameSprite, "Attack1");
 			break;
 		case PlayerCharacter::State::ATTACK2:
-			numberSprite = 7;
+			numberSprite = characterValue["SPRITES"]["COUNT_ATTACK2"].GetInt();
 			sprintf(nameSprite, "Attack2");
 			break;
 		case PlayerCharacter::State::ATTACK3:
-			numberSprite = 8;
+			numberSprite = characterValue["SPRITES"]["COUNT_ATTACK3"].GetInt();
 			sprintf(nameSprite, "Attack3");
 			break;
-		case PlayerCharacter::State::DEATH:
-			numberSprite = 7;
-			sprintf(nameSprite, "Death");
-			break;
 		case PlayerCharacter::State::TAKE_HIT:
-			numberSprite = 3;
+			numberSprite = characterValue["SPRITES"]["COUNT_TAKEHIT"].GetInt();
 			sprintf(nameSprite, "Take hit");
+			characterSpriteAnimation->setColor(cocos2d::Color3B::RED);
+			break;
+		case PlayerCharacter::State::DEATH:
+			numberSprite = characterValue["SPRITES"]["COUNT_DEATH"].GetInt();
+			sprintf(nameSprite, "Death");
 			break;
 		default:
 			break;
@@ -312,6 +322,11 @@ void PlayerCharacter::reupdateAnimation()
 				attacking = false;
 			}
 		}
+
+		if (takingHit == true) {
+			takingHit = false;
+			characterSpriteAnimation->setColor(cocos2d::Color3B::WHITE);
+		}
 		
 		updateAnimation(characterState, characterDirection);
 	}
@@ -472,8 +487,10 @@ void PlayerCharacter::attack(int mode)
 void PlayerCharacter::takeHit(float dame)
 {
 	updateAnimation(State::TAKE_HIT, characterDirection, false);
+
+	takingHit = true;
+
 	characterStats.HP -= dame;
-	
 }
 
 void PlayerCharacter::revive()
@@ -515,6 +532,8 @@ void PlayerCharacter::useItem(Item::ItemType itemType)
 
 cocos2d::Sprite * PlayerCharacter::getSprite()
 {
+	
+
 	return characterSprite;
 }
 
@@ -541,4 +560,24 @@ cocos2d::Vec2 PlayerCharacter::getVolocity()
 cocos2d::Vec2 PlayerCharacter::getRealtimeVolocity()
 {
 	return characterPhysicsBody->getVelocity();
+}
+
+inline void PlayerCharacter::getValue(int characterType)
+{
+	auto buf = FileUtils::getInstance()->getStringFromFile("res/player.json");
+
+	characterDocument.Parse<0>(buf.c_str());
+	if (characterDocument.HasParseError()) {
+		CCLOG("ERROR: Character document not found!");
+	}
+	else {
+		if (characterDocument.HasMember("PLAYER")) {
+			rapidjson::Value& playerCharacter = characterDocument["PLAYER"];
+			for (rapidjson::SizeType i = 0; i < playerCharacter.Size(); i++) {
+				if (playerCharacter[i]["TYPE"].GetInt() == characterType) {
+					characterValue = playerCharacter[i];
+				}
+			}
+		}
+	}
 }

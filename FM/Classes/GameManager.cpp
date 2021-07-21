@@ -14,6 +14,7 @@ void GameManager::init()
 {
 	//load from here, when saving
 	playerCharacter = nullptr;
+	playerCharacterType = 0;
 
 	characterMap.clear();
 	countCharacter = 0;
@@ -25,12 +26,12 @@ void GameManager::init()
 PlayerCharacter * GameManager::GetPlayerCharacter(bool withInit)
 {
 	if (playerCharacter == nullptr) {
-		playerCharacter = new PlayerCharacter();
+		playerCharacter = new PlayerCharacter(playerCharacterType);
 
 		this->AddCharacter(playerCharacter);
 	}
 	else if (withInit) {
-		playerCharacter->init();
+		playerCharacter->init(playerCharacterType);
 	}
 
 	return playerCharacter;
@@ -81,10 +82,11 @@ void GameManager::AddReward(cocos2d::Vec2 position, int type)
 	default:
 		auto gold = new Item(Item::ItemType::GOLD);
 		
-		gold->getSprite()->setPosition(position);
-		playerCharacter->getSprite()->getParent()->addChild(gold->getSprite());
+		//gold->getSprite()->setPosition(position);
+		//playerCharacter->getSprite()->getParent()->addChild(gold->getSprite());
 
-		GameManager::getInstace()->AddItem(gold);
+		//GameManager::getInstace()->AddItem(gold);
+		playerCharacter->colectItem(gold);
 		break;
 	}
 }

@@ -48,6 +48,7 @@ private:
 	static GameManager* create();
 
 	PlayerCharacter* playerCharacter;
+	int playerCharacterType;
 
 	int countCharacter;
 	std::map <int, Character*> characterMap;
