@@ -94,7 +94,7 @@
     <property name="ItemType" type="int" value="3"/>
    </properties>
   </object>
-  <object id="33" name="Enemy" x="68.6334" y="315.182" width="30.7332" height="29.6356">
+  <object id="33" name="Enemy" x="69.6334" y="307.682" width="30.7332" height="29.6356">
    <properties>
     <property name="Enemy" type="int" value="1"/>
    </properties>
@@ -184,7 +184,7 @@
     <property name="ItemType" type="int" value="4"/>
    </properties>
   </object>
-  <object id="52" name="Enemy" x="346.3" y="271.682" width="30.7332" height="29.6356">
+  <object id="52" name="Enemy" x="346.8" y="269.182" width="30.7332" height="29.6356">
    <properties>
     <property name="Enemy" type="int" value="1"/>
    </properties>

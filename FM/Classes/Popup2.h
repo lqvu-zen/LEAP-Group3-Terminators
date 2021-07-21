@@ -63,6 +63,9 @@ namespace UICustom {
         static Popup* createPauseMenuPlayGame(const std::function<void()>& MissionFunc, const std::function<void()>& VillageFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc);
         static Popup* createSetting();
 		static Popup* createSelectMapInVillage(const std::function<void()>& GoToMap1Func, const std::function<void()>& GoToMap2Func);
+
+        static Popup* createLoss(const std::function<void()>& Revival1Func, const std::function<void()>& Revival2Func, const std::function<void()>& ExitFunc);
+
     private:
         void initBg(const cocos2d::Size size, const std::string& title);
     };

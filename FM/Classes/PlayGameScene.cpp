@@ -813,9 +813,14 @@ void PlayGameScene::goToExit() {
 
 void PlayGameScene::playerDeadNotice()
 {
-	
-	UICustom::Popup * popup = UICustom::Popup::createAsConfirmDialogue("YOU DIED", "Return to the village? ", [=]() {
+	UICustom::Popup* popup = UICustom::Popup::createLoss([=]() {
+		//Resurrect in map
+		CCLOG("NOT IMPLEMENT YET!!!");
+	}, [=]() {
+		//Village revive
 		PlayGameScene::goToVillage();
+	}, [=]() {
+		goToExit();
 	});
 	buttonNode->addChild(popup, 2);
 }
