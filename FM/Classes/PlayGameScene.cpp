@@ -440,11 +440,18 @@ bool PlayGameScene::init()
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 1);
 
+	//test area
+	auto mpPotion = new Item(Item::ItemType::MP_POTION);
+	auto hpPotion = new Item(Item::ItemType::HP_POTION);
+	playerChar->colectItem(mpPotion);
+	playerChar->colectItem(hpPotion);
+
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
 	//boss->death();
 	this->scheduleUpdate();
+
 
 	return true;
 }

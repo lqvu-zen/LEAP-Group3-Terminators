@@ -156,7 +156,7 @@ bool VillageScene::init()
 #endif
 
 	//Buton recuperate
-#if 1
+#if 0
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
 	mpButton->setScale(0.1);
 	//mpButton->setAnchorPoint(Vec2::ZERO);
