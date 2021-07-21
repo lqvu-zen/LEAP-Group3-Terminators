@@ -65,8 +65,14 @@ private:
 
 	//Unlock Skill
 	void unlockSkill(int index);
-
 	bool checkVector(vector<int>list, int num);
+
+	//Revival
+	void Revival1Func();
+	void Revival2Func();
+	int time;
+	cocos2d::Label* lblCountDown;
+	void updateCountDown(float);
 };
 
 #endif // __PLAYGAME_SCENE_H__

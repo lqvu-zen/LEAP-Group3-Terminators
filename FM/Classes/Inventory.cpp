@@ -140,3 +140,10 @@ void Inventory::updateInventory()
 void Inventory::addGold(int num) {
 	gold += num;
 }
+bool Inventory::exceptGold(int num) {
+	if (gold >= num) {
+		gold -= num;
+		return true;
+	}
+	return false;
+}

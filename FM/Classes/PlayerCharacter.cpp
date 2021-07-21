@@ -503,6 +503,9 @@ void PlayerCharacter::addGold(int num) {
 	characterInventory.addGold(num);
 }
 
+bool PlayerCharacter::exceptGold(int num) {
+	return characterInventory.exceptGold(num);
+}
 cocos2d::Sprite * PlayerCharacter::getSprite()
 {
 	return characterSprite;

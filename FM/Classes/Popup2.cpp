@@ -7,10 +7,13 @@
 //
 
 #include "Popup2.h"
+#include <Windows.h>
+#include <string.h>
 
 USING_NS_CC;
 
 using namespace ui;
+using namespace std;
 
 namespace {
     cocos2d::Size CONFIRM_DIALOGUE_SIZE_OFFSET = Size(100, 150);
@@ -459,7 +462,7 @@ namespace UICustom {
                 node->dismiss(true);
             });
 
-            auto revival2Button = MenuItemFont::create("Village revival ", [=](Ref* sender) {
+            auto revival2Button = MenuItemFont::create("Village revival", [=](Ref* sender) {
                 Revival2Func();
                 node->dismiss(true);
             });
@@ -476,6 +479,31 @@ namespace UICustom {
 
             node->initBg(Size(400, 450), "You Diead!!!");
             node->autorelease();
+            return node;
+        }
+
+        CC_SAFE_DELETE(node);
+        return nullptr;
+    }
+    
+    Popup* Popup::countdown(int time, cocos2d::Label* lbl) {
+        Popup* node = new (std::nothrow)Popup();
+        Size winSize = Director::getInstance()->getWinSize();
+        if (node && node->init())
+        {
+            std::string tmp = StringUtils::format("%i second", time);
+
+            //lbl = Label::createWithTTF(tmp, FONT::GAME_FONT, FONT::DESCRIPTION_TEXT_SIZE);
+            
+            lbl->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
+            lbl->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
+            lbl->setAlignment(cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::CENTER);
+            lbl->enableShadow(Color4B::BLACK, Size(0, -2));
+
+            node->addChild(lbl, 3);
+            node->initBg(Size(400, 450), "Respawn time ");
+            node->autorelease();
+
             return node;
         }
 

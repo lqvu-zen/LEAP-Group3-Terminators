@@ -65,6 +65,7 @@ namespace UICustom {
 		static Popup* createSelectMapInVillage(const std::function<void()>& GoToMap1Func, const std::function<void()>& GoToMap2Func);
 
         static Popup* createLoss(const std::function<void()>& Revival1Func, const std::function<void()>& Revival2Func, const std::function<void()>& ExitFunc);
+        static Popup* countdown(int time, cocos2d::Label* lbl);
 
     private:
         void initBg(const cocos2d::Size size, const std::string& title);

@@ -22,6 +22,7 @@ public:
 	void updateInventory();
 
 	void addGold(int num);
+	bool exceptGold(int num);
 private:
 	int gold;
 

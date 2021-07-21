@@ -3,6 +3,8 @@
 #include "MainMenuScene.h"
 #include "VillageScene.h"
 #include "Popup2.h"
+#include <Windows.h>
+
 USING_NS_CC;
 
 Scene* PlayGameScene::createScene()
@@ -800,9 +802,9 @@ void PlayGameScene::goToExit() {
 void PlayGameScene::playerDeadNotice()
 {
 	UICustom::Popup* popup = UICustom::Popup::createLoss([=]() {
-
+		Revival1Func();
 	}, [=]() {
-
+		Revival2Func();
 	}, [=]() {
 		goToExit();
 	});
@@ -834,4 +836,39 @@ bool PlayGameScene::checkVector(vector<int>list, int num) {
 		}
 	}
 	return false;
+}
+
+//Revival
+void PlayGameScene::Revival1Func() {
+	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Revival", "You will respawn on the spot \nYou will need to spend 5 gold", [=]() {
+		if (playerChar->exceptGold(5)) {
+			playerChar->revive();
+		}
+		else {
+			UICustom::Popup* notify = UICustom::Popup::createAsMessage("Note", "You don't have enough gold to respawn. ");
+			buttonNode->addChild(notify);
+		}
+	});
+	buttonNode->addChild(popup, 2);
+}
+void PlayGameScene::Revival2Func() {
+	time = 90;
+	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Revival", "You will return to the village and respawn.\nYou need to wait 90 second", [=]() {
+		std::string tmp = StringUtils::format("%i second", time);
+		lblCountDown = Label::createWithTTF(tmp, "fonts/Dimbo Regular.ttf", 45);
+		UICustom::Popup* countdown = UICustom::Popup::countdown(time, lblCountDown);
+		buttonNode->addChild(countdown);
+		this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateCountDown), 1);
+	});
+	buttonNode->addChild(popup, 2);
+}
+void PlayGameScene::updateCountDown(float) {
+	if (time == 0) {
+		goToVillage();
+	}
+	else {
+		time--;
+		std::string tmp = StringUtils::format("%i second", time);
+		lblCountDown->setString(tmp);
+	}
 }
