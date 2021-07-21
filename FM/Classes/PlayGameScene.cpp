@@ -167,7 +167,7 @@ bool PlayGameScene::init()
 #endif
 
 	//Lock Skill
-#if 0
+#if 1
 	MenuItemImage* lockskill_1Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
 		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
@@ -565,7 +565,7 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 		lockskill->setScale(0.3);
 		lockskill->setPosition(node->getPosition());
 		buttonNode->addChild(lockskill);
-		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);//Delay time after use an ability
 		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
 		auto seq = Sequence::create(delay, move, nullptr);
 		lockskill->runAction(seq);

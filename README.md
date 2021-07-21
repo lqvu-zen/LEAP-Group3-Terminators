@@ -35,3 +35,11 @@
 * Change controller
 * Auto attact enemies
 
+# Update Note: v.0.0.3
+##Added more features!!!
+* Bigger map with more monsters to fight
+* Added a new type of monster: medusa. Medusa is a melee character that occasionally summon a snake at the Player
+* Added fall damage when Player jump off the map
+* Added a new follow camera to follow Player when jump on high platforms.
+* Added missions to unlock Player abilities
+* Added an Player Inventory.
