@@ -448,5 +448,39 @@ namespace UICustom {
     //        m_audio->setBackgroundMusicVolume(_valueVolume);*/
     //}
 #endif
+
+    Popup* Popup::createLoss(const std::function<void()>& Revival1Func, const std::function<void()>& Revival2Func, const std::function<void()>& ExitFunc) {
+        Popup* node = new (std::nothrow)Popup();
+        Size winSize = Director::getInstance()->getWinSize();
+        if (node && node->init())
+        {
+            auto revival1Button = MenuItemFont::create("Resurrect on the spot", [=](Ref* sender) {
+                Revival1Func();
+                node->dismiss(true);
+            });
+
+            auto revival2Button = MenuItemFont::create("Village revival ", [=](Ref* sender) {
+                Revival2Func();
+                node->dismiss(true);
+            });
+
+            auto exitButton = MenuItemFont::create("Exit", [=](Ref* sender) {
+                ExitFunc();
+                node->dismiss(true);
+            });
+
+            Menu* menu = Menu::create(revival1Button, revival2Button, exitButton, NULL);
+            node->addChild(menu, 2);
+            menu->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
+            menu->alignItemsVerticallyWithPadding(FONT::LABEL_OFFSET / 2);
+
+            node->initBg(Size(400, 450), "You Diead!!!");
+            node->autorelease();
+            return node;
+        }
+
+        CC_SAFE_DELETE(node);
+        return nullptr;
+    }
 }
 

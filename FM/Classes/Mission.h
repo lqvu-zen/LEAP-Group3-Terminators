@@ -38,7 +38,7 @@ public:
 
     Data getMission() {
         if (hasMission) {
-            hasMission = false;
+            //hasMission = false;
             return mission;
         }
         else {

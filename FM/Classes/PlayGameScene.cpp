@@ -799,9 +799,12 @@ void PlayGameScene::goToExit() {
 
 void PlayGameScene::playerDeadNotice()
 {
-	
-	UICustom::Popup * popup = UICustom::Popup::createAsConfirmDialogue("YOU DIED", "Return to the village? ", [=]() {
-		PlayGameScene::goToVillage();
+	UICustom::Popup* popup = UICustom::Popup::createLoss([=]() {
+
+	}, [=]() {
+
+	}, [=]() {
+		goToExit();
 	});
 	buttonNode->addChild(popup, 2);
 }
