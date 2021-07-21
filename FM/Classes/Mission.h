@@ -38,8 +38,12 @@ public:
 
     Data getMission() {
         if (hasMission) {
-            //hasMission = false;
-            return mission;
+            if (mission.state == 1)
+                return mission;
+            else {
+                hasMission = false;
+                return mission;
+            }          
         }
         else {
             int i = 0;
