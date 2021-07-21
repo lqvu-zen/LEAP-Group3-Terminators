@@ -630,7 +630,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 
 			GameManager::getInstace()->colect(a->getNode()->getTag());
 
-			GameManager::getInstace()->getMission()->updateMission(3);
+			GameManager::getInstace()->getMission()->updateMission(2);
 		}
 
 		// check player hit enemies

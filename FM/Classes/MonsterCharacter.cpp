@@ -198,9 +198,15 @@ void MonsterCharacter::takeHit(float dame) {
 
 	if (characterStats.HP <= 0.0f) {
 		death();
-		if (species == Species::RANGED)//Check if kill the range monster
+		if (type == 1)//Check if kill the range monster
 		{
 			GameManager::getInstace()->getMission()->updateMission(1);
+		}
+		else if (type == 2) {
+			GameManager::getInstace()->getMission()->updateMission(3);
+		}
+		else if (type == 3) {
+			GameManager::getInstace()->getMission()->updateMission(4);
 		}
 		
 	}

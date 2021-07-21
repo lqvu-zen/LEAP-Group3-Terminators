@@ -10,8 +10,8 @@
     {
       "ID": 1,
       "IDMISSION": 2,
-      "NAME": "500 Gold",
-      "NUMBER": 500,
+      "NAME": "5 Gold",
+      "NUMBER": 5,
       "TYPE": "Gold"
     },
     {
@@ -23,9 +23,16 @@
     },
     {
       "ID": 3,
-      "IDMISSION": 3,
-      "NAME": "500 Gold",
-      "NUMBER": 500,
+      "IDMISSION": 4,
+      "NAME": "Unclock skill 3",
+      "NUMBER": 3,
+      "TYPE": "Skill"
+    },
+    {
+      "ID": 4,
+      "IDMISSION": 5,
+      "NAME": "10 Gold",
+      "NUMBER": 10,
       "TYPE": "Gold"
     }
   ]
