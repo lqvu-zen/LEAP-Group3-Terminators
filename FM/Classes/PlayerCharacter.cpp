@@ -87,7 +87,7 @@ void PlayerCharacter::init(int characterType)
 	//set skill
 	castingSkill = false;
 	attacking = false;
-	characterSkill = new Skill();
+	characterSkill = new Skill(characterValue["SKILL_TYPE"].GetInt());
 
 	characterSkillCountdown[Skill::SkillType::Normal] = 0.0f;
 	characterSkillCountdown[Skill::SkillType::Special] = 0.0f;

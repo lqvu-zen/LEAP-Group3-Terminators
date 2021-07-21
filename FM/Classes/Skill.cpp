@@ -1,29 +1,139 @@
 #include "Skill.h"
 
-Skill::Skill()
+Skill::Skill(int type)
 {
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Skill/Skill-Water.plist", "sprites/Skill/Skill-Water.png");
+	//load data
+	getValue(type);
 
-	//skillSprite = cocos2d::Sprite::create();
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(
+		skillValue["SPRITES"]["PLIST"].GetString(), 
+		skillValue["SPRITES"]["PNG"].GetString()
+	);
 
-	skillSize = cocos2d::Size(64.0f, 80.0f);
-
-	skillStats[Skill::SkillType::Normal].SetSkillStats(10.0f, 10.0f, 2.0f);
-	skillStats[Skill::SkillType::Special].SetSkillStats(15.0f, 15.0f, 3.0f);
-	skillStats[Skill::SkillType::Ultimate].SetSkillStats(40.0f, 20.0f, 5.0f);
+	skillStats[Skill::SkillType::Normal].SetSkillStats(
+		skillValue["NORMAL"]["STATS"]["ATK"].GetFloat(), 
+		skillValue["NORMAL"]["STATS"]["MP"].GetFloat(),
+		skillValue["NORMAL"]["STATS"]["COUNT_DOWN"].GetFloat()
+	);
+	skillStats[Skill::SkillType::Special].SetSkillStats(
+		skillValue["SPECIAL"]["STATS"]["ATK"].GetFloat(),
+		skillValue["SPECIAL"]["STATS"]["MP"].GetFloat(),
+		skillValue["SPECIAL"]["STATS"]["COUNT_DOWN"].GetFloat()
+	);
+	skillStats[Skill::SkillType::Ultimate].SetSkillStats(
+		skillValue["ULTIMATE"]["STATS"]["ATK"].GetFloat(),
+		skillValue["ULTIMATE"]["STATS"]["MP"].GetFloat(),
+		skillValue["ULTIMATE"]["STATS"]["COUNT_DOWN"].GetFloat()
+	);
 }
 
 void Skill::CastSkill(Skill::SkillType skillType, Direction direction)
 {
-	/*if (direction == Direction::RIGHT) {
-		skillSprite->setPositionX(characterSize.width);
+	const int maxWord = 50;
+
+	bool movement = false;
+
+	int numberSprite;
+	char nameSprite[maxWord] = { 0 };
+	char nameElement[maxWord] = { 0 };
+	char nameType[maxWord] = { 0 };
+
+	sprintf(nameElement, skillValue["NAME"].GetString());
+	sprintf(nameType, "Skill");
+
+	switch (skillType)
+	{
+	case Skill::SkillType::Normal:
+		numberSprite = skillValue["SPRITES"]["COUNT_NORMAL"].GetInt();
+		sprintf(nameSprite, "%s%d", nameElement, 1);
+
+		skillSize = cocos2d::Size(
+			skillValue["NORMAL"]["SIZE_X"].GetFloat(),
+			skillValue["NORMAL"]["SIZE_Y"].GetFloat()
+		);
+
+		movement = skillValue["NORMAL"]["MOVEMENT"].GetInt();
+		break;
+	case Skill::SkillType::Special:
+		numberSprite = skillValue["SPRITES"]["COUNT_SPECIAL"].GetInt();
+		sprintf(nameSprite, "%s%d", nameElement, 2);
+
+		skillSize = cocos2d::Size(
+			skillValue["SPECIAL"]["SIZE_X"].GetFloat(),
+			skillValue["SPECIAL"]["SIZE_Y"].GetFloat()
+		);
+
+		movement = skillValue["SPECIAL"]["MOVEMENT"].GetInt();
+		break;
+	case Skill::SkillType::Ultimate:
+		numberSprite = skillValue["SPRITES"]["COUNT_ULTIMATE"].GetInt();
+		sprintf(nameSprite, "%s%d", nameElement, 3);
+
+		skillSize = cocos2d::Size(
+			skillValue["ULTIMATE"]["SIZE_X"].GetFloat(),
+			skillValue["ULTIMATE"]["SIZE_Y"].GetFloat()
+		);
+
+		movement = skillValue["ULTIMATE"]["MOVEMENT"].GetInt();
+		break;
+	default:
+		break;
+	}
+
+	Vector<SpriteFrame*> animFrames;
+
+	char spriteFrameByName[maxWord] = { 0 };
+
+	//set physic
+	sprintf(spriteFrameByName, "%s-%s-%d.png", nameType, nameSprite, 0);
+
+	skillAnimation = cocos2d::Sprite::createWithSpriteFrameName(spriteFrameByName);
+
+	skillPhysicsBody = PhysicsBody::createBox(skillSize);
+
+	skillPhysicsBody->setDynamic(false);
+	skillPhysicsBody->setRotationEnable(false);
+
+	skillPhysicsBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
+	skillPhysicsBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
+	skillPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
+
+	if (movement == true) {
+		skillPhysicsBody->setVelocity(
+			Vec2((direction == Direction::RIGHT ? PLAYER_MAX_VELOCITY : -PLAYER_MAX_VELOCITY), 0.0f)
+		);
+	}
+
+	for (int index = 0; index < numberSprite; index++)
+	{
+		sprintf(spriteFrameByName, "%s-%s-%d.png", nameType, nameSprite, index);
+
+		auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameByName);
+		animFrames.pushBack(frame);
+	}
+
+	Animation* animation = Animation::createWithSpriteFrames(animFrames, ANIMATION_DELAY);
+	Animate* animate = Animate::create(animation);
+
+
+	skillAnimation->stopAllActions();
+
+	auto callbackAction = CallFunc::create(
+		CC_CALLBACK_0(Skill::cancelAnimation, this, skillSprite)
+	);
+
+	skillAnimation->runAction(Sequence::create(animate, callbackAction, nullptr));
+
+	if (direction == Direction::LEFT) {
+		skillAnimation->setFlippedX(true);
 	}
 	else {
-		skillSprite->setPositionX(- characterSize.width);
-	}*/
-	
+		skillAnimation->setFlippedX(false);
+	}
 
-	createAnimation(skillType, direction);
+	skillSprite->setPhysicsBody(skillPhysicsBody);
+
+	skillSprite->addChild(skillAnimation);
 }
 
 Stats Skill::SkillCost(Skill::SkillType skillType)
@@ -37,98 +147,24 @@ cocos2d::Sprite * Skill::GetSprite()
 	return skillSprite;
 }
 
-void Skill::SetPosition(cocos2d::Vec2 position)
+inline void Skill::getValue(int type)
 {
-	characterSize = position;
-}
+	auto buf = FileUtils::getInstance()->getStringFromFile("res/skill.json");
 
-void Skill::createAnimation(SkillType actionState, Direction actionDirection)
-{
-	if (true) {
-
-		const int maxWord = 50;
-
-		int numberSprite;
-		char nameSprite[maxWord] = { 0 };
-		char nameElement[maxWord] = { 0 };
-		char nameType[maxWord] = { 0 };
-
-		sprintf(nameElement, "Water");
-		sprintf(nameType, "Skill");
-
-		switch (actionState)
-		{
-		case Skill::SkillType::Normal:
-			numberSprite = 10;
-			sprintf(nameSprite, "%s%d", nameElement, 1);
-			break;
-		case Skill::SkillType::Special:
-			numberSprite = 10;
-			sprintf(nameSprite, "%s%d", nameElement, 2);
-			break;
-		case Skill::SkillType::Ultimate:
-			numberSprite = 19;
-			sprintf(nameSprite, "%s%d", nameElement, 3);
-			break;
-		default:
-			break;
-		}
-			
-		Vector<SpriteFrame*> animFrames;
-
-		char spriteFrameByName[maxWord] = { 0 };
-
-		//set physic
-		sprintf(spriteFrameByName, "%s-%s-%d.png", nameType, nameSprite, 0);
-
-		skillAnimation = cocos2d::Sprite::createWithSpriteFrameName(spriteFrameByName);
-
-		skillPhysicsBody = PhysicsBody::createBox(skillSize);
-
-		skillPhysicsBody->setDynamic(false);
-		skillPhysicsBody->setRotationEnable(false);
-
-		skillPhysicsBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
-		skillPhysicsBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
-		skillPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
-
-		if (actionState == Skill::SkillType::Ultimate) {
-			skillPhysicsBody->setVelocity(
-				Vec2((actionDirection == Direction::RIGHT ? PLAYER_MAX_VELOCITY : -PLAYER_MAX_VELOCITY), 0.0f)
-			);
-		}
-
-		for (int index = 0; index < numberSprite; index++)
-		{
-			sprintf(spriteFrameByName, "%s-%s-%d.png", nameType, nameSprite, index);
-
-			auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameByName);
-			animFrames.pushBack(frame);
-		}
-
-		Animation* animation = Animation::createWithSpriteFrames(animFrames, ANIMATION_DELAY);
-		Animate* animate = Animate::create(animation);
-
-		
-		skillAnimation->stopAllActions();
-
-		auto callbackAction = CallFunc::create(
-			CC_CALLBACK_0(Skill::cancelAnimation, this, skillSprite)
-		);
-
-		skillAnimation->runAction(Sequence::create(animate, callbackAction, nullptr));
-	}
-
-	if (actionDirection == Direction::LEFT) {
-		skillAnimation->setFlippedX(true);
+	skillDocument.Parse<0>(buf.c_str());
+	if (skillDocument.HasParseError()) {
+		CCLOG("ERROR: Skill document not found!");
 	}
 	else {
-		skillAnimation->setFlippedX(false);
+		if (skillDocument.HasMember("SKILL")) {
+			rapidjson::Value& playerCharacterSkill = skillDocument["SKILL"];
+			for (rapidjson::SizeType i = 0; i < playerCharacterSkill.Size(); i++) {
+				if (playerCharacterSkill[i]["TYPE"].GetInt() == type) {
+					skillValue = playerCharacterSkill[i];
+				}
+			}
+		}
 	}
-
-	skillSprite->setPhysicsBody(skillPhysicsBody);
-
-	skillSprite->addChild(skillAnimation);
 }
 
 void Skill::cancelAnimation(cocos2d::Sprite* ref)

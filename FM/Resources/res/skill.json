@@ -1,6 +1,55 @@
 {
 	"SKILL":
 	[
-		
+		{
+			"TYPE": 0,
+			"NAME": "Water",
+			"SPRITES":
+			{
+				"PLIST": "sprites/Skill/Skill-Water.plist",
+				"PNG": "sprites/Skill/Skill-Water.png",
+				"SCALE": 1.5,
+				"COUNT_NORMAL": 10,
+				"COUNT_SPECIAL": 10,
+				"COUNT_ULTIMATE": 19
+			},
+			"NORMAL": 
+			{
+				"SIZE_X": 64.0,
+				"SIZE_Y": 80.0,
+				"STATS": 
+				{
+					"MP": 10.0,
+					"ATK": 10.0,
+					"COUNT_DOWN": 2.0
+				},
+				"MOVEMENT": 0
+			},
+			"SPECIAL": 
+			{
+				"SIZE_X": 64.0,
+				"SIZE_Y": 80.0,
+				"STATS": 
+				{
+					"MP": 15.0,
+					"ATK": 15.0,
+					"COUNT_DOWN": 3.0
+				},
+				"MOVEMENT": 0
+			},
+			"ULTIMATE": 
+			{
+				"SIZE_X": 64.0,
+				"SIZE_Y": 80.0,
+				"STATS": 
+				{
+					"MP": 30.0,
+					"ATK": 50.0,
+					"COUNT_DOWN": 5.0
+				},
+				"MOVEMENT": 1
+			}
+			
+		}
 	]
 }

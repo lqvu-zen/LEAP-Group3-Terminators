@@ -11,7 +11,7 @@
 				"ATK": 20.0,
 				"DEF": 10.0
 			},
-			"SKILL": 0,
+			"SKILL_TYPE": 0,
 			"SPRITES":
 			{
 				"PLIST": "sprites/Warrior/Warrior.plist",
@@ -28,6 +28,10 @@
 				"COUNT_ATTACK3": 8,
 				"COUNT_TAKEHIT": 3,
 				"COUNT_DEATH": 7
+			},
+			"NORMAL_ATTACK":
+			{
+				
 			}
 		}
 	]
