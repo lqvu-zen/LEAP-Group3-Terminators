@@ -65,17 +65,6 @@ namespace UICustom {
 		static Popup* createSelectMapInVillage(const std::function<void()>& GoToMap1Func, const std::function<void()>& GoToMap2Func);
     private:
         void initBg(const cocos2d::Size size, const std::string& title);
-
-        
-        //Edit
-        //CheckBox* m_checkboxMuteAllSound;
-        //Slider* m_sliderOptionMusic;
-
-        //Edit
-
-        //void sliderEvent(Ref* pSender, Slider::EventType type);
-        //void checkBoxSelectedEvent(Ref* pSender, CheckBox::EventType type);
-        //void changeVolumeOfAudio(int _typeAudio, float _valueVolume);
     };
 
 }

@@ -12,7 +12,7 @@
     {
       "ID": 1,
       "REQUEST": "Hey Hero\n Can you help me kill 2 toads.",
-      "NAME": "Defeat 2 toads to become chimpanzees.",
+      "NAME": "Defeat 2 toads.",
       "BEGIN": 0,
       "TYPE": 1,
       "END": 2,
@@ -23,34 +23,52 @@
       "REQUEST": "Hey Hero\n Can you help me collect 3 red diamonds.",
       "NAME": "Collect 3 red diamonds.",
       "BEGIN": 0,
-      "TYPE": 3,
+      "TYPE": 2,
       "END": 3,
       "STATE": 0
     },
     {
       "ID": 3,
-      "REQUEST": "Hey Hero\n Can you help me slay the demon of eyes.",
-      "NAME": "Slay the demon of eyes.",
+      "REQUEST": "Hey Hero\n Can you help me kill 2 Medusa.",
+      "NAME": "Defeat 2 Medusa.",
       "BEGIN": 0,
-      "TYPE": 2,
-      "END": 1,
+      "TYPE": 3,
+      "END": 2,
       "STATE": 0
     },
     {
       "ID": 4,
+      "REQUEST": "Hey Hero\n Can you help me kill 2 Skeleton.",
+      "NAME": "Defeat 2 Skeleton.",
+      "BEGIN": 0,
+      "TYPE": 4,
+      "END": 2,
+      "STATE": 0
+    },
+    {
+      "ID": 5,
+      "REQUEST": "Hey Hero\n You have completed the training mission.\nCan you help me slay the demon of eyes.",
+      "NAME": "Slay the demon of eyes.",
+      "BEGIN": 0,
+      "TYPE": 5,
+      "END": 1,
+      "STATE": 0
+    },
+    {
+      "ID": 6,
       "REQUEST": "Hey Hero\n Thank you for helping us.",
       "NAME": "You have completed the mission.\n Return to the village to receive the next mission.",
       "BEGIN": 0,
-      "TYPE": 0,
+      "TYPE": 6,
       "END": 0,
       "STATE": 5
     },
     {
-      "ID": 5,
+      "ID": 7,
       "REQUEST": "Hey Hero\n I am the village head.",
       "NAME": "Congratulation\n You have completed all the missions.",
       "BEGIN": 0,
-      "TYPE": 0,
+      "TYPE": 7,
       "END": 0,
       "STATE": 4
     }

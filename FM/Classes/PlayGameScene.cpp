@@ -330,12 +330,14 @@ bool PlayGameScene::init()
 	//If true -> add enemey at the EnemySpawn.
 	for (auto SpawnPoint : objectGroup->getObjects())
 	{
-		//Spawn enemy. Enemy1 for range monster and Enemy2 for melee monster
-		if (SpawnPoint.asValueMap()["Enemy1"].asInt() == 1)
+		//Spawn enemy. Based on the monsterType defined in the tilemap. 
+		if (SpawnPoint.asValueMap()["name"].asString() == "Enemy")
 		{
+			CCLOG("Enemy here");
 			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
 			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
-			auto monster = new MonsterCharacter(gameNode, 1, 1);
+			int monsterType = SpawnPoint.asValueMap()["Enemy"].asInt();
+			auto monster = new MonsterCharacter(gameNode, monsterType, 1);
 			monster->setPosition(Vec2(eneX, eneY));
 			//Using a list to  store the monsters
 			monsters.push_back(monster);
@@ -344,18 +346,6 @@ bool PlayGameScene::init()
 			
 		}
 
-		if (SpawnPoint.asValueMap()["Enemy2"].asInt() == 1)
-		{
-			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
-			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
-			auto monster = new MonsterCharacter(gameNode, 2, 1);
-			monster->setPosition(Vec2(eneX, eneY));
-			//Using a list to  store the monsters
-			monsters.push_back(monster);
-			GameManager::getInstace()->AddCharacter(monsters.back());
-			gameNode->addChild(monsters.back()->getSprite());
-
-		}
 
 		//Spawn gem
 		if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
@@ -639,7 +629,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 
 			GameManager::getInstace()->colect(a->getNode()->getTag());
 
-			GameManager::getInstace()->getMission()->updateMission(3);
+			GameManager::getInstace()->getMission()->updateMission(2);
 		}
 
 		// check player hit enemies

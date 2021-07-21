@@ -412,6 +412,8 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 			Mission::Data yourMission = GameManager::getInstace()->getMission()->getMission();
 			if (yourMission.state == 4) {
 				request = yourMission.request;
+				UICustom::Popup* popup = UICustom::Popup::createAsMessage("Old man's quest", request);
+				buttonNode->addChild(popup);
 			}
 			else {
 				vector<Mission::Reward> rewards = GameManager::getInstace()->getMission()->getReward();

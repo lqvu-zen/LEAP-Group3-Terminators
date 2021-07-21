@@ -34,44 +34,44 @@
     <property name="Boss" type="int" value="1"/>
    </properties>
   </object>
-  <object id="23" name="Enemy2" x="1657.97" y="433.182" width="30.7332" height="29.6356">
+  <object id="23" name="Enemy" x="1657.97" y="433.182" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="3"/>
    </properties>
   </object>
-  <object id="5" name="Enemy1" x="628.23" y="307.855" width="30.7332" height="29.6356">
+  <object id="5" name="Enemy" x="628.23" y="307.855" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy1" type="int" value="1"/>
+    <property name="Enemy" type="int" value="1"/>
    </properties>
   </object>
-  <object id="25" name="Enemy2" x="1654.97" y="352.349" width="30.7332" height="29.6356">
+  <object id="25" name="Enemy" x="1654.97" y="352.349" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="3"/>
    </properties>
   </object>
-  <object id="26" name="Enemy2" x="1793.13" y="351.849" width="30.7332" height="29.6356">
+  <object id="26" name="Enemy" x="1793.13" y="351.849" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="3"/>
    </properties>
   </object>
-  <object id="27" name="Enemy2" x="1909.47" y="430.182" width="30.7332" height="29.6356">
+  <object id="27" name="Enemy" x="1909.47" y="430.182" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="3"/>
    </properties>
   </object>
-  <object id="28" name="Enemy2" x="471.3" y="448.849" width="30.7332" height="29.6356">
+  <object id="28" name="Enemy" x="471.3" y="448.849" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="2"/>
    </properties>
   </object>
-  <object id="29" name="Enemy1" x="2085.8" y="430.849" width="30.7332" height="29.6356">
+  <object id="29" name="Enemy" x="2085.8" y="430.849" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy1" type="int" value="1"/>
+    <property name="Enemy" type="int" value="1"/>
    </properties>
   </object>
-  <object id="30" name="Enemy1" x="804.8" y="436.682" width="30.7332" height="29.6356">
+  <object id="30" name="Enemy" x="804.8" y="436.682" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy1" type="int" value="1"/>
+    <property name="Enemy" type="int" value="1"/>
    </properties>
   </object>
   <object id="13" name="Trigger1" x="2634.3" y="408.515" width="30.7332" height="29.6356">
@@ -99,9 +99,9 @@
     <property name="Gem" type="int" value="1"/>
    </properties>
   </object>
-  <object id="31" name="Enemy2" x="1150" y="400.682" width="30.7332" height="29.6356">
+  <object id="31" name="Enemy" x="1150" y="400.682" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="2"/>
    </properties>
   </object>
  </objectgroup>
