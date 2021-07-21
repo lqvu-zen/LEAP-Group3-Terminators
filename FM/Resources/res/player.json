@@ -1,0 +1,34 @@
+{
+	"PLAYER":
+	[
+		{
+			"TYPE": 0,
+			"NAME": "Warrior",
+			"STATS": 
+			{
+				"HP": 100.0,
+				"MP": 100.0,
+				"ATK": 20.0,
+				"DEF": 10.0
+			},
+			"SKILL": 0,
+			"SPRITES":
+			{
+				"PLIST": "sprites/Warrior/Warrior.plist",
+				"PNG": "sprites/Warrior/Warrior.png",
+				"SIZE_X": 25.0,
+				"SIZE_Y": 42.0,
+				"SCALE": 1.5,
+				"COUNT_IDLE": 10,
+				"COUNT_JUMP": 3,
+				"COUNT_FALL": 3,
+				"COUNT_RUN": 8,
+				"COUNT_ATTACK1": 7,
+				"COUNT_ATTACK2": 7,
+				"COUNT_ATTACK3": 8,
+				"COUNT_TAKEHIT": 3,
+				"COUNT_DEATH": 7
+			}
+		}
+	]
+}
