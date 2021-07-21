@@ -198,7 +198,6 @@ bool PlayGameScene::init()
 
 #endif
 
-	//Buton recuperate
 #if 1
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
 	mpButton->setScale(0.1);
@@ -210,10 +209,11 @@ bool PlayGameScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			//Your function
+			playerChar->useItem(Item::ItemType::MP_POTION);
 			break;
 		}
 	});
+	mpButton->setOpacity(200);
 	buttonNode->addChild(mpButton, 1);
 
 	auto hpButton = ui::Button::create("sprites/hpButton.png");
@@ -225,10 +225,11 @@ bool PlayGameScene::init()
 		case ui::Widget::TouchEventType::BEGAN:
 			break;
 		case ui::Widget::TouchEventType::ENDED:
-			//Your function
+			playerChar->useItem(Item::ItemType::HP_POTION);
 			break;
 		}
 	});
+	hpButton->setOpacity(200);
 	buttonNode->addChild(hpButton, 1);
 
 #endif
@@ -237,7 +238,8 @@ bool PlayGameScene::init()
 
 	//map setup + add map
 	//scale map with SCALE_FACTOR
-	map = TMXTiledMap::create("map/playMap.tmx");
+	std::string mapName = GameManager::getInstace()->getMapName();
+	map = TMXTiledMap::create(mapName);
 	map->setScale(SCALE_FACTOR );
 	Hidden = map->getLayer("Hidden");
 	//remove the Hidden Layer and then add it again at line 356
@@ -294,7 +296,7 @@ bool PlayGameScene::init()
 	//Change to spawn Player Character always in the middle of the map
 	//Add character here!!!
 	playerChar = GameManager::getInstace()->GetPlayerCharacter();
-	playerChar->getSprite()->setScale(1.5);
+	//playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
 	//cameraTarget for the followCamera to follow the player.
@@ -330,43 +332,47 @@ bool PlayGameScene::init()
 	//If true -> add enemey at the EnemySpawn.
 	for (auto SpawnPoint : objectGroup->getObjects())
 	{
-		//Spawn enemy. Enemy1 for range monster and Enemy2 for melee monster
-		if (SpawnPoint.asValueMap()["Enemy1"].asInt() == 1)
+		//Spawn enemy. Based on the monsterType defined in the tilemap. 
+		if (SpawnPoint.asValueMap()["name"].asString() == "Enemy")
 		{
 			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
 			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
-			auto monster = new MonsterCharacter(gameNode, 1, 1);
+			int monsterType = SpawnPoint.asValueMap()["Enemy"].asInt();
+			auto monster = new MonsterCharacter(gameNode, monsterType, 1);
 			monster->setPosition(Vec2(eneX, eneY));
 			//Using a list to  store the monsters
 			monsters.push_back(monster);
 			GameManager::getInstace()->AddCharacter(monsters.back());
-			gameNode->addChild(monsters.back()->getSprite());
-			
+			gameNode->addChild(monsters.back()->getSprite());	
 		}
 
-		if (SpawnPoint.asValueMap()["Enemy2"].asInt() == 1)
+
+		//Spawn item. Based on the itemType defined in the tilemap. 1: gem; 2: gold; 3: Hp potion; 4: Mp potion
+		if (SpawnPoint.asValueMap()["name"].asString() == "ItemSpawn")
 		{
-			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
-			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
-			auto monster = new MonsterCharacter(gameNode, 3, 1);
-			monster->setPosition(Vec2(eneX, eneY));
-			//Using a list to  store the monsters
-			monsters.push_back(monster);
-			GameManager::getInstace()->AddCharacter(monsters.back());
-			gameNode->addChild(monsters.back()->getSprite());
+			auto itemX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
+			auto itemY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 
-		}
+			int itemType = SpawnPoint.asValueMap()["ItemType"].asInt();
+			switch (itemType)
+			{
+			case 1:
+				item = new Item(Item::ItemType::GEM);
+				break;
+			case 2:
+				item = new Item(Item::ItemType::GOLD);
+				break;
+			case 3:
+				item = new Item(Item::ItemType::HP_POTION);
+				break;
+			case 4:
+				item = new Item(Item::ItemType::MP_POTION);
+				break;
+			}
+			item->getSprite()->setPosition(itemX, itemY);
+			gameNode->addChild(item->getSprite(), 1);
 
-		//Spawn gem
-		if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
-		{
-			auto gemX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
-			auto gemY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
-			auto gem = new Item(Item::ItemType::GEM);
-			gem->getSprite()->setPosition(gemX, gemY);
-			gameNode->addChild(gem->getSprite(), 1);
-
-			GameManager::getInstace()->AddItem(gem);
+			GameManager::getInstace()->AddItem(item);
 		}
 
 		//Spawn boss
@@ -443,11 +449,18 @@ bool PlayGameScene::init()
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 1);
 
+	//test area
+	auto mpPotion = new Item(Item::ItemType::MP_POTION);
+	auto hpPotion = new Item(Item::ItemType::HP_POTION);
+	playerChar->colectItem(mpPotion);
+	playerChar->colectItem(hpPotion);
+
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
 	//boss->death();
 	this->scheduleUpdate();
+
 
 	return true;
 }
@@ -624,7 +637,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
 	{
 		
-		if (a->getCategoryBitmask() == ITEM_CATEGORY_BITMASK)
+		if (a->getCategoryBitmask() == ITEM_CATEGORY_BITMASK && b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK)
 		{
 			CCLOG("Collected item");
 			a->getNode()->retain();
@@ -781,6 +794,7 @@ void PlayGameScene::goToMission() {
 	buttonNode->addChild(popup);
 }
 void PlayGameScene::goToVillage() {
+	GameManager::getInstace()->setMapLevel(0);
 	playerChar->revive();
 	auto scene = VillageScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));

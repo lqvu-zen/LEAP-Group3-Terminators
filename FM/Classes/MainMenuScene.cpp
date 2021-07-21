@@ -78,6 +78,7 @@ void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
 }
 
 void MainMenuScene::goToNewGame(float dt) {
+   GameManager::getInstace()->setMapLevel(0);
    auto scene = VillageScene::createScene();
    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }

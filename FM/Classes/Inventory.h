@@ -17,6 +17,8 @@ public:
 
 	void addItem(Item* _item);
 
+	Item* getItem(Item::ItemType itemType);
+
 	cocos2d::Sprite* GetSprite();
 
 	void updateInventory();

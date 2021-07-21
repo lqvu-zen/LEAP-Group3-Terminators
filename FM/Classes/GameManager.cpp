@@ -14,6 +14,7 @@ void GameManager::init()
 {
 	//load from here, when saving
 	playerCharacter = nullptr;
+	playerCharacterType = 0;
 
 	characterMap.clear();
 	countCharacter = 0;
@@ -25,12 +26,12 @@ void GameManager::init()
 PlayerCharacter * GameManager::GetPlayerCharacter(bool withInit)
 {
 	if (playerCharacter == nullptr) {
-		playerCharacter = new PlayerCharacter();
+		playerCharacter = new PlayerCharacter(playerCharacterType);
 
 		this->AddCharacter(playerCharacter);
 	}
 	else if (withInit) {
-		playerCharacter->init();
+		playerCharacter->init(playerCharacterType);
 	}
 
 	return playerCharacter;
@@ -81,10 +82,11 @@ void GameManager::AddReward(cocos2d::Vec2 position, int type)
 	default:
 		auto gold = new Item(Item::ItemType::GOLD);
 		
-		gold->getSprite()->setPosition(position);
-		playerCharacter->getSprite()->getParent()->addChild(gold->getSprite());
+		//gold->getSprite()->setPosition(position);
+		//playerCharacter->getSprite()->getParent()->addChild(gold->getSprite());
 
-		GameManager::getInstace()->AddItem(gold);
+		//GameManager::getInstace()->AddItem(gold);
+		playerCharacter->colectItem(gold);
 		break;
 	}
 }
@@ -114,4 +116,39 @@ GameManager * GameManager::create()
 		gameManager = 0;
 	}
 	return gameManager;
+}
+
+std::string GameManager::getMapName()
+{
+	//return the mapName based on the current map level. Use GameManager::setMapLevel(int level) to set the level.
+	std::string mapPath = "";
+	//load map path name from the json file.
+	std::string str = FileUtils::getInstance()->getStringFromFile("res/map.json");
+	rapidjson::Document doc;
+	doc.Parse<0>(str.c_str());
+	if (doc.HasParseError())
+	{
+		CCLOG("Reading JSON error");
+	}
+	else
+	{
+		if (doc.HasMember("MAP"))
+		{
+			rapidjson::Value& map = doc["MAP"];
+			for (rapidjson::SizeType i = 0; i < map.Size(); i++)
+			{
+				if (map[i]["ID"].GetInt() == mapLevel)
+				{
+					mapPath = map[i]["PATH"].GetString();
+				}
+			}
+		}
+	}
+	return mapPath;
+}
+
+void GameManager::setMapLevel(int level)
+{
+	//Set the map level. 0: village map, 1: playMap 1, 2: playMap 2, etc...
+	mapLevel = level;
 }

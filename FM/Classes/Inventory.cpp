@@ -30,6 +30,16 @@ void Inventory::addItem(Item * _item)
 	itemMap[_item->getType()].push_back(_item);
 }
 
+Item * Inventory::getItem(Item::ItemType itemType)
+{
+	Item* item = nullptr;
+	if (itemMap[itemType].size() > 0) {
+		item = itemMap[itemType].back();
+		itemMap[itemType].pop_back();
+	}
+	return item;
+}
+
 cocos2d::Sprite * Inventory::GetSprite()
 {
 	if (inventorySprite == nullptr) {

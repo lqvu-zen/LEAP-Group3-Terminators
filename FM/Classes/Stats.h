@@ -27,11 +27,14 @@ public:
 
 	void SetStats(float hp = 10.0f, float mp = 0.0f, float atk = 0.0f, float def = 0.0f);
 
-	void SetItemStats(float hp = 10.0f, float mp = 0.0f, float atk = 0.0f, float def = 0.0f);
+	void SetCItemStats(float _hp = 0.0f, float _mp = 0.0f, float _atk = 0.0f, float _def = 0.0f);
+	void SetNCItemStats(float _hp = 0.0f, float _mp = 0.0f, float _atk = 0.0f, float _def = 0.0f, int _jump = 0);
 
 	void SetSkillStats(float _ATK, float _MP, float _countdown);
 
 	void ResetCharacterStats();
+
+	void BuffStats(Stats _stats);
 
 	cocos2d::Sprite* GetSprite();
 	cocos2d::Size GetSpriteSize();

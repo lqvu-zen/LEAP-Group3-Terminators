@@ -477,7 +477,7 @@ namespace UICustom {
             menu->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
             menu->alignItemsVerticallyWithPadding(FONT::LABEL_OFFSET / 2);
 
-            node->initBg(Size(400, 450), "You Diead!!!");
+            node->initBg(Size(400, 450), "You Died!!!");
             node->autorelease();
             return node;
         }

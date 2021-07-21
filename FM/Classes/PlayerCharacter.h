@@ -2,6 +2,9 @@
 #define __PLAYERCHARACTER_H__
 
 #include "cocos2d.h"
+#include "json/document.h"
+#include "json//rapidjson.h"
+
 #include "Definitions.h"
 #include "Stats.h"
 #include "Skill.h"
@@ -12,17 +15,16 @@ class PlayerCharacter : public Character
 {
 public:
 	enum class State {
-		IDLE, JUMPING, FALLING, RUNING, ATTACK1, ATTACK2, ATTACK3, DEATH, TAKE_HIT
+		IDLE, JUMPING, FALLING, RUNING, ATTACK1, ATTACK2, ATTACK3, TAKE_HIT, DEATH
 	};
 
 	State characterState;
 	State characterStateOnce;
 	Direction characterDirection;
 
-	PlayerCharacter();
-	PlayerCharacter(cocos2d::Vec2 position);
+	PlayerCharacter(int characterType = 0);
 
-	void init();
+	void init(int characterType = 0);
 
 	void setPosition(cocos2d::Vec2 position);
 
@@ -53,6 +55,8 @@ public:
 	void addGold(int num);
 	bool exceptGold(int num);
 
+	void useItem(Item::ItemType itemType);
+
 	cocos2d::Sprite* getSprite();
 	Stats getStats();
 	Inventory getInventory();
@@ -61,6 +65,11 @@ public:
 	cocos2d::Vec2 getVolocity();
 	cocos2d::Vec2 getRealtimeVolocity();
 private:
+	//document
+	rapidjson::Document characterDocument;
+	rapidjson::Value characterValue;
+	inline void getValue(int characterType = 0);
+
 	//character body
 	cocos2d::Sprite* characterSprite;
 	cocos2d::Sprite* characterSpriteAnimation;
@@ -89,6 +98,7 @@ private:
 	bool falling;
 	bool grounded;
 	bool jumping;
+	bool takingHit;
 	bool died;
 	int attackMode;
 

@@ -22,6 +22,7 @@ public:
 	virtual bool init();
 	bool isPopUpDisplay = false;
 	bool standAlone = true;
+	cocos2d::Label* missionLabel;
 	CREATE_FUNC(VillageScene);
 
 	cocos2d::MenuItemImage* interactiveItem;
@@ -32,6 +33,7 @@ private:
 	Size visibleSize;
 	Vec2 origin;
 	PlayerCharacter* playerChar;
+	Sprite* playerStatsSprite;
 	NPC* npc;
 	Portal* portal;
 	std::vector<EventKeyboard::KeyCode> heldKeys;
@@ -48,7 +50,7 @@ private:
 	void goToMainMenu();
 	void goToExit();
 	void goToMap1();
-
+	void goToMap2();
 	void onContactSeperate(cocos2d::PhysicsContact &contact);
 
 	//UnlockSkill
