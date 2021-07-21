@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="200" height="36" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="32">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="200" height="36" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="39">
  <tileset firstgid="1" source="PlayTileSet1.tsx"/>
  <tileset firstgid="325" source="BackgroundTileSet.tsx"/>
  <tileset firstgid="1166" source="BackgroundTileSetMountain.tsx"/>
@@ -34,44 +34,44 @@
     <property name="Boss" type="int" value="1"/>
    </properties>
   </object>
-  <object id="23" name="Enemy2" x="1657.97" y="433.182" width="30.7332" height="29.6356">
+  <object id="23" name="Enemy" x="1657.97" y="433.182" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="3"/>
    </properties>
   </object>
-  <object id="5" name="Enemy1" x="628.23" y="307.855" width="30.7332" height="29.6356">
+  <object id="5" name="Enemy" x="628.23" y="307.855" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy1" type="int" value="1"/>
+    <property name="Enemy" type="int" value="1"/>
    </properties>
   </object>
-  <object id="25" name="Enemy2" x="1654.97" y="352.349" width="30.7332" height="29.6356">
+  <object id="25" name="Enemy" x="1654.97" y="352.349" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="3"/>
    </properties>
   </object>
-  <object id="26" name="Enemy2" x="1793.13" y="351.849" width="30.7332" height="29.6356">
+  <object id="26" name="Enemy" x="1793.13" y="351.849" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="3"/>
    </properties>
   </object>
-  <object id="27" name="Enemy2" x="1909.47" y="430.182" width="30.7332" height="29.6356">
+  <object id="27" name="Enemy" x="1909.47" y="430.182" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="3"/>
    </properties>
   </object>
-  <object id="28" name="Enemy2" x="471.3" y="448.849" width="30.7332" height="29.6356">
+  <object id="28" name="Enemy" x="471.3" y="448.849" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="2"/>
    </properties>
   </object>
-  <object id="29" name="Enemy1" x="2085.8" y="430.849" width="30.7332" height="29.6356">
+  <object id="29" name="Enemy" x="2085.8" y="430.849" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy1" type="int" value="1"/>
+    <property name="Enemy" type="int" value="1"/>
    </properties>
   </object>
-  <object id="30" name="Enemy1" x="804.8" y="436.682" width="30.7332" height="29.6356">
+  <object id="30" name="Enemy" x="804.8" y="436.682" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy1" type="int" value="1"/>
+    <property name="Enemy" type="int" value="1"/>
    </properties>
   </object>
   <object id="13" name="Trigger1" x="2634.3" y="408.515" width="30.7332" height="29.6356">
@@ -84,24 +84,24 @@
     <property name="TriggerHidden" type="int" value="1"/>
    </properties>
   </object>
-  <object id="16" name="GemSpawn" x="34.6334" y="428.516" width="30.7332" height="29.6356">
+  <object id="16" name="ItemSpawn" x="34.6334" y="428.516" width="30.7332" height="29.6356">
    <properties>
-    <property name="Gem" type="int" value="1"/>
+    <property name="ItemType" type="int" value="1"/>
    </properties>
   </object>
-  <object id="8" name="GemSpawn" x="401.967" y="277.182" width="30.7332" height="29.6356">
+  <object id="8" name="ItemSpawn" x="401.967" y="277.182" width="30.7332" height="29.6356">
    <properties>
-    <property name="Gem" type="int" value="1"/>
+    <property name="ItemType" type="int" value="1"/>
    </properties>
   </object>
-  <object id="10" name="GemSpawn" x="25.9667" y="317.849" width="30.7332" height="29.6356">
+  <object id="10" name="ItemSpawn" x="25.9667" y="317.849" width="30.7332" height="29.6356">
    <properties>
-    <property name="Gem" type="int" value="1"/>
+    <property name="ItemType" type="int" value="1"/>
    </properties>
   </object>
-  <object id="31" name="Enemy2" x="1150" y="400.682" width="30.7332" height="29.6356">
+  <object id="31" name="Enemy" x="1150" y="400.682" width="30.7332" height="29.6356">
    <properties>
-    <property name="Enemy2" type="int" value="1"/>
+    <property name="Enemy" type="int" value="2"/>
    </properties>
   </object>
  </objectgroup>
