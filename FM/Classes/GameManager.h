@@ -44,11 +44,18 @@ public:
 	
 	vector<int>lockedSkills = { 1,2,3 };
 
+	/** return the mapName based on the current map level. Use GameManager::setMapLevel(int level) to set the level
+	 */
+	std::string getMapName();
+
+	/** Set the map level. 0: village map, 1: playMap 1, 2: playMap 2, etc...
+	 */
+	void setMapLevel(int level);
 private:
 	static GameManager* create();
 
 	PlayerCharacter* playerCharacter;
-
+	int mapLevel = 0;
 	int countCharacter;
 	std::map <int, Character*> characterMap;
 

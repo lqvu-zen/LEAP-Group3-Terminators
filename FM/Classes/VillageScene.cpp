@@ -196,7 +196,8 @@ bool VillageScene::init()
 
 	//map setup + add map
 	//scale map with SCALE_FACTOR
-	map = TMXTiledMap::create("map/villageMap.tmx");
+	std::string mapName = GameManager::getInstace()->getMapName();
+	map = TMXTiledMap::create(mapName);
 	map->setScale(SCALE_FACTOR);
 	gameNode->addChild(map, 0);
 
@@ -543,6 +544,7 @@ void VillageScene::goToExit() {
 
 //Map
 void VillageScene::goToMap1() {
+	GameManager::getInstace()->setMapLevel(1);
 	auto scene = PlayGameScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }

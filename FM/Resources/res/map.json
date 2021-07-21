@@ -1,0 +1,12 @@
+{
+  "MAP": [
+    {
+      "ID": 0,
+      "PATH": "map/villageMap.tmx"
+    },
+    {
+      "ID": 1,
+      "PATH": "map/playMap.tmx"
+    }
+  ]
+}

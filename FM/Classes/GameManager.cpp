@@ -115,3 +115,38 @@ GameManager * GameManager::create()
 	}
 	return gameManager;
 }
+
+std::string GameManager::getMapName()
+{
+	//return the mapName based on the current map level. Use GameManager::setMapLevel(int level) to set the level.
+	std::string mapPath = "";
+	//load map path name from the json file.
+	std::string str = FileUtils::getInstance()->getStringFromFile("res/map.json");
+	rapidjson::Document doc;
+	doc.Parse<0>(str.c_str());
+	if (doc.HasParseError())
+	{
+		CCLOG("Reading JSON error");
+	}
+	else
+	{
+		if (doc.HasMember("MAP"))
+		{
+			rapidjson::Value& map = doc["MAP"];
+			for (rapidjson::SizeType i = 0; i < map.Size(); i++)
+			{
+				if (map[i]["ID"].GetInt() == mapLevel)
+				{
+					mapPath = map[i]["PATH"].GetString();
+				}
+			}
+		}
+	}
+	return mapPath;
+}
+
+void GameManager::setMapLevel(int level)
+{
+	//Set the map level. 0: village map, 1: playMap 1, 2: playMap 2, etc...
+	mapLevel = level;
+}

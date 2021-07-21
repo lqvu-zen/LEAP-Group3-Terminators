@@ -211,6 +211,7 @@ bool PlayGameScene::init()
 			break;
 		}
 	});
+	mpButton->setOpacity(200);
 	buttonNode->addChild(mpButton, 1);
 
 	auto hpButton = ui::Button::create("sprites/hpButton.png");
@@ -226,6 +227,7 @@ bool PlayGameScene::init()
 			break;
 		}
 	});
+	hpButton->setOpacity(200);
 	buttonNode->addChild(hpButton, 1);
 
 #endif
@@ -234,7 +236,8 @@ bool PlayGameScene::init()
 
 	//map setup + add map
 	//scale map with SCALE_FACTOR
-	map = TMXTiledMap::create("map/playMap.tmx");
+	std::string mapName = GameManager::getInstace()->getMapName();
+	map = TMXTiledMap::create(mapName);
 	map->setScale(SCALE_FACTOR );
 	Hidden = map->getLayer("Hidden");
 	//remove the Hidden Layer and then add it again at line 356
@@ -785,6 +788,7 @@ void PlayGameScene::goToMission() {
 	buttonNode->addChild(popup);
 }
 void PlayGameScene::goToVillage() {
+	GameManager::getInstace()->setMapLevel(0);
 	playerChar->revive();
 	auto scene = VillageScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
