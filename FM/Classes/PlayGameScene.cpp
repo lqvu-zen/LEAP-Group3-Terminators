@@ -333,7 +333,6 @@ bool PlayGameScene::init()
 		//Spawn enemy. Based on the monsterType defined in the tilemap. 
 		if (SpawnPoint.asValueMap()["name"].asString() == "Enemy")
 		{
-			CCLOG("Enemy here");
 			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
 			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 			int monsterType = SpawnPoint.asValueMap()["Enemy"].asInt();
@@ -342,21 +341,36 @@ bool PlayGameScene::init()
 			//Using a list to  store the monsters
 			monsters.push_back(monster);
 			GameManager::getInstace()->AddCharacter(monsters.back());
-			gameNode->addChild(monsters.back()->getSprite());
-			
+			gameNode->addChild(monsters.back()->getSprite());	
 		}
 
 
-		//Spawn gem
-		if (SpawnPoint.asValueMap()["Gem"].asInt() == 1)
+		//Spawn item. Based on the itemType defined in the tilemap. 1: gem; 2: gold; 3: Hp potion; 4: Mp potion
+		if (SpawnPoint.asValueMap()["name"].asString() == "ItemSpawn")
 		{
-			auto gemX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
-			auto gemY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
-			auto gem = new Item(Item::ItemType::GEM);
-			gem->getSprite()->setPosition(gemX, gemY);
-			gameNode->addChild(gem->getSprite(), 1);
+			auto itemX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
+			auto itemY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 
-			GameManager::getInstace()->AddItem(gem);
+			int itemType = SpawnPoint.asValueMap()["ItemType"].asInt();
+			switch (itemType)
+			{
+			case 1:
+				item = new Item(Item::ItemType::GEM);
+				break;
+			case 2:
+				item = new Item(Item::ItemType::GOLD);
+				break;
+			case 3:
+				item = new Item(Item::ItemType::HP_POTION);
+				break;
+			case 4:
+				item = new Item(Item::ItemType::MP_POTION);
+				break;
+			}
+			item->getSprite()->setPosition(itemX, itemY);
+			gameNode->addChild(item->getSprite(), 1);
+
+			GameManager::getInstace()->AddItem(item);
 		}
 
 		//Spawn boss

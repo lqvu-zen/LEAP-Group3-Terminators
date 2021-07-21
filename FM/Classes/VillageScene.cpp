@@ -215,9 +215,9 @@ bool VillageScene::init()
 
 	//setup map physics. Since we are doing a 60x34 map so width = 60 and height = 34 (2 loops)
 	TMXLayer *Foreground = map->getLayer("Foreground");
-	for (int i = 0; i < 60; i++)
+	for (int i = 0; i < map->getMapSize().width; i++)
 	{
-		for (int j = 0; j < 34; j++)
+		for (int j = 0; j < map->getMapSize().height; j++)
 		{
 			auto spriteTile = Foreground->getTileAt(Vec2(i, j));
 			if (spriteTile != NULL)
@@ -245,6 +245,15 @@ bool VillageScene::init()
 	playerChar = GameManager::getInstace()->GetPlayerCharacter();
 	playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+
+
+	//Mission description
+	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
+	missionLabel = Label::createWithTTF(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
+	missionLabel->setColor(Color3B::WHITE);
+	buttonNode->addChild(missionLabel);
+
+
 	//NPC
 	for (auto SpawnPoint : objectGroup->getObjects())
 	{
@@ -283,7 +292,7 @@ bool VillageScene::init()
 
 	//add healthbar
 	auto playerStat = playerChar->getStats();
-	auto playerStatsSprite = playerStat.GetSprite();
+	playerStatsSprite = playerStat.GetSprite();
 	auto scaleRatio = 3.0f;
 	playerStatsSprite->setScale(scaleRatio);
 	playerStatsSprite->setPosition(
@@ -360,6 +369,11 @@ void VillageScene::update(float dt)
 
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	this->updateCharacter(dt);
+
+	//update label
+	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
+	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
+	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width / 2, playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
 }
 
@@ -513,7 +527,7 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			UICustom::Popup* popup = UICustom::Popup::createSelectMapInVillage([=]() {
 				goToMap1();
 			}, [=]() {
-				goToMap1();
+				goToMap2();
 			});
 
 			buttonNode->addChild(popup);
@@ -547,6 +561,12 @@ void VillageScene::goToExit() {
 //Map
 void VillageScene::goToMap1() {
 	GameManager::getInstace()->setMapLevel(1);
+	auto scene = PlayGameScene::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+}
+
+void VillageScene::goToMap2() {
+	GameManager::getInstace()->setMapLevel(2);
 	auto scene = PlayGameScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }

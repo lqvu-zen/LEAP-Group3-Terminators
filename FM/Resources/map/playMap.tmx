@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="200" height="36" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="32">
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="200" height="36" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="39">
  <tileset firstgid="1" source="PlayTileSet1.tsx"/>
  <tileset firstgid="325" source="BackgroundTileSet.tsx"/>
  <tileset firstgid="1166" source="BackgroundTileSetMountain.tsx"/>
@@ -84,19 +84,19 @@
     <property name="TriggerHidden" type="int" value="1"/>
    </properties>
   </object>
-  <object id="16" name="GemSpawn" x="34.6334" y="428.516" width="30.7332" height="29.6356">
+  <object id="16" name="ItemSpawn" x="34.6334" y="428.516" width="30.7332" height="29.6356">
    <properties>
-    <property name="Gem" type="int" value="1"/>
+    <property name="ItemType" type="int" value="1"/>
    </properties>
   </object>
-  <object id="8" name="GemSpawn" x="401.967" y="277.182" width="30.7332" height="29.6356">
+  <object id="8" name="ItemSpawn" x="401.967" y="277.182" width="30.7332" height="29.6356">
    <properties>
-    <property name="Gem" type="int" value="1"/>
+    <property name="ItemType" type="int" value="1"/>
    </properties>
   </object>
-  <object id="10" name="GemSpawn" x="25.9667" y="317.849" width="30.7332" height="29.6356">
+  <object id="10" name="ItemSpawn" x="25.9667" y="317.849" width="30.7332" height="29.6356">
    <properties>
-    <property name="Gem" type="int" value="1"/>
+    <property name="ItemType" type="int" value="1"/>
    </properties>
   </object>
   <object id="31" name="Enemy" x="1150" y="400.682" width="30.7332" height="29.6356">

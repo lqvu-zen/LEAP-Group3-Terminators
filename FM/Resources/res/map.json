@@ -7,6 +7,10 @@
     {
       "ID": 1,
       "PATH": "map/playMap.tmx"
+    },
+    {
+      "ID": 2,
+      "PATH": "map/playMap2.tmx"
     }
   ]
 }

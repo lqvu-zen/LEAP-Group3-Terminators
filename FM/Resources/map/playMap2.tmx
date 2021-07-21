@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.0" orientation="orthogonal" renderorder="right-down" width="200" height="36" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="53">
+ <tileset firstgid="1" source="PlayTileSet1.tsx"/>
+ <tileset firstgid="325" source="BackgroundTileSet.tsx"/>
+ <tileset firstgid="1166" source="BackgroundTileSetMountain.tsx"/>
+ <layer id="9" name="Background" width="200" height="36">
+  <data encoding="base64" compression="zlib">
+   eJzt2ufbz3UYx+EfNyJJqGzZadLeO7JnUUpUUmSXnZVRqcjeM5vQQqWMtkLDSooyy1ZmofNvqCf39z6u6zjOx6/Hn/fxqZgplarEfVSmClWpRnVqUJNa1KYOdanH/TxAfRrwIA/RkId5hEY8SmOa8BgVoxnNhDQf5wma8iTNeIqnaU4LnqElrWhNG9rSjvY8y3N0oCOd6EwXutKN5+lOj2hGM0HNnvSiNy/Qh770oz8v8hIvM4BXeJXXGMggXmcwQxjKMIYzgpGMYjRjGBvNaCaoOY7xTGAik5jMFN5gKtOYzgxmMovZzGEubzKP+SzgLd7mHd7lPRayiMXRjGaCmu/zAR+yhI/4mKUsYzkr+IRP+YzP+YIv+YqVfM03rGI1a/iW7/ieH1jLumhGM0HN9WxgIz+yiZ/YzM/8wha28iu/sY3t7GAnu9jN7/zBHvayj/0c4CCHOBzNaCaomZHfVtGMZrzPoxnNeJ9HM5rxPo9mNNNXMyO/raIZzf/bzMh/A6IZzfhfEs1oxn4VzWjGfhXNaKavZkbeHqIZzdivohnN2K+iGc3Yr6IZzfTVzMjbQzSjGftVNKMZ+1U0oxn7VTSjmb6af/IXRzjKMY5zgpP8zT+c4jRnSGVOpTKRmTSykJVsnEV2cnA2OTmHXJxL7szRjGZymueRh7zk43wu4ELyU4CCFKIwRShKMS6iOCUoSSlKU4ayXEw5LuFSLuPyaEYzQc0ruJLyVOAqruYaruU6rucGbuQmbuYWbuU2bucO7uQu7uYe7qUilbiPylSJZjQT1KxKNapTg5rUojZ1qEs97ucB6tOAB3mIhjzMIzTiURrThMd4nCdoypM0i2Y0E9R8iqdpTgueoSWtaE0b2tKO9jzLc3SgI53oTBe60o3n6U4PetKL3rxAn2hGM0HNvvSjPy/yEi8zgFd4ldcYyCBeZzBDGMowhjOCkYxiNGMYyzjGM4GJTIpmNBPUnMwU3mAq05jODGYyi9nMYS5vMo/5LOAt3uYd3uU9FrKIxbzPB3zIEj6KZjQT1PyYpSxjOSv4hE/5jM/5gi/5ipV8zTesYjVr+Jbv+J4fWMs61rOBjfzIpmhGM0HNn9jMz/zCFrbyK7+xje3sYCe72M3v/MEe9rKP/RzgIIc4zJ/8xRGOciya0UxQ8zgnOMnf/MMpTnOGVFoqlYnMpJGFrGTjLLKTg7PJyTnk4lxycx55yEs+zk+LZjST07yAC8lPAQpSiMIUoSjFuIjilKAkpShNGcpyMeW4hEu5jMu5gispTwWuimY0E9SMi4uLi4v7L/cvAkwsUQ==
+  </data>
+ </layer>
+ <layer id="10" name="MountainBG" width="200" height="36">
+  <data encoding="base64" compression="zlib">
+   eJztz/fXDQQAxvEb3ldDSmkRKhJKJUJpLypJIu2lUlSUBqWpvcyWtnYo7SEaNKQlDU2jgXZmND/+h3vOPe+5z/ecz8/PeQqFlFJKKaWUUkoppZRSSimllFJKKaWUUkoppZRSSimllFJKKaWUUkoppZRSSimllFJKKaWUUlWtWkWhUJ0aVFBJTVZnDdZkLWqxNrVZh3Wpw3qsT102YEM2YmM2oR712ZQGNKwozWY5fc1m8TYbsRmbswWNacKWNGUrmtGcFmzNNrRkW7Zje1qxA61pw460pR3t2Ymd6VCizVWVy9dsFm9zF3ZlN3ZnD/ZkL/ZmH/ZlPzrSif05gAPpzEF04WC6cgjdOJTu9OAwenJ4CTfL6Ws2i7N5BEdyFEdzDMdyHMdzAifSi5M4mVPozamcRh/6cjpncCb96M9ZnM0AzuHcEm6W09dsFmfzPM5nIIO4gAsZzEVczCVcymVczhCu4Equ4mqu4Vqu43pu4EZuYijDGM6IEm6W09dsFmdzJKO4mVu4ldu4ndHcwZ3cxd3cw73cxxju5wEe5CEe5hEe5THGMo7xPM4TJdwsp6/ZLM7mBJ7kKZ7mGZ7lOZ7nBV7kJSbyMpOYzCu8ymu8zhSm8gZv8hZvM413mM67Jdwsp6/ZLM7me7zPB3zIDD5iJh/zCZ/yGbP4nC/4kq/4mm+YzRzmMo9v+Y7v+YH5LGBhNrNZhTZ/5Cd+5hd+5Td+5w8WsZglLGUZy/mTFazkL/7mH/7lPwqVhcJqVKM6NaigsjKb2aw6m/8DTUiTaw==
+  </data>
+ </layer>
+ <layer id="3" name="Trees" width="200" height="36">
+  <data encoding="base64" compression="zlib">
+   eJztnDeQ1TAQhnWkhjDAMRTMEErSDNw1FFCY0EJBqoC5gtTQkFo6ejp6OqjJsSPHjhxacioJv+9Oc8siyZJlW/a7/eb+ebaeZO/ZWu/Klp9SgiAIghDOLeg2dAe6C91La44gtIpn0HPoBfQSepXWHEFoFR+gj9An6DP0Ja05gtAqfkN/8oU+/EET+hIbJFg5ENH2eGVWjC9mwh9mQbOhfmiO+EdrORbR9mRlVgicLLUBwjAnItqerswKgbM5tQHCMAehQ9Bh6Ahb18u0jPqTxI/62J3aAKEUp8iyxI9qodcpoftI/BCEf5H8ShDs0PxK/EPodWKef8j4o36y1AaMQ1aR5dXQOeg8dAG6CF2CLkNnHd/lutKcyT2F6ZjajrXQDNwndkK7EtkihMHPnRCP6ZiKT7SDmyp8jru+9ytUxw414hNCu3iq4ua4m659X6Fvlvqu79rImgb2kTWwD6Ec71X8HHceTyb2KTXJMs/R9V0b2dTAPsbj/J3J6ANTWtwPtH2/VLVz3Od61ptXfhe1QuNFNvppuy9UVbkvvfKuJ+0jeT8wHfOUUHu+Qz/U2Bx3vf6TtbGVc8rMMQ31FV9byuIaC6Tso730rucSaOnoMo3RbYilvjmDHk/wHDwjy2+hd2R9sRr735dZlmkZjzfaV0LzfmrT1MC2IdevlH20q+968njBGSLLbZgL6+sfdE4C7dMal9/4Qv0pBnoO5qux8zDDs73vXMyUfdSUB9/H6oMGbfCFjy9031luqNv2+GG73vsQWr8uqJ/59POyOW9VYzXT+JTHYppH5jK96/ka5W8s7fk2ytoVSlG84LTdP+qau5bnOdOg6cr/Ol6mjQmf/l/mmUMV7yP3G2zrN9Qri22bZcvLEJITFPmHzWdN1wNXfV2u29nqNeUfeZ6zAFoILaqxjQ3Xc8yQvETXLRoTZZ7bM+WUrvlTfM6Pq24eO48a9sNzG/p+j6u+yZc5ofGC4/IPWw4fW26qY7Inhz+zq/IZ3kpoABr0rL+iRBtf6HmkeYkJmpfoukXjNldu0LZ7mCGY/CtkfFFEUfyw5fAx5a5xAT/P/JldyDM8V367FloHrYc2+G0uuM1V6Bp0HbphWC+yMYb9gfW7OC/HdDxj4wXHdN3JKthuKL73TPmYMyPLrud//FhtgbZC26Dtyi8u8Ta2+7+ah9Aj6DH0hK37PqusC1vMsOXN1I9NPn3GYxu03Pe64KrHj6+minuOGpN/pBin+97X1WPOAXwOGuKIb5zaA+2F9qmRa62OS65zSNvoGG7bR+r+7wONGV2wt4g65j24+mWm/o9fVUDjYtk5djHj9ir7gj4nXe9fTczlqpuNNWzTdVxs8cv3PrStnm27IcT4R8xvmXF0rO1C/8pttf2WZxfsL6Jp/2gz4h9hFI2/hxqyo07EPwRBEAShmL/8KTat
+  </data>
+ </layer>
+ <layer id="2" name="Foreground" width="200" height="36">
+  <data encoding="base64" compression="zlib">
+   eJztnF1u1DAUhZ1Hfl8ZxF+3AVKn74DUsoS278ASioANwFA2UApIwLqADUCBh96rydXcMXHi1HZiZ84nHeWOq0mcxifX8Tg2BgAAAAAAAAAAAAD04SnpGem5R6zLANgEDkiHtQ4atk1lh6PUdBpsk+aknZYY5MMuaY/0xDOGP8K4XBlzhfSO4mPS+1r6MygX+COM2+SNO6SPFH8ifa6lP4NygT8AcAN/AOAG/gDADfwBNomXpFek154x/BHGnkM8rju3tmAcZKwdALAEnigX5JP4SH8IAAA2iannkz5zAu0YcwfB1DkhfSCdmvV5BbHKwWbhM+6YM3g2To/d58itDzI36dqAntvoim+QZqSbieoAykLmG+fC3cqYe9X6PPa23ztStmfXvptyT6p8hJyRlq78kKs/uE8c0i/OKQ+wX+7XAmUh7TEXrlJdrpEej12REUHOSEff54nc/CH1mbI/uN+Va/tvyrk6F/eNXe97xipPTa7+OBm7IoVhP/+UMiYXAnuwq88a6qndWk1sm+Zcf1Hva7nqzO8M/m2p01QJHbc7blEX3MYeBBx7yuzXygV5/sipTkPA9wMeJ+mzPg5+6/6f2H0wyR9ntcZC7p/Sv2J/vHDINS41q6X7v7OEdQ4ZIzurvyvnzdeAz43XpDjqiO2tT46wiZ0zvpC+kr61qEQkf7T1s4aAj83vy+j+VcnzHr6TfpB+kn6RfpuVJ1jc3iVXXie9obK3pIXpju3tIkJ9fdZTavtb3zjGvoZ4ZhdfyPtHKX+/bkKOJ2uL6f5VKn/Eus72PrUP/pilz/+RLlWr9YpuVau1WSRXblXr59oV29vTCP8TXUft21LKUyH5Q953FJ8MheQNkbQZLtf3x5jrXvmuYdYV2/t0XTuXJx7Sdx6Z5dZn7osr5v+PeKUp3/iMY7nqmJsPhvaHzh/62u8MJNf5pswf7EN9T7hobO+zb27Q5xQSL5SajuWDq+6llKdi38RpKz6xLpPt0OcLAABg2pwDBgg35Q==
+  </data>
+ </layer>
+ <layer id="11" name="Hidden" width="200" height="36">
+  <data encoding="base64" compression="zlib">
+   eJzt2zsKgDAQBcDc0M8N/FxJ8LimUILigo0kxQw82HKb5VWbEgAAAAAAAADQ5fRnrnnIGWsuBY2YcuYz17zkrDWXgkZ0qfSG/oC7KZXe0B8AAAAAAAAAALzZguw1l4JGuA+IuQ+IuQ+IuY/vnr8yfmageP7K+JmBQn9ATH8AAADwhwNCzClN
+  </data>
+ </layer>
+ <objectgroup id="4" name="Objects" offsetx="4.33333" offsety="-2">
+  <object id="11" name="Boss" x="2896.33" y="457.849" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Boss" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="23" name="Enemy" x="1657.97" y="433.182" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="5" name="Enemy" x="700.23" y="308.522" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="25" name="Enemy" x="1654.97" y="352.349" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="26" name="Enemy" x="1793.13" y="351.849" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="27" name="Enemy" x="1909.47" y="430.182" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="28" name="Enemy" x="471.3" y="448.849" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="29" name="Enemy" x="2085.8" y="430.849" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="30" name="Enemy" x="804.8" y="436.682" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="13" name="Trigger1" x="2634.3" y="408.515" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Trigger" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="15" name="TriggerHidden" x="62" y="339.182" width="96" height="80">
+   <properties>
+    <property name="TriggerHidden" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="31" name="Enemy" x="962" y="386.682" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="32" name="ItemSpawn" x="8.6334" y="312.516" width="30.7332" height="29.6356">
+   <properties>
+    <property name="ItemType" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="33" name="Enemy" x="68.6334" y="315.182" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="34" name="Enemy" x="466.633" y="273.516" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="35" name="Enemy" x="135.467" y="180.016" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="36" name="ItemSpawn" x="16.6334" y="185.849" width="30.7332" height="29.6356">
+   <properties>
+    <property name="ItemType" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="37" name="ItemSpawn" x="24.6334" y="423.849" width="30.7332" height="29.6356">
+   <properties>
+    <property name="ItemType" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="38" name="TriggerHidden" x="47.3333" y="117.333" width="96" height="80">
+   <properties>
+    <property name="TriggerHidden" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="40" name="Enemy" x="1329.3" y="241.849" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="41" name="Enemy" x="1443.3" y="241.182" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="42" name="ItemSpawn" x="1270.63" y="241.182" width="30.7332" height="29.6356">
+   <properties>
+    <property name="ItemType" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="43" name="ItemSpawn" x="1385.97" y="239.849" width="30.7332" height="29.6356">
+   <properties>
+    <property name="ItemType" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="44" name="Enemy" x="1292.63" y="470.849" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="45" name="ItemSpawn" x="1218.3" y="494.849" width="12.0665" height="11.9689">
+   <properties>
+    <property name="ItemType" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="46" name="ItemSpawn" x="1248.97" y="494.682" width="12.0665" height="11.9689">
+   <properties>
+    <property name="ItemType" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="47" name="TriggerHidden" x="1272.67" y="409" width="96" height="80">
+   <properties>
+    <property name="TriggerHidden" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="48" name="Enemy" x="1745.3" y="161.682" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="49" name="Enemy" x="1810.3" y="160.682" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="50" name="ItemSpawn" x="1863.13" y="182.516" width="12.0665" height="11.9689">
+   <properties>
+    <property name="ItemType" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="51" name="ItemSpawn" x="1891.13" y="183.516" width="12.0665" height="11.9689">
+   <properties>
+    <property name="ItemType" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="52" name="Enemy" x="346.3" y="271.682" width="30.7332" height="29.6356">
+   <properties>
+    <property name="Enemy" type="int" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

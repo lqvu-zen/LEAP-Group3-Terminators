@@ -40,6 +40,7 @@ private:
 	bool isDeadNoticePopUp = false;
 	PlayerCharacter* playerChar;
 	Sprite* playerStatsSprite;
+	Item* item;
 	std::vector<EventKeyboard::KeyCode> heldKeys;
 	void onKeyPressed(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
 	void onKeyReleased(EventKeyboard::KeyCode keyCode, cocos2d::Event* event);

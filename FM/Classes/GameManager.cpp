@@ -81,10 +81,11 @@ void GameManager::AddReward(cocos2d::Vec2 position, int type)
 	default:
 		auto gold = new Item(Item::ItemType::GOLD);
 		
-		gold->getSprite()->setPosition(position);
+		/*gold->getSprite()->setPosition(position);
 		playerCharacter->getSprite()->getParent()->addChild(gold->getSprite());
 
-		GameManager::getInstace()->AddItem(gold);
+		GameManager::getInstace()->AddItem(gold);*/
+		playerCharacter->colectItem(gold);
 		break;
 	}
 }
