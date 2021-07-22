@@ -1,9 +1,8 @@
 #include "Definitions.h"
 #include "VillageScene.h"
-#include "Popup2.h"
+#include "Popup.h"
 #include "MainMenuScene.h"
 #include "PlayGameScene.h"
-#include "Popup2.h"
 USING_NS_CC;
 
 Scene* VillageScene::createScene()

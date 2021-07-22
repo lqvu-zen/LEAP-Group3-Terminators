@@ -30,8 +30,8 @@ namespace UICustom {
         static PopupDelegates* create();
 
     protected:
-        virtual bool init();
-        virtual void setUpTouches();
+        virtual bool init(const bool close);
+        virtual void setUpTouches(const bool close);
 
         virtual void show(const bool animated = true);
         virtual void dismiss(const bool animated = true);

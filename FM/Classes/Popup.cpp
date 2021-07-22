@@ -6,7 +6,7 @@
 //
 //
 
-#include "Popup2.h"
+#include "Popup.h"
 #include <Windows.h>
 #include <string.h>
 
@@ -45,7 +45,7 @@ namespace UICustom {
     PopupDelegates* PopupDelegates::create()
     {
         PopupDelegates* node = new (std::nothrow)PopupDelegates();
-        if (node && node->init())
+        if (node && node->init(true))
         {
             node->autorelease();
             return node;
@@ -54,7 +54,7 @@ namespace UICustom {
         return nullptr;
     }
 
-    bool PopupDelegates::init()
+    bool PopupDelegates::init(const bool close)
     {
         Size winSize = Director::getInstance()->getWinSize();
 
@@ -64,7 +64,7 @@ namespace UICustom {
         }
         this->setOpacity(0);
         show(true);
-        this->setUpTouches();
+        this->setUpTouches(close);
 
 
         return true;
@@ -85,11 +85,11 @@ namespace UICustom {
             this->runAction(Sequence::create(FadeTo::create(ANIMATION_TIME, 0), RemoveSelf::create(), NULL));
         }
         else {
-            this->removeFromParentAndCleanup(true);
+            //this->removeFromParentAndCleanup(false);
         }
     }
 
-    void PopupDelegates::setUpTouches()
+    void PopupDelegates::setUpTouches(const bool close)
     {
 
         auto listener = EventListenerTouchOneByOne::create();
@@ -98,7 +98,7 @@ namespace UICustom {
             if (_bg) {
                 if (!_bg->getBoundingBox().containsPoint(this->convertToNodeSpace(touch->getLocation())))
                 {
-                    this->dismiss(true);
+                    this->dismiss(close); //Close
                 }
             }
             else {
@@ -129,7 +129,7 @@ namespace UICustom {
     {
         Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
-        if (node && node->init())
+        if (node && node->init(true))
         {
 
             if (!lbl) {
@@ -204,7 +204,7 @@ namespace UICustom {
     {
         Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
-        if (node && node->init())
+        if (node && node->init(true))
         {
 
             if (!lbl) {
@@ -250,7 +250,7 @@ namespace UICustom {
     Popup* Popup::createPauseMenuVillage(const std::function<void()>& MissionFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc) {
         Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
-        if (node && node->init())
+        if (node && node->init(true))
         {
             auto missionButton = MenuItemFont::create("Your Mission", [=](Ref* sender) {
                 MissionFunc();
@@ -289,7 +289,7 @@ namespace UICustom {
     Popup* Popup::createPauseMenuPlayGame(const std::function<void()>& MissionFunc, const std::function<void()>& VillageFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc) {
         Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
-        if (node && node->init())
+        if (node && node->init(true))
         {
             auto missionButton = MenuItemFont::create("Your Mission", [=](Ref* sender) {
                 MissionFunc();
@@ -334,7 +334,7 @@ namespace UICustom {
 	{
 		Popup* node = new (std::nothrow)Popup();
 		Size winSize = Director::getInstance()->getWinSize();
-		if (node && node->init())
+		if (node && node->init(true))
 		{
 			auto map1Button = MenuItemFont::create("Go To Map 1", [=](Ref* sender) {
 				GoToMap1Func();
@@ -364,7 +364,7 @@ namespace UICustom {
     Popup* Popup::createSetting() {
         Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
-        if (node && node->init())
+        if (node && node->init(true))
         {
             const char* SRT_SETTING[] = { "Music", "Sound" };
 
@@ -455,7 +455,7 @@ namespace UICustom {
     Popup* Popup::createLoss(const std::function<void()>& Revival1Func, const std::function<void()>& Revival2Func, const std::function<void()>& ExitFunc) {
         Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
-        if (node && node->init())
+        if (node && node->init(false))
         {
             auto revival1Button = MenuItemFont::create("Resurrect on the spot", [=](Ref* sender) {
                 Revival1Func();
@@ -489,7 +489,7 @@ namespace UICustom {
     Popup* Popup::countdown(int time, cocos2d::Label* lbl) {
         Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
-        if (node && node->init())
+        if (node && node->init(false))
         {
             std::string tmp = StringUtils::format("%i second", time);
 
