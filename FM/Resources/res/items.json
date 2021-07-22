@@ -1,0 +1,93 @@
+{
+	"ITEM":
+	[
+		{
+			"TYPE": 0,
+			"NAME": "Gem",
+			"SPRITES":
+			{
+				"PNG": "sprites/item/Gem.png",
+				"SCALE": 1.0
+			},
+			"STATS":
+			{
+				"HP": 0.0,
+				"MP": 0.0,
+				"ATK": 0.0,
+				"DEF": 0.0,
+				"MAX_HP": 0.0,
+				"MAX_MP": 0.0,
+				"MAX_ATK": 0.0,
+				"MAX_DEF": 0.0,
+				"MAX_JUMP": 0,
+				"VALUE": 0
+			}
+		},
+		{
+			"TYPE": 1,
+			"NAME": "HealthPotion",
+			"SPRITES":
+			{
+				"PNG": "sprites/item/StaticBigHealthPotion.png",
+				"SCALE": 1.0
+			},
+			"STATS":
+			{
+				"HP": 50.0,
+				"MP": 0.0,
+				"ATK": 0.0,
+				"DEF": 0.0,
+				"MAX_HP": 0.0,
+				"MAX_MP": 0.0,
+				"MAX_ATK": 0.0,
+				"MAX_DEF": 0.0,
+				"MAX_JUMP": 0,
+				"VALUE": 0
+			}
+		},
+		{
+			"TYPE": 2,
+			"NAME": "ManaPotion",
+			"SPRITES":
+			{
+				"PNG": "sprites/item/StaticBigManaPotion.png",
+				"SCALE": 1.0
+			},
+			"STATS":
+			{
+				"HP": 0.0,
+				"MP": 50.0,
+				"ATK": 0.0,
+				"DEF": 0.0,
+				"MAX_HP": 0.0,
+				"MAX_MP": 0.0,
+				"MAX_ATK": 0.0,
+				"MAX_DEF": 0.0,
+				"MAX_JUMP": 0,
+				"VALUE": 0
+			}
+		},
+		{
+			"TYPE": 3,
+			"NAME": "Coin",
+			"SPRITES":
+			{
+				"PNG": "sprites/item/StaticCoin.png",
+				"SCALE": 1.0
+			},
+			"STATS":
+			{
+				"HP": 0.0,
+				"MP": 0.0,
+				"ATK": 0.0,
+				"DEF": 0.0,
+				"MAX_HP": 0.0,
+				"MAX_MP": 0.0,
+				"MAX_ATK": 0.0,
+				"MAX_DEF": 0.0,
+				"MAX_JUMP": 0,
+				"VALUE": 1
+			}
+		}
+	]
+}

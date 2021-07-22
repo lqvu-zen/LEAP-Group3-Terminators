@@ -2,6 +2,9 @@
 #define __ITEM_H__
 
 #include "cocos2d.h"
+#include "json/document.h"
+#include "json//rapidjson.h"
+
 #include "Stats.h"
 
 using namespace std;
@@ -24,6 +27,11 @@ public:
 	void setPosition(cocos2d::Vec2 position);
 
 private:
+	//document
+	rapidjson::Document itemDocument;
+	rapidjson::Value itemValue;
+	inline void getValue(ItemType _itemType);
+
 	cocos2d::Sprite* itemSprite;
 	cocos2d::Sprite* itemImage;
 	cocos2d::PhysicsBody* itemBody;

@@ -5,19 +5,23 @@ USING_NS_CC;
 
 Item::Item(ItemType _itemType)
 {
+	getValue(_itemType);
+
 	itemType = _itemType;
 
-	switch (itemType)
-	{
-	case Item::ItemType::HP_POTION:
-		itemStats.SetCItemStats(50.0f);
-		break;
-	case Item::ItemType::MP_POTION:
-		itemStats.SetCItemStats(0.0f, 50.0f);
-		break;
-	default:
-		break;
-	}
+	itemStats.SetCItemStats(
+		itemValue["STATS"]["HP"].GetFloat(), 
+		itemValue["STATS"]["MP"].GetFloat(),
+		itemValue["STATS"]["ATK"].GetFloat(),
+		itemValue["STATS"]["DEF"].GetFloat()
+	);
+	itemStats.SetNCItemStats(
+		itemValue["STATS"]["MAX_HP"].GetFloat(),
+		itemValue["STATS"]["MAX_MP"].GetFloat(),
+		itemValue["STATS"]["MAX_ATK"].GetFloat(),
+		itemValue["STATS"]["MAX_DEF"].GetFloat(),
+		itemValue["STATS"]["MAX_JUMP"].GetInt()
+	);
 
 	itemSprite = nullptr;
 }
@@ -27,23 +31,8 @@ cocos2d::Sprite* Item::getSprite()
 	if (itemSprite == nullptr) {
 		itemSprite = Sprite::create();
 
-		switch (itemType)
-		{
-		case Item::ItemType::GEM:
-			itemImage = Sprite::create("sprites/item/Gem.png");
-			break;
-		case Item::ItemType::HP_POTION:
-			itemImage = Sprite::create("sprites/item/StaticBigHealthPotion.png");
-			break;
-		case Item::ItemType::MP_POTION:
-			itemImage = Sprite::create("sprites/item/StaticBigManaPotion.png");
-			break;
-		case Item::ItemType::GOLD:
-			itemImage = Sprite::create("sprites/item/StaticCoin.png");
-			break;
-		default:
-			break;
-		}
+		itemImage = Sprite::create(itemValue["SPRITES"]["PNG"].GetString());
+			
 		itemBody = PhysicsBody::createBox(itemImage->getContentSize());
 
 		itemBody->setDynamic(false);
@@ -72,4 +61,24 @@ Stats Item::getStats()
 void Item::setPosition(cocos2d::Vec2 position) {
 	itemSprite->setPosition(position);
 	itemImage->setPosition(Vec2::ZERO);
+}
+
+inline void Item::getValue(ItemType _itemType)
+{
+	auto buf = FileUtils::getInstance()->getStringFromFile("res/items.json");
+
+	itemDocument.Parse<0>(buf.c_str());
+	if (itemDocument.HasParseError()) {
+		CCLOG("ERROR: Character document not found!");
+	}
+	else {
+		if (itemDocument.HasMember("ITEM")) {
+			rapidjson::Value& itemList = itemDocument["ITEM"];
+			for (rapidjson::SizeType i = 0; i < itemList.Size(); i++) {
+				if (itemList[i]["TYPE"].GetInt() == int(_itemType)) {
+					itemValue = itemList[i];
+				}
+			}
+		}
+	}
 }

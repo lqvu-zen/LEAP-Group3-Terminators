@@ -419,15 +419,24 @@ void PlayerCharacter::attack(int mode)
 
 		//update animation
 		if (attackMode == 1) {
-			attackSize = Size(characterSize.width * 2.0f, characterSize.height);
+			attackSize = Size(
+				characterValue["NORMAL_ATTACK"]["SIZE_1_X"].GetFloat(), 
+				characterValue["NORMAL_ATTACK"]["SIZE_1_Y"].GetFloat()
+			);
 			updateAnimation(State::ATTACK1, characterDirection, false);
 		}
 		else if (attackMode == 2) {
-			attackSize = Size(characterSize.width * 2.5f, characterSize.height);
+			attackSize = Size(
+				characterValue["NORMAL_ATTACK"]["SIZE_2_X"].GetFloat(),
+				characterValue["NORMAL_ATTACK"]["SIZE_2_Y"].GetFloat()
+			);
 			updateAnimation(State::ATTACK2, characterDirection, false);
 		}
 		else if (attackMode == 3) {
-			attackSize = Size(characterSize.width * 3.0f, characterSize.height * 2.0f);
+			attackSize = Size(
+				characterValue["NORMAL_ATTACK"]["SIZE_3_X"].GetFloat(),
+				characterValue["NORMAL_ATTACK"]["SIZE_3_Y"].GetFloat()
+			);
 			updateAnimation(State::ATTACK3, characterDirection, false);
 		}
 
@@ -478,6 +487,52 @@ void PlayerCharacter::attack(int mode)
 
 			skillSprite->addChild(characterSkill->GetSprite());
 			characterSkill->CastSkill(attackSkill, characterDirection);
+		}
+		else {
+			if (characterValue["NORMAL_ATTACK"]["SUB_ATTACK"]["ENABLE"].GetInt() == 1) {
+				auto subSprite = Sprite::create(characterValue["NORMAL_ATTACK"]["SUB_ATTACK"]["PNG"].GetString());
+
+				auto subSize = Size(
+					/*characterValue["NORMAL_ATTACK"]["SUB_ATTACK"]["SIZE_X"].GetFloat(),
+					characterValue["NORMAL_ATTACK"]["SUB_ATTACK"]["SIZE_Y"].GetFloat()*/
+					subSprite->getContentSize()
+				);
+
+				auto subBody = PhysicsBody::createBox(subSize);
+
+				subBody->setDynamic(false);
+				subBody->setRotationEnable(false);
+				subBody->setGravityEnable(false);
+				subBody->setMass(0.0f);
+
+				subBody->setCategoryBitmask(PLAYER_ATTACK_CATEGORY_BITMASK);
+				subBody->setCollisionBitmask(PLAYER_ATTACK_COLLISION_BITMASK);
+				subBody->setContactTestBitmask(ALLSET_BITMASK);
+
+				subSprite->setPhysicsBody(subBody);
+
+				if (characterValue["NORMAL_ATTACK"]["SUB_ATTACK"]["MOVEMENT"].GetInt() == 1) {
+					subBody->setVelocity(
+						Vec2((characterDirection == Direction::RIGHT ? PLAYER_MAX_VELOCITY : -PLAYER_MAX_VELOCITY), 0.0f)
+					);
+				}
+
+				if (characterDirection == Direction::LEFT) {
+					subSprite->setFlippedX(true);
+				}
+				else {
+					subSprite->setFlippedX(false);
+				}
+
+				subSprite->setPosition(characterSprite->getPosition());
+
+				auto wait = DelayTime::create(characterValue["NORMAL_ATTACK"]["SUB_ATTACK"]["TIME"].GetFloat());
+				auto removeSeft = RemoveSelf::create();
+
+				subSprite->runAction(Sequence::create(wait, removeSeft, NULL));
+
+				characterSprite->getParent()->addChild(subSprite, 2);
+			}
 		}
 		
 	}
