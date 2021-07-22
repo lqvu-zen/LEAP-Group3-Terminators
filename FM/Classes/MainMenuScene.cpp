@@ -1,7 +1,7 @@
 ﻿#include "MainMenuScene.h"
 #include "Definitions.h"
 #include "PlayGameScene.h"
-#include "Popup2.h"
+#include "Popup.h"
 #include "VillageScene.h"
 #include "GameManager.h"
 

@@ -71,7 +71,8 @@ private:
 	//Revival
 	void Revival1Func();
 	void Revival2Func();
-	int time;
+	int timeRevival;
+	int goldRevival;
 	cocos2d::Label* lblCountDown;
 	void updateCountDown(float);
 };

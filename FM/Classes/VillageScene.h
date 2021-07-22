@@ -4,7 +4,6 @@
 #include "cocos2d.h"
 #include "PlayerCharacter.h"
 #include "ui//CocosGUI.h"
-#include "Popup2.h"
 #include "NPC.h"
 #include "GameManager.h"
 #include "Portal.h"

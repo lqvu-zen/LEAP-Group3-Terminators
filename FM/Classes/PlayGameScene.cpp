@@ -2,7 +2,7 @@
 #include "PlayGameScene.h"
 #include "MainMenuScene.h"
 #include "VillageScene.h"
-#include "Popup2.h"
+#include "Popup.h"
 #include <Windows.h>
 
 USING_NS_CC;
@@ -474,7 +474,9 @@ bool PlayGameScene::init()
 	//boss->death();
 	this->scheduleUpdate();
 
-
+	//
+	timeRevival = 0;
+	goldRevival = 0;
 	return true;
 }
 
@@ -514,6 +516,7 @@ void PlayGameScene::updateCharacter(float dt)
 	{	//Player is dead
 		if (isDeadNoticePopUp == false)
 		{
+			GameManager::getInstace()->countDead++;
 			PlayGameScene::playerDeadNotice();
 			isDeadNoticePopUp = true;
 		}
@@ -867,35 +870,43 @@ bool PlayGameScene::checkVector(vector<int>list, int num) {
 
 //Revival
 void PlayGameScene::Revival1Func() {
-	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Revival", "You will respawn on the spot \nYou will need to spend 5 gold", [=]() {
-		if (playerChar->exceptGold(5)) {
+	goldRevival = GameManager::getInstace()->countDead * 5;
+	std::string notify = StringUtils::format("You will respawn on the spot \nYou will need to spend %i gold", timeRevival);
+	UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Revival", notify, NULL, [=]() {
+		if (playerChar->exceptGold(50)) {
 			playerChar->revive();
 		}
 		else {
+			playerDeadNotice();
 			UICustom::Popup* notify = UICustom::Popup::createAsMessage("Note", "You don't have enough gold to respawn. ");
-			buttonNode->addChild(notify);
+			buttonNode->addChild(notify, 3);		
 		}
+	}, [=]() {
+		playerDeadNotice();
 	});
 	buttonNode->addChild(popup, 2);
 }
 void PlayGameScene::Revival2Func() {
-	time = 90;
-	UICustom::Popup* popup = UICustom::Popup::createAsConfirmDialogue("Revival", "You will return to the village and respawn.\nYou need to wait 90 second", [=]() {
-		std::string tmp = StringUtils::format("%i second", time);
+	timeRevival = GameManager::getInstace()->countDead * 60;
+	std::string notify = StringUtils::format("You will return to the village and respawn.\nYou need to wait %i second", timeRevival);
+	UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Revival", notify, NULL, [=]() {
+		std::string tmp = StringUtils::format("%i second", timeRevival);
 		lblCountDown = Label::createWithTTF(tmp, "fonts/Dimbo Regular.ttf", 45);
-		UICustom::Popup* countdown = UICustom::Popup::countdown(time, lblCountDown);
-		buttonNode->addChild(countdown);
+		UICustom::Popup* countdown = UICustom::Popup::countdown(timeRevival, lblCountDown);
+		buttonNode->addChild(countdown, 2);
 		this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateCountDown), 1);
+	}, [=] {
+		playerDeadNotice();
 	});
 	buttonNode->addChild(popup, 2);
 }
 void PlayGameScene::updateCountDown(float) {
-	if (time == 0) {
+	if (timeRevival == 0) {
 		goToVillage();
 	}
 	else {
-		time--;
-		std::string tmp = StringUtils::format("%i second", time);
+		timeRevival--;
+		std::string tmp = StringUtils::format("%i second", timeRevival);
 		lblCountDown->setString(tmp);
 	}
 }

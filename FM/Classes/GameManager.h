@@ -54,7 +54,7 @@ public:
 	/** Get the amount of hidden areas in a map.
 	*/
 	int getMapHiddenAreasCount();
-
+	int countDead;
 private:
 	static GameManager* create();
 
