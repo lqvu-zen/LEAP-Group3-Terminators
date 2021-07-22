@@ -139,7 +139,9 @@ std::string GameManager::getMapName()
 			{
 				if (map[i]["ID"].GetInt() == mapLevel)
 				{
+					//Get the map path and the amount of hidden areas in the map from the JSON file.
 					mapPath = map[i]["PATH"].GetString();
+					mapHiddenAreaCount = map[i]["HIDDEN_AREAS"].GetInt();
 				}
 			}
 		}
@@ -151,4 +153,9 @@ void GameManager::setMapLevel(int level)
 {
 	//Set the map level. 0: village map, 1: playMap 1, 2: playMap 2, etc...
 	mapLevel = level;
+}
+
+int GameManager::getMapHiddenAreasCount()
+{
+	return mapHiddenAreaCount;
 }

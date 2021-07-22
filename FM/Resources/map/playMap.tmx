@@ -23,7 +23,7 @@
    eJztmktuFDEQht3L8NoyiEe4Boske0AiOULIHnKECYELJAEuEF4ScC7gAhBgQVndpamxxu6ZdLsfw/dJv1zxaNzltH+XuzXOAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOThWPRS9CoRw//Ntmgn8XffbFfKwWvRG9HbRHxTNBHdypQDjItd0V7fSRjuFc5tirbczLtha8m5nmNjL6o91KNxUlcfhuqPc1fqnei96IPoo+jTkuO07Rs7XsoTx0Z4ZPzoehwK1ySX66LHfSfSIt4rDypBv6z6PDE0f2g+6+QPi68nuZ6v2mBRzbW1c9XYnpMtbfXnZqj+OO87ERg83oN1Nbmpp55UWsSWm/k27L+M961iOd8Vb/xJ5LSu5Hxvl4J3dWn2Kw0Fff4YUk5d4PcD/57kUPRM9DwRh+1hD/kOlbbPYFo/Lir1he6fer7y/jiKKLbnTSrZ8+8kY85N3pFdVN/Veft74Od2VeY+rYnD9oVb3iu5zvCfRV9EXxMaI1o/UuesLvDXPnDz56sm73f75pvou+iH6Kfol5t5wsuvd62VN0Qn0ncqOnP1cdj6z6au9IqPF9WeOuzZOBanPls1bmOsLp7Z1Re7lbo+B+v1DirZ81Uuf7R1n8MxrQ9+u9Lnf0UbMp8rRemJ26I7RbkPaK28X8zPtS4OW/+ZemXqSp9sFPNxHTZH69ux9OdC68dTV65P9UlXaN1Q6Zrx/XZ/tL8Bacqem+0JTeJwzNi9i3nioXznkSvbZX77Eov9/0e9Eqs9dcRyHJoPuvaHrR/23u90pNh8vWdz1Q/vQ7snXDYOx1y1Ntg5NYnPjGLXqiOW+1j6c7Hv2lkry8S2T9uu5wsAAOvNP21090E=
   </data>
  </layer>
- <layer id="11" name="Hidden" width="200" height="36">
+ <layer id="11" name="Hidden0" width="200" height="36">
   <data encoding="base64" compression="zlib">
    eJzt07EJADAMA0Hv3wcybiZQ6xhzB+rVfBUAAAAAAAAAAAAAAAAAAAAAAAD0OmH35ykYQh+Q6QMyfUCmDwAAAAAAYJMHu78Ubw==
   </data>
@@ -81,7 +81,7 @@
   </object>
   <object id="15" name="TriggerHidden" x="62" y="339.182" width="96" height="80">
    <properties>
-    <property name="TriggerHidden" type="int" value="1"/>
+    <property name="TriggerHidden" type="int" value="0"/>
    </properties>
   </object>
   <object id="16" name="ItemSpawn" x="34.6334" y="428.516" width="30.7332" height="29.6356">

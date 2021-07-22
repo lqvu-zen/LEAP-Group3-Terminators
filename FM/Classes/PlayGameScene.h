@@ -34,7 +34,7 @@ private:
 	std::list<MonsterCharacter*> monsters;
 	BossCharacter* boss;
 	TMXLayer* Foreground;
-	TMXLayer* Hidden;
+	std::vector<TMXLayer*> HiddenAreas;
 	//void addAt(int x, int y, int type);
 	Vector<Node*> pausedActions;
 	bool isDeadNoticePopUp = false;
@@ -49,7 +49,7 @@ private:
 	//void onClickMoveMenu(cocos2d::Ref* sender);
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onContactSeperate(cocos2d::PhysicsContact &contact);
-	void hideTiles();
+	void hideTiles(int tag);
 	void showTiles();
 	void onClickAttackMenu(cocos2d::Ref* sender);
 	void updateMonster(float dt);

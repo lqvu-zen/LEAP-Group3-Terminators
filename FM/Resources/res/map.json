@@ -2,15 +2,18 @@
   "MAP": [
     {
       "ID": 0,
-      "PATH": "map/villageMap.tmx"
+      "PATH": "map/villageMap.tmx",
+      "HIDDEN_AREAS": 0
     },
     {
       "ID": 1,
-      "PATH": "map/playMap.tmx"
+      "PATH": "map/playMap.tmx",
+      "HIDDEN_AREAS": 1
     },
     {
       "ID": 2,
-      "PATH": "map/playMap2.tmx"
+      "PATH": "map/playMap2.tmx",
+      "HIDDEN_AREAS": 3
     }
   ]
 }
