@@ -503,6 +503,7 @@ void PlayGameScene::updateCharacter(float dt)
 	{	//Player is dead
 		if (isDeadNoticePopUp == false)
 		{
+			GameManager::getInstace()->countDead++;
 			PlayGameScene::playerDeadNotice();
 			isDeadNoticePopUp = true;
 		}
@@ -856,7 +857,7 @@ bool PlayGameScene::checkVector(vector<int>list, int num) {
 
 //Revival
 void PlayGameScene::Revival1Func() {
-	goldRevival = 5;
+	goldRevival = GameManager::getInstace()->countDead * 5;
 	std::string notify = StringUtils::format("You will respawn on the spot \nYou will need to spend %i gold", timeRevival);
 	UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Revival", notify, NULL, [=]() {
 		if (playerChar->exceptGold(50)) {
@@ -873,7 +874,7 @@ void PlayGameScene::Revival1Func() {
 	buttonNode->addChild(popup, 2);
 }
 void PlayGameScene::Revival2Func() {
-	timeRevival = 60;
+	timeRevival = GameManager::getInstace()->countDead * 60;
 	std::string notify = StringUtils::format("You will return to the village and respawn.\nYou need to wait %i second", timeRevival);
 	UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Revival", notify, NULL, [=]() {
 		std::string tmp = StringUtils::format("%i second", timeRevival);

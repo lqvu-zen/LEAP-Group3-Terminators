@@ -51,7 +51,8 @@ public:
 	/** Set the map level. 0: village map, 1: playMap 1, 2: playMap 2, etc...
 	 */
 	void setMapLevel(int level);
-
+	
+	int countDead;
 private:
 	static GameManager* create();
 
