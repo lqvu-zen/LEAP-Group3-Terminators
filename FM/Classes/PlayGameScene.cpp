@@ -461,7 +461,9 @@ bool PlayGameScene::init()
 	//boss->death();
 	this->scheduleUpdate();
 
-
+	//
+	timeRevival = 0;
+	goldRevival = 0;
 	return true;
 }
 
@@ -854,8 +856,9 @@ bool PlayGameScene::checkVector(vector<int>list, int num) {
 
 //Revival
 void PlayGameScene::Revival1Func() {
-
-	UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Revival", "You will respawn on the spot \nYou will need to spend 5 gold", NULL, [=]() {
+	goldRevival = 5;
+	std::string notify = StringUtils::format("You will respawn on the spot \nYou will need to spend %i gold", timeRevival);
+	UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Revival", notify, NULL, [=]() {
 		if (playerChar->exceptGold(50)) {
 			playerChar->revive();
 		}
@@ -870,11 +873,12 @@ void PlayGameScene::Revival1Func() {
 	buttonNode->addChild(popup, 2);
 }
 void PlayGameScene::Revival2Func() {
-	time = 90;
-	UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Revival", "You will return to the village and respawn.\nYou need to wait 90 second",NULL, [=]() {
-		std::string tmp = StringUtils::format("%i second", time);
+	timeRevival = 60;
+	std::string notify = StringUtils::format("You will return to the village and respawn.\nYou need to wait %i second", timeRevival);
+	UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Revival", notify, NULL, [=]() {
+		std::string tmp = StringUtils::format("%i second", timeRevival);
 		lblCountDown = Label::createWithTTF(tmp, "fonts/Dimbo Regular.ttf", 45);
-		UICustom::Popup* countdown = UICustom::Popup::countdown(time, lblCountDown);
+		UICustom::Popup* countdown = UICustom::Popup::countdown(timeRevival, lblCountDown);
 		buttonNode->addChild(countdown, 2);
 		this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateCountDown), 1);
 	}, [=] {
@@ -883,12 +887,12 @@ void PlayGameScene::Revival2Func() {
 	buttonNode->addChild(popup, 2);
 }
 void PlayGameScene::updateCountDown(float) {
-	if (time == 0) {
+	if (timeRevival == 0) {
 		goToVillage();
 	}
 	else {
-		time--;
-		std::string tmp = StringUtils::format("%i second", time);
+		timeRevival--;
+		std::string tmp = StringUtils::format("%i second", timeRevival);
 		lblCountDown->setString(tmp);
 	}
 }

@@ -21,6 +21,7 @@ void GameManager::init()
 
 	itemMap.clear();
 	countItem = 0;
+	numDead = 0;
 }
 
 PlayerCharacter * GameManager::GetPlayerCharacter(bool withInit)
