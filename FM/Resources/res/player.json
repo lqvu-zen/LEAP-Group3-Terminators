@@ -31,7 +31,22 @@
 			},
 			"NORMAL_ATTACK":
 			{
-				
+				"SIZE_1_X": 50.0,
+				"SIZE_1_Y": 42.0,
+				"SIZE_2_X": 62.0,
+				"SIZE_2_Y": 42.0,
+				"SIZE_3_X": 75.0,
+				"SIZE_3_Y": 84.0,
+				"SUB_ATTACK":
+				{
+					"ENABLE": 0,
+					"PNG": "sprites/Archer/Arrow/Static.png",
+					"SIZE_X": 10.0,
+					"SIZE_Y": 10.0,
+					"SCALE": 1.0,
+					"MOVEMENT": 1,
+					"TIME": 2.0
+				}
 			}
 		}
 	]
