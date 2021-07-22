@@ -858,9 +858,9 @@ bool PlayGameScene::checkVector(vector<int>list, int num) {
 //Revival
 void PlayGameScene::Revival1Func() {
 	goldRevival = GameManager::getInstace()->countDead * 5;
-	std::string notify = StringUtils::format("You will respawn on the spot \nYou will need to spend %i gold", timeRevival);
+	std::string notify = StringUtils::format("You will respawn on the spot \nYou will need to spend %i gold", goldRevival);
 	UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Revival", notify, NULL, [=]() {
-		if (playerChar->exceptGold(50)) {
+		if (playerChar->exceptGold(goldRevival)) {
 			playerChar->revive();
 		}
 		else {
