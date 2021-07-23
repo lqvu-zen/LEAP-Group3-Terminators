@@ -73,8 +73,14 @@ MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _type, int _level)
 	characterPhysicsBody->setCategoryBitmask(ENEMIES_CATEGORY_BITMASK);
 	characterPhysicsBody->setCollisionBitmask(ENEMIES_COLLISION_BITMASK);
 	characterPhysicsBody->setContactTestBitmask(ALLSET_BITMASK);
-	//set linear damping so the monster won't slide of the map
-	characterPhysicsBody->setLinearDamping(1.0f);
+
+	//some PhysicsShape setup so the player can't push the monster.
+	//For more on Physics notes: check this link: https://www.programmersought.com/article/57555007238/
+	PhysicsShape* shape = characterPhysicsBody->getShape(0);
+	shape->setDensity(200.0f);
+	shape->setFriction(1.0f);
+	shape->setRestitution(0.0f);
+
 	characterSprite->setPhysicsBody(characterPhysicsBody);
 	
 	characterSprite->addChild(characterSpriteAnimation);
