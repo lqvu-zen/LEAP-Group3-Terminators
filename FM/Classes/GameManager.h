@@ -37,6 +37,7 @@ public:
 	void hit(int attacker, int victim);
 	void colect(int item);
 
+
 	PhysicsShapeCache* getPhysicsShapeCache();
 
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
@@ -60,8 +61,10 @@ private:
 
 	PlayerCharacter* playerCharacter;
 	int playerCharacterType;
+
 	int mapLevel = 0;
 	int mapHiddenAreaCount = 0;
+
 	int countCharacter;
 	std::map <int, Character*> characterMap;
 

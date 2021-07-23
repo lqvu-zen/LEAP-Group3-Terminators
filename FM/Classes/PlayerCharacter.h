@@ -64,6 +64,11 @@ public:
 	void setVelocity(cocos2d::Vec2 velocity);
 	cocos2d::Vec2 getVolocity();
 	cocos2d::Vec2 getRealtimeVolocity();
+
+	//save option
+	void savePosition();
+	void returnSavePosition();
+
 private:
 	//document
 	rapidjson::Document characterDocument;
@@ -104,6 +109,10 @@ private:
 
 	//character inventory
 	Inventory characterInventory;
+
+	//save position
+	cocos2d::Vec2 characterSavePosition;
+	
 };
 
 #endif // __PLAYERCHARACTER_H__
