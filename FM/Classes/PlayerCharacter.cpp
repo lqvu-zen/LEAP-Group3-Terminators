@@ -119,6 +119,8 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 
 		sprintf(nameCharacter, characterValue["NAME"].GetString());
 
+		characterSpriteAnimation->setColor(cocos2d::Color3B::WHITE);
+
 		switch (actionState)
 		{
 		case PlayerCharacter::State::IDLE:
@@ -221,7 +223,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 
 void PlayerCharacter::updateAction(float dt)
 {
-	//CCLOG("Character velocity: x:%f - y:%f", characterVelocity.x, characterVelocity.y);
+	//CCLOG("Character HP: %f", characterStats.HP);
 	//CCLOG("PhysicBody velocity: x:%f - y:%f", characterPhysicsBody->getVelocity().x, characterPhysicsBody->getVelocity().y);
 	if (!died) {
 		//update stats
@@ -237,6 +239,9 @@ void PlayerCharacter::updateAction(float dt)
 		if (characterStats.HP <= 0.0f) {
 			died = true;
 			updateAnimation(State::DEATH, characterDirection, false);
+
+			attacking = false;  
+			takingHit = false;
 			return;
 		}
 
@@ -294,6 +299,9 @@ void PlayerCharacter::updateAction(float dt)
 		}
 
 		if (grounded) {
+			//save position when grounded
+			savePosition();
+
 			if (characterPhysicsBody->getVelocity().x > PADDING_VELOCITY || characterPhysicsBody->getVelocity().x < -PADDING_VELOCITY) {
 				//CCLOG("RUNING");
 				updateAnimation(State::RUNING, direction);
@@ -302,6 +310,11 @@ void PlayerCharacter::updateAction(float dt)
 				//CCLOG("IDLE");
 				updateAnimation(State::IDLE, direction);
 			}
+		}
+	}
+	else {
+		if (characterStats.HP > 0) {
+			died = false;
 		}
 	}
 }
@@ -550,9 +563,9 @@ void PlayerCharacter::takeHit(float dame)
 
 void PlayerCharacter::revive()
 {
-	died = false;
 	characterStats.ResetCharacterStats();
-	
+
+	died = false;
 	updateAnimation(State::IDLE, characterDirection);
 }
 
@@ -591,8 +604,6 @@ void PlayerCharacter::useItem(Item::ItemType itemType)
 
 cocos2d::Sprite * PlayerCharacter::getSprite()
 {
-	
-
 	return characterSprite;
 }
 
@@ -639,4 +650,14 @@ inline void PlayerCharacter::getValue(int characterType)
 			}
 		}
 	}
+}
+
+void PlayerCharacter::savePosition()
+{
+	characterSavePosition = characterSprite->getPosition();
+}
+
+void PlayerCharacter::returnSavePosition()
+{
+	characterSprite->setPosition(characterSavePosition);
 }
