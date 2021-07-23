@@ -109,7 +109,7 @@ void PlayerCharacter::setPosition(cocos2d::Vec2 position)
 
 void PlayerCharacter::updateAnimation(State actionState, Direction actionDirection, bool repeatForever)
 {
-	if (characterState != actionState && attacking != true && takingHit != true) {
+	if ((characterState != actionState && attacking != true && takingHit != true) || actionState == State::DEATH){
 
 		const int maxWord = 50;
 
@@ -225,7 +225,7 @@ void PlayerCharacter::updateAction(float dt)
 {
 	//CCLOG("Character HP: %f", characterStats.HP);
 	//CCLOG("PhysicBody velocity: x:%f - y:%f", characterPhysicsBody->getVelocity().x, characterPhysicsBody->getVelocity().y);
-	if (!died) {
+	if (characterStats.HP >= 0.0f) {
 		//update stats
 		characterStats.UpdateStatsBar();
 
@@ -237,11 +237,12 @@ void PlayerCharacter::updateAction(float dt)
 		Direction direction = (characterVelocity.x == 0 ? characterDirection : (characterVelocity.x > 0 ? Direction::RIGHT : Direction::LEFT));
 
 		if (characterStats.HP <= 0.0f) {
-			died = true;
-			updateAnimation(State::DEATH, characterDirection, false);
-
-			attacking = false;  
+			//died = true;
+			characterStats.HP -= 1.0f;
+			attacking = false;
 			takingHit = false;
+
+			updateAnimation(State::DEATH, characterDirection, false);
 			return;
 		}
 
@@ -299,9 +300,6 @@ void PlayerCharacter::updateAction(float dt)
 		}
 
 		if (grounded) {
-			//save position when grounded
-			savePosition();
-
 			if (characterPhysicsBody->getVelocity().x > PADDING_VELOCITY || characterPhysicsBody->getVelocity().x < -PADDING_VELOCITY) {
 				//CCLOG("RUNING");
 				updateAnimation(State::RUNING, direction);
@@ -310,11 +308,6 @@ void PlayerCharacter::updateAction(float dt)
 				//CCLOG("IDLE");
 				updateAnimation(State::IDLE, direction);
 			}
-		}
-	}
-	else {
-		if (characterStats.HP > 0) {
-			died = false;
 		}
 	}
 }
@@ -347,6 +340,7 @@ void PlayerCharacter::reupdateAnimation()
 		//Death update
 		//characterSprite->removeAllChildren();
 		//characterSprite->removeFromParent();
+		died = true;
 	}
 }
 
@@ -393,6 +387,9 @@ void PlayerCharacter::setJumping()
 
 void PlayerCharacter::resetJump()
 {
+	//save position when grounded
+	savePosition();
+
 	if (characterStats.jump > 0) characterStats.jump = 0;
 }
 
@@ -558,7 +555,7 @@ void PlayerCharacter::takeHit(float dame)
 
 	takingHit = true;
 
-	characterStats.HP -= dame;
+	characterStats.HP = max(characterStats.HP - dame, 0.0f);
 }
 
 void PlayerCharacter::revive()
