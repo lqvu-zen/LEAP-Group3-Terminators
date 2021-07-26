@@ -38,6 +38,10 @@ bool PlayGameScene::init()
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
+
+	SpriteBatchNode* spriteNode = SpriteBatchNode::create("sprites/Number/Number.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Number/Number.plist");
+
 	//Add buttons
 #if 1
 	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
@@ -169,7 +173,7 @@ bool PlayGameScene::init()
 #endif
 
 	//Lock Skill
-#if 1
+#if 0
 	MenuItemImage* lockskill_1Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
 		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
@@ -591,41 +595,95 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	else if (node->getTag() == 2) {
 		CCLOG("Skill 1");
 		playerChar->attack(3);
-		Sprite* lockskill = Sprite::create("sprites/lock.png");
-		lockskill->setScale(0.3);
-		lockskill->setPosition(node->getPosition());
-		buttonNode->addChild(lockskill);
-		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);//Delay time after use an ability
-		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
-		auto seq = Sequence::create(delay, move, nullptr);
-		lockskill->runAction(seq);
-		//lockskill->removeFromParent();
+		if (lock1 == false) {
+			lock1 = true;
+			int countDown = 5;
+			char spriteFrameByName[20] = { 0 };
+			sprintf(spriteFrameByName, "%d.png", countDown);
+			lockskill1 = Sprite::create("sprites/Number/5.png");
+			lockskill1->setPosition(node->getPosition());
+			lockskill1->setScale(0.3);
+			buttonNode->addChild(lockskill1, 1);
+
+			Vector<SpriteFrame*> animFrames;
+			for (int i = countDown; i >= 0; i--) {
+				char buffer[20] = { 0 };
+				sprintf(buffer, "%d.png", i);
+				auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(buffer);
+				animFrames.pushBack(frame);
+			}
+			Animation* animation = Animation::createWithSpriteFrames(animFrames, 1);
+
+			auto callback = CallFunc::create([this]() {
+				lockskill1->removeFromParent();
+				lock1 = false;
+			});
+			auto animate = Animate::create(animation);
+			auto seq = Sequence::create(animate, callback, nullptr);
+			lockskill1->runAction(seq);
+		}		
 	}
 	else if (node->getTag() == 3) {
 		CCLOG("Skill 2");
 		playerChar->attack(2);
-		Sprite* lockskill = Sprite::create("sprites/lock.png");
-		lockskill->setScale(0.3);
-		lockskill->setPosition(node->getPosition());
-		buttonNode->addChild(lockskill);
-		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
-		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
-		auto seq = Sequence::create(delay, move, nullptr);
-		lockskill->runAction(seq);
-		//lockskill->removeFromParent();
+		if (lock2 == false) {
+			lock2 = true;
+			int countDown = 5;
+			char spriteFrameByName[20] = { 0 };
+			sprintf(spriteFrameByName, "%d.png", countDown);
+			lockskill2 = Sprite::create("sprites/Number/5.png");
+			lockskill2->setPosition(node->getPosition());
+			lockskill2->setScale(0.3);
+			buttonNode->addChild(lockskill2, 1);
+
+			Vector<SpriteFrame*> animFrames;
+			for (int i = countDown; i >= 0; i--) {
+				char buffer[20] = { 0 };
+				sprintf(buffer, "%d.png", i);
+				auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(buffer);
+				animFrames.pushBack(frame);
+			}
+			Animation* animation = Animation::createWithSpriteFrames(animFrames, 1);
+
+			auto callback = CallFunc::create([this]() {
+				lockskill2->removeFromParent();
+				lock2 = false;
+			});
+			auto animate = Animate::create(animation);
+			auto seq = Sequence::create(animate, callback, nullptr);
+			lockskill2->runAction(seq);
+		}
 	}
 	else if (node->getTag() == 4) {
 		CCLOG("Skill 3");
 		playerChar->attack(1);
-		Sprite* lockskill = Sprite::create("sprites/lock.png");
-		lockskill->setScale(0.3);
-		lockskill->setPosition(node->getPosition());
-		buttonNode->addChild(lockskill);
-		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
-		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
-		auto seq = Sequence::create(delay, move, nullptr);
-		lockskill->runAction(seq);
-		//lockskill->removeFromParent();
+		if (lock3 == false) {
+			lock3 = true;
+			int countDown = 5;
+			char spriteFrameByName[20] = { 0 };
+			sprintf(spriteFrameByName, "%d.png", countDown);
+			lockskill3 = Sprite::create("sprites/Number/5.png");
+			lockskill3->setPosition(node->getPosition());
+			lockskill3->setScale(0.3);
+			buttonNode->addChild(lockskill3, 1);
+
+			Vector<SpriteFrame*> animFrames;
+			for (int i = countDown; i >= 0; i--) {
+				char buffer[20] = { 0 };
+				sprintf(buffer, "%d.png", i);
+				auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(buffer);
+				animFrames.pushBack(frame);
+			}
+			Animation* animation = Animation::createWithSpriteFrames(animFrames, 1);
+
+			auto callback = CallFunc::create([this]() {
+				lockskill3->removeFromParent();
+				lock3 = false;
+			});
+			auto animate = Animate::create(animation);
+			auto seq = Sequence::create(animate, callback, nullptr);
+			lockskill3->runAction(seq);
+		}
 	}
 }
 

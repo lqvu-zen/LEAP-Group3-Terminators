@@ -75,6 +75,9 @@ private:
 	int goldRevival;
 	cocos2d::Label* lblCountDown;
 	void updateCountDown(float);
+
+	Sprite* lockskill1, * lockskill2, * lockskill3;
+	bool lock1, lock2, lock3;
 };
 
 #endif // __PLAYGAME_SCENE_H__
