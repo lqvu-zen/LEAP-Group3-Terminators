@@ -577,20 +577,25 @@ void PlayerCharacter::closeInventory()
 	characterInventory.GetSprite()->setVisible(false);
 }
 
-void PlayerCharacter::colectItem(Item * item)
+void PlayerCharacter::colectItem(Item * item, int mount)
 {
-	auto colectSprite = item->getColectSprite();
+	auto colectSprite = item->getColectSprite(mount);
 	colectSprite->setPosition(Vec2(0.0f, characterSize.height / 2 + 5.0f));
 
 	//auto wait = DelayTime::create(COLECT_DELAY);
+
 	auto moveBy = MoveBy::create(COLECT_DELAY, Vec2(0.0f, 10.0f));
 	auto removeSeft = RemoveSelf::create();
+
+	auto callbackRemove = CallFunc::create([]() {
+		log("Removed!");
+	});
 
 	colectSprite->runAction(Sequence::create(moveBy, removeSeft, NULL));
 
 	characterSprite->addChild(colectSprite);
 
-	characterInventory.addItem(item);
+	characterInventory.addItem(item, mount);
 }
 
 void PlayerCharacter::addGold(int num) {

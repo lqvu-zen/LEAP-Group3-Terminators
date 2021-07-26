@@ -15,7 +15,7 @@ public:
 
 	void init();
 
-	void addItem(Item* _item);
+	void addItem(Item* _item, int mount = 1);
 
 	Item* getItem(Item::ItemType itemType);
 
