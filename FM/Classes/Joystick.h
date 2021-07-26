@@ -24,6 +24,7 @@ private:
 	JoystickEvent();
 
 public:
+	JoyStickEventType type;
 	virtual ~JoystickEvent();
 	virtual bool init(); CREATE_FUNC(JoystickEvent)
 		;
@@ -46,16 +47,16 @@ protected:
 	void onTouchEnded(Touch *touch, Event *unused_event);
 
 public:
-	JoyStickEventType type;
-	std::vector<EventKeyboard::KeyCode> heldKeys;
+	double getDistanceFromCenter();
 	virtual ~Joystick();
 	virtual bool init(); CREATE_FUNC(Joystick)
 		;
 	
 private:
+	double distanceOfTouchPointToCenter = 0;
 	Sprite* mJsBg;
 	Sprite* mJsCenter;
-	Vec2 mJsPos = Vec2(128, 60);
+	Vec2 mJsPos = Vec2(120, 100);
 };
 
 #endif /* JOYSTICK_H_ */

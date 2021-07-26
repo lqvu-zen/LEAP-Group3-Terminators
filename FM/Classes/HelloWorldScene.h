@@ -18,6 +18,13 @@ public:
     Mission* mission;
 
     BossCharacter* boss;
+
+    void ticktock(float dt);
+
+    int timee;
+    int minutes;
+    Sprite* backSprite;
+    ClippingNode* backClipper;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
