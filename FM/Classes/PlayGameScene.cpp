@@ -474,13 +474,14 @@ bool PlayGameScene::init()
 
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	
-	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
+	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::bossAction), 1);
 	//boss->death();
 	this->scheduleUpdate();
 
 	//
 	timeRevival = 0;
 	goldRevival = 0;
+	win = false;
 	return true;
 }
 
@@ -502,6 +503,8 @@ void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos
 void PlayGameScene::update(float dt)
 {
 	this->updateMonster(dt);
+	this->updateBoss(dt);
+
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	cameraTarget->setPositionY(playerChar->getSprite()->getPositionY());
 	this->updateCharacter(dt);
@@ -826,7 +829,6 @@ void PlayGameScene::updateMonster(float dt) {
 		}
 	}
 }
-
 void PlayGameScene::monsterAction(float dt) {
 	std::list<MonsterCharacter*> ::iterator it;
 	for (it = monsters.begin(); it != monsters.end(); ++it) {
@@ -844,6 +846,14 @@ void PlayGameScene::monsterAction(float dt) {
 /// </summary>
 /// <param name="dt"></param>
 void PlayGameScene::updateBoss(float dt) {
+	if (boss->getStats().HP <= 0) {
+		if (win == false) {
+			win = true;
+			this->scheduleOnce(CC_SCHEDULE_SELECTOR(PlayGameScene::goToWinScene), DISPLAY_TIME_SPLASH_SCENE);
+		}
+	}
+}
+void PlayGameScene::bossAction(float dt) {
 	/*if (abs(boss->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
 		if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
 			boss->setDirection(BossCharacter::Direction::LEFT);
@@ -969,4 +979,31 @@ void PlayGameScene::updateCountDown(float) {
 		std::string tmp = StringUtils::format("%i second", timeRevival);
 		lblCountDown->setString(tmp);
 	}
+}
+
+
+
+
+void PlayGameScene::goToWinScene(float dt) {
+
+	auto background = Sprite::create("sprites/winBackground.png");
+	background->setPosition(visibleSize / 2);
+	background->setScale(0.5);
+	this->addChild(background, 3);
+
+	auto title = Label::createWithTTF("Win", "fonts/Marker Felt.ttf", 60);
+	title->setTextColor(Color4B::WHITE);
+	title->setPosition(visibleSize / 2);
+	this->addChild(title, 3);
+
+	//auto countine = MenuItemFont::create("Conutine", CC_CALLBACK_1(PlayGameScene::goToVillage, scene));
+	auto continueItem = MenuItemFont::create("Continue", CC_CALLBACK_1(PlayGameScene::goToContinue, this));
+
+	auto menu = Menu::create(continueItem, nullptr);
+	menu->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.25));
+	menu->alignItemsVertically();
+	this->addChild(menu, 3);
+}
+void PlayGameScene::goToContinue(cocos2d::Ref* sender) {
+	goToVillage();
 }
