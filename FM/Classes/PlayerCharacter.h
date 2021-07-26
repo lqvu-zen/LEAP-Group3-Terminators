@@ -51,7 +51,7 @@ public:
 	void openInventory();
 	void closeInventory();
 
-	void colectItem(Item* item);
+	void colectItem(Item* item, int mount = 1);
 	void addGold(int num);
 	bool exceptGold(int num);
 

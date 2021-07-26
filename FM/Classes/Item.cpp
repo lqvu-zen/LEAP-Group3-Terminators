@@ -48,6 +48,33 @@ cocos2d::Sprite* Item::getSprite()
 	return itemSprite;
 }
 
+cocos2d::Sprite * Item::getColectSprite(int mount)
+{
+	TTFConfig labelConfig;
+	labelConfig.fontFilePath = "fonts/arial.ttf";
+	labelConfig.fontSize = 20;
+	labelConfig.glyphs = GlyphCollection::DYNAMIC;
+	labelConfig.outlineSize = 1;
+	labelConfig.customGlyphs = nullptr;
+	labelConfig.distanceFieldEnabled = false;
+
+	auto colectSprite = Sprite::create();
+
+	auto colectItemSprite = Sprite::create(itemValue["SPRITES"]["PNG"].GetString());
+
+	std::string colectCount = StringUtils::format("+%d ", mount);
+	auto colectLabel = Label::createWithTTF(labelConfig, colectCount);
+
+	colectItemSprite->setPosition(Vec2(colectLabel->getContentSize().width, 0.0f));
+
+	colectSprite->addChild(colectItemSprite);
+	colectSprite->addChild(colectLabel);
+
+	colectSprite->setScale(0.5f);
+
+	return colectSprite;
+}
+
 Item::ItemType Item::getType()
 {
 	return itemType;

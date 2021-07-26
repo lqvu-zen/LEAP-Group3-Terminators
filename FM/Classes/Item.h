@@ -19,6 +19,7 @@ public:
 	Item(ItemType _itemType);
 
 	cocos2d::Sprite* getSprite();
+	cocos2d::Sprite* getColectSprite(int mount = 1);
 
 	Item::ItemType getType();
 

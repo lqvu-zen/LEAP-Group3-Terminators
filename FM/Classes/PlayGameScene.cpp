@@ -11,7 +11,7 @@ Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
 	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
+	scene->getPhysicsWorld()->setGravity(Vect(0, -GRAVITY_VELOCITY));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
 

@@ -19,15 +19,21 @@ void Inventory::init()
 	inventorySprite = nullptr;
 }
 
-void Inventory::addItem(Item * _item)
+void Inventory::addItem(Item * _item, int mount)
 {
 	if (_item->getType() == Item::ItemType::GOLD) {
-		gold++;
+		gold += mount;
 		return;
 	}
 
-	itemCount++;
+	itemCount += mount;
 	itemMap[_item->getType()].push_back(_item);
+
+	for (int i = 0; i < mount - 1; ++i) {
+		auto item2 = new Item(_item->getType());
+
+		itemMap[_item->getType()].push_back(item2);
+	}
 }
 
 Item * Inventory::getItem(Item::ItemType itemType)
