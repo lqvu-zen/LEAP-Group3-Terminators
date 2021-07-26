@@ -172,7 +172,7 @@ bool PlayGameScene::init()
 #endif
 
 	//Lock Skill
-#if 0
+#if 1
 	MenuItemImage* lockskill_1Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
 		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
