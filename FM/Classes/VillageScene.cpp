@@ -3,6 +3,9 @@
 #include "Popup.h"
 #include "MainMenuScene.h"
 #include "PlayGameScene.h"
+
+#include "AudioManager.h"
+
 USING_NS_CC;
 
 Scene* VillageScene::createScene()
@@ -35,6 +38,9 @@ bool VillageScene::init()
 	gameNode = Node::create();
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
+
+	//background audio
+	AudioManager::playBackgroundAudio(AudioManager::SceneName::Village);
 
 	//Add buttons
 #if 1
@@ -420,6 +426,7 @@ bool VillageScene::init()
 	this->addChild(buttonNode, 1);
 
 	this->scheduleUpdate();
+
 	return true;
 }
 

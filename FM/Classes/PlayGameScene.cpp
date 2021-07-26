@@ -38,6 +38,9 @@ bool PlayGameScene::init()
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
+	//background audio
+	AudioManager::playBackgroundAudio(AudioManager::SceneName::Play);
+
 	//Add buttons
 #if 1
 	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
@@ -695,6 +698,9 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			//Using MoveTo to move the gameNode to the middle of the boss arena(the boss X position). The Vec2's y = 0 because we only want to move the x coord. 
 			auto moveTo = MoveTo::create(2, Vec2(-(boss->getSprite()->getPositionX() - visibleSize.width/2), -(32 * SCALE_FACTOR)));
 			gameNode->runAction(moveTo);
+
+			//combat audio
+			AudioManager::playBattleAudio();
 		}
 
 		//Player collide with the hidden area in the map

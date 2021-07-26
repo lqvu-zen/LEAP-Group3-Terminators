@@ -10,6 +10,7 @@
 #include "Item.h"
 #include "Mission.h"
 #include "PhysicsShapeCache.h"
+#include "AudioManager.h"
 #include <vector>
 
 USING_NS_CC;

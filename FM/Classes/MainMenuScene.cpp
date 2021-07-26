@@ -4,6 +4,7 @@
 #include "Popup.h"
 #include "VillageScene.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 
 USING_NS_CC;
 
@@ -33,6 +34,9 @@ bool MainMenuScene::init()
     // add a "close" icon to exit the progress. it's an autorelease object
 
 	GameManager::getInstace()->init();
+
+	//background audio
+	AudioManager::playBackgroundAudio(AudioManager::SceneName::MainMenu);
 #if 1 
     ///Menu
     auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
