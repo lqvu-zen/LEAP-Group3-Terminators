@@ -579,6 +579,17 @@ void PlayerCharacter::closeInventory()
 
 void PlayerCharacter::colectItem(Item * item)
 {
+	auto colectSprite = item->getColectSprite();
+	colectSprite->setPosition(Vec2(0.0f, characterSize.height / 2 + 5.0f));
+
+	//auto wait = DelayTime::create(COLECT_DELAY);
+	auto moveBy = MoveBy::create(COLECT_DELAY, Vec2(0.0f, 10.0f));
+	auto removeSeft = RemoveSelf::create();
+
+	colectSprite->runAction(Sequence::create(moveBy, removeSeft, NULL));
+
+	characterSprite->addChild(colectSprite);
+
 	characterInventory.addItem(item);
 }
 
