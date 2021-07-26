@@ -10,7 +10,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	//scene->getPhysicsWorld()->setGravity(Vect(0, 0));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -355,7 +355,7 @@ bool PlayGameScene::init()
 			//Using a list to  store the monsters
 			monsters.push_back(monster);
 			GameManager::getInstace()->AddCharacter(monsters.back());
-			gameNode->addChild(monsters.back()->getSprite());	
+			gameNode->addChild(monsters.back()->getSprite(), 1);
 		}
 
 
@@ -773,6 +773,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			}
 		}
 	}
+	
 	return true;
 }
 
