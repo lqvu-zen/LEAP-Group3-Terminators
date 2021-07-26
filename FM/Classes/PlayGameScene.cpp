@@ -79,7 +79,7 @@ bool PlayGameScene::init()
 	auto upItem = ui::Button::create("sprites/up.png");
 	upItem->setScale(0.4);
 	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.2 / 4));
-	upItem->setOpacity(200);
+	upItem->setOpacity(140);
 	buttonNode->addChild(upItem);
 	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -100,7 +100,7 @@ bool PlayGameScene::init()
 	auto leftItem = ui::Button::create("sprites/left.png");
 	leftItem->setScale(0.1);
 	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.2 / 4, button->getPosition().y));
-	leftItem->setOpacity(200);
+	leftItem->setOpacity(140);
 	buttonNode->addChild(leftItem);
 	leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -121,7 +121,7 @@ bool PlayGameScene::init()
 	auto rightItem = ui::Button::create("sprites/right.png");
 	rightItem->setScale(0.1);
 	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.2 / 4, button->getPosition().y));
-	rightItem->setOpacity(200);
+	rightItem->setOpacity(140);
 	buttonNode->addChild(rightItem);
 	rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -164,7 +164,7 @@ bool PlayGameScene::init()
 
 	auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
-	attackMenu->setOpacity(200);
+	attackMenu->setOpacity(140);
 	buttonNode->addChild(attackMenu);
 #endif
 
@@ -193,7 +193,7 @@ bool PlayGameScene::init()
 	}
 	auto lockMenu = Menu::create(lockskill_1Item, lockskill_2Item, lockskill_3Item, nullptr);
 	lockMenu->setPosition(Vec2::ZERO);
-	lockMenu->setOpacity(200);
+	lockMenu->setOpacity(140);
 	buttonNode->addChild(lockMenu);
 
 #endif
@@ -213,7 +213,7 @@ bool PlayGameScene::init()
 			break;
 		}
 	});
-	mpButton->setOpacity(200);
+	mpButton->setOpacity(140);
 	buttonNode->addChild(mpButton, 1);
 
 	auto hpButton = ui::Button::create("sprites/hpButton.png");
@@ -229,7 +229,7 @@ bool PlayGameScene::init()
 			break;
 		}
 	});
-	hpButton->setOpacity(200);
+	hpButton->setOpacity(140);
 	buttonNode->addChild(hpButton, 1);
 
 #endif
