@@ -7,7 +7,7 @@
 #include "NPC.h"
 #include "GameManager.h"
 #include "Portal.h"
-
+#include "Joystick.h"
 
 USING_NS_CC;
 class VillageScene: public cocos2d::Scene
@@ -28,6 +28,7 @@ public:
 
 private:
 	
+	Joystick* joystick;
 	TMXTiledMap *map;
 	Size visibleSize;
 	Vec2 origin;
@@ -42,7 +43,7 @@ private:
 	void updateCharacter(float dt);
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onClickAttackMenu(cocos2d::Ref* sender);
-
+	void onClickNPCInteract();
 	//Pause
 	void goToMission();
 	void goToSetting();
@@ -51,7 +52,7 @@ private:
 	void goToMap1();
 	void goToMap2();
 	void onContactSeperate(cocos2d::PhysicsContact &contact);
-
+	bool checkVector(vector<int>list, int num);
 	//UnlockSkill
 	void unlockSkill(int index);
 };

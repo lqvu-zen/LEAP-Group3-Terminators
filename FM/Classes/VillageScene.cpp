@@ -64,7 +64,7 @@ bool VillageScene::init()
 	buttonNode->addChild(pauseButton);
 #endif
 
-#if 1
+#if 0
 	auto button = Sprite::create("sprites/button.png");
 	button->setScale(0.2);
 	button->setPosition(Vec2(button->getContentSize().width * 0.1, button->getContentSize().height * 0.05));
@@ -73,7 +73,7 @@ bool VillageScene::init()
 	auto upItem = ui::Button::create("sprites/up.png");
 	upItem->setScale(0.4);
 	upItem->setPosition(Vec2(button->getPosition().x, button->getPosition().y + button->getContentSize().height * 0.2 / 4));
-	upItem->setOpacity(200);
+	upItem->setOpacity(140);
 	buttonNode->addChild(upItem);
 	upItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -94,7 +94,7 @@ bool VillageScene::init()
 	auto leftItem = ui::Button::create("sprites/left.png");
 	leftItem->setScale(0.1);
 	leftItem->setPosition(Vec2(button->getPosition().x - button->getContentSize().width * 0.2 / 4, button->getPosition().y));
-	leftItem->setOpacity(200);
+	leftItem->setOpacity(140);
 	buttonNode->addChild(leftItem);
 	leftItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -115,7 +115,7 @@ bool VillageScene::init()
 	auto rightItem = ui::Button::create("sprites/right.png");
 	rightItem->setScale(0.1);
 	rightItem->setPosition(Vec2(button->getPosition().x + button->getContentSize().width * 0.2 / 4, button->getPosition().y));
-	rightItem->setOpacity(200);
+	rightItem->setOpacity(140);
 	buttonNode->addChild(rightItem);
 	rightItem->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -135,23 +135,60 @@ bool VillageScene::init()
 #endif
 
 #if 1
-	//Interact button setup
-	interactiveItem = MenuItemImage::create("sprites/interact.png", "sprites/interact.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
-	interactiveItem->setScale(0.5);
-	interactiveItem->setPosition(Vec2(visibleSize.width - interactiveItem->getContentSize().width * 0.35, interactiveItem->getContentSize().height * 0.35));
-	interactiveItem->setTag(1);
-	interactiveItem->setOpacity(100);
-	interactiveItem->setEnabled(false);
-
 	auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
-	attackItem->setScale(0.3);
-	attackItem->setPosition(Vec2(visibleSize.width - interactiveItem->getContentSize().width * 0.8, interactiveItem->getContentSize().height * 0.2));
-	attackItem->setTag(2);
+	attackItem->setScale(0.7);
+	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
+	attackItem->setTag(1);
 
-	auto attackMenu = Menu::create(attackItem, interactiveItem, nullptr);
+	auto skill_1Item = MenuItemImage::create("sprites/skill_1.png", "sprites/skill_1.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
+	skill_1Item->setScale(0.3);
+	skill_1Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.7, attackItem->getContentSize().height * 0.2));
+	skill_1Item->setTag(2);
+
+	auto skill_2Item = MenuItemImage::create("sprites/skill_2.png", "sprites/skill_2.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
+	skill_2Item->setScale(0.3);
+	skill_2Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.65, attackItem->getContentSize().height * 0.55));
+	skill_2Item->setTag(3);
+
+	auto skill_3Item = MenuItemImage::create("sprites/skill_3.png", "sprites/skill_3.png", CC_CALLBACK_1(VillageScene::onClickAttackMenu, this));
+	skill_3Item->setScale(0.3);
+	skill_3Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.3, attackItem->getContentSize().height * 0.7));
+	skill_3Item->setTag(4);
+
+	auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
 	attackMenu->setPosition(Vec2::ZERO);
-	attackMenu->setOpacity(200);
+	attackMenu->setOpacity(140);
 	buttonNode->addChild(attackMenu);
+#endif
+
+	//Lock Skill
+#if 1
+	MenuItemImage* lockskill_1Item = MenuItemImage::create();
+	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
+		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
+		lockskill_1Item->setScale(0.3);
+		lockskill_1Item->setPosition(skill_1Item->getPosition());
+		lockskill_1Item->setTag(1);
+	}
+	MenuItemImage* lockskill_2Item = MenuItemImage::create();
+	if (checkVector(GameManager::getInstace()->lockedSkills, 2)) {
+		lockskill_2Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
+		lockskill_2Item->setScale(0.3);
+		lockskill_2Item->setPosition(skill_2Item->getPosition());
+		lockskill_2Item->setTag(2);
+	}
+	MenuItemImage* lockskill_3Item = MenuItemImage::create();
+	if (checkVector(GameManager::getInstace()->lockedSkills, 3)) {
+		lockskill_3Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
+		lockskill_3Item->setScale(0.3);
+		lockskill_3Item->setPosition(skill_3Item->getPosition());
+		lockskill_3Item->setTag(2);
+	}
+	auto lockMenu = Menu::create(lockskill_1Item, lockskill_2Item, lockskill_3Item, nullptr);
+	lockMenu->setPosition(Vec2::ZERO);
+	lockMenu->setOpacity(140);
+	buttonNode->addChild(lockMenu);
+
 #endif
 
 	//Buton recuperate
@@ -191,6 +228,9 @@ bool VillageScene::init()
 
 	//End add buttons
 
+	//Add joystick
+	joystick = Joystick::create();
+	buttonNode->addChild(joystick, 100);
 	
 
 	//map setup + add map
@@ -279,8 +319,25 @@ bool VillageScene::init()
 		}
 	}
 	
-	
-	
+	//Test add an invsible button an the NPC location.
+	auto npcInteract = ui::Button::create("sprites/interact.png");
+	npcInteract->setScale(0.4);
+	npcInteract->setPosition(npc->getSprite()->getPosition());
+	npcInteract->setOpacity(0);
+	gameNode->addChild(npcInteract);
+	npcInteract->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+		switch (type)
+		{
+		case ui::Widget::TouchEventType::BEGAN:
+			CCLOG("Touched the NPC");
+			VillageScene::onClickNPCInteract();
+			break;
+		case ui::Widget::TouchEventType::ENDED:
+			//Your function
+			CCLOG("End touch the NPC");
+			break;
+		}
+	});
 
 	//cameraTarget for the followCamera to follow the player.
 	cameraTarget = Node::create();
@@ -310,7 +367,44 @@ bool VillageScene::init()
 	contactListener->onContactSeparate = CC_CALLBACK_1(VillageScene::onContactSeperate, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-
+	//joystick listener
+	auto _listener = EventListenerCustom::create(JoystickEvent::EVENT_JOYSTICK, [=](EventCustom* event) {
+		JoystickEvent* jsevent = static_cast<JoystickEvent*>(event->getUserData());
+		log("--------------got joystick event, %p,  angle=%f", jsevent, jsevent->mAnagle);
+		if (180 >= jsevent->mAnagle && jsevent->mAnagle >= 135)
+		{
+			CCLOG("GO LEFT");
+			//End right then go left
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW), heldKeys.end());
+			if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW) == heldKeys.end()) {
+				heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW);
+			}
+		}
+		else if(45 >= jsevent->mAnagle && jsevent->mAnagle >= 0)
+		{
+			CCLOG("GO RIGHT");
+			//End left then go right
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW), heldKeys.end());
+			if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW) == heldKeys.end()) {
+				heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW);
+			}
+		}
+		else if(135 >= jsevent->mAnagle && jsevent->mAnagle >= 45)
+		{
+			if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW) == heldKeys.end()) {
+				heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW);
+			}
+		}
+		else
+		{
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW), heldKeys.end());
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW), heldKeys.end());
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW), heldKeys.end());
+		}
+		
+		// do your business you'd like to
+	});
+	_eventDispatcher->addEventListenerWithFixedPriority(_listener, 1);
 
 	//Keyboard test
 	auto listener = EventListenerKeyboard::create();
@@ -413,75 +507,116 @@ void VillageScene::updateCharacter(float dt)
 void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	auto node = dynamic_cast<Node*>(sender);
 	CCLOG("%i", node->getTag());
+	//Attack with buttons
 	if (node->getTag() == 1) {
-		if (standAlone)
-		{
-			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Standing Alone", "There is no one for you to talk ...");
-			buttonNode->addChild(popup);
-		}
-		else
-		{
-			string request = "";
-			Mission::Data yourMission = GameManager::getInstace()->getMission()->getMission();
-			if (yourMission.state == 4) {
-				request = yourMission.request;
-				UICustom::Popup* popup = UICustom::Popup::createAsMessage("Old man's quest", request);
-				buttonNode->addChild(popup);
-			}
-			else {
-				vector<Mission::Reward> rewards = GameManager::getInstace()->getMission()->getReward();
-
-				string tmp = "";
-				int i = 0;
-				for (int j = 0; j < rewards.size(); j++) {
-					if (i == 0) {
-						tmp += rewards.at(j).name;
-					}
-					else {
-						tmp += ", " + rewards.at(j).name;
-					}
-					i++;
-				}
-
-				if (yourMission.state == 5) {
-					request = yourMission.request + "\n You receive: " + tmp;
-					UICustom::Popup* popup = UICustom::Popup::createAsMessage("Old man's quest", request);
-					buttonNode->addChild(popup);
-					for (int i = 0; i < rewards.size(); i++) {
-						if (rewards.at(i).type == "Skill") {
-							//Unlock Skill rewards.at(i).number;
-							CCLOG("Unlock Skill %i", rewards.at(i).number);
-							unlockSkill(rewards.at(i).number);
-						}
-						else if (rewards.at(i).type == "Gold") {
-							//Add rewards.at(i).number Gold;
-							CCLOG("Add %i gold", rewards.at(i).number);
-							playerChar->addGold(rewards.at(i).number);
-						}
-					}
-
-
-				}
-				else {
-					request = yourMission.request + "\n Mission reward: " + tmp;
-					UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Old man's quest", request, NULL, [=]() {
-						GameManager::getInstace()->getMission()->agreeMission();
-						CCLOG("Accpect Mission!");
-					}, [=]() {
-						GameManager::getInstace()->getMission()->cancelMission();
-						CCLOG("Reject Mission!");
-					});
-					buttonNode->addChild(popup);
-				}
-			}
-		}
-	}
-
-	if (node->getTag() == 2) {
 		playerChar->attack();
 		CCLOG("Attack");
 	}
+	else if (node->getTag() == 2) {
+		CCLOG("Skill 1");
+		playerChar->attack(3);
+		Sprite* lockskill = Sprite::create("sprites/lock.png");
+		lockskill->setScale(0.3);
+		lockskill->setPosition(node->getPosition());
+		buttonNode->addChild(lockskill);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);//Delay time after use an ability
+		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
+		auto seq = Sequence::create(delay, move, nullptr);
+		lockskill->runAction(seq);
+		//lockskill->removeFromParent();
+	}
+	else if (node->getTag() == 3) {
+		CCLOG("Skill 2");
+		playerChar->attack(2);
+		Sprite* lockskill = Sprite::create("sprites/lock.png");
+		lockskill->setScale(0.3);
+		lockskill->setPosition(node->getPosition());
+		buttonNode->addChild(lockskill);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
+		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
+		auto seq = Sequence::create(delay, move, nullptr);
+		lockskill->runAction(seq);
+		//lockskill->removeFromParent();
+	}
+	else if (node->getTag() == 4) {
+		CCLOG("Skill 3");
+		playerChar->attack(1);
+		Sprite* lockskill = Sprite::create("sprites/lock.png");
+		lockskill->setScale(0.3);
+		lockskill->setPosition(node->getPosition());
+		buttonNode->addChild(lockskill);
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
+		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
+		auto seq = Sequence::create(delay, move, nullptr);
+		lockskill->runAction(seq);
+		//lockskill->removeFromParent();
+	}
 }
+
+//Click the NPC
+void VillageScene::onClickNPCInteract()
+{
+	if (standAlone)
+	{
+		UICustom::Popup* popup = UICustom::Popup::createAsMessage("Standing Alone", "There is no one for you to talk ... Please come closer to the Village Elder.");
+		buttonNode->addChild(popup);
+	}
+	else
+	{
+		string request = "";
+		Mission::Data yourMission = GameManager::getInstace()->getMission()->getMission();
+		if (yourMission.state == 4) {
+			request = yourMission.request;
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Old man's quest", request);
+			buttonNode->addChild(popup);
+		}
+		else {
+			vector<Mission::Reward> rewards = GameManager::getInstace()->getMission()->getReward();
+
+			string tmp = "";
+			int i = 0;
+			for (int j = 0; j < rewards.size(); j++) {
+				if (i == 0) {
+					tmp += rewards.at(j).name;
+				}
+				else {
+					tmp += ", " + rewards.at(j).name;
+				}
+				i++;
+			}
+
+			if (yourMission.state == 5) {
+				request = yourMission.request + "\n You receive: " + tmp;
+				UICustom::Popup* popup = UICustom::Popup::createAsMessage("Old man's quest", request);
+				buttonNode->addChild(popup);
+				for (int i = 0; i < rewards.size(); i++) {
+					if (rewards.at(i).type == "Skill") {
+						//Unlock Skill rewards.at(i).number;
+						CCLOG("Unlock Skill %i", rewards.at(i).number);
+						unlockSkill(rewards.at(i).number);
+					}
+					else if (rewards.at(i).type == "Gold") {
+						//Add rewards.at(i).number Gold;
+						CCLOG("Add %i gold", rewards.at(i).number);
+						playerChar->addGold(rewards.at(i).number);
+					}
+				}
+			}
+			else {
+				request = yourMission.request + "\n Mission reward: " + tmp;
+				UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Old man's quest", request, NULL, [=]() {
+					GameManager::getInstace()->getMission()->agreeMission();
+					CCLOG("Accpect Mission!");
+				}, [=]() {
+					GameManager::getInstace()->getMission()->cancelMission();
+					CCLOG("Reject Mission!");
+				});
+				buttonNode->addChild(popup);
+			}
+		}
+	}
+}
+
 
 
 //onContactBegin to check for collisions happening in the VillageScene.
@@ -505,8 +640,8 @@ bool VillageScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			standAlone = false;
 
 			//Enable the button
-			interactiveItem->setEnabled(true);
-			interactiveItem->setOpacity(255);
+			/*interactiveItem->setEnabled(true);
+			interactiveItem->setOpacity(255);*/
 		}
 
 		// check player hit enemies
@@ -585,8 +720,8 @@ void VillageScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 			standAlone = true;
 
 			//Disable the button when the Player is not in-range of the NPC
-			interactiveItem->setOpacity(100);
-			interactiveItem->setEnabled(false);
+			/*interactiveItem->setOpacity(100);
+			interactiveItem->setEnabled(false);*/
 		}
 	}
 }
@@ -603,4 +738,13 @@ void VillageScene::unlockSkill(int index) {
 		iter++;
 	}
 	
+}
+
+bool VillageScene::checkVector(vector<int>list, int num) {
+	for (int i = 0; i < list.size(); i++) {
+		if (num == list[i]) {
+			return true;
+		}
+	}
+	return false;
 }
