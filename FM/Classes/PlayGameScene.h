@@ -10,7 +10,7 @@
 #include "GameManager.h"
 #include "Mission.h"
 #include <vector>
-
+#include "Joystick.h"
 USING_NS_CC;
 class PlayGameScene : public cocos2d::Scene
 {
@@ -26,7 +26,7 @@ public:
 	CREATE_FUNC(PlayGameScene);
 	//void attackMonster(float dt);
 private:
-	
+	Joystick* joystick;
 	TMXTiledMap *map;
 	Size visibleSize;
 	Vec2 origin;

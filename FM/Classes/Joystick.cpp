@@ -44,6 +44,8 @@ bool Joystick::init() {
 			break;
 		}
 		mJsBg->setPosition(mJsPos);
+		mJsBg->setScale(1.2);
+		mJsBg->setOpacity(140);
 		addChild(mJsBg);
 
 		
@@ -52,6 +54,8 @@ bool Joystick::init() {
 			break;
 		}
 		mJsCenter->setPosition(mJsPos);
+		mJsCenter->setScale(1.2);
+		mJsCenter->setOpacity(140);
 		addChild(mJsCenter);
 
 		
@@ -77,19 +81,21 @@ bool Joystick::init() {
 
 bool Joystick::onTouchBegan(Touch *touch, Event *unused_event) {
 	log("onTouchBegan");
-	type = JoyStickEventType::BEGAN;
+	JoystickEvent* jsEvent = JoystickEvent::create();
+	jsEvent->type = JoyStickEventType::BEGAN;
+	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(
+		JoystickEvent::EVENT_JOYSTICK, jsEvent);
+
 	auto point = touch->getLocation();
 	if (mJsCenter->getBoundingBox().containsPoint(point)) {
 		
 		return true;
 	}
-	
 	return false;
 }
 
 void Joystick::onTouchMoved(Touch *touch, Event *unused_event) {
 	log("onTouchMoved");
-	type = JoyStickEventType::MOVED;
 	Vec2 point = touch->getLocation();
 	double y = point.y - mJsPos.y;
 	double x = point.x - mJsPos.x;
@@ -98,8 +104,9 @@ void Joystick::onTouchMoved(Touch *touch, Event *unused_event) {
 
 	double jsBgRadis = mJsBg->getContentSize().width * 0.5;
 	
-	double distanceOfTouchPointToCenter = sqrt(
+	distanceOfTouchPointToCenter = sqrt(
 		pow(mJsPos.x - point.x, 2) + pow(mJsPos.y - point.y, 2));
+	
 	if (distanceOfTouchPointToCenter >= jsBgRadis) {
 		
 		double deltX = x * (jsBgRadis / distanceOfTouchPointToCenter);
@@ -112,6 +119,7 @@ void Joystick::onTouchMoved(Touch *touch, Event *unused_event) {
 
 	
 	JoystickEvent* jsEvent = JoystickEvent::create();
+	jsEvent->type = JoyStickEventType::MOVED;
 	jsEvent->mAnagle = angle;
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(
 		JoystickEvent::EVENT_JOYSTICK, jsEvent);
@@ -119,6 +127,15 @@ void Joystick::onTouchMoved(Touch *touch, Event *unused_event) {
 
 void Joystick::onTouchEnded(Touch *touch, Event *unused_event) {
 	log("onTouchEnded");
-	type = JoyStickEventType::ENDED;
 	mJsCenter->setPosition(mJsPos);
+
+	JoystickEvent* jsEvent = JoystickEvent::create();
+	jsEvent->type = JoyStickEventType::ENDED;
+	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(
+		JoystickEvent::EVENT_JOYSTICK, jsEvent);
+}
+
+double Joystick::getDistanceFromCenter()
+{
+	return distanceOfTouchPointToCenter;
 }

@@ -29,6 +29,7 @@ public:
 private:
 	
 	Joystick* joystick;
+	cocos2d::EventListenerCustom *joyStickListener;
 	TMXTiledMap *map;
 	Size visibleSize;
 	Vec2 origin;

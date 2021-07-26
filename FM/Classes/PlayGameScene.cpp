@@ -70,7 +70,7 @@ bool PlayGameScene::init()
 	buttonNode->addChild(pauseButton);
 #endif
 
-#if 1
+#if 0
 	auto button = Sprite::create("sprites/button.png");
 	button->setScale(0.2);
 	button->setPosition(Vec2(button->getContentSize().width * 0.1, button->getContentSize().height * 0.05));
@@ -234,7 +234,9 @@ bool PlayGameScene::init()
 
 #endif
 
-
+	//Add joystick
+	joystick = Joystick::create();
+	buttonNode->addChild(joystick, 2);
 
 	//map setup + add map
 	//scale map with SCALE_FACTOR
@@ -437,6 +439,59 @@ bool PlayGameScene::init()
 	contactListener->onContactBegin = CC_CALLBACK_1(PlayGameScene::onContactBegin, this);
 	contactListener->onContactSeparate = CC_CALLBACK_1(PlayGameScene::onContactSeperate, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
+	//joystick listener
+	auto joyStickListener = EventListenerCustom::create(JoystickEvent::EVENT_JOYSTICK, [=](EventCustom* event) {
+		JoystickEvent* jsevent = static_cast<JoystickEvent*>(event->getUserData());
+		//CCLOG("--------------got joystick event, %p,  angle=%f", jsevent, jsevent->mAnagle);
+		switch (jsevent->type)
+		{
+		case JoyStickEventType::BEGAN:
+			CCLOG("BEGAN");
+			break;
+		case JoyStickEventType::MOVED:
+			CCLOG("MOVED");
+			
+				if ((180 >= jsevent->mAnagle && jsevent->mAnagle >= 135) || (jsevent->mAnagle < -90 && jsevent->mAnagle >-180))
+				{
+					CCLOG("GO LEFT");
+					//End right and up then go left
+					heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW), heldKeys.end());
+					heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW), heldKeys.end());
+					if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW) == heldKeys.end()) {
+						heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW);
+					}
+				}
+				else if (45 >= jsevent->mAnagle && jsevent->mAnagle >= -90)
+				{
+
+					CCLOG("GO RIGHT");
+					//End left and up then go right
+					heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW), heldKeys.end());
+					heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW), heldKeys.end());
+					if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW) == heldKeys.end()) {
+						heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW);
+					}
+				}
+				else if (135 >= jsevent->mAnagle && jsevent->mAnagle >= 45)
+				{
+					if (std::find(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW) == heldKeys.end()) {
+						heldKeys.push_back(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW);
+					}
+				}
+			
+			
+			break;
+		case JoyStickEventType::ENDED:
+			CCLOG("ENDED");
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW), heldKeys.end());
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW), heldKeys.end());
+			heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW), heldKeys.end());
+			break;
+		}
+		// do your business you'd like to
+	});
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(joyStickListener, this);
 
 
 
@@ -809,6 +864,7 @@ void PlayGameScene::goToMission() {
 	buttonNode->addChild(popup);
 }
 void PlayGameScene::goToVillage() {
+	joystick->removeFromParent();
 	GameManager::getInstace()->setMapLevel(0);
 	playerChar->revive();
 	auto scene = VillageScene::createScene();
@@ -818,6 +874,7 @@ void PlayGameScene::goToSetting() {
 
 }
 void PlayGameScene::goToMainMenu() {
+	joystick->removeFromParent();
 	auto scene = MainMenuScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
