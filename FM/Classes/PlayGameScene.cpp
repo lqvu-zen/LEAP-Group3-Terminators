@@ -38,6 +38,9 @@ bool PlayGameScene::init()
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
+	SpriteBatchNode* spriteNode = SpriteBatchNode::create("sprites/Number/Number.png");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Number/Number.plist");
+
 	//Add buttons
 #if 1
 	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
@@ -169,7 +172,7 @@ bool PlayGameScene::init()
 #endif
 
 	//Lock Skill
-#if 1
+#if 0
 	MenuItemImage* lockskill_1Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
 		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
@@ -353,7 +356,7 @@ bool PlayGameScene::init()
 			//Using a list to  store the monsters
 			monsters.push_back(monster);
 			GameManager::getInstace()->AddCharacter(monsters.back());
-			gameNode->addChild(monsters.back()->getSprite());	
+			gameNode->addChild(monsters.back()->getSprite(), 1);	
 		}
 
 
@@ -525,13 +528,14 @@ bool PlayGameScene::init()
 
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	
-	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::updateBoss), 1);
+	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::bossAction), 1);
 	//boss->death();
 	this->scheduleUpdate();
 
 	//
 	timeRevival = 0;
 	goldRevival = 0;
+	win = false;
 	return true;
 }
 
@@ -553,6 +557,8 @@ void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos
 void PlayGameScene::update(float dt)
 {
 	this->updateMonster(dt);
+	this->updateBoss(dt);
+
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	cameraTarget->setPositionY(playerChar->getSprite()->getPositionY());
 	this->updateCharacter(dt);
@@ -646,41 +652,95 @@ void PlayGameScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	else if (node->getTag() == 2) {
 		CCLOG("Skill 1");
 		playerChar->attack(3);
-		Sprite* lockskill = Sprite::create("sprites/lock.png");
-		lockskill->setScale(0.3);
-		lockskill->setPosition(node->getPosition());
-		buttonNode->addChild(lockskill);
-		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);//Delay time after use an ability
-		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
-		auto seq = Sequence::create(delay, move, nullptr);
-		lockskill->runAction(seq);
-		//lockskill->removeFromParent();
+		if (lock1 == false) {
+			lock1 = true;
+			int countDown = 5;
+			char spriteFrameByName[20] = { 0 };
+			sprintf(spriteFrameByName, "%d.png", countDown);
+			lockskill1 = Sprite::create("sprites/Number/5.png");
+			lockskill1->setPosition(node->getPosition());
+			lockskill1->setScale(0.3);
+			buttonNode->addChild(lockskill1, 1);
+
+			Vector<SpriteFrame*> animFrames;
+			for (int i = countDown; i >= 0; i--) {
+				char buffer[20] = { 0 };
+				sprintf(buffer, "%d.png", i);
+				auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(buffer);
+				animFrames.pushBack(frame);
+			}
+			Animation* animation = Animation::createWithSpriteFrames(animFrames, 1);
+
+			auto callback = CallFunc::create([this]() {
+				lockskill1->removeFromParent();
+				lock1 = false;
+			});
+			auto animate = Animate::create(animation);
+			auto seq = Sequence::create(animate, callback, nullptr);
+			lockskill1->runAction(seq);
+		}
 	}
 	else if (node->getTag() == 3) {
 		CCLOG("Skill 2");
 		playerChar->attack(2);
-		Sprite* lockskill = Sprite::create("sprites/lock.png");
-		lockskill->setScale(0.3);
-		lockskill->setPosition(node->getPosition());
-		buttonNode->addChild(lockskill);
-		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
-		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
-		auto seq = Sequence::create(delay, move, nullptr);
-		lockskill->runAction(seq);
-		//lockskill->removeFromParent();
+		if (lock2 == false) {
+			lock2 = true;
+			int countDown = 5;
+			char spriteFrameByName[20] = { 0 };
+			sprintf(spriteFrameByName, "%d.png", countDown);
+			lockskill2 = Sprite::create("sprites/Number/5.png");
+			lockskill2->setPosition(node->getPosition());
+			lockskill2->setScale(0.3);
+			buttonNode->addChild(lockskill2, 1);
+
+			Vector<SpriteFrame*> animFrames;
+			for (int i = countDown; i >= 0; i--) {
+				char buffer[20] = { 0 };
+				sprintf(buffer, "%d.png", i);
+				auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(buffer);
+				animFrames.pushBack(frame);
+			}
+			Animation* animation = Animation::createWithSpriteFrames(animFrames, 1);
+
+			auto callback = CallFunc::create([this]() {
+				lockskill2->removeFromParent();
+				lock2 = false;
+			});
+			auto animate = Animate::create(animation);
+			auto seq = Sequence::create(animate, callback, nullptr);
+			lockskill2->runAction(seq);
+		}
 	}
 	else if (node->getTag() == 4) {
 		CCLOG("Skill 3");
 		playerChar->attack(1);
-		Sprite* lockskill = Sprite::create("sprites/lock.png");
-		lockskill->setScale(0.3);
-		lockskill->setPosition(node->getPosition());
-		buttonNode->addChild(lockskill);
-		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(4);
-		auto move = MoveTo::create(0, Vec2(-1000 * visibleSize.width / 2, 0));
-		auto seq = Sequence::create(delay, move, nullptr);
-		lockskill->runAction(seq);
-		//lockskill->removeFromParent();
+		if (lock3 == false) {
+			lock3 = true;
+			int countDown = 5;
+			char spriteFrameByName[20] = { 0 };
+			sprintf(spriteFrameByName, "%d.png", countDown);
+			lockskill3 = Sprite::create("sprites/Number/5.png");
+			lockskill3->setPosition(node->getPosition());
+			lockskill3->setScale(0.3);
+			buttonNode->addChild(lockskill3, 1);
+
+			Vector<SpriteFrame*> animFrames;
+			for (int i = countDown; i >= 0; i--) {
+				char buffer[20] = { 0 };
+				sprintf(buffer, "%d.png", i);
+				auto frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(buffer);
+				animFrames.pushBack(frame);
+			}
+			Animation* animation = Animation::createWithSpriteFrames(animFrames, 1);
+
+			auto callback = CallFunc::create([this]() {
+				lockskill3->removeFromParent();
+				lock3 = false;
+			});
+			auto animate = Animate::create(animation);
+			auto seq = Sequence::create(animate, callback, nullptr);
+			lockskill3->runAction(seq);
+		}
 	}
 }
 
@@ -840,6 +900,15 @@ void PlayGameScene::monsterAction(float dt) {
 /// </summary>
 /// <param name="dt"></param>
 void PlayGameScene::updateBoss(float dt) {
+	if (boss->getStats().HP <= 0) {
+		if (win == false) {
+			win = true;
+			this->scheduleOnce(CC_SCHEDULE_SELECTOR(PlayGameScene::goToWinScene), DISPLAY_TIME_SPLASH_SCENE);
+		}
+	}
+}
+
+void PlayGameScene::bossAction(float dt) {
 	/*if (abs(boss->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
 		if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
 			boss->setDirection(BossCharacter::Direction::LEFT);
@@ -967,4 +1036,28 @@ void PlayGameScene::updateCountDown(float) {
 		std::string tmp = StringUtils::format("%i second", timeRevival);
 		lblCountDown->setString(tmp);
 	}
+}
+
+void PlayGameScene::goToWinScene(float dt) {
+
+	auto background = Sprite::create("sprites/winBackground.png");
+	background->setPosition(visibleSize / 2);
+	background->setScale(0.5);
+	this->addChild(background, 3);
+
+	auto title = Label::createWithTTF("Win", "fonts/Marker Felt.ttf", 60);
+	title->setTextColor(Color4B::WHITE);
+	title->setPosition(visibleSize / 2);
+	this->addChild(title, 3);
+
+	//auto countine = MenuItemFont::create("Conutine", CC_CALLBACK_1(PlayGameScene::goToVillage, scene));
+	auto continueItem = MenuItemFont::create("Continue", CC_CALLBACK_1(PlayGameScene::goToContinue, this));
+
+	auto menu = Menu::create(continueItem, nullptr);
+	menu->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.25));
+	menu->alignItemsVertically();
+	this->addChild(menu, 3);
+}
+void PlayGameScene::goToContinue(cocos2d::Ref* sender) {
+	goToVillage();
 }
