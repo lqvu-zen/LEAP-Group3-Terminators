@@ -3,7 +3,7 @@
     {
       "ID": 0,
       "REQUEST": "Hey Hero\n I am the village head.",
-      "NAME": "Return to the village to receive the mission.",
+      "NAME": "Return to the village and click on the NPC to receive the mission.",
       "BEGIN": 0,
       "TYPE": 0,
       "END": 0,
@@ -57,7 +57,7 @@
     {
       "ID": 6,
       "REQUEST": "Hey Hero\n Thank you for helping us.",
-      "NAME": "You have completed the mission.\n Return to the village to receive the next mission.",
+      "NAME": "You have completed the mission.\n Return to the village click on the NPC to receive the next mission.",
       "BEGIN": 0,
       "TYPE": 6,
       "END": 0,

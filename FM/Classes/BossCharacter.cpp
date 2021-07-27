@@ -87,6 +87,30 @@ BossCharacter::BossCharacter(int level) {
 	characterStats.GetSprite()->setPosition(Vec2(0, characterSpriteAnimation->getContentSize().height / 6));
 }
 
+void BossCharacter::setPosition(cocos2d::Vec2 _position) {
+	position = _position;
+	characterSprite->setPosition(_position);
+	characterSpriteAnimation->setPosition(Vec2::ZERO);
+	attackSprite->setPosition(Vec2::ZERO);
+}
+cocos2d::Sprite* BossCharacter::getSprite() {
+	return characterSprite;
+};
+void BossCharacter::setDirection(Direction actionDirection) {
+	if (action != 1) {
+		characterDirection = actionDirection;
+		if (characterDirection == Direction::LEFT) {
+			characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
+		}
+		else {
+			characterSprite->setScaleX(0.5);//characterSprite->setFlippedX(false);
+		}
+	}
+}
+BossCharacter::Direction BossCharacter::getDirection() {
+	return characterDirection;
+}
+
 cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {
 	Vector<SpriteFrame*> animFrames;
 	for (int i = 1; i <= pFramesOrder; i++) {
@@ -100,107 +124,10 @@ cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFrame
 	return animation;
 }
 
-void BossCharacter::updateAnimation(State actionState, bool repeatForever) {
-	//if (characterState != actionState) {
-		if (attackSprite->getPhysicsBody() != nullptr)
-			attackSprite->getPhysicsBody()->removeFromWorld();
-
-		const int maxWord = 50;
-
-		int numberSprite;
-		string prefixName;
-
-		switch (actionState)
-		{
-		case BossCharacter::State::ATTACK1:
-			numberSprite = 8;
-			prefixName = "Attack_1";;
-			break;
-		case BossCharacter::State::ATTACK2:
-			numberSprite = 7;
-			prefixName = "Attack_2";
-			break;
-		case BossCharacter::State::BLOCK:
-			numberSprite = 9;
-			prefixName = "Block";
-			break;
-		case BossCharacter::State::CHARGE:
-			numberSprite = 7;
-			prefixName = "Charge";
-			break;
-		case BossCharacter::State::DEATH:
-			numberSprite = 15;
-			prefixName = "Death";
-			break;
-		case BossCharacter::State::HURT:
-			numberSprite = 8;
-			prefixName = "Hurt";
-			break;
-		case BossCharacter::State::IDLE:
-			numberSprite = 16;
-			prefixName = "Idle";
-			break;
-		case BossCharacter::State::JUMP:
-			numberSprite = 10;
-			prefixName = "Jump";
-			break;
-		case BossCharacter::State::JUMPATTACK1:
-			numberSprite = 8;
-			prefixName = "Jump_Attack_1";
-			break;
-		case BossCharacter::State::JUMPATTACK2:
-			numberSprite = 7;
-			prefixName = "Jump_Attack_2";
-			break;
-		case BossCharacter::State::RUN:
-			numberSprite = 6;
-			prefixName = "Run";
-			break;
-		case BossCharacter::State::SHOOTBOW:
-			numberSprite = 12;
-			prefixName = "Shoot_Bow";
-			break;
-		case BossCharacter::State::WALK:
-			numberSprite = 12;
-			prefixName = "Walk";
-			break;
-		default:
-			break;
-		}
-
-		animation = createAnimation(prefixName, numberSprite, ANIMATION_DELAY);
-		auto animate = Animate::create(animation);
-		animate->retain();
-
-		if (repeatForever) {
-			characterSpriteAnimation->stopAllActions();
-			characterSpriteAnimation->runAction(RepeatForever::create(animate));
-			characterState = actionState;
-		}
-		else {
-			characterSpriteAnimation->stopAllActions();
-			characterSpriteAnimation->runAction(animate);
-			characterState = actionState;
-		}
-	//}
-}
-
-void BossCharacter::setDirection(Direction actionDirection) {
-	if (action != 1) {
-		characterDirection = actionDirection;
-		if (characterDirection == Direction::LEFT) {
-			characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
-		}
-		else {
-			characterSprite->setScaleX(0.5);//characterSprite->setFlippedX(false);
-		}
-	}	
-}
-
-void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
+void BossCharacter::updateAction_1(cocos2d::Vec2 positionPlayer) {
 	if (characterStats.HP > 0) {
 		if (abs(position.x - positionPlayer.x) > visibleSize.width / 2) {
-			updateAnimation(State::IDLE, true);
+			idle();
 			action = 0;
 		}
 		else {
@@ -211,7 +138,7 @@ void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 						action = 2;
 					}
 					else if (action == 2) {
-						updateAnimation(State::IDLE, true);
+						idle();
 						action = 0;
 					}
 
@@ -222,7 +149,7 @@ void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 						action = 2;
 					}
 					else if (action == 2) {
-						updateAnimation(State::IDLE, true);
+						idle();
 						action = 0;
 					}
 
@@ -245,173 +172,397 @@ void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 				}
 			}
 			else {
-				updateAnimation(State::IDLE, true);
+				idle();
 				action = 0;
 			}
 		}
 	}
 }
+void BossCharacter::updateAction_2(cocos2d::Vec2 positionPlayer) {
+	if (characterStats.HP > 0) {
+		if (abs(position.x - positionPlayer.x) > visibleSize.width / 2) {
+			idle();
+		}
+		else {
+			if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 8) {
+				if (positionPlayer.y > characterSprite->getPosition().y + characterSprite->getContentSize().height) {
+					if (characterState != State::ATTACK) {
+						jumpAttack();
+					}
+				}
+				else {
+					if (characterState != State::ATTACK) {
+						jumpAttack();
+					}
+				}
+			}
+			else if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 4) {
+				if (numAttack >= 5) {
+					skill(1);
+				}
+				else {
+					walk();
+				}
+			}
+			else if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 2) {
+				if (numAttack >= 5) {
+					skill(2);
+				}
+				else {
+					run();
+				}
+			}
+			else {
+				idle();
+			}
+		}
+	}
+}
 
+
+void BossCharacter::idle() {
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+	characterSprite->stopAllActions();
+
+	animation = createAnimation("Idle", 16, 0.05);
+	Animate* animate = Animate::create(animation);
+	animate->retain();
+	characterSpriteAnimation->runAction(RepeatForever::create(animate));
+	if (characterState == State::ATTACK) {
+		auto callback = CallFunc::create([this]() {
+			characterState = State::IDLE;
+		});
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(1);
+		auto seq = Sequence::create(delay, callback, nullptr);
+		characterSpriteAnimation->runAction(seq);
+	}
+	else {
+		characterState = State::IDLE;
+	}
+}
 void BossCharacter::death()
 {
-	updateAnimation(State::DEATH);
-	auto die = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
+	characterState = State::DEATH;
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+
+	animation = createAnimation("Death", 15, 0.1);
+	Animate* animate = Animate::create(animation);
+	animate->retain();	
+	characterSpriteAnimation->runAction(animate);
+
+	auto callback = CallFunc::create([this]() {
+		characterSprite->removeFromParent();
+	});
+
 	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(3);
-	auto seq = Sequence::create(delay, die, nullptr);
+	auto seq = Sequence::create(delay, callback, nullptr);
 	characterSprite->runAction(seq);
+}
+void BossCharacter::attack_1() {
+	attackSprite->setPosition(Vec2::ZERO);
+	characterState = State::ATTACK;
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+
+	animation = createAnimation("Attack_1", 8, 0.05);
+	Animate* animate = Animate::create(animation);
+	animate->retain();
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+	characterSpriteAnimation->runAction(seq);
+
+	cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Attack_1");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+	attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(ALLSET_BITMASK);
+	attackBody->setMass(0.0f);
+
+	attackSprite->setPhysicsBody(attackBody);
+}
+void BossCharacter::attack_2() {
+	attackSprite->setPosition(Vec2::ZERO);
+	characterState = State::ATTACK;
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+
+	animation = createAnimation("Attack_2", 7, 0.05);
+	Animate* animate = Animate::create(animation);
+	animate->retain();
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+	characterSpriteAnimation->runAction(seq);
+
+	cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Attack_2");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+	attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(ALLSET_BITMASK);
+	attackBody->setMass(0.0f);
+
+	attackSprite->setPhysicsBody(attackBody);
+}
+void BossCharacter::jumpAttack_1() {
+	attackSprite->setPosition(Vec2::ZERO);
+	characterState = State::ATTACK;
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+
+	animation = createAnimation("Jump_Attack_1", 8, 0.05);
+	Animate* animate = Animate::create(animation);
+	animate->retain();
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+	characterSpriteAnimation->runAction(seq);
+
+	cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Jump_Attack_1");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+	attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(ALLSET_BITMASK);
+	attackBody->setMass(0.0f);
+	auto move = MoveBy::create(0.8, Vec2(0, visibleSize.height / 4));
+	characterSprite->runAction(move);
+	attackSprite->setPhysicsBody(attackBody);
+}
+void BossCharacter::jumpAttack_2() {
+	attackSprite->setPosition(Vec2::ZERO);
+	characterState = State::ATTACK;
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+
+	animation = createAnimation("Jump_Attack_2", 7, 0.05);
+	Animate* animate = Animate::create(animation);
+	animate->retain();
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+	characterSpriteAnimation->runAction(seq);
+
+	cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Jump_Attack_2");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+	attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(ALLSET_BITMASK);
+	attackBody->setMass(0.0f);
+	auto move = MoveBy::create(0.8, Vec2(0, visibleSize.height / 4));
+	characterSprite->runAction(move);
+	attackSprite->setPhysicsBody(attackBody);
+}
+void BossCharacter::run() {
+	if (characterState == State::IDLE) {
+		characterState = State::RUN;
+		if (attackSprite->getPhysicsBody() != nullptr)
+			attackSprite->getPhysicsBody()->removeFromWorld();
+
+		characterSpriteAnimation->stopAllActions();
+
+		animation = createAnimation("Run", 6, 0.05);
+		Animate* animate = Animate::create(animation);
+		animate->retain();
+		auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+		characterSpriteAnimation->runAction(seq);
+
+		if (characterDirection == Direction::RIGHT) {
+			auto move = MoveBy::create(0.3, Vec2(visibleSize.width / 6, 0));
+			characterSprite->runAction(move);
+		}
+		else
+		{
+			auto move = MoveBy::create(0.6, Vec2(-visibleSize.width / 6, 0));
+			characterSprite->runAction(move);
+		}
+	}	
+}
+void BossCharacter::walk() {
+	if (characterState == State::IDLE) {
+		characterState = State::WALK;
+		if (attackSprite->getPhysicsBody() != nullptr)
+			attackSprite->getPhysicsBody()->removeFromWorld();
+
+		characterSpriteAnimation->stopAllActions();
+
+		animation = createAnimation("Walk", 12, 0.05);
+		Animate* animate = Animate::create(animation);
+		animate->retain();
+		auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+		characterSpriteAnimation->runAction(seq);
+
+		if (characterDirection == Direction::RIGHT) {
+			auto move = MoveBy::create(0.6, Vec2(visibleSize.width / 8, 0));
+			characterSprite->runAction(move);
+		}
+		else
+		{
+			auto move = MoveBy::create(1.2, Vec2(-visibleSize.width / 8, 0));
+			characterSprite->runAction(move);
+		}
+	}
+	
+}
+void BossCharacter::skill_1() {
+	attackSprite->setPosition(Vec2::ZERO);
+	characterState = State::ATTACK;
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+
+	animation = createAnimation("Charge", 7, 0.05);
+	Animate* animate = Animate::create(animation);
+	animate->retain();
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+	characterSpriteAnimation->runAction(seq);
+	
+	cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Charge");
+	attackBody->setDynamic(false);
+	attackBody->setRotationEnable(false);
+	attackBody->setGravityEnable(false);
+	attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+	attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+	attackBody->setContactTestBitmask(ALLSET_BITMASK);
+	attackBody->setMass(0.0f);
+	if (characterDirection == Direction::RIGHT) {
+		auto move = MoveBy::create(0.7, Vec2(visibleSize.width / 3, 0));
+		characterSprite->runAction(move);
+	}
+	else
+	{
+		auto move = MoveBy::create(0.7, Vec2(-visibleSize.width / 3, 0));
+		characterSprite->runAction(move);
+	}
+	attackSprite->setPhysicsBody(attackBody);
+}
+void BossCharacter::skill_2() {
+	attackSprite->setPosition(Vec2::ZERO);
+	characterState = State::ATTACK;
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+
+	animation = createAnimation("Shoot_Bow", 1.2, 0.05);
+	Animate* animate = Animate::create(animation);
+	animate->retain();
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+	characterSpriteAnimation->runAction(seq);
+
+	arrow = Sprite::create(floder + "arrow.png");
+	arrow->setScale(0.5);
+	arrow->setPosition(Vec2::ZERO);
+	characterSprite->addChild(arrow);
+	PhysicsBody* arrowBody = PhysicsBody::createBox(arrow->getContentSize());
+	arrowBody->setDynamic(false);
+	arrowBody->setRotationEnable(false);
+	arrowBody->setGravityEnable(false);
+	arrowBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
+	arrowBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
+	arrowBody->setContactTestBitmask(ALLSET_BITMASK);
+	arrowBody->setMass(0.0f);
+	arrow->setPhysicsBody(arrowBody);
+	if (characterDirection == Direction::RIGHT) {
+		auto move = MoveBy::create(1, Vec2(-visibleSize.width, 0));
+		auto callback = CallFunc::create([this]() {
+			arrow->removeFromParent();
+		});
+		auto seq = Sequence::create(move, callback, nullptr);
+		arrow->runAction(seq);
+	}
+	else
+	{
+		auto move = MoveBy::create(1, Vec2(visibleSize.width, 0));
+		auto callback = CallFunc::create([this]() {
+			arrow->removeFromParent();
+		});
+		auto seq = Sequence::create(move, callback, nullptr);
+		arrow->runAction(seq);
+	}
+
+}
+void BossCharacter::skill_3() {
+	characterState = State::BLOCK;
+	if (attackSprite->getPhysicsBody() != nullptr)
+		attackSprite->getPhysicsBody()->removeFromWorld();
+
+	characterSpriteAnimation->stopAllActions();
+
+	animation = createAnimation("Block", 9, 0.1);
+	Animate* animate = Animate::create(animation);
+	animate->retain();
+	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+	characterSpriteAnimation->runAction(seq);
 }
 
 void BossCharacter::attack() {
 	int type = rand() % 2 + 1;
 	if (type == 1) {
-		updateAnimation(State::ATTACK1);
-		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Attack_1");
-		attackBody->setDynamic(false);
-		attackBody->setRotationEnable(false);
-		attackBody->setGravityEnable(false);
-		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
-		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(ALLSET_BITMASK);
-		attackBody->setMass(0.0f);
-
-		attackSprite->setPhysicsBody(attackBody);
+		attack_1();
 	}
 	else if (type == 2) {
-		updateAnimation(State::ATTACK2);
-		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Attack_2");
-		attackBody->setDynamic(false);
-		attackBody->setRotationEnable(false);
-		attackBody->setGravityEnable(false);
-		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
-		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(ALLSET_BITMASK);
-		attackBody->setMass(0.0f);
-
-		attackSprite->setPhysicsBody(attackBody);
+		attack_2();
 	}
 	numAttack++;
 }
-
 void BossCharacter::jumpAttack() {
 	int type = rand() % 2 + 1;
 	if (type == 1) {
-		updateAnimation(State::JUMPATTACK1);
-		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Jump_Attack_1");
-		attackBody->setDynamic(false);
-		attackBody->setRotationEnable(false);
-		attackBody->setGravityEnable(false);
-		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
-		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(ALLSET_BITMASK);
-		attackBody->setMass(0.0f);
-		auto move = MoveBy::create(0.8, Vec2(0, visibleSize.height / 4));
-		characterSprite->runAction(move);
-		attackSprite->setPhysicsBody(attackBody);
+		jumpAttack_1();
 	}
 	else if (type == 2) {
-		updateAnimation(State::JUMPATTACK2);
-		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Jump_Attack_2");
-		attackBody->setDynamic(false);
-		attackBody->setRotationEnable(false);
-		attackBody->setGravityEnable(false);
-		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
-		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(ALLSET_BITMASK);
-		attackBody->setMass(0.0f);
-		auto move = MoveBy::create(0.7, Vec2(0, visibleSize.height / 4));
-		characterSprite->runAction(move);
-		attackSprite->setPhysicsBody(attackBody);
+		jumpAttack_2();
 	}
 	numAttack++;
 }
-
-void BossCharacter::run() {
-	updateAnimation(State::RUN);
-	if (characterDirection == Direction::RIGHT) {
-		auto move = MoveBy::create(0.7, Vec2(visibleSize.width / 6, 0));
-		characterSprite->runAction(move);
-	}
-	else
-	{
-		auto move = MoveBy::create(0.7, Vec2(-visibleSize.width / 6, 0));
-		characterSprite->runAction(move);
-	}
-}
-
-void BossCharacter::walk() {
-	updateAnimation(State::WALK, true);
-	if (characterDirection == Direction::RIGHT) {
-		auto move = MoveBy::create(0.7, Vec2(visibleSize.width / 8, 0));
-		characterSprite->runAction(move);
-	}
-	else
-	{
-		auto move = MoveBy::create(0.7, Vec2(-visibleSize.width / 8, 0));
-		characterSprite->runAction(move);
-	}
-}
-
 void BossCharacter::skill(int type) {
 	if (type == 1) {
-		updateAnimation(State::CHARGE);
-		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Charge");
-		attackBody->setDynamic(false);
-		attackBody->setRotationEnable(false);
-		attackBody->setGravityEnable(false);
-		attackBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
-		attackBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
-		attackBody->setContactTestBitmask(ALLSET_BITMASK);
-		attackBody->setMass(0.0f);
-		if (characterDirection == Direction::RIGHT) {
-			auto move = MoveBy::create(0.7, Vec2(visibleSize.width / 3, 0));
-			characterSprite->runAction(move);
-		}
-		else
-		{
-			auto move = MoveBy::create(0.7, Vec2(-visibleSize.width / 3, 0));
-			characterSprite->runAction(move);
-		}
-		attackSprite->setPhysicsBody(attackBody);
+		skill_1();	
 	}
 	else if (type == 2) {
-		updateAnimation(State::SHOOTBOW);
-		Sprite* arrow = Sprite::create(floder + "arrow.png");
-		arrow->setScale(0.5);
-		arrow->setPosition(Vec2::ZERO);
-		characterSprite->addChild(arrow);
-		PhysicsBody* arrowBody = PhysicsBody::createBox(arrow->getContentSize());
-		arrowBody->setDynamic(false);
-		arrowBody->setRotationEnable(false);
-		arrowBody->setGravityEnable(false);
-		arrowBody->setCategoryBitmask(ENEMIES_ATTACK_CATEGORY_BITMASK);
-		arrowBody->setCollisionBitmask(ENEMIES_ATTACK_COLLISION_BITMASK);
-		arrowBody->setContactTestBitmask(ALLSET_BITMASK);
-		arrowBody->setMass(0.0f);
-		arrow->setPhysicsBody(arrowBody);
-		if (characterDirection == Direction::RIGHT) {
-			auto move = MoveBy::create(1, Vec2(-visibleSize.width, 0));
-			auto disappear = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
-			auto seq = Sequence::create(move, disappear, nullptr);
-			arrow->runAction(seq);
-		}
-		else
-		{
-			auto move = MoveBy::create(1, Vec2(visibleSize.width, 0));
-			auto disappear = MoveTo::create(0, Vec2(-1000 * visibleSize.width, 0));
-			auto seq = Sequence::create(move, disappear, nullptr);
-			arrow->runAction(seq);
-		}
+		skill_2();
+	}
+	else if (type == 3) {
+		skill_3();
 	}
 	numAttack=0;
 }
-
 void BossCharacter::takeHit(float dame)
 {
-	characterStats.HP -= dame;
-	characterStats.UpdateStatsBar();
-	updateAnimation(State::HURT);
-	if (characterStats.HP <= 0.0f) {
-		death();
-		GameManager::getInstace()->getMission()->updateMission(5);
+	if (characterState != State::BLOCK) {
+		characterStats.HP -= dame;
+		characterStats.UpdateStatsBar();
+
+		characterState = State::HURT;
+		if (attackSprite->getPhysicsBody() != nullptr)
+			attackSprite->getPhysicsBody()->removeFromWorld();
+
+		characterSpriteAnimation->stopAllActions();
+
+		animation = createAnimation("Hurt", 8, 0.1);
+		Animate* animate = Animate::create(animation);
+		animate->retain();
+		auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+		characterSpriteAnimation->runAction(seq);
+
+		if (characterStats.HP <= 0.0f) {
+			death();
+			GameManager::getInstace()->getMission()->updateMission(5);
+		}
 	}
 }

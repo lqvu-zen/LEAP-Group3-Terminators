@@ -147,7 +147,7 @@ bool PlayGameScene::init()
 #endif
 
 #if 1
-
+	//Attack menu
 	auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
 	attackItem->setScale(0.7);
 	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
@@ -205,6 +205,7 @@ bool PlayGameScene::init()
 #endif
 
 #if 1
+	//Potions buttons
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
 	mpButton->setScale(0.1);
 	//mpButton->setAnchorPoint(Vec2::ZERO);
@@ -216,6 +217,7 @@ bool PlayGameScene::init()
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			playerChar->useItem(Item::ItemType::MP_POTION);
+			mpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)));
 			break;
 		}
 	});
@@ -232,12 +234,13 @@ bool PlayGameScene::init()
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			playerChar->useItem(Item::ItemType::HP_POTION);
+			hpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)));
 			break;
 		}
 	});
 	hpButton->setOpacity(140);
 	buttonNode->addChild(hpButton, 1);
-
+	
 #endif
 
 	//Add joystick
@@ -341,8 +344,17 @@ bool PlayGameScene::init()
 	//Mission description
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel = Label::createWithTTF(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
-	missionLabel->setColor(Color3B::WHITE);
+	missionLabel->setColor(Color3B::Color3B(255, 153, 51));
 	buttonNode->addChild(missionLabel);
+
+	//hp and mp potions label
+	hpPotionsLabel = Label::createWithTTF(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
+	hpPotionsLabel->setPosition(hpButton->getPosition());
+	buttonNode->addChild(hpPotionsLabel);
+
+	mpPotionsLabel = Label::createWithTTF(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
+	mpPotionsLabel->setPosition(mpButton->getPosition());
+	buttonNode->addChild(mpPotionsLabel);
 	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
@@ -522,13 +534,6 @@ bool PlayGameScene::init()
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 1);
 
-	//test area
-	auto mpPotion = new Item(Item::ItemType::MP_POTION);
-	auto hpPotion = new Item(Item::ItemType::HP_POTION);
-	playerChar->colectItem(mpPotion);
-	playerChar->colectItem(hpPotion);
-
-
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::bossAction), 1);
@@ -561,6 +566,7 @@ void PlayGameScene::update(float dt)
 {
 	this->updateMonster(dt);
 	this->updateBoss(dt);
+	this->bossAction(dt);
 
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	cameraTarget->setPositionY(playerChar->getSprite()->getPositionY());
@@ -777,7 +783,9 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			a->getNode()->removeFromParent();
 
 			GameManager::getInstace()->colect(a->getNode()->getTag());
-
+			//Update the label whenever the Player collect any item.
+			mpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)));
+			hpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)));
 			GameManager::getInstace()->getMission()->updateMission(2);
 		}
 
@@ -850,27 +858,6 @@ void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 	{
 		CCLOG("Not Standing on enemies");
 	}
-
-	//if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
-	//	|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
-	//{
-	//	if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
-	//		|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK))
-	//	{
-
-	//		if (b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
-	//		{
-	//			CCLOG("Out Hidden area");
-	//			//showTiles();
-	//		}
-	//		else if (a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
-	//		{
-	//			CCLOG("Out Hidden area");
-	//			//showTiles();
-	//			
-	//		}
-	//	}
-	//}
 }
 
 /// <summary>
@@ -916,22 +903,16 @@ void PlayGameScene::updateBoss(float dt) {
 }
 
 void PlayGameScene::bossAction(float dt) {
-	/*if (abs(boss->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
+	if (boss->characterState != BossCharacter::State::DEATH) {
 		if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
 			boss->setDirection(BossCharacter::Direction::LEFT);
 		}
 		else {
 			boss->setDirection(BossCharacter::Direction::RIGHT);
 		}
-	}*/
-	if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
-		boss->setDirection(BossCharacter::Direction::LEFT);
-	}
-	else {
-		boss->setDirection(BossCharacter::Direction::RIGHT);
-	}
 
-	boss->updateAction(playerChar->getSprite()->getPosition());
+		boss->updateAction_2(playerChar->getSprite()->getPosition());
+	}
 }
 
 //Pause

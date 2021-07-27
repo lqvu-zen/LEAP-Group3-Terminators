@@ -18,7 +18,7 @@ public:
 	void addItem(Item* _item, int mount = 1);
 
 	Item* getItem(Item::ItemType itemType);
-
+	int getItemCount(Item::ItemType itemType);
 	cocos2d::Sprite* GetSprite();
 
 	void updateInventory();
