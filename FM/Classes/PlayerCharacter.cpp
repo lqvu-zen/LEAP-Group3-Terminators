@@ -1,5 +1,6 @@
 #include "PlayerCharacter.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 
 USING_NS_CC;
 
