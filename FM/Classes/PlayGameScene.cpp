@@ -557,7 +557,7 @@ void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos
 void PlayGameScene::update(float dt)
 {
 	this->updateMonster(dt);
-	//this->updateBoss(dt);
+	this->updateBoss(dt);
 	this->bossAction(dt);
 
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
@@ -889,22 +889,16 @@ void PlayGameScene::updateBoss(float dt) {
 }
 
 void PlayGameScene::bossAction(float dt) {
-	/*if (abs(boss->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
+	if (boss->characterState != BossCharacter::State::DEATH) {
 		if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
 			boss->setDirection(BossCharacter::Direction::LEFT);
 		}
 		else {
 			boss->setDirection(BossCharacter::Direction::RIGHT);
 		}
-	}*/
-	if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
-		boss->setDirection(BossCharacter::Direction::LEFT);
-	}
-	else {
-		boss->setDirection(BossCharacter::Direction::RIGHT);
-	}
 
-	boss->updateAction_2(playerChar->getSprite()->getPosition());
+		boss->updateAction_2(playerChar->getSprite()->getPosition());
+	}
 }
 
 //Pause

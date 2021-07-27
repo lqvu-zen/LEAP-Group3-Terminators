@@ -221,7 +221,6 @@ void BossCharacter::updateAction_2(cocos2d::Vec2 positionPlayer) {
 
 
 void BossCharacter::idle() {
-	characterState = State::IDLE;
 	if (attackSprite->getPhysicsBody() != nullptr)
 		attackSprite->getPhysicsBody()->removeFromWorld();
 
@@ -232,6 +231,17 @@ void BossCharacter::idle() {
 	Animate* animate = Animate::create(animation);
 	animate->retain();
 	characterSpriteAnimation->runAction(RepeatForever::create(animate));
+	if (characterState == State::ATTACK) {
+		auto callback = CallFunc::create([this]() {
+			characterState = State::IDLE;
+		});
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(1);
+		auto seq = Sequence::create(delay, callback, nullptr);
+		characterSpriteAnimation->runAction(seq);
+	}
+	else {
+		characterState = State::IDLE;
+	}
 }
 void BossCharacter::death()
 {
@@ -405,6 +415,7 @@ void BossCharacter::walk() {
 			characterSprite->runAction(move);
 		}
 	}
+	
 }
 void BossCharacter::skill_1() {
 	attackSprite->setPosition(Vec2::ZERO);
