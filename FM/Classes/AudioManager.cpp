@@ -34,6 +34,7 @@ void AudioManager::playBackgroundAudio(SceneName _sceneName)
 		backgroundAudioID = AudioEngine::play2d("audio/3 A Magic Forest LOOP TomMusic.ogg", true);
 		break;
 	case SceneName::Battle:
+		AudioEngine::play2d("audio/kill_him.ogg");
 		backgroundAudioID = AudioEngine::play2d("audio/4 Battle Track LOOP TomMusic.ogg", true);
 		break;
 	case SceneName::Victory:
@@ -79,6 +80,10 @@ void AudioManager::playPlayerAudio(PlayerCharacter::State _playerState)
 	default:
 		break;
 	}
+}
+
+void AudioManager::playKarmaAudio(KarmaEmotion _state)
+{
 }
 
 void AudioManager::playRandomAudio(RandomAction _action)

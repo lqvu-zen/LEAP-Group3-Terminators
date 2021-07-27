@@ -18,11 +18,16 @@ public:
 		Collect, Hit, Click
 	};
 
+	enum class KarmaEmotion {
+
+	};
+
 	static void preloadAudio();
 
 	static void playBackgroundAudio(SceneName _sceneName);
 
 	static void playPlayerAudio(PlayerCharacter::State _playerState);
+	static void playKarmaAudio(KarmaEmotion _state);
 
 	static void playRandomAudio(RandomAction _action);
 

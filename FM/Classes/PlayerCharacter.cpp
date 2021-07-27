@@ -578,7 +578,12 @@ void PlayerCharacter::revive()
 {
 	characterStats.ResetCharacterStats();
 
+	castingSkill = false;
+	attacking = false;
+
+	takingHit = false;
 	died = false;
+
 	updateAnimation(State::IDLE, characterDirection);
 }
 
