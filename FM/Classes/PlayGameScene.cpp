@@ -784,6 +784,16 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			mpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)));
 			hpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)));
 			GameManager::getInstace()->getMission()->updateMission(2);
+			if (GameManager::getInstace()->getMission()->getNowMission().id == 6)
+			{
+				//Create a PopUp when a mission is completed.
+				UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Quest complete", "You have complete the quest!\nHead back to the village to turn in the quest and get your rewards!", NULL, [=]() {
+					PlayGameScene::PlayGameScene::goToVillage();
+				}, [=]() {
+					CCLOG("Stay in map");
+				});
+				buttonNode->addChild(popup, 1);
+			}
 		}
 
 		// check player hit enemies
@@ -792,7 +802,16 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		{
 			CCLOG("Hit enemies %d", a->getNode()->getTag());
 			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
-			
+			if (GameManager::getInstace()->getMission()->getNowMission().id == 6)
+			{
+				//Create a PopUp when a mission is completed.
+				UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Quest complete", "You have complete the quest!\nHead back to the village to turn in the quest and get your rewards!", NULL, [=]() {
+					PlayGameScene::PlayGameScene::goToVillage();
+				}, [=]() {
+					CCLOG("Stay in map");
+				});
+				buttonNode->addChild(popup, 1);
+			}
 		}
 
 

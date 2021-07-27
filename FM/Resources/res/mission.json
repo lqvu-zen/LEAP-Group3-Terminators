@@ -12,7 +12,7 @@
     {
       "ID": 1,
       "REQUEST": "Hey Hero\n Can you help me kill 2 toads.",
-      "NAME": "Defeat 2 toads.",
+      "NAME": "Defeat 2 toads. (Recommended map 1)",
       "BEGIN": 0,
       "TYPE": 1,
       "END": 2,
@@ -21,7 +21,7 @@
     {
       "ID": 2,
       "REQUEST": "Hey Hero\n Can you help me collect 3 red diamonds.",
-      "NAME": "Collect 3 red diamonds.",
+      "NAME": "Collect 3 red diamonds. (Only in map 1)",
       "BEGIN": 0,
       "TYPE": 2,
       "END": 3,
@@ -29,8 +29,8 @@
     },
     {
       "ID": 3,
-      "REQUEST": "Hey Hero\n Can you help me kill 2 Medusa.",
-      "NAME": "Defeat 2 Medusa.",
+      "REQUEST": "Hey Hero\n Can you help me kill 2 Medusas.",
+      "NAME": "Defeat 2 Medusa. (Recommended map 1)",
       "BEGIN": 0,
       "TYPE": 3,
       "END": 2,
@@ -38,8 +38,8 @@
     },
     {
       "ID": 4,
-      "REQUEST": "Hey Hero\n Can you help me kill 2 Skeleton.",
-      "NAME": "Defeat 2 Skeleton.",
+      "REQUEST": "Hey Hero\n Can you help me kill 2 Skeletons.",
+      "NAME": "Defeat 2 Skeletons. (Recommended map 1)",
       "BEGIN": 0,
       "TYPE": 4,
       "END": 2,
@@ -48,7 +48,7 @@
     {
       "ID": 5,
       "REQUEST": "Hey Hero\n You have completed the training mission.\nCan you help me slay the demon of eyes.",
-      "NAME": "Slay the demon of eyes.",
+      "NAME": "Slay the demon of eyes. (Boss fight, make sure that you have everything you need)",
       "BEGIN": 0,
       "TYPE": 5,
       "END": 1,
