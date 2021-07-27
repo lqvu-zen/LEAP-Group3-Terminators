@@ -81,10 +81,10 @@ bool Joystick::init() {
 
 bool Joystick::onTouchBegan(Touch *touch, Event *unused_event) {
 	log("onTouchBegan");
-	JoystickEvent* jsEvent = JoystickEvent::create();
+	/*JoystickEvent* jsEvent = JoystickEvent::create();
 	jsEvent->type = JoyStickEventType::BEGAN;
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(
-		JoystickEvent::EVENT_JOYSTICK, jsEvent);
+		JoystickEvent::EVENT_JOYSTICK, jsEvent);*/
 
 	auto point = touch->getLocation();
 	if (mJsCenter->getBoundingBox().containsPoint(point)) {

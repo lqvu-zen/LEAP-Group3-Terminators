@@ -262,6 +262,7 @@ void BossCharacter::death()
 }
 
 void BossCharacter::attack() {
+	attackSprite->setPosition(Vec2::ZERO);
 	int type = rand() % 2 + 1;
 	if (type == 1) {
 		updateAnimation(State::ATTACK1);
@@ -294,6 +295,7 @@ void BossCharacter::attack() {
 
 void BossCharacter::jumpAttack() {
 	int type = rand() % 2 + 1;
+	attackSprite->setPosition(Vec2::ZERO);
 	if (type == 1) {
 		updateAnimation(State::JUMPATTACK1);
 		cocos2d::PhysicsBody* attackBody = GameManager::getInstace()->getPhysicsShapeCache()->createBodyWithName("Jump_Attack_1");
@@ -371,6 +373,7 @@ void BossCharacter::skill(int type) {
 			auto move = MoveBy::create(0.7, Vec2(-visibleSize.width / 3, 0));
 			characterSprite->runAction(move);
 		}
+		attackSprite->setPosition(Vec2::ZERO);
 		attackSprite->setPhysicsBody(attackBody);
 	}
 	else if (type == 2) {
