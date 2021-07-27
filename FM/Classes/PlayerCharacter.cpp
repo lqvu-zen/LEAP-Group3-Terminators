@@ -314,6 +314,25 @@ void PlayerCharacter::updateAction(float dt)
 				updateAnimation(State::IDLE, direction);
 			}
 		}
+
+		//Karma talk
+		if (countDT < 0) countDT *= -1;
+		countDT++;
+		countDT %= 300;
+
+		//CCLOG("DT: %d", countDT);
+
+		if (countDT == 0) {
+			if (characterStats.Karma > 90.0f) {
+				AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Bloodthirsty);
+			}
+			else if (characterStats.Karma > 50.0f) {
+				AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Uncontrolled);
+			}
+			else {
+				AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Normal);
+			}
+		}
 	}
 	else {
 		if (characterState != State::DEATH) {
@@ -441,6 +460,10 @@ void PlayerCharacter::attack(int mode)
 		}
 		else {
 			attackMode = (attackMode - 1) % 3 + 1;
+		}
+
+		if (countDT % 4 == 0) {
+			AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Fight);
 		}
 
 		//update animation
@@ -585,6 +608,8 @@ void PlayerCharacter::revive()
 	died = false;
 
 	updateAnimation(State::IDLE, characterDirection);
+
+	AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Loser, 2);
 }
 
 void PlayerCharacter::openInventory()

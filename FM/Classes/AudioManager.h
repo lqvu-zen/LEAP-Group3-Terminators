@@ -19,7 +19,7 @@ public:
 	};
 
 	enum class KarmaEmotion {
-
+		Normal, Winner, Loser, Bloodthirsty, Uncontrolled, Fight
 	};
 
 	static void preloadAudio();
@@ -27,7 +27,7 @@ public:
 	static void playBackgroundAudio(SceneName _sceneName);
 
 	static void playPlayerAudio(PlayerCharacter::State _playerState);
-	static void playKarmaAudio(KarmaEmotion _state);
+	static void playKarmaAudio(KarmaEmotion _state, int option = -1);
 
 	static void playRandomAudio(RandomAction _action);
 

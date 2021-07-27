@@ -1,5 +1,8 @@
 #include "AudioManager.h"
 
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 USING_NS_CC;
 
 static int backgroundAudioID = AudioEngine::INVALID_AUDIO_ID;
@@ -34,11 +37,11 @@ void AudioManager::playBackgroundAudio(SceneName _sceneName)
 		backgroundAudioID = AudioEngine::play2d("audio/3 A Magic Forest LOOP TomMusic.ogg", true);
 		break;
 	case SceneName::Battle:
-		AudioEngine::play2d("audio/kill_him.ogg");
+		playKarmaAudio(KarmaEmotion::Bloodthirsty, 2);
 		backgroundAudioID = AudioEngine::play2d("audio/4 Battle Track LOOP TomMusic.ogg", true);
 		break;
 	case SceneName::Victory:
-		AudioEngine::play2d("audio/you_win.ogg");
+		playKarmaAudio(KarmaEmotion::Winner);
 		backgroundAudioID = AudioEngine::play2d("audio/Creme.ogg", true);
 		break;
 	default:
@@ -82,8 +85,95 @@ void AudioManager::playPlayerAudio(PlayerCharacter::State _playerState)
 	}
 }
 
-void AudioManager::playKarmaAudio(KarmaEmotion _state)
+void AudioManager::playKarmaAudio(KarmaEmotion _state, int option)
 {
+	const float volumeAu = 0.3f;
+
+	int iSecret, iGuess;
+
+	/* initialize random seed: */
+	srand(time(NULL));
+
+	/* generate secret number between 1 and 10: */
+	if (option >= 0) {
+		iSecret = option;
+	}
+	else {
+		iSecret = rand() % 3;
+	}
+	
+
+	switch (_state)
+	{
+	case AudioManager::KarmaEmotion::Normal:
+		if (iSecret == 2) {
+			AudioEngine::play2d("audio/prepare_yourself.ogg", false, volumeAu);
+		}
+		else if (iSecret == 1) {
+			AudioEngine::play2d("audio/it's_a_tie.ogg", false, volumeAu);
+		}
+		else {
+			AudioEngine::play2d("audio/tie.ogg", false, volumeAu);
+		}
+		break;
+	case AudioManager::KarmaEmotion::Winner:
+		if (iSecret == 2) {
+			AudioEngine::play2d("audio/winner.ogg", false, volumeAu);
+		}
+		else if (iSecret == 1) {
+			AudioEngine::play2d("audio/flawless_victory.ogg", false, volumeAu);
+		}
+		else {
+			AudioEngine::play2d("audio/you_win.ogg", false, volumeAu);
+		}
+		break;
+	case AudioManager::KarmaEmotion::Loser:
+		if (iSecret == 2) {
+			AudioEngine::play2d("audio/loser.ogg", false, volumeAu);
+		}
+		else if (iSecret == 1) {
+			AudioEngine::play2d("audio/game_over.ogg", false, volumeAu);
+		}
+		else {
+			AudioEngine::play2d("audio/you_lose.ogg", false, volumeAu);
+		}
+		break;
+	case AudioManager::KarmaEmotion::Fight:
+		if (iSecret == 2) {
+			AudioEngine::play2d("audio/fight.ogg", false, volumeAu);
+		}
+		else if (iSecret == 1) {
+			AudioEngine::play2d("audio/combo.ogg", false, volumeAu);
+		}
+		else {
+			AudioEngine::play2d("audio/combo_breaker.ogg", false, volumeAu);
+		}
+		break;
+	case AudioManager::KarmaEmotion::Uncontrolled:
+		if (iSecret == 2) {
+			AudioEngine::play2d("audio/tie_breaker.ogg", false, volumeAu);
+		}
+		else if (iSecret == 1) {
+			AudioEngine::play2d("audio/time.ogg", false, volumeAu);
+		}
+		else {
+			AudioEngine::play2d("audio/begin.ogg", false, volumeAu);
+		}
+		break;
+	case AudioManager::KarmaEmotion::Bloodthirsty:
+		if (iSecret == 2) {
+			AudioEngine::play2d("audio/kill_it.ogg", false, volumeAu);
+		}
+		else if (iSecret == 1) {
+			AudioEngine::play2d("audio/multi_kill.ogg", false, volumeAu);
+		}
+		else {
+			AudioEngine::play2d("audio/kill_him.ogg", false, volumeAu);
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void AudioManager::playRandomAudio(RandomAction _action)
