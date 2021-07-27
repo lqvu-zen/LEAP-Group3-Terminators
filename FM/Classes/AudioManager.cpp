@@ -9,18 +9,22 @@ static int backgroundAudioID = AudioEngine::INVALID_AUDIO_ID;
 static int playerActionAudioID = AudioEngine::INVALID_AUDIO_ID;
 static int randomAudioID = AudioEngine::INVALID_AUDIO_ID;
 
+#define ENABLE_AUDIO
+
 void AudioManager::preloadAudio()
 {
+#ifdef ENABLE_AUDIO
 	AudioEngine::preload("audio/1 Exploration LOOP TomMusic.ogg");
 	AudioEngine::preload("audio/2 Journey LOOP TomMusic.ogg");
 	AudioEngine::preload("audio/3 A Magic Forest LOOP TomMusic.ogg");
 	AudioEngine::preload("audio/4 Battle Track LOOP TomMusic.ogg");
-
-
+#endif
 }
+
 
 void AudioManager::playBackgroundAudio(SceneName _sceneName)
 {
+#ifdef ENABLE_AUDIO
 	if (backgroundAudioID != AudioEngine::INVALID_AUDIO_ID) {
 		AudioEngine::stop(backgroundAudioID);
 	}
@@ -47,10 +51,12 @@ void AudioManager::playBackgroundAudio(SceneName _sceneName)
 	default:
 		break;
 	}
+#endif
 }
 
 void AudioManager::playPlayerAudio(PlayerCharacter::State _playerState)
 {
+#ifdef ENABLE_AUDIO
 	if (playerActionAudioID != AudioEngine::INVALID_AUDIO_ID) {
 		AudioEngine::stop(playerActionAudioID);
 	}
@@ -83,10 +89,12 @@ void AudioManager::playPlayerAudio(PlayerCharacter::State _playerState)
 	default:
 		break;
 	}
+#endif
 }
 
 void AudioManager::playKarmaAudio(KarmaEmotion _state, int option)
 {
+#ifdef ENABLE_AUDIO
 	const float volumeAu = 0.3f;
 
 	int iSecret, iGuess;
@@ -174,10 +182,12 @@ void AudioManager::playKarmaAudio(KarmaEmotion _state, int option)
 	default:
 		break;
 	}
+#endif
 }
 
 void AudioManager::playRandomAudio(RandomAction _action)
 {
+#ifdef ENABLE_AUDIO
 	switch (_action)
 	{
 	case AudioManager::RandomAction::Collect:
@@ -192,6 +202,7 @@ void AudioManager::playRandomAudio(RandomAction _action)
 	default:
 		break;
 	}
+#endif
 }
 
 
