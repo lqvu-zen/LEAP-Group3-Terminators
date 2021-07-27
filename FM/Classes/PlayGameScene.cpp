@@ -10,7 +10,7 @@ USING_NS_CC;
 Scene* PlayGameScene::createScene()
 {
 	auto scene = PlayGameScene::create();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	scene->getPhysicsWorld()->setGravity(Vect(0, -GRAVITY_VELOCITY));//test world with gravity physics!!! Working for now!!!
 	return scene;
 }
@@ -341,7 +341,7 @@ bool PlayGameScene::init()
 	//Mission description
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel = Label::createWithTTF(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
-	missionLabel->setColor(Color3B::WHITE);
+	missionLabel->setColor(Color3B::Color3B(255, 153, 51));
 	buttonNode->addChild(missionLabel);
 
 	//hp and mp potions label
