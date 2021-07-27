@@ -26,6 +26,7 @@
 #include "ui/CocosGUI.h"
 #include "MainMenuScene.h"
 #include "Definitions.h"
+#include "AudioManager.h"
 
 USING_NS_CC;
 
@@ -76,6 +77,9 @@ void SplashScene::loadSplashScene(float dt) {
     logo->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.75));
     scene->addChild(logo);*/
 
+	//preload audio
+	AudioManager::preloadAudio();
+
     auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
     title->setTextColor(Color4B::WHITE);
     title->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.5));
@@ -96,6 +100,7 @@ void SplashScene::loadSplashScene(float dt) {
             scene->scheduleOnce(CC_SCHEDULE_SELECTOR(SplashScene::goToMainMenuScene), DISPLAY_TIME_SPLASH_SCENE);
         }
     }, 0.1f, "updateLoadingBar");
+
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 

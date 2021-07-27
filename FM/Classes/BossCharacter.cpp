@@ -192,7 +192,7 @@ void BossCharacter::updateAction_2(cocos2d::Vec2 positionPlayer) {
 				}
 				else {
 					if (characterState != State::ATTACK) {
-						jumpAttack();
+						attack();
 					}
 				}
 			}
