@@ -78,7 +78,7 @@ void SplashScene::loadSplashScene(float dt) {
     scene->addChild(logo);*/
 
 	//preload audio
-	AudioManager::preloadAudio();
+	//AudioManager::preloadAudio();
 
     auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
     title->setTextColor(Color4B::WHITE);

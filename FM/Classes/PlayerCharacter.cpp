@@ -194,7 +194,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 		}
 
 		//play audio
-		AudioManager::playPlayerAudio(actionState);
+		//AudioManager::playPlayerAudio(actionState);
 
 		if (repeatForever) {
 			characterSpriteAnimation->stopAllActions();
@@ -616,7 +616,7 @@ void PlayerCharacter::colectItem(Item * item, int mount)
 
 	characterSprite->addChild(colectSprite);
 
-	AudioManager::playRandomAudio(AudioManager::RandomAction::Collect);
+	//AudioManager::playRandomAudio(AudioManager::RandomAction::Collect);
 
 	characterInventory.addItem(item, mount);
 }
