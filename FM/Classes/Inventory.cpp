@@ -46,6 +46,16 @@ Item * Inventory::getItem(Item::ItemType itemType)
 	return item;
 }
 
+int Inventory::getItemCount(Item::ItemType itemType)
+{
+	Item* item = nullptr;
+	if (itemMap[itemType].size() >= 0)
+	{
+		return itemMap[itemType].size();
+	}
+}
+
+
 cocos2d::Sprite * Inventory::GetSprite()
 {
 	if (inventorySprite == nullptr) {
