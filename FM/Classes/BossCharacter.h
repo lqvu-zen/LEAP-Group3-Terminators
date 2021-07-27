@@ -13,7 +13,7 @@ class BossCharacter : public Character
 public:
 
     enum class State {
-        ATTACK1, ATTACK2, BLOCK, CHARGE, DEATH, HURT, IDLE, JUMP, JUMPATTACK1, JUMPATTACK2, RUN, SHOOTBOW, WALK
+        ATTACK, BLOCK, CHARGE, DEATH, HURT, IDLE, JUMP, RUN, SHOOTBOW, WALK
     };
 
     enum class Direction {
@@ -27,34 +27,16 @@ public:
     cocos2d::Vec2 position;
     int action;
     
-    cocos2d::Sprite* getSprite() {
-        return characterSprite;
-    };
+    cocos2d::Sprite* getSprite();
 
-    void setPosition(cocos2d::Vec2 _position) {
-        position = _position;
-        characterSprite->setPosition(_position);
-        characterSpriteAnimation->setPosition(Vec2::ZERO);
-        attackSprite->setPosition(Vec2::ZERO);
-    }
+    void setPosition(cocos2d::Vec2 _position);
 
-    void updateAnimation(State actionState, bool repeatForever = false);
-
-    void updateAction(cocos2d::Vec2 positionPlayer);
+    void updateAction_1(cocos2d::Vec2 positionPlayer);
+    void updateAction_2(cocos2d::Vec2 positionPlayer);
 
     void setDirection(Direction actionDirection);
-    Direction getDirection() {
-        return characterDirection;
-    }
+    Direction getDirection();
 
-    void death();
-    void attack();
-    void jumpAttack();
-    void run();
-    void walk();
-    void skill(int type);
-
-	void takeHit(float dame);
 private:
     cocos2d::Size visibleSize;
     cocos2d::Vec2 origin;
@@ -74,6 +56,25 @@ private:
     cocos2d::Animation* createAnimation(string prefixName, int pFrames, float delay);
 
     int numAttack;
+
+    void idle();
+    void death();
+    void attack_1();
+    void attack_2();
+    void jumpAttack_1();
+    void jumpAttack_2();
+    void run();
+    void walk();
+    void skill_1();
+    void skill_2();
+    void skill_3();
+
+    void attack();
+    void jumpAttack();
+    void skill(int type);
+    void takeHit(float dame);
+
+    Sprite* arrow;
 };
 
 #endif // __BOSS_CHARACTER_H__
