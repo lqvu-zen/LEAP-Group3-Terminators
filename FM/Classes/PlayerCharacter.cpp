@@ -1,4 +1,5 @@
 #include "PlayerCharacter.h"
+#include "GameManager.h"
 
 USING_NS_CC;
 
@@ -192,6 +193,9 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 			characterAnimate[nameSprite]->retain();
 		}
 
+		//play audio
+		AudioManager::playPlayerAudio(actionState);
+
 		if (repeatForever) {
 			characterSpriteAnimation->stopAllActions();
 
@@ -209,6 +213,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 			characterSpriteAnimation->runAction(Sequence::create(characterAnimate[nameSprite], callbackAction, nullptr));
 
 			characterStateOnce = actionState;
+			characterState = actionState;
 		}
 	}
 
@@ -308,6 +313,17 @@ void PlayerCharacter::updateAction(float dt)
 				//CCLOG("IDLE");
 				updateAnimation(State::IDLE, direction);
 			}
+		}
+	}
+	else {
+		if (characterState != State::DEATH) {
+			//died = true;
+			characterStats.HP -= 1.0f;
+			attacking = false;
+			takingHit = false;
+
+			updateAnimation(State::DEATH, characterDirection, false);
+			return;
 		}
 	}
 }
@@ -594,6 +610,8 @@ void PlayerCharacter::colectItem(Item * item, int mount)
 	colectSprite->runAction(Sequence::create(moveBy, removeSeft, NULL));
 
 	characterSprite->addChild(colectSprite);
+
+	AudioManager::playRandomAudio(AudioManager::RandomAction::Collect);
 
 	characterInventory.addItem(item, mount);
 }

@@ -815,7 +815,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			gameNode->runAction(moveTo);
 
 			//combat audio
-			AudioManager::playBattleAudio();
+			AudioManager::playBackgroundAudio(AudioManager::SceneName::Battle);
 		}
 
 		//Player collide with the hidden area in the map
@@ -908,6 +908,7 @@ void PlayGameScene::monsterAction(float dt) {
 void PlayGameScene::updateBoss(float dt) {
 	if (boss->getStats().HP <= 0) {
 		if (win == false) {
+			AudioManager::playBackgroundAudio(AudioManager::SceneName::Victory);
 			win = true;
 			this->scheduleOnce(CC_SCHEDULE_SELECTOR(PlayGameScene::goToWinScene), DISPLAY_TIME_SPLASH_SCENE);
 		}
