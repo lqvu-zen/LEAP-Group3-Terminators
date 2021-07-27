@@ -27,23 +27,15 @@ public:
     cocos2d::Vec2 position;
     int action;
     
-    cocos2d::Sprite* getSprite() {
-        return characterSprite;
-    };
+    cocos2d::Sprite* getSprite();
 
-    void setPosition(cocos2d::Vec2 _position) {
-        position = _position;
-        characterSprite->setPosition(_position);
-        characterSpriteAnimation->setPosition(Vec2::ZERO);
-        attackSprite->setPosition(Vec2::ZERO);
-    }
+    void setPosition(cocos2d::Vec2 _position);
 
-    void updateAction(cocos2d::Vec2 positionPlayer);
+    void updateAction_1(cocos2d::Vec2 positionPlayer);
+    void updateAction_2(cocos2d::Vec2 positionPlayer);
 
     void setDirection(Direction actionDirection);
-    Direction getDirection() {
-        return characterDirection;
-    }
+    Direction getDirection();
 
 private:
     cocos2d::Size visibleSize;

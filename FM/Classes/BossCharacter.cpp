@@ -87,6 +87,30 @@ BossCharacter::BossCharacter(int level) {
 	characterStats.GetSprite()->setPosition(Vec2(0, characterSpriteAnimation->getContentSize().height / 6));
 }
 
+void BossCharacter::setPosition(cocos2d::Vec2 _position) {
+	position = _position;
+	characterSprite->setPosition(_position);
+	characterSpriteAnimation->setPosition(Vec2::ZERO);
+	attackSprite->setPosition(Vec2::ZERO);
+}
+cocos2d::Sprite* BossCharacter::getSprite() {
+	return characterSprite;
+};
+void BossCharacter::setDirection(Direction actionDirection) {
+	if (action != 1) {
+		characterDirection = actionDirection;
+		if (characterDirection == Direction::LEFT) {
+			characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
+		}
+		else {
+			characterSprite->setScaleX(0.5);//characterSprite->setFlippedX(false);
+		}
+	}
+}
+BossCharacter::Direction BossCharacter::getDirection() {
+	return characterDirection;
+}
+
 cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFramesOrder, float delay) {
 	Vector<SpriteFrame*> animFrames;
 	for (int i = 1; i <= pFramesOrder; i++) {
@@ -100,106 +124,7 @@ cocos2d::Animation* BossCharacter::createAnimation(string prefixName, int pFrame
 	return animation;
 }
 
-#if 0
-void BossCharacter::updateAnimation(State actionState, bool repeatForever) {
-	//if (characterState != actionState) {
-		if (attackSprite->getPhysicsBody() != nullptr)
-			attackSprite->getPhysicsBody()->removeFromWorld();
-
-		const int maxWord = 50;
-
-		int numberSprite;
-		string prefixName;
-
-		switch (actionState)
-		{
-		case BossCharacter::State::ATTACK1:
-			numberSprite = 8;
-			prefixName = "Attack_1";;
-			break;
-		case BossCharacter::State::ATTACK2:
-			numberSprite = 7;
-			prefixName = "Attack_2";
-			break;
-		case BossCharacter::State::BLOCK:
-			numberSprite = 9;
-			prefixName = "Block";
-			break;
-		case BossCharacter::State::CHARGE:
-			numberSprite = 7;
-			prefixName = "Charge";
-			break;
-		case BossCharacter::State::DEATH:
-			numberSprite = 15;
-			prefixName = "Death";
-			break;
-		case BossCharacter::State::HURT:
-			numberSprite = 8;
-			prefixName = "Hurt";
-			break;
-		case BossCharacter::State::IDLE:
-			numberSprite = 16;
-			prefixName = "Idle";
-			break;
-		case BossCharacter::State::JUMP:
-			numberSprite = 10;
-			prefixName = "Jump";
-			break;
-		case BossCharacter::State::JUMPATTACK1:
-			numberSprite = 8;
-			prefixName = "Jump_Attack_1";
-			break;
-		case BossCharacter::State::JUMPATTACK2:
-			numberSprite = 7;
-			prefixName = "Jump_Attack_2";
-			break;
-		case BossCharacter::State::RUN:
-			numberSprite = 6;
-			prefixName = "Run";
-			break;
-		case BossCharacter::State::SHOOTBOW:
-			numberSprite = 12;
-			prefixName = "Shoot_Bow";
-			break;
-		case BossCharacter::State::WALK:
-			numberSprite = 12;
-			prefixName = "Walk";
-			break;
-		default:
-			break;
-		}
-
-		animation = createAnimation(prefixName, numberSprite, ANIMATION_DELAY);
-		auto animate = Animate::create(animation);
-		animate->retain();
-
-		if (repeatForever) {
-			characterSpriteAnimation->stopAllActions();
-			characterSpriteAnimation->runAction(RepeatForever::create(animate));
-			characterState = actionState;
-		}
-		else {
-			characterSpriteAnimation->stopAllActions();
-			characterSpriteAnimation->runAction(animate);
-			characterState = actionState;
-		}
-	//}
-}
-#endif
-
-void BossCharacter::setDirection(Direction actionDirection) {
-	if (action != 1) {
-		characterDirection = actionDirection;
-		if (characterDirection == Direction::LEFT) {
-			characterSprite->setScaleX(-0.5);//characterSprite->setFlippedX(true);
-		}
-		else {
-			characterSprite->setScaleX(0.5);//characterSprite->setFlippedX(false);
-		}
-	}	
-}
-
-void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
+void BossCharacter::updateAction_1(cocos2d::Vec2 positionPlayer) {
 	if (characterStats.HP > 0) {
 		if (abs(position.x - positionPlayer.x) > visibleSize.width / 2) {
 			idle();
@@ -253,6 +178,47 @@ void BossCharacter::updateAction(cocos2d::Vec2 positionPlayer) {
 		}
 	}
 }
+void BossCharacter::updateAction_2(cocos2d::Vec2 positionPlayer) {
+	if (characterStats.HP > 0) {
+		if (abs(position.x - positionPlayer.x) > visibleSize.width / 2) {
+			idle();
+		}
+		else {
+			if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 8) {
+				if (positionPlayer.y > characterSprite->getPosition().y + characterSprite->getContentSize().height) {
+					if (characterState != State::ATTACK) {
+						jumpAttack();
+					}
+				}
+				else {
+					if (characterState != State::ATTACK) {
+						jumpAttack();
+					}
+				}
+			}
+			else if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 4) {
+				if (numAttack >= 5) {
+					skill(1);
+				}
+				else {
+					walk();
+				}
+			}
+			else if (abs(positionPlayer.x - characterSprite->getPosition().x) <= visibleSize.width / 2) {
+				if (numAttack >= 5) {
+					skill(2);
+				}
+				else {
+					run();
+				}
+			}
+			else {
+				idle();
+			}
+		}
+	}
+}
+
 
 void BossCharacter::idle() {
 	characterState = State::IDLE;
@@ -260,6 +226,7 @@ void BossCharacter::idle() {
 		attackSprite->getPhysicsBody()->removeFromWorld();
 
 	characterSpriteAnimation->stopAllActions();
+	characterSprite->stopAllActions();
 
 	animation = createAnimation("Idle", 16, 0.05);
 	Animate* animate = Animate::create(animation);
@@ -390,49 +357,53 @@ void BossCharacter::jumpAttack_2() {
 	attackSprite->setPhysicsBody(attackBody);
 }
 void BossCharacter::run() {
-	characterState = State::RUN;
-	if (attackSprite->getPhysicsBody() != nullptr)
-		attackSprite->getPhysicsBody()->removeFromWorld();
+	if (characterState == State::IDLE) {
+		characterState = State::RUN;
+		if (attackSprite->getPhysicsBody() != nullptr)
+			attackSprite->getPhysicsBody()->removeFromWorld();
 
-	characterSpriteAnimation->stopAllActions();
+		characterSpriteAnimation->stopAllActions();
 
-	animation = createAnimation("Run", 6, 0.05);
-	Animate* animate = Animate::create(animation);
-	animate->retain();
-	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
-	characterSpriteAnimation->runAction(seq);
+		animation = createAnimation("Run", 6, 0.05);
+		Animate* animate = Animate::create(animation);
+		animate->retain();
+		auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+		characterSpriteAnimation->runAction(seq);
 
-	if (characterDirection == Direction::RIGHT) {
-		auto move = MoveBy::create(0.3, Vec2(visibleSize.width / 6, 0));
-		characterSprite->runAction(move);
-	}
-	else
-	{
-		auto move = MoveBy::create(0.6, Vec2(-visibleSize.width / 6, 0));
-		characterSprite->runAction(move);
-	}
+		if (characterDirection == Direction::RIGHT) {
+			auto move = MoveBy::create(0.3, Vec2(visibleSize.width / 6, 0));
+			characterSprite->runAction(move);
+		}
+		else
+		{
+			auto move = MoveBy::create(0.6, Vec2(-visibleSize.width / 6, 0));
+			characterSprite->runAction(move);
+		}
+	}	
 }
 void BossCharacter::walk() {
-	characterState = State::WALK;
-	if (attackSprite->getPhysicsBody() != nullptr)
-		attackSprite->getPhysicsBody()->removeFromWorld();
+	if (characterState == State::IDLE) {
+		characterState = State::WALK;
+		if (attackSprite->getPhysicsBody() != nullptr)
+			attackSprite->getPhysicsBody()->removeFromWorld();
 
-	characterSpriteAnimation->stopAllActions();
+		characterSpriteAnimation->stopAllActions();
 
-	animation = createAnimation("Walk", 12, 0.05);
-	Animate* animate = Animate::create(animation);
-	animate->retain();
-	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
-	characterSpriteAnimation->runAction(seq);
+		animation = createAnimation("Walk", 12, 0.05);
+		Animate* animate = Animate::create(animation);
+		animate->retain();
+		auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+		characterSpriteAnimation->runAction(seq);
 
-	if (characterDirection == Direction::RIGHT) {
-		auto move = MoveBy::create(0.6, Vec2(visibleSize.width / 8, 0));
-		characterSprite->runAction(move);
-	}
-	else
-	{
-		auto move = MoveBy::create(1.2, Vec2(-visibleSize.width / 8, 0));
-		characterSprite->runAction(move);
+		if (characterDirection == Direction::RIGHT) {
+			auto move = MoveBy::create(0.6, Vec2(visibleSize.width / 8, 0));
+			characterSprite->runAction(move);
+		}
+		else
+		{
+			auto move = MoveBy::create(1.2, Vec2(-visibleSize.width / 8, 0));
+			characterSprite->runAction(move);
+		}
 	}
 }
 void BossCharacter::skill_1() {
@@ -560,26 +531,27 @@ void BossCharacter::skill(int type) {
 	}
 	numAttack=0;
 }
-
 void BossCharacter::takeHit(float dame)
 {
-	characterStats.HP -= dame;
-	characterStats.UpdateStatsBar();
-	
-	characterState = State::HURT;
-	if (attackSprite->getPhysicsBody() != nullptr)
-		attackSprite->getPhysicsBody()->removeFromWorld();
+	if (characterState != State::BLOCK) {
+		characterStats.HP -= dame;
+		characterStats.UpdateStatsBar();
 
-	characterSpriteAnimation->stopAllActions();
+		characterState = State::HURT;
+		if (attackSprite->getPhysicsBody() != nullptr)
+			attackSprite->getPhysicsBody()->removeFromWorld();
 
-	animation = createAnimation("Hurt", 8, 0.1);
-	Animate* animate = Animate::create(animation);
-	animate->retain();
-	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
-	characterSpriteAnimation->runAction(seq);
-	
-	if (characterStats.HP <= 0.0f) {
-		death();
-		GameManager::getInstace()->getMission()->updateMission(5);
+		characterSpriteAnimation->stopAllActions();
+
+		animation = createAnimation("Hurt", 8, 0.1);
+		Animate* animate = Animate::create(animation);
+		animate->retain();
+		auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);
+		characterSpriteAnimation->runAction(seq);
+
+		if (characterStats.HP <= 0.0f) {
+			death();
+			GameManager::getInstace()->getMission()->updateMission(5);
+		}
 	}
 }
