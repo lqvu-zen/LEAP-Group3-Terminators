@@ -844,27 +844,6 @@ void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 	{
 		CCLOG("Not Standing on enemies");
 	}
-
-	//if ((a->getCategoryBitmask() & b->getCollisionBitmask()) == 0
-	//	|| (b->getCategoryBitmask() & a->getCollisionBitmask()) == 0)
-	//{
-	//	if ((a->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
-	//		|| (b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK && a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK))
-	//	{
-
-	//		if (b->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
-	//		{
-	//			CCLOG("Out Hidden area");
-	//			//showTiles();
-	//		}
-	//		else if (a->getCategoryBitmask() == HIDDEN_TILE_CATEGORY_BITMASK)
-	//		{
-	//			CCLOG("Out Hidden area");
-	//			//showTiles();
-	//			
-	//		}
-	//	}
-	//}
 }
 
 /// <summary>
