@@ -169,20 +169,23 @@ void MonsterCharacter::attack() {
 }
 
 void MonsterCharacter::death() {
+	characterState = State::DEATH;
 	if (attackSprite->getPhysicsBody() != nullptr)
 		attackSprite->getPhysicsBody()->removeFromWorld();
 	if (characterSprite->getPhysicsBody() != nullptr)
 		characterSprite->getPhysicsBody()->removeFromWorld();
-	//animation->release();
+
 	characterSpriteAnimation->stopAllActions();
 	animation = MonsterCharacter::createAnimation(name + "-Death-", numSprite[1], 0.02);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	characterSpriteAnimation->runAction(animate);
 
-	auto dieAction = MoveTo::create(0, Vec2(-100 * visibleSize.width, 0));
+	auto callback = CallFunc::create([this]() {
+		characterSprite->removeFromParent();
+	});
 	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(numSprite[1] * 0.02);
-	auto seq = Sequence::create(delay, dieAction, nullptr);
+	auto seq = Sequence::create(delay, callback, nullptr);
 	characterSprite->runAction(seq);
 
 	GameManager::getInstace()->AddReward(characterSprite->getPosition());
