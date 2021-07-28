@@ -59,6 +59,7 @@ public:
 
 	cocos2d::Sprite* getSprite();
 	Stats getStats();
+	void LoadStats(float hp, float mp, float atk, float def, int karma, float m_hp, float m_mp, float m_atk, float m_def, int m_jump);
 	Inventory getInventory();
 
 	void setVelocity(cocos2d::Vec2 velocity);

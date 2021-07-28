@@ -34,6 +34,8 @@ public:
 
 	void SetStats(float hp = 10.0f, float mp = 0.0f, float atk = 0.0f, float def = 0.0f);
 
+	void LoadPlayerStats(float hp, float mp, float atk, float def, int karma, float m_hp, float m_mp, float m_atk, float m_def, int m_jump);
+
 	void SetCItemStats(float _hp = 0.0f, float _mp = 0.0f, float _atk = 0.0f, float _def = 0.0f);
 	void SetNCItemStats(float _hp = 0.0f, float _mp = 0.0f, float _atk = 0.0f, float _def = 0.0f, int _jump = 0);
 

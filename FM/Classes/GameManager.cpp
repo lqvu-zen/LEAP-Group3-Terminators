@@ -145,6 +145,41 @@ void GameManager::LoadGame()
 	auto max_atk = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXATK", playerCharacter->getStats().maxATK);
 	auto max_def = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXDEF", playerCharacter->getStats().maxDEF);
 	auto max_jump = UserDefault::getInstance()->getIntegerForKey("PLAYER_MAXJUMP", playerCharacter->getStats().maxJump);
+
+	playerCharacter->LoadStats(hp, mp, atk, def, karma, max_hp, max_mp, max_atk, max_def, max_jump);
+
+	//Load inventory
+	auto c_gold = UserDefault::getInstance()->getIntegerForKey("INVENTORY_GOLD", playerCharacter->getInventory().getItemCount(Item::ItemType::GOLD));
+	auto c_gem = UserDefault::getInstance()->getIntegerForKey("INVENTORY_GEM", playerCharacter->getInventory().getItemCount(Item::ItemType::GEM));
+	auto c_hpPotion = UserDefault::getInstance()->getIntegerForKey("INVENTORY_HPPOTION", playerCharacter->getInventory().getItemCount(Item::ItemType::HP_POTION));
+	auto c_mpPotion = UserDefault::getInstance()->getIntegerForKey("INVENTORY_MPPOTION", playerCharacter->getInventory().getItemCount(Item::ItemType::MP_POTION));
+	auto c_dBoots = UserDefault::getInstance()->getIntegerForKey("INVENTORY_DBOOTS", playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
+
+	if (playerCharacter->getInventory().getItemCount(Item::ItemType::GOLD) < c_gold) {
+		auto tempItem = new Item(Item::ItemType::GOLD);
+		playerCharacter->colectItem(tempItem, c_gold - playerCharacter->getInventory().getItemCount(Item::ItemType::GOLD));
+	}
+
+	if (playerCharacter->getInventory().getItemCount(Item::ItemType::GEM) < c_gem) {
+		auto tempItem = new Item(Item::ItemType::GEM);
+		playerCharacter->colectItem(tempItem, c_gem - playerCharacter->getInventory().getItemCount(Item::ItemType::GEM));
+	}
+
+	if (playerCharacter->getInventory().getItemCount(Item::ItemType::HP_POTION) < c_hpPotion) {
+		auto tempItem = new Item(Item::ItemType::HP_POTION);
+		playerCharacter->colectItem(tempItem, c_hpPotion - playerCharacter->getInventory().getItemCount(Item::ItemType::HP_POTION));
+	}
+
+	if (playerCharacter->getInventory().getItemCount(Item::ItemType::MP_POTION) < c_mpPotion) {
+		auto tempItem = new Item(Item::ItemType::MP_POTION);
+		playerCharacter->colectItem(tempItem, c_mpPotion - playerCharacter->getInventory().getItemCount(Item::ItemType::MP_POTION));
+	}
+
+	if (playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS) < c_dBoots) {
+		auto tempItem = new Item(Item::ItemType::D_BOOTS);
+		playerCharacter->colectItem(tempItem, c_dBoots - playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
+	}
+	
 }
 
 GameManager * GameManager::create()
