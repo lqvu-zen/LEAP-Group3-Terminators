@@ -48,6 +48,10 @@ Item * Inventory::getItem(Item::ItemType itemType)
 
 int Inventory::getItemCount(Item::ItemType itemType)
 {
+	if (itemType == Item::ItemType::GOLD) {
+		return gold;
+	}
+
 	Item* item = nullptr;
 	if (itemMap[itemType].size() >= 0)
 	{

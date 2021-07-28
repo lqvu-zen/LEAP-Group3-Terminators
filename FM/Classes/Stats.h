@@ -23,6 +23,13 @@ public:
 	int value;
 	float countdown;
 
+	float maxHP;
+	float maxMP;
+	float maxATK;
+	float maxDEF;
+
+	int maxJump;
+
 	Stats();
 
 	void SetStats(float hp = 10.0f, float mp = 0.0f, float atk = 0.0f, float def = 0.0f);
@@ -47,12 +54,6 @@ public:
 	void upgradeJump();
 
 private:
-	float maxHP;
-	float maxMP;
-	float maxATK;
-	float maxDEF;
-
-	int maxJump;
 
 	cocos2d::Sprite* statsSprite;
 	cocos2d::Sprite* statsEmblemSpace;
