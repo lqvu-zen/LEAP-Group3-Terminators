@@ -116,6 +116,9 @@ int Mission::getState() {
 				return 2;
 			}
 		}
+		if (mission.id == data.size() - 2) {
+			return 2;
+		}
 		return 0;
 	}
 	else {
