@@ -40,7 +40,7 @@ bool PlayGameScene::init()
 
 	SpriteBatchNode* spriteNode = SpriteBatchNode::create("sprites/Number/Number.png");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Number/Number.plist");
-
+	
 	//Pause button
 #if 1
 	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
@@ -62,6 +62,8 @@ bool PlayGameScene::init()
 				goToMainMenu();
 			}, [=]() {
 				goToExit();
+			}, [=]() {
+				goToSave();
 			});
 			/*Mission* mission = new Mission();
 			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);*/
@@ -947,6 +949,12 @@ void PlayGameScene::goToVillage() {
 	auto scene = VillageScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
+
+void PlayGameScene::goToSave() {
+	//Implement save game here.
+	CCLOG("SAVE GAME");
+}
+
 void PlayGameScene::goToSetting() {
 
 }
@@ -961,6 +969,7 @@ void PlayGameScene::goToExit() {
 	});
 	buttonNode->addChild(popup, 2);
 }
+
 
 void PlayGameScene::playerDeadNotice()
 {

@@ -71,7 +71,7 @@ private:
 	void goToMainMenu();
 	void goToExit();
 	void playerDeadNotice();
-
+	void goToSave();
 	//Unlock Skill
 	void unlockSkill(int index);
 	bool checkVector(vector<int>list, int num);

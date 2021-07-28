@@ -49,6 +49,8 @@ private:
     void goToAbout(float dt);
 
     void goToExit(float dt);
+
+	void goToContinueGame(float dt);
 };
 
 #endif // __MAIN_MENU_SCENE_H__
