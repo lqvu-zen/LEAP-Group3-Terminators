@@ -921,10 +921,10 @@ void PlayGameScene::monsterAction(float dt) {
 /// </summary>
 /// <param name="dt"></param>
 void PlayGameScene::updateBoss(float dt) {
-	if (boss->getStats().HP <= 0) {
+	if (boss->characterState==BossCharacter::State::DEATH) {
 		if (win == false) {
 			win = true;
-			this->scheduleOnce(CC_SCHEDULE_SELECTOR(PlayGameScene::goToWinScene), DISPLAY_TIME_SPLASH_SCENE);
+			this->scheduleOnce(CC_SCHEDULE_SELECTOR(PlayGameScene::goToWinScene), DISPLAY_TIME_SPLASH_SCENE * 4);
 		}
 	}
 }
@@ -1063,7 +1063,7 @@ void PlayGameScene::goToWinScene(float dt) {
 
 	auto background = Sprite::create("sprites/winBackground.png");
 	background->setPosition(visibleSize / 2);
-	background->setScale(0.5);
+	background->setScale(0.6);
 	this->addChild(background, 3);
 
 	auto title = Label::createWithTTF("Win", "fonts/Marker Felt.ttf", 60);

@@ -248,6 +248,8 @@ void BossCharacter::death()
 	characterState = State::DEATH;
 	if (attackSprite->getPhysicsBody() != nullptr)
 		attackSprite->getPhysicsBody()->removeFromWorld();
+	if (characterSprite->getPhysicsBody() != nullptr)
+		characterSprite->getPhysicsBody()->removeFromWorld();
 
 	characterSpriteAnimation->stopAllActions();
 

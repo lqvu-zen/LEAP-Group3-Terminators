@@ -460,10 +460,6 @@ void VillageScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2
 void VillageScene::update(float dt)
 {
 	//Mission check for NPC
-	if (GameManager::getInstace()->getMission()->getState() == 0)
-	{
-		npc->showExclamation();
-	}
 	if (GameManager::getInstace()->getMission()->getState() == 1) {
 		npc->changeExclamation();
 	}
