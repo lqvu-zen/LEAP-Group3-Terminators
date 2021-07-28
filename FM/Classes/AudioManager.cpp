@@ -1,15 +1,21 @@
 #include "AudioManager.h"
 
+#define ENABLE_AUDIO
+
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
 USING_NS_CC;
 
+#ifdef ENABLE_AUDIO
+
+#include "AudioEngine.h"
+
 static int backgroundAudioID = AudioEngine::INVALID_AUDIO_ID;
 static int playerActionAudioID = AudioEngine::INVALID_AUDIO_ID;
 static int randomAudioID = AudioEngine::INVALID_AUDIO_ID;
+#endif
 
-#define ENABLE_AUDIO
 
 void AudioManager::preloadAudio()
 {

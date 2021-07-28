@@ -2,7 +2,6 @@
 #define __AUDIO_MANAGER_H__
 
 #include "cocos2d.h"
-#include "AudioEngine.h"
 #include "PlayerCharacter.h"
 
 #include "Definitions.h"

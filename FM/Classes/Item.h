@@ -13,7 +13,7 @@ class Item
 {
 public:
 	enum class ItemType {
-		GEM, HP_POTION, MP_POTION, GOLD
+		GEM, HP_POTION, MP_POTION, GOLD, D_BOOTS
 	};
 
 	Item(ItemType _itemType);

@@ -104,6 +104,37 @@ void GameManager::colect(int item)
 	playerCharacter->colectItem(itemMap[item]);
 }
 
+void GameManager::SaveGame()
+{
+	//Save Player
+	UserDefault::getInstance()->setFloatForKey("PLAYER_HP", playerCharacter->getStats().HP);
+	UserDefault::getInstance()->setFloatForKey("PLAYER_MP", playerCharacter->getStats().MP);
+	UserDefault::getInstance()->setFloatForKey("PLAYER_ATK", playerCharacter->getStats().ATK);
+	UserDefault::getInstance()->setFloatForKey("PLAYER_DEF", playerCharacter->getStats().DEF);
+
+	UserDefault::getInstance()->setFloatForKey("PLAYER_KARMA", playerCharacter->getStats().Karma);
+
+	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXHP", playerCharacter->getStats().maxHP);
+	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXMP", playerCharacter->getStats().maxMP);
+	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXATK", playerCharacter->getStats().maxATK);
+	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXDEF", playerCharacter->getStats().maxDEF);
+	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXJUMP", playerCharacter->getStats().maxJump);
+
+	//Save Inventory
+	UserDefault::getInstance()->setIntegerForKey("INVENTORY_GOLD", playerCharacter->getInventory().getItemCount(Item::ItemType::GOLD));
+	UserDefault::getInstance()->setIntegerForKey("INVENTORY_GEM", playerCharacter->getInventory().getItemCount(Item::ItemType::GEM));
+	UserDefault::getInstance()->setIntegerForKey("INVENTORY_HPPOTION", playerCharacter->getInventory().getItemCount(Item::ItemType::HP_POTION));
+	UserDefault::getInstance()->setIntegerForKey("INVENTORY_MPPOTION", playerCharacter->getInventory().getItemCount(Item::ItemType::MP_POTION));
+	UserDefault::getInstance()->setIntegerForKey("INVENTORY_DBOOTS", playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
+
+	//Save Mission
+}
+
+void GameManager::LoadGame()
+{
+
+}
+
 GameManager * GameManager::create()
 {
 	GameManager* gameManager = new GameManager();

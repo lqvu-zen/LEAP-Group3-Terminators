@@ -57,6 +57,10 @@ public:
 	*/
 	int getMapHiddenAreasCount();
 	int countDead;
+
+	//Save/Load Gameplay
+	void SaveGame();
+	void LoadGame();
 private:
 	static GameManager* create();
 
