@@ -134,17 +134,17 @@ void GameManager::LoadGame()
 {
 	//Load Player
 	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_HP", playerCharacter->getStats().HP);
-	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MP", playerCharacter->getStats().MP);
-	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_ATK", playerCharacter->getStats().ATK);
-	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_DEF", playerCharacter->getStats().DEF);
+	auto mp = UserDefault::getInstance()->getFloatForKey("PLAYER_MP", playerCharacter->getStats().MP);
+	auto atk = UserDefault::getInstance()->getFloatForKey("PLAYER_ATK", playerCharacter->getStats().ATK);
+	auto def = UserDefault::getInstance()->getFloatForKey("PLAYER_DEF", playerCharacter->getStats().DEF);
 
-	auto hp = UserDefault::getInstance()->getIntegerForKey("PLAYER_KARMA", playerCharacter->getStats().Karma);
+	auto karma = UserDefault::getInstance()->getIntegerForKey("PLAYER_KARMA", playerCharacter->getStats().Karma);
 
-	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXHP", playerCharacter->getStats().maxHP);
-	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXMP", playerCharacter->getStats().maxMP);
-	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXATK", playerCharacter->getStats().maxATK);
-	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXDEF", playerCharacter->getStats().maxDEF);
-	auto hp = UserDefault::getInstance()->getIntegerForKey("PLAYER_MAXJUMP", playerCharacter->getStats().maxJump);
+	auto max_hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXHP", playerCharacter->getStats().maxHP);
+	auto max_mp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXMP", playerCharacter->getStats().maxMP);
+	auto max_atk = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXATK", playerCharacter->getStats().maxATK);
+	auto max_def = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXDEF", playerCharacter->getStats().maxDEF);
+	auto max_jump = UserDefault::getInstance()->getIntegerForKey("PLAYER_MAXJUMP", playerCharacter->getStats().maxJump);
 }
 
 GameManager * GameManager::create()

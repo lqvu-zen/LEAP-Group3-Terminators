@@ -88,6 +88,28 @@
 				"MAX_JUMP": 0,
 				"VALUE": 1
 			}
+		},
+		{
+			"TYPE":4,
+			"NAME": "D_Boots",
+			"SPRITES":
+			{
+				"PNG": "sprites/item/D_Boots.png",
+				"SCALE": 1.0
+			},
+			"STATS":
+			{
+				"HP": 0.0,
+				"MP": 0.0,
+				"ATK": 0.0,
+				"DEF": 0.0,
+				"MAX_HP": 0.0,
+				"MAX_MP": 0.0,
+				"MAX_ATK": 0.0,
+				"MAX_DEF": 0.0,
+				"MAX_JUMP": 1,
+				"VALUE": 1
+			}
 		}
 	]
 }
