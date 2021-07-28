@@ -194,7 +194,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 		}
 
 		//play audio
-		AudioManager::playPlayerAudio(actionState);
+		//AudioManager::playPlayerAudio(actionState);
 
 		if (repeatForever) {
 			characterSpriteAnimation->stopAllActions();
@@ -324,13 +324,13 @@ void PlayerCharacter::updateAction(float dt)
 
 		if (countDT == 0) {
 			if (characterStats.Karma > 90.0f) {
-				AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Bloodthirsty);
+				//AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Bloodthirsty);
 			}
 			else if (characterStats.Karma > 50.0f) {
-				AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Uncontrolled);
+				//AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Uncontrolled);
 			}
 			else {
-				AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Normal);
+				//AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Normal);
 			}
 		}
 	}
@@ -463,7 +463,7 @@ void PlayerCharacter::attack(int mode)
 		}
 
 		if (countDT % 4 == 0) {
-			AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Fight);
+			//AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Fight);
 		}
 
 		//update animation
@@ -609,7 +609,7 @@ void PlayerCharacter::revive()
 
 	updateAnimation(State::IDLE, characterDirection);
 
-	AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Loser, 2);
+	//AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Loser, 2);
 }
 
 void PlayerCharacter::openInventory()
@@ -641,7 +641,7 @@ void PlayerCharacter::colectItem(Item * item, int mount)
 
 	characterSprite->addChild(colectSprite);
 
-	AudioManager::playRandomAudio(AudioManager::RandomAction::Collect);
+	//AudioManager::playRandomAudio(AudioManager::RandomAction::Collect);
 
 	characterInventory.addItem(item, mount);
 }

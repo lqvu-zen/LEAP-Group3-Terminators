@@ -4,7 +4,6 @@
 #include "Popup.h"
 #include "VillageScene.h"
 #include "GameManager.h"
-#include "AudioManager.h"
 
 USING_NS_CC;
 
@@ -34,9 +33,6 @@ bool MainMenuScene::init()
     // add a "close" icon to exit the progress. it's an autorelease object
 
 	GameManager::getInstace()->init();
-
-	//background audio
-	AudioManager::playBackgroundAudio(AudioManager::SceneName::MainMenu);
 #if 1 
     ///Menu
     auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
@@ -47,6 +43,9 @@ bool MainMenuScene::init()
     auto newGameItem = MenuItemFont::create("New Game", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
     newGameItem->setTag(1);
 
+	auto continueItem = MenuItemFont::create("Continue", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
+	continueItem->setTag(5);
+
     auto settingItem = MenuItemFont::create("Setting", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
     settingItem->setTag(2);
 
@@ -56,7 +55,7 @@ bool MainMenuScene::init()
     auto exitItem = MenuItemFont::create("Exit", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
     exitItem->setTag(4);
 
-    auto menu = Menu::create(newGameItem, settingItem, aboutItem, exitItem, nullptr);
+    auto menu = Menu::create(continueItem, newGameItem, settingItem, aboutItem, exitItem, nullptr);
     menu->setPosition(visibleSize / 2);
     menu->alignItemsVertically();
     this->addChild(menu);
@@ -79,6 +78,11 @@ void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
         CCLOG("Exit");
         goToExit(TRANSITION_TIME);
     }
+	else if (node->getTag() == 5)
+	{
+		CCLOG("Continue game");
+		goToContinueGame(TRANSITION_TIME);
+	}
 }
 
 void MainMenuScene::goToNewGame(float dt) {
@@ -101,4 +105,9 @@ void MainMenuScene::goToExit(float dt) {
         Director::getInstance()->end();
     });
     this->addChild(popup);
+}
+
+void MainMenuScene::goToContinueGame(float dt)
+{
+	//Implement continue game here.
 }

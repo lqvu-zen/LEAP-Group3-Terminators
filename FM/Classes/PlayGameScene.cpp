@@ -38,13 +38,10 @@ bool PlayGameScene::init()
 	visibleSize = Director::getInstance()->getVisibleSize();
 	origin = Director::getInstance()->getVisibleOrigin();
 
-	//background audio
-	AudioManager::playBackgroundAudio(AudioManager::SceneName::Play);
-	
 	SpriteBatchNode* spriteNode = SpriteBatchNode::create("sprites/Number/Number.png");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Number/Number.plist");
-
-	//Add buttons
+	
+	//Pause button
 #if 1
 	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
 	pauseButton->setScale(0.1);
@@ -65,6 +62,8 @@ bool PlayGameScene::init()
 				goToMainMenu();
 			}, [=]() {
 				goToExit();
+			}, [=]() {
+				goToSave();
 			});
 			/*Mission* mission = new Mission();
 			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);*/
@@ -76,6 +75,7 @@ bool PlayGameScene::init()
 	buttonNode->addChild(pauseButton);
 #endif
 
+	//Move Buttons with press
 #if 0
 	auto button = Sprite::create("sprites/button.png");
 	button->setScale(0.2);
@@ -146,8 +146,8 @@ bool PlayGameScene::init()
 	});
 #endif
 
+	//Attak button and skill buttons
 #if 1
-	//Attack menu
 	auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
 	attackItem->setScale(0.7);
 	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
@@ -201,14 +201,12 @@ bool PlayGameScene::init()
 	lockMenu->setPosition(Vec2::ZERO);
 	lockMenu->setOpacity(140);
 	buttonNode->addChild(lockMenu);
-
 #endif
 
+	//mp Button, hp Button
 #if 1
-	//Potions buttons
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
 	mpButton->setScale(0.1);
-	//mpButton->setAnchorPoint(Vec2::ZERO);
 	mpButton->setPosition(Vec2(visibleSize.width - 7 * mpButton->getContentSize().width * 0.05, mpButton->getContentSize().height * 0.05));
 	mpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -240,7 +238,6 @@ bool PlayGameScene::init()
 	});
 	hpButton->setOpacity(140);
 	buttonNode->addChild(hpButton, 1);
-	
 #endif
 
 	//Add joystick
@@ -264,8 +261,12 @@ bool PlayGameScene::init()
 		HiddenAreas.push_back(hiddenArea);
 		map->removeChild(hiddenArea, true);//remove the Hidden Layer and then add it again at around line 455
 	}
-	
-	gameNode->addChild(map);
+	//get the map backgrounds
+	auto skyBackground = map->getLayer("Background");
+	auto mountainBackground = map->getLayer("MountainBG");
+	map->removeChild(skyBackground);
+	map->removeChild(mountainBackground);
+	gameNode->addChild(map, 1);
 
 	//collision with map edges
 	auto mapSize = Size((map->getMapSize().width * map->getTileSize().width) * SCALE_FACTOR, ((map->getMapSize().height * map->getTileSize().height) * SCALE_FACTOR) );
@@ -323,7 +324,7 @@ bool PlayGameScene::init()
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	cameraTarget->setPositionY(playerChar->getSprite()->getPositionY() +(32 * SCALE_FACTOR));
 	gameNode->addChild(cameraTarget);
-	gameNode->addChild(playerChar->getSprite());
+	gameNode->addChild(playerChar->getSprite(), 1);
 
 	//add healthbar
 	auto playerStats = playerChar->getStats();
@@ -414,7 +415,7 @@ bool PlayGameScene::init()
 			GameManager::getInstace()->AddCharacter(boss);
 
 			//boss->setPosition(visibleSize / 2);
-			gameNode->addChild(boss->getSprite());
+			gameNode->addChild(boss->getSprite(), 1);
 		}
 
 		//Spawn Trigger point
@@ -530,6 +531,11 @@ bool PlayGameScene::init()
 		HiddenAreas.at(j)->setScale(SCALE_FACTOR);
 		gameNode->addChild(HiddenAreas.at(j), 1);
 	}
+	skyBackground->setScale(SCALE_FACTOR);
+	mountainBackground->setScale(SCALE_FACTOR);
+	gameNode->addChild(skyBackground, -1);
+	gameNode->addChild(mountainBackground, -1);
+
 
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 1);
@@ -787,6 +793,16 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			mpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)));
 			hpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)));
 			GameManager::getInstace()->getMission()->updateMission(2);
+			if (GameManager::getInstace()->getMission()->getNowMission().id == 6)
+			{
+				//Create a PopUp when a mission is completed.
+				UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Quest complete", "You have complete the quest!\nHead back to the village to turn in the quest and get your rewards!", NULL, [=]() {
+					PlayGameScene::PlayGameScene::goToVillage();
+				}, [=]() {
+					CCLOG("Stay in map");
+				});
+				buttonNode->addChild(popup, 1);
+			}
 		}
 
 		// check player hit enemies
@@ -795,7 +811,16 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		{
 			CCLOG("Hit enemies %d", a->getNode()->getTag());
 			GameManager::getInstace()->hit(b->getNode()->getTag(), a->getNode()->getTag());
-			
+			if (GameManager::getInstace()->getMission()->getNowMission().id == 6)
+			{
+				//Create a PopUp when a mission is completed.
+				UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Quest complete", "You have complete the quest!\nHead back to the village to turn in the quest and get your rewards!", NULL, [=]() {
+					PlayGameScene::PlayGameScene::goToVillage();
+				}, [=]() {
+					CCLOG("Stay in map");
+				});
+				buttonNode->addChild(popup, 1);
+			}
 		}
 
 
@@ -821,9 +846,6 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			//Using MoveTo to move the gameNode to the middle of the boss arena(the boss X position). The Vec2's y = 0 because we only want to move the x coord. 
 			auto moveTo = MoveTo::create(2, Vec2(-(boss->getSprite()->getPositionX() - visibleSize.width/2), -(32 * SCALE_FACTOR)));
 			gameNode->runAction(moveTo);
-
-			//combat audio
-			AudioManager::playBackgroundAudio(AudioManager::SceneName::Battle);
 		}
 
 		//Player collide with the hidden area in the map
@@ -867,23 +889,26 @@ void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 void PlayGameScene::updateMonster(float dt) {
 	std::list<MonsterCharacter*> ::iterator it;
 	for (it = monsters.begin(); it != monsters.end() ; ++it) {
-		if ( (*it)->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
-			(*it)->setDirection(MonsterCharacter::Direction::LEFT);
-		}
-		else {
-			(*it)->setDirection(MonsterCharacter::Direction::RIGHT);
-		}
+		if ((*it)->characterState != MonsterCharacter::State::DEATH) {
+			if ((*it)->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
+				(*it)->setDirection(MonsterCharacter::Direction::LEFT);
+			}
+			else {
+				(*it)->setDirection(MonsterCharacter::Direction::RIGHT);
+			}
+		}	
 	}
 }
-
 void PlayGameScene::monsterAction(float dt) {
 	std::list<MonsterCharacter*> ::iterator it;
 	for (it = monsters.begin(); it != monsters.end(); ++it) {
-		if (abs((*it)->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
-			(*it)->updateAction(playerChar->getSprite()->getPosition());
-		}
-		else {
-			(*it)->idle();
+		if ((*it)->characterState != MonsterCharacter::State::DEATH) {
+			if (abs((*it)->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
+				(*it)->updateAction(playerChar->getSprite()->getPosition());
+			}
+			else {
+				(*it)->idle();
+			}
 		}
 	}
 }
@@ -895,13 +920,11 @@ void PlayGameScene::monsterAction(float dt) {
 void PlayGameScene::updateBoss(float dt) {
 	if (boss->getStats().HP <= 0) {
 		if (win == false) {
-			AudioManager::playBackgroundAudio(AudioManager::SceneName::Victory);
 			win = true;
 			this->scheduleOnce(CC_SCHEDULE_SELECTOR(PlayGameScene::goToWinScene), DISPLAY_TIME_SPLASH_SCENE);
 		}
 	}
 }
-
 void PlayGameScene::bossAction(float dt) {
 	if (boss->characterState != BossCharacter::State::DEATH) {
 		if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
@@ -923,10 +946,15 @@ void PlayGameScene::goToMission() {
 void PlayGameScene::goToVillage() {
 	joystick->removeFromParent();
 	GameManager::getInstace()->setMapLevel(0);
-	playerChar->revive();
 	auto scene = VillageScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
+
+void PlayGameScene::goToSave() {
+	//Implement save game here.
+	CCLOG("SAVE GAME");
+}
+
 void PlayGameScene::goToSetting() {
 
 }
@@ -941,6 +969,7 @@ void PlayGameScene::goToExit() {
 	});
 	buttonNode->addChild(popup, 2);
 }
+
 
 void PlayGameScene::playerDeadNotice()
 {
@@ -1017,6 +1046,7 @@ void PlayGameScene::Revival2Func() {
 }
 void PlayGameScene::updateCountDown(float) {
 	if (timeRevival == 0) {
+		playerChar->revive();
 		goToVillage();
 	}
 	else {

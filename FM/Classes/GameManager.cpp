@@ -96,7 +96,7 @@ void GameManager::hit(int attacker, int victim)
 {
 	int dame = playerCharacter->getStats().ATK;
 	characterMap[victim]->takeHit(dame);
-	AudioManager::playRandomAudio(AudioManager::RandomAction::Hit);
+	
 }
 
 void GameManager::colect(int item)

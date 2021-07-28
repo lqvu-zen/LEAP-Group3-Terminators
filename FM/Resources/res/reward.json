@@ -3,35 +3,35 @@
     {
       "ID": 0,
       "IDMISSION": 1,
-      "NAME": "Unclock skill 1",
+      "NAME": "Unlock skill 1",
       "NUMBER": 1,
       "TYPE":  "Skill"
     },
     {
       "ID": 1,
       "IDMISSION": 2,
-      "NAME": "5 Gold",
+      "NAME": "5 Golds",
       "NUMBER": 5,
       "TYPE": "Gold"
     },
     {
       "ID": 2,
       "IDMISSION": 3,
-      "NAME": "Unclock skill 2",
+      "NAME": "Unlock skill 2",
       "NUMBER": 2,
       "TYPE": "Skill"
     },
     {
       "ID": 3,
       "IDMISSION": 4,
-      "NAME": "Unclock skill 3",
+      "NAME": "Unlock skill 3",
       "NUMBER": 3,
       "TYPE": "Skill"
     },
     {
       "ID": 4,
       "IDMISSION": 5,
-      "NAME": "10 Gold",
+      "NAME": "10 Golds",
       "NUMBER": 10,
       "TYPE": "Gold"
     }

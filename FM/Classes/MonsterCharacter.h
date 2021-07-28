@@ -23,9 +23,14 @@ public:
         MELEE, RANGED
     };
 
+    enum class State {
+        ATTACK, DEATH, HURT, IDLE, WALK, SKILL
+    };
+
     MonsterCharacter(cocos2d::Node* _scene, int _type, int _level);
 
     cocos2d::Sprite* getSprite();
+    State characterState;
 
     void setPosition(cocos2d::Vec2 _position);
 

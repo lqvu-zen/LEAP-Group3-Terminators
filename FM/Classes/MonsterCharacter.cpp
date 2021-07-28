@@ -169,20 +169,23 @@ void MonsterCharacter::attack() {
 }
 
 void MonsterCharacter::death() {
+	characterState = State::DEATH;
 	if (attackSprite->getPhysicsBody() != nullptr)
 		attackSprite->getPhysicsBody()->removeFromWorld();
 	if (characterSprite->getPhysicsBody() != nullptr)
 		characterSprite->getPhysicsBody()->removeFromWorld();
-	//animation->release();
+
 	characterSpriteAnimation->stopAllActions();
 	animation = MonsterCharacter::createAnimation(name + "-Death-", numSprite[1], 0.02);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	characterSpriteAnimation->runAction(animate);
 
-	auto dieAction = MoveTo::create(0, Vec2(-100 * visibleSize.width, 0));
+	auto callback = CallFunc::create([this]() {
+		characterSprite->removeFromParent();
+	});
 	cocos2d::DelayTime* delay = cocos2d::DelayTime::create(numSprite[1] * 0.02);
-	auto seq = Sequence::create(delay, dieAction, nullptr);
+	auto seq = Sequence::create(delay, callback, nullptr);
 	characterSprite->runAction(seq);
 
 	GameManager::getInstace()->AddReward(characterSprite->getPosition());
@@ -225,7 +228,7 @@ void MonsterCharacter::idle() {
 
 	//animation->release();
 	characterSpriteAnimation->stopAllActions();
-	animation = MonsterCharacter::createAnimation(name + "-Idle-", numSprite[3], 0.08);
+	animation = MonsterCharacter::createAnimation(name + "-Idle-", numSprite[3], 0.08f);
 	auto animate = Animate::create(animation);
 	animate->retain();
 	characterSpriteAnimation->runAction(RepeatForever::create(animate));
@@ -358,7 +361,7 @@ void MonsterCharacter::attackForMelee() {
 	if (characterStats.HP > 0.0f) {
 		characterSpriteAnimation->stopAllActions();
 		//characterPhysicsBody->setDynamic(false);
-		animation = MonsterCharacter::createAnimation(name + "-Attack-", numSprite[0], 0.02);
+		animation = MonsterCharacter::createAnimation(name + "-Attack-", numSprite[0], 0.02f);
 		auto animate = Animate::create(animation);
 		animate->retain();
 		auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(MonsterCharacter::idle, this)), nullptr);
@@ -385,7 +388,7 @@ void MonsterCharacter::skillForMelee(cocos2d::Vec2 positionPlayer) {
 	if (type == 2) {
 		characterSpriteAnimation->stopAllActions();
 		//characterPhysicsBody->setDynamic(false);
-		animation = MonsterCharacter::createAnimation(name + "-Attack-", numSprite[0], 0.02);
+		animation = MonsterCharacter::createAnimation(name + "-Attack-", numSprite[0], 0.02f);
 		auto animate = Animate::create(animation);
 		animate->retain();
 		auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(MonsterCharacter::idle, this)), nullptr);

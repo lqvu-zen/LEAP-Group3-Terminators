@@ -286,7 +286,7 @@ namespace UICustom {
         return nullptr;
     }
 
-    Popup* Popup::createPauseMenuPlayGame(const std::function<void()>& MissionFunc, const std::function<void()>& VillageFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc) {
+    Popup* Popup::createPauseMenuPlayGame(const std::function<void()>& MissionFunc, const std::function<void()>& VillageFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc, const std::function<void()>& SaveFunc) {
         Popup* node = new (std::nothrow)Popup();
         Size winSize = Director::getInstance()->getWinSize();
         if (node && node->init(true))
@@ -316,12 +316,17 @@ namespace UICustom {
                 node->dismiss(true);
             });
 
-            Menu* menu = Menu::create(missionButton, villageButton, settingButton, menuButton, exitButton, NULL);
+			auto savetButton = MenuItemFont::create("Save", [=](Ref* sender) {
+				SaveFunc();
+				node->dismiss(true);
+			});
+
+            Menu* menu = Menu::create(missionButton, villageButton, savetButton, settingButton, menuButton, exitButton, NULL);
             node->addChild(menu, 2);
             menu->setPosition(winSize.width / 2, winSize.height / 2 - FONT::LABEL_OFFSET / 2);
             menu->alignItemsVerticallyWithPadding(FONT::LABEL_OFFSET / 2);
 
-            node->initBg(Size(400, 450), "Pause");
+            node->initBg(Size(450, 500), "Pause");
             node->autorelease();
             return node;
         }

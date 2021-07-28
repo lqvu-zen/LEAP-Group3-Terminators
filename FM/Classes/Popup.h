@@ -60,7 +60,7 @@ namespace UICustom {
         //Edit
         static Popup* createAsConfirmRejectDialogue(const std::string& title, const std::string& msg, cocos2d::Label* lbl, const std::function<void()>& YesFunc, const std::function<void()>& NoFunc);
         static Popup* createPauseMenuVillage(const std::function<void()>& MissionFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc);
-        static Popup* createPauseMenuPlayGame(const std::function<void()>& MissionFunc, const std::function<void()>& VillageFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc);
+        static Popup* createPauseMenuPlayGame(const std::function<void()>& MissionFunc, const std::function<void()>& VillageFunc, const std::function<void()>& SettingFunc, const std::function<void()>& MenuFunc, const std::function<void()>& ExitFunc, const std::function<void()>& SaveFunc);
         static Popup* createSetting();
 		static Popup* createSelectMapInVillage(const std::function<void()>& GoToMap1Func, const std::function<void()>& GoToMap2Func);
 

@@ -56,6 +56,11 @@ private:
 	bool checkVector(vector<int>list, int num);
 	//UnlockSkill
 	void unlockSkill(int index);
+	Sprite* lockskill_1, * lockskill_2, * lockskill_3;
+
+	//countDown skill
+	Sprite* lockskill1, * lockskill2, * lockskill3;
+	bool lock1, lock2, lock3;
 };
 
 #endif // __VILLAGE_SCENE_H__
