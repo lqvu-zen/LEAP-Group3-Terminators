@@ -112,13 +112,13 @@ void GameManager::SaveGame()
 	UserDefault::getInstance()->setFloatForKey("PLAYER_ATK", playerCharacter->getStats().ATK);
 	UserDefault::getInstance()->setFloatForKey("PLAYER_DEF", playerCharacter->getStats().DEF);
 
-	UserDefault::getInstance()->setFloatForKey("PLAYER_KARMA", playerCharacter->getStats().Karma);
+	UserDefault::getInstance()->setIntegerForKey("PLAYER_KARMA", playerCharacter->getStats().Karma);
 
 	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXHP", playerCharacter->getStats().maxHP);
 	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXMP", playerCharacter->getStats().maxMP);
 	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXATK", playerCharacter->getStats().maxATK);
 	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXDEF", playerCharacter->getStats().maxDEF);
-	UserDefault::getInstance()->setFloatForKey("PLAYER_MAXJUMP", playerCharacter->getStats().maxJump);
+	UserDefault::getInstance()->setIntegerForKey("PLAYER_MAXJUMP", playerCharacter->getStats().maxJump);
 
 	//Save Inventory
 	UserDefault::getInstance()->setIntegerForKey("INVENTORY_GOLD", playerCharacter->getInventory().getItemCount(Item::ItemType::GOLD));
@@ -132,7 +132,19 @@ void GameManager::SaveGame()
 
 void GameManager::LoadGame()
 {
+	//Load Player
+	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_HP", playerCharacter->getStats().HP);
+	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MP", playerCharacter->getStats().MP);
+	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_ATK", playerCharacter->getStats().ATK);
+	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_DEF", playerCharacter->getStats().DEF);
 
+	auto hp = UserDefault::getInstance()->getIntegerForKey("PLAYER_KARMA", playerCharacter->getStats().Karma);
+
+	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXHP", playerCharacter->getStats().maxHP);
+	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXMP", playerCharacter->getStats().maxMP);
+	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXATK", playerCharacter->getStats().maxATK);
+	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_MAXDEF", playerCharacter->getStats().maxDEF);
+	auto hp = UserDefault::getInstance()->getIntegerForKey("PLAYER_MAXJUMP", playerCharacter->getStats().maxJump);
 }
 
 GameManager * GameManager::create()
