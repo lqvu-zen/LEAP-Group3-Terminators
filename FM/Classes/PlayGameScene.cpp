@@ -41,7 +41,7 @@ bool PlayGameScene::init()
 	SpriteBatchNode* spriteNode = SpriteBatchNode::create("sprites/Number/Number.png");
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/Number/Number.plist");
 
-	//Add buttons
+	//Pause button
 #if 1
 	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
 	pauseButton->setScale(0.1);
@@ -73,6 +73,7 @@ bool PlayGameScene::init()
 	buttonNode->addChild(pauseButton);
 #endif
 
+	//Move Buttons with press
 #if 0
 	auto button = Sprite::create("sprites/button.png");
 	button->setScale(0.2);
@@ -143,8 +144,8 @@ bool PlayGameScene::init()
 	});
 #endif
 
+	//Attak button and skill buttons
 #if 1
-	//Attack menu
 	auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
 	attackItem->setScale(0.7);
 	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
@@ -198,14 +199,12 @@ bool PlayGameScene::init()
 	lockMenu->setPosition(Vec2::ZERO);
 	lockMenu->setOpacity(140);
 	buttonNode->addChild(lockMenu);
-
 #endif
 
+	//mp Button, hp Button
 #if 1
-	//Potions buttons
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
 	mpButton->setScale(0.1);
-	//mpButton->setAnchorPoint(Vec2::ZERO);
 	mpButton->setPosition(Vec2(visibleSize.width - 7 * mpButton->getContentSize().width * 0.05, mpButton->getContentSize().height * 0.05));
 	mpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -237,7 +236,6 @@ bool PlayGameScene::init()
 	});
 	hpButton->setOpacity(140);
 	buttonNode->addChild(hpButton, 1);
-	
 #endif
 
 	//Add joystick
@@ -889,23 +887,26 @@ void PlayGameScene::onContactSeperate(cocos2d::PhysicsContact &contact)
 void PlayGameScene::updateMonster(float dt) {
 	std::list<MonsterCharacter*> ::iterator it;
 	for (it = monsters.begin(); it != monsters.end() ; ++it) {
-		if ( (*it)->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
-			(*it)->setDirection(MonsterCharacter::Direction::LEFT);
-		}
-		else {
-			(*it)->setDirection(MonsterCharacter::Direction::RIGHT);
-		}
+		if ((*it)->characterState != MonsterCharacter::State::DEATH) {
+			if ((*it)->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
+				(*it)->setDirection(MonsterCharacter::Direction::LEFT);
+			}
+			else {
+				(*it)->setDirection(MonsterCharacter::Direction::RIGHT);
+			}
+		}	
 	}
 }
-
 void PlayGameScene::monsterAction(float dt) {
 	std::list<MonsterCharacter*> ::iterator it;
 	for (it = monsters.begin(); it != monsters.end(); ++it) {
-		if (abs((*it)->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
-			(*it)->updateAction(playerChar->getSprite()->getPosition());
-		}
-		else {
-			(*it)->idle();
+		if ((*it)->characterState != MonsterCharacter::State::DEATH) {
+			if (abs((*it)->getSprite()->getPosition().x - playerChar->getSprite()->getPosition().x) <= visibleSize.width / 3) {
+				(*it)->updateAction(playerChar->getSprite()->getPosition());
+			}
+			else {
+				(*it)->idle();
+			}
 		}
 	}
 }
@@ -922,7 +923,6 @@ void PlayGameScene::updateBoss(float dt) {
 		}
 	}
 }
-
 void PlayGameScene::bossAction(float dt) {
 	if (boss->characterState != BossCharacter::State::DEATH) {
 		if (boss->getSprite()->getPosition().x >= playerChar->getSprite()->getPosition().x) {
