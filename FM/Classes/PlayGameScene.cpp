@@ -261,8 +261,12 @@ bool PlayGameScene::init()
 		HiddenAreas.push_back(hiddenArea);
 		map->removeChild(hiddenArea, true);//remove the Hidden Layer and then add it again at around line 455
 	}
-	
-	gameNode->addChild(map);
+	//get the map backgrounds
+	auto skyBackground = map->getLayer("Background");
+	auto mountainBackground = map->getLayer("MountainBG");
+	map->removeChild(skyBackground);
+	map->removeChild(mountainBackground);
+	gameNode->addChild(map, 1);
 
 	//collision with map edges
 	auto mapSize = Size((map->getMapSize().width * map->getTileSize().width) * SCALE_FACTOR, ((map->getMapSize().height * map->getTileSize().height) * SCALE_FACTOR) );
@@ -320,7 +324,7 @@ bool PlayGameScene::init()
 	cameraTarget->setPositionX(playerChar->getSprite()->getPositionX());
 	cameraTarget->setPositionY(playerChar->getSprite()->getPositionY() +(32 * SCALE_FACTOR));
 	gameNode->addChild(cameraTarget);
-	gameNode->addChild(playerChar->getSprite());
+	gameNode->addChild(playerChar->getSprite(), 1);
 
 	//add healthbar
 	auto playerStats = playerChar->getStats();
@@ -411,7 +415,7 @@ bool PlayGameScene::init()
 			GameManager::getInstace()->AddCharacter(boss);
 
 			//boss->setPosition(visibleSize / 2);
-			gameNode->addChild(boss->getSprite());
+			gameNode->addChild(boss->getSprite(), 1);
 		}
 
 		//Spawn Trigger point
@@ -527,6 +531,11 @@ bool PlayGameScene::init()
 		HiddenAreas.at(j)->setScale(SCALE_FACTOR);
 		gameNode->addChild(HiddenAreas.at(j), 1);
 	}
+	skyBackground->setScale(SCALE_FACTOR);
+	mountainBackground->setScale(SCALE_FACTOR);
+	gameNode->addChild(skyBackground, -1);
+	gameNode->addChild(mountainBackground, -1);
+
 
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 1);
