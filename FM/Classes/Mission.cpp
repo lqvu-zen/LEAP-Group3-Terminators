@@ -76,8 +76,8 @@ void Mission::updateMission(int type) {
 	if (mission.type == type) {
 		mission.begin++;
 		data.at(index).begin++;
+		submitMission();
 	}
-	submitMission();
 }
 
 void Mission::cancelMission() {
