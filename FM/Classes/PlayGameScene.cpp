@@ -367,7 +367,7 @@ bool PlayGameScene::init()
 			auto eneX = SpawnPoint.asValueMap()["x"].asFloat() * SCALE_FACTOR;
 			auto eneY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
 			int monsterType = SpawnPoint.asValueMap()["Enemy"].asInt();
-			auto monster = new MonsterCharacter(gameNode, monsterType, 1);
+			auto monster = new MonsterCharacter(gameNode, monsterType, GameManager::getInstace()->getMapLevel());
 			monster->setPosition(Vec2(eneX, eneY));
 			//Using a list to  store the monsters
 			monsters.push_back(monster);
@@ -543,7 +543,7 @@ bool PlayGameScene::init()
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 1);
 
-	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
+	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 2);
 	
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::bossAction), 1);
 	//boss->death();

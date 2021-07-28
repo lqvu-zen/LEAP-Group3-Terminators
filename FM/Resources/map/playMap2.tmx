@@ -69,7 +69,7 @@
     <property name="Enemy" type="int" value="2"/>
    </properties>
   </object>
-  <object id="28" name="Enemy" x="471.3" y="448.849" width="30.7332" height="29.6356">
+  <object id="28" name="Enemy" x="550" y="448.849" width="30.7332" height="29.6356">
    <properties>
     <property name="Enemy" type="int" value="2"/>
    </properties>

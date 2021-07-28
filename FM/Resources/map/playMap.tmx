@@ -104,7 +104,7 @@
     <property name="Enemy" type="int" value="2"/>
    </properties>
   </object>
-  <object id="39" name="ItemSpawn" x="61.9667" y="411.849" width="30.7332" height="29.6356">
+  <object id="39" name="ItemSpawn" x="63.9667" y="419.182" width="30.7332" height="29.6356">
    <properties>
     <property name="ItemType" type="int" value="5"/>
    </properties>

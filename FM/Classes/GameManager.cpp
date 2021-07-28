@@ -204,3 +204,8 @@ int GameManager::getMapHiddenAreasCount()
 {
 	return mapHiddenAreaCount;
 }
+
+int GameManager::getMapLevel()
+{
+	return mapLevel;
+}

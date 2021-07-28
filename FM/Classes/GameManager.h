@@ -56,7 +56,7 @@ public:
 	*/
 	int getMapHiddenAreasCount();
 	int countDead;
-
+	int getMapLevel();
 	//Save/Load Gameplay
 	void SaveGame();
 	void LoadGame();
