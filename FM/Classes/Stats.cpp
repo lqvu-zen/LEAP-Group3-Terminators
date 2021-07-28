@@ -40,6 +40,22 @@ void Stats::SetStats(float hp, float mp, float atk, float def)
 	Affection = 10;
 }
 
+void Stats::LoadPlayerStats(float hp, float mp, float atk, float def, int karma, float m_hp, float m_mp, float m_atk, float m_def, int m_jump)
+{
+	HP = hp;
+	MP = mp;
+	ATK = atk;
+	DEF = def;
+
+	Karma = karma;
+
+	maxHP = m_hp;
+	maxMP = m_mp;
+	maxATK = m_atk;
+	maxDEF = m_def;
+	maxJump = m_jump;
+}
+
 void Stats::SetCItemStats(float _hp, float _mp, float _atk, float _def)
 {
 	HP = _hp;

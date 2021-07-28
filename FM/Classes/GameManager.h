@@ -52,6 +52,9 @@ public:
 	/** Set the map level. 0: village map, 1: playMap 1, 2: playMap 2, etc...
 	 */
 	void setMapLevel(int level);
+
+	void setLoadOption(int option);
+	int getLoadOption();
 	/** Get the amount of hidden areas in a map.
 	*/
 	int getMapHiddenAreasCount();
@@ -68,6 +71,8 @@ private:
 
 	int mapLevel = 0;
 	int mapHiddenAreaCount = 0;
+
+	int loadOption = 0;
 
 	int countCharacter;
 	std::map <int, Character*> characterMap;

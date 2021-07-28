@@ -43,9 +43,6 @@ bool MainMenuScene::init()
     auto newGameItem = MenuItemFont::create("New Game", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
     newGameItem->setTag(1);
 
-	auto continueItem = MenuItemFont::create("Continue", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
-	continueItem->setTag(5);
-
     auto settingItem = MenuItemFont::create("Setting", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
     settingItem->setTag(2);
 
@@ -55,7 +52,18 @@ bool MainMenuScene::init()
     auto exitItem = MenuItemFont::create("Exit", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
     exitItem->setTag(4);
 
-    auto menu = Menu::create(continueItem, newGameItem, settingItem, aboutItem, exitItem, nullptr);
+	auto continueItem = MenuItemFont::create("Continue", CC_CALLBACK_1(MainMenuScene::onClickMenuItem, this));
+	continueItem->setTag(5);
+
+	auto menu = Menu::create();
+
+	if (UserDefault::getInstance()->getIntegerForKey("SAVED", 0) == 1) {
+		menu = Menu::create(continueItem, newGameItem, settingItem, aboutItem, exitItem, nullptr);
+	}
+	else {
+		menu = Menu::create(newGameItem, settingItem, aboutItem, exitItem, nullptr);
+	}
+
     menu->setPosition(visibleSize / 2);
     menu->alignItemsVertically();
     this->addChild(menu);
@@ -110,4 +118,10 @@ void MainMenuScene::goToExit(float dt) {
 void MainMenuScene::goToContinueGame(float dt)
 {
 	//Implement continue game here.
+	GameManager::getInstace()->setMapLevel(0);
+
+	GameManager::getInstace()->setLoadOption(1);
+
+	auto scene = VillageScene::createScene();
+	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }

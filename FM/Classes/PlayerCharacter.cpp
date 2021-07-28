@@ -673,6 +673,11 @@ Stats PlayerCharacter::getStats()
 	return characterStats;
 }
 
+void PlayerCharacter::LoadStats(float hp, float mp, float atk, float def, int karma, float m_hp, float m_mp, float m_atk, float m_def, int m_jump)
+{
+	characterStats.LoadPlayerStats(hp, mp, atk, def, karma, m_hp, m_mp, m_atk, m_def, m_jump);
+}
+
 Inventory PlayerCharacter::getInventory()
 {
 	return characterInventory;
