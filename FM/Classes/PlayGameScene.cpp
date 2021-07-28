@@ -534,9 +534,6 @@ bool PlayGameScene::init()
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 1);
 
-	//test save
-	GameManager::getInstace()->SaveGame();
-
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::monsterAction), 3);
 	
 	this->schedule(CC_SCHEDULE_SELECTOR(PlayGameScene::bossAction), 1);
