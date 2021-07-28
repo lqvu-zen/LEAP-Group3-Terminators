@@ -106,6 +106,7 @@ void GameManager::colect(int item)
 
 void GameManager::SaveGame()
 {
+	UserDefault::getInstance()->setIntegerForKey("SAVED", 1);
 	//Save Player
 	UserDefault::getInstance()->setFloatForKey("PLAYER_HP", playerCharacter->getStats().HP);
 	UserDefault::getInstance()->setFloatForKey("PLAYER_MP", playerCharacter->getStats().MP);
@@ -132,6 +133,7 @@ void GameManager::SaveGame()
 
 void GameManager::LoadGame()
 {
+	setLoadOption(0);
 	//Load Player
 	auto hp = UserDefault::getInstance()->getFloatForKey("PLAYER_HP", playerCharacter->getStats().HP);
 	auto mp = UserDefault::getInstance()->getFloatForKey("PLAYER_MP", playerCharacter->getStats().MP);
@@ -233,6 +235,16 @@ void GameManager::setMapLevel(int level)
 {
 	//Set the map level. 0: village map, 1: playMap 1, 2: playMap 2, etc...
 	mapLevel = level;
+}
+
+void GameManager::setLoadOption(int option)
+{
+	loadOption = 1;
+}
+
+int GameManager::getLoadOption()
+{
+	return loadOption;
 }
 
 int GameManager::getMapHiddenAreasCount()

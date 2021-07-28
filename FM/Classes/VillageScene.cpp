@@ -419,6 +419,14 @@ bool VillageScene::init()
 	});
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(joyStickListener, this);
 
+	//load
+	if (GameManager::getInstace()->getLoadOption() == 1) {
+		GameManager::getInstace()->LoadGame();
+	}
+
+	//save
+	GameManager::getInstace()->SaveGame();
+
 	//Keyboard test
 	auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = CC_CALLBACK_2(VillageScene::onKeyPressed, this);
