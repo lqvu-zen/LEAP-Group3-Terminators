@@ -113,6 +113,8 @@ private:
 	//save position
 	cocos2d::Vec2 characterSavePosition;
 	
+	//Karma
+	int countDT;
 };
 
 #endif // __PLAYERCHARACTER_H__

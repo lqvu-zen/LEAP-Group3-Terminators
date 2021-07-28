@@ -935,7 +935,6 @@ void PlayGameScene::goToMission() {
 void PlayGameScene::goToVillage() {
 	joystick->removeFromParent();
 	GameManager::getInstace()->setMapLevel(0);
-	playerChar->revive();
 	auto scene = VillageScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
@@ -1029,6 +1028,7 @@ void PlayGameScene::Revival2Func() {
 }
 void PlayGameScene::updateCountDown(float) {
 	if (timeRevival == 0) {
+		playerChar->revive();
 		goToVillage();
 	}
 	else {
