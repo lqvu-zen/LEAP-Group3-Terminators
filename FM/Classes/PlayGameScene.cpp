@@ -397,6 +397,9 @@ bool PlayGameScene::init()
 			case 4:
 				item = new Item(Item::ItemType::MP_POTION);
 				break;
+			case 5:
+				item = new Item(Item::ItemType::D_BOOTS);
+				break;
 			}
 			item->getSprite()->setPosition(itemX, itemY);
 			gameNode->addChild(item->getSprite(), 1);
