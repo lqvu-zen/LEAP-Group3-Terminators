@@ -128,6 +128,14 @@ void GameManager::SaveGame()
 	UserDefault::getInstance()->setIntegerForKey("INVENTORY_MPPOTION", playerCharacter->getInventory().getItemCount(Item::ItemType::MP_POTION));
 	UserDefault::getInstance()->setIntegerForKey("INVENTORY_DBOOTS", playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
 
+	//Save Collected Items
+	UserDefault::getInstance()->setIntegerForKey("COLLECTED_ITEMS_SIZE", collectedItems.size());
+	for (int i = 0; i < collectedItems.size(); ++i)
+	{
+		auto collectedItem = StringUtils::format("COLLECTED_ITEM%d", i);
+		UserDefault::getInstance()->setIntegerForKey(collectedItem.c_str(), collectedItems.at(i));
+	}
+
 	//Save Mission
 	UserDefault::getInstance()->setIntegerForKey("MISSION_INDEX", mission->getMission().id);
 	UserDefault::getInstance()->setIntegerForKey("MISSION_BEGIN", mission->getMission().begin);
