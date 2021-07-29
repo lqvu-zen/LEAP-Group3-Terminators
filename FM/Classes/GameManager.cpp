@@ -129,7 +129,8 @@ void GameManager::SaveGame()
 	UserDefault::getInstance()->setIntegerForKey("INVENTORY_DBOOTS", playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
 
 	//Save Mission
-	UserDefault::getInstance()->setIntegerForKey("MISSION_INDEX", mission->getMission().id);
+	UserDefault::getInstance()->setIntegerForKey("INDEX_MISSION", mission->getIndexMission());
+	UserDefault::getInstance()->setIntegerForKey("MISSION_ID", mission->getMission().id);
 	UserDefault::getInstance()->setIntegerForKey("MISSION_BEGIN", mission->getMission().begin);
 	UserDefault::getInstance()->setIntegerForKey("MISSION_STATE", mission->getMission().state);
 	UserDefault::getInstance()->setBoolForKey("HAS_MISSION", mission->getProcesstate());
@@ -187,11 +188,12 @@ void GameManager::LoadGame()
 	}
 
 	//load Mission
-	int index = UserDefault::getInstance()->getIntegerForKey("MISSION_INDEX");
+	int index = UserDefault::getInstance()->getIntegerForKey("INDEX_MISSION");
+	int id = UserDefault::getInstance()->getIntegerForKey("MISSION_ID");
 	int begin = UserDefault::getInstance()->getIntegerForKey("MISSION_BEGIN");
 	int state = UserDefault::getInstance()->getIntegerForKey("MISSION_STATE");
 	bool has = UserDefault::getInstance()->getBoolForKey("HAS_MISSION");
-	mission->loadMission(index, begin, state, has);
+	mission->loadMission(index, id, begin, state, has);
 	
 }
 
