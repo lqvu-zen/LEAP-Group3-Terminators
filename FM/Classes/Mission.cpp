@@ -1,5 +1,5 @@
-#include "Character.h"
 #include "Mission.h"
+#include "Character.h"
 #include "Definitions.h"
 
 USING_NS_CC;
@@ -35,6 +35,49 @@ Mission::Mission() {
 	hasMission = false;
 	mission = data.at(0);
 	index = 0;
+}
+
+Mission::Data Mission::getMission() {
+	if (hasMission) {
+		if (mission.state == 1)
+			return mission;
+		else {
+			hasMission = false;
+			return mission;
+		}
+	}
+	else {
+		int i = index;
+		while (i < data.size()) {
+			if (data.at(i).state == 0) {
+				mission = data.at(i);
+				index = i;
+				return mission;
+			}
+			i++;
+		}
+		if (i == data.size()) {
+			index = i;
+			mission = data.at(index - 1);
+			return mission;
+		}
+	}
+}
+
+Mission::Data Mission::getNowMission() {
+	if (hasMission) {
+		if (mission.state == 2) {
+			mission = data.at(data.size() - 2);
+		}
+		return mission;
+	}
+	else {
+		if (index == data.size()) {
+			return mission;
+		}
+		return data.at(0);
+	}
+
 }
 
 void Mission::loadReward() {
@@ -136,9 +179,14 @@ void Mission::setProcesstate(bool state) {
 	hasMission = state;
 }
 
-void Mission::loadMission(int index, int begin, int state, bool has) {
-	hasMission = has;
-	data.at(index).begin = begin;
-	data.at(index).state = state;
-	mission = data.at(index);
+void Mission::loadMission(int _index, int _id, int _begin, int _state, bool _has) {
+	index = _index;
+	hasMission = _has;
+	data.at(_id).begin = _begin;
+	data.at(_id).state = _state;
+	mission = data.at(_id);
+}
+
+int Mission::getIndexMission() {
+	return index;
 }
