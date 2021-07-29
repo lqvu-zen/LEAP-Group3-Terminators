@@ -48,6 +48,8 @@ public:
 
     void updateMission(int type);
 
+    void reviseMission(int num);
+
     void submitMission();
 
     int getState();

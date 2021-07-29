@@ -127,6 +127,11 @@ void Mission::updateMission(int type) {
 	}
 }
 
+void Mission::reviseMission(int num) {
+	mission.begin = num;
+	submitMission();
+}
+
 void Mission::cancelMission() {
 	if (index != data.size()) {
 		mission.state = 3;
