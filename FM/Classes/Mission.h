@@ -46,7 +46,7 @@ public:
             }          
         }
         else {
-            int i = 0;
+            int i = index;
             while (i < data.size()) {
                 if (data.at(i).state == 0) {
                     mission = data.at(i);
@@ -89,7 +89,12 @@ public:
 
     int getState();
 
+    bool getProcesstate();
+    void setProcesstate(bool state);
+
     vector<Reward> getReward();
+
+    void loadMission(int index, int begin, int state, bool has);
 private:
     vector<Data> data;
     Data mission;

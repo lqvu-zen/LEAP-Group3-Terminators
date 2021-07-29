@@ -128,3 +128,17 @@ int Mission::getState() {
 		return 2;
 	}
 }
+
+bool Mission::getProcesstate() {
+	return hasMission;
+}
+void Mission::setProcesstate(bool state) {
+	hasMission = state;
+}
+
+void Mission::loadMission(int index, int begin, int state, bool has) {
+	hasMission = has;
+	data.at(index).begin = begin;
+	data.at(index).state = state;
+	mission = data.at(index);
+}
