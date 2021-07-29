@@ -441,6 +441,10 @@ bool VillageScene::init()
 	this->addChild(buttonNode, 1);
 
 	this->scheduleUpdate();
+
+	//play audio
+	AudioManager::playBackgroundAudio(AudioManager::SceneName::Village);
+
 	return true;
 }
 

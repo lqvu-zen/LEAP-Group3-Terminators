@@ -68,10 +68,17 @@ bool MainMenuScene::init()
     menu->alignItemsVertically();
     this->addChild(menu);
 #endif 
+
+	//play audio
+	AudioManager::playBackgroundAudio(AudioManager::SceneName::MainMenu);
+
     return true;
 }
 
 void MainMenuScene::onClickMenuItem(cocos2d::Ref* sender) {
+	//play audio
+	AudioManager::playRandomAudio(AudioManager::RandomAction::Click_Menu);
+
     auto node = dynamic_cast<Node*>(sender);
     if (node->getTag() == 1) {
         goToNewGame(TRANSITION_TIME);

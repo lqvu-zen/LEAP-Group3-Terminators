@@ -548,6 +548,9 @@ bool PlayGameScene::init()
 	gameNode->addChild(skyBackground, -1);
 	gameNode->addChild(mountainBackground, -1);
 
+	//play audio
+	AudioManager::playBackgroundAudio(AudioManager::SceneName::Play);
+
 
 	this->addChild(gameNode);
 	this->addChild(buttonNode, 1);
@@ -562,6 +565,7 @@ bool PlayGameScene::init()
 	timeRevival = 0;
 	goldRevival = 0;
 	win = false;
+
 	return true;
 }
 
@@ -864,6 +868,9 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			//Using MoveTo to move the gameNode to the middle of the boss arena(the boss X position). The Vec2's y = 0 because we only want to move the x coord. 
 			auto moveTo = MoveTo::create(2, Vec2(-(boss->getSprite()->getPositionX() - visibleSize.width/2), -(32 * SCALE_FACTOR)));
 			gameNode->runAction(moveTo);
+			
+			//play audio
+			AudioManager::playBackgroundAudio(AudioManager::SceneName::Battle);
 		}
 
 		//Player collide with the hidden area in the map
@@ -1093,6 +1100,9 @@ void PlayGameScene::goToWinScene(float dt) {
 	menu->setPosition(Vec2(visibleSize.width * 0.5, visibleSize.height * 0.25));
 	menu->alignItemsVertically();
 	this->addChild(menu, 3);
+
+	//play audio
+	AudioManager::playBackgroundAudio(AudioManager::SceneName::Victory);
 }
 void PlayGameScene::goToContinue(cocos2d::Ref* sender) {
 	goToVillage();
