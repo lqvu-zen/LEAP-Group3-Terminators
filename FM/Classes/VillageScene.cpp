@@ -495,7 +495,7 @@ void VillageScene::updateCharacter(float dt)
 	}
 
 	if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-		if (playerChar->isGrounded() && playerChar->getRealtimeVolocity().y <= PADDING_VELOCITY) {
+		if (playerChar->getRealtimeVolocity().y <= PADDING_VELOCITY && playerChar->getStats().canJump()) {
 			playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
 		}
 	}

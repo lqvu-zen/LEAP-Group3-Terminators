@@ -106,7 +106,7 @@ void Stats::BuffStats(Stats _stats)
 	maxATK += _stats.maxATK;
 	maxDEF += _stats.maxDEF;
 
-	maxJump += _stats.maxJump;
+	maxJump = min(maxJump + _stats.maxJump, 2);
 
 	//update current value
 	Affection = min(Affection + _stats.Affection, 100);
