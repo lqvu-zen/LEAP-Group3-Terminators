@@ -628,7 +628,7 @@ void VillageScene::onClickNPCInteract()
 {
 	if (standAlone)
 	{
-		UICustom::Popup* popup = UICustom::Popup::createAsMessage("Standing Alone", "There is no one for you to talk ... Please come closer to the Village Elder.");
+		UICustom::Popup* popup = UICustom::Popup::createAsMessage("Standing Alone", "There is no one for you to talk ... \nPlease come closer to the Village Elder.");
 		buttonNode->addChild(popup);
 	}
 	else
