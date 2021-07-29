@@ -1,9 +1,12 @@
 #include "NPC.h"
+#include "GameManager.h"
 
 USING_NS_CC;
 
 NPC::NPC()
 {
+	characterTYPE = CharacterType::NonPlayer;
+
 	characterSprite = Sprite::create();
 	
 	//Animation
@@ -53,6 +56,10 @@ void NPC::setPosition(cocos2d::Vec2 position)
 
 void NPC::takeHit(float dame)
 {
+
+	GameManager::getInstace()->AddReward(Vec2::ZERO);
+	GameManager::getInstace()->PlayerDarker();
+
 	dame = 0;
 	characterStats.HP -= dame;
 

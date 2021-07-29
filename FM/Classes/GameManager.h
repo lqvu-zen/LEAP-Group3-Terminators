@@ -35,6 +35,8 @@ public:
 
 	void AddReward(cocos2d::Vec2 position, int type = 0);
 
+	void PlayerDarker();
+
 	void hit(int attacker, int victim);
 	void colect(int item);
 

@@ -7,6 +7,10 @@
 class Character 
 {
 public:
+
+	enum class CharacterType {
+		Player, NonPlayer, Enemies
+	};
     
 	virtual void takeHit(float dame) = 0;
 	virtual cocos2d::Sprite* getSprite() = 0;
@@ -16,6 +20,8 @@ private:
 
 protected:
 	Stats characterStats;
+
+	CharacterType characterTYPE;
 };
 
 #endif // __CHARACTER_H__

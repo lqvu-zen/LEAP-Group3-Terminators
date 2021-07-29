@@ -5,6 +5,8 @@ USING_NS_CC;
 
 BossCharacter::BossCharacter(int level) {
 
+	characterTYPE = CharacterType::Enemies;
+
 #if 1
 	floder = StringUtils::format("plist/Boss_%i/", level);
 

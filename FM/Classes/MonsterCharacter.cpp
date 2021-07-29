@@ -5,6 +5,8 @@ USING_NS_CC;
 
 MonsterCharacter::MonsterCharacter(cocos2d::Node* _scene, int _type, int _level) {
 
+	characterTYPE = CharacterType::Enemies;
+
 	scene = _scene;
 
 	visibleSize = Director::getInstance()->getVisibleSize();

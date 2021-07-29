@@ -5,6 +5,8 @@ USING_NS_CC;
 
 PlayerCharacter::PlayerCharacter(int characterType)
 {
+	characterTYPE = CharacterType::Player;
+
 	getValue(characterType);
 
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(
@@ -38,6 +40,7 @@ PlayerCharacter::PlayerCharacter(int characterType)
 
 	characterInventory.GetSprite()->setVisible(false);
 
+	characterColor = cocos2d::Color3B::WHITE;
 }
 
 void PlayerCharacter::init(int characterType)
@@ -120,7 +123,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 
 		sprintf(nameCharacter, characterValue["NAME"].GetString());
 
-		characterSpriteAnimation->setColor(cocos2d::Color3B::WHITE);
+		characterSpriteAnimation->setColor(characterColor);
 
 		switch (actionState)
 		{
@@ -318,15 +321,15 @@ void PlayerCharacter::updateAction(float dt)
 		//Karma talk
 		if (countDT < 0) countDT *= -1;
 		countDT++;
-		countDT %= 300;
+		countDT %= (300 - characterStats.Karma * 2);
 
 		//CCLOG("DT: %d", countDT);
 
 		if (countDT == 0) {
-			if (characterStats.Karma > 90.0f) {
+			if (characterStats.Karma > 90) {
 				AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Bloodthirsty);
 			}
-			else if (characterStats.Karma > 50.0f) {
+			else if (characterStats.Karma > 50) {
 				AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Uncontrolled);
 			}
 			else {
@@ -366,7 +369,7 @@ void PlayerCharacter::reupdateAnimation()
 
 		if (takingHit == true) {
 			takingHit = false;
-			characterSpriteAnimation->setColor(cocos2d::Color3B::WHITE);
+			characterSpriteAnimation->setColor(characterColor);
 		}
 		
 		updateAnimation(characterState, characterDirection);
@@ -420,6 +423,23 @@ void PlayerCharacter::setJumping()
 	grounded = false;
 }
 
+void PlayerCharacter::getDarker()
+{
+	characterStats.Karma += 5;
+
+	if (characterStats.Karma >= 90) {
+		characterColor = cocos2d::Color3B::BLACK;
+	}
+	else if (characterStats.Karma >= 50) {
+		characterColor = cocos2d::Color3B::GRAY;
+	}
+	else {
+		characterColor = cocos2d::Color3B::WHITE;
+	}
+
+	characterSpriteAnimation->setColor(characterColor);
+}
+
 void PlayerCharacter::resetJump()
 {
 	//save position when grounded
@@ -462,7 +482,7 @@ void PlayerCharacter::attack(int mode)
 			attackMode = (attackMode - 1) % 3 + 1;
 		}
 
-		if (countDT % 4 == 0) {
+		if (countDT % 5 == 0) {
 			AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Fight);
 		}
 
@@ -680,6 +700,18 @@ Stats PlayerCharacter::getStats()
 void PlayerCharacter::LoadStats(float hp, float mp, float atk, float def, int karma, float m_hp, float m_mp, float m_atk, float m_def, int m_jump)
 {
 	characterStats.LoadPlayerStats(hp, mp, atk, def, karma, m_hp, m_mp, m_atk, m_def, m_jump);
+
+	if (characterStats.Karma >= 90) {
+		characterColor = cocos2d::Color3B::BLACK;
+	}
+	else if (characterStats.Karma >= 50) {
+		characterColor = cocos2d::Color3B::GRAY;
+	}
+	else {
+		characterColor = cocos2d::Color3B::WHITE;
+	}
+
+	characterSpriteAnimation->setColor(characterColor);
 }
 
 Inventory PlayerCharacter::getInventory()

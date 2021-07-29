@@ -40,6 +40,8 @@ public:
 	void setGrounded();
 	void setJumping();
 
+	void getDarker();
+
 	void resetJump();
 
 	void attack(int mode = 0);
@@ -116,6 +118,9 @@ private:
 	
 	//Karma
 	int countDT;
+
+	//color
+	cocos2d::Color3B characterColor;
 };
 
 #endif // __PLAYERCHARACTER_H__
