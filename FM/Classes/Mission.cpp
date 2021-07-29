@@ -80,6 +80,10 @@ Mission::Data Mission::getNowMission() {
 
 }
 
+Mission::Data Mission::get() {
+	return mission;
+}
+
 void Mission::loadReward() {
 	std::string str = FileUtils::getInstance()->getStringFromFile("res/reward.json");
 	CCLOG("s", str.c_str());
@@ -189,4 +193,8 @@ void Mission::loadMission(int _index, int _id, int _begin, int _state, bool _has
 
 int Mission::getIndexMission() {
 	return index;
+}
+
+Mission::Data Mission::getMissionCompleted() {
+	return data.at(index);
 }

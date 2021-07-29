@@ -56,7 +56,7 @@ private:
 	bool checkVector(vector<int>list, int num);
 	//UnlockSkill
 	void unlockSkill(int index);
-	Sprite* lockskill_1, * lockskill_2, * lockskill_3;
+	MenuItemImage* lockskill_1, * lockskill_2, * lockskill_3;
 
 	//countDown skill
 	Sprite* lockskill1, * lockskill2, * lockskill3;
