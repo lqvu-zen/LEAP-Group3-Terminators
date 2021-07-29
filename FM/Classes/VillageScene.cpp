@@ -671,6 +671,12 @@ void VillageScene::onClickNPCInteract()
 						playerChar->addGold(rewards.at(i).number);
 					}
 				}
+				
+				if (GameManager::getInstace()->getMission()->getMissionCompleted().type == 2) {
+					for (int i = 0; i < GameManager::getInstace()->getMission()->getMissionCompleted().end; i++) {
+						playerChar->useItem(Item::ItemType::GEM);
+					}
+				}
 			}
 			else {
 				request = yourMission.request + "\n Mission reward: " + tmp;

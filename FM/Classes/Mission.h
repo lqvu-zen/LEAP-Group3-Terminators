@@ -56,7 +56,7 @@ public:
     int getIndexMission();
 
     vector<Reward> getReward();
-
+    Data getMissionCompleted();
     void loadMission(int index, int id, int begin, int state, bool has);
 private:
     vector<Data> data;

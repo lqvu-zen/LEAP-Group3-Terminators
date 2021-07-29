@@ -190,3 +190,7 @@ void Mission::loadMission(int _index, int _id, int _begin, int _state, bool _has
 int Mission::getIndexMission() {
 	return index;
 }
+
+Mission::Data Mission::getMissionCompleted() {
+	return data.at(index);
+}
