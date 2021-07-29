@@ -84,7 +84,7 @@
     <property name="TriggerHidden" type="int" value="0"/>
    </properties>
   </object>
-  <object id="16" name="ItemSpawn" x="664.633" y="418.516" width="30.7332" height="29.6356">
+  <object id="16" name="ItemSpawn" x="265.633" y="323.183" width="30.7332" height="29.6356">
    <properties>
     <property name="ItemType" type="int" value="1"/>
    </properties>

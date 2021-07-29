@@ -752,7 +752,7 @@ void VillageScene::goToSetting() {
 	buttonNode->addChild(popup);
 }
 void VillageScene::goToMainMenu() {
-	joyStickListener->release();
+	joystick->removeFromParent();
 	auto scene = MainMenuScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
@@ -765,12 +765,14 @@ void VillageScene::goToExit() {
 
 //Map
 void VillageScene::goToMap1() {
+	joystick->removeFromParent();
 	GameManager::getInstace()->setMapLevel(1);
 	auto scene = PlayGameScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
 void VillageScene::goToMap2() {
+	joystick->removeFromParent();
 	GameManager::getInstace()->setMapLevel(2);
 	auto scene = PlayGameScene::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));

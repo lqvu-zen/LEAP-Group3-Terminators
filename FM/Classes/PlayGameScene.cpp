@@ -815,7 +815,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			{
 				//Create a PopUp when a mission is completed.
 				UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Quest complete", "You have complete the quest!\nHead back to the village to turn in the quest and get your rewards!", NULL, [=]() {
-					PlayGameScene::PlayGameScene::goToVillage();
+					PlayGameScene::goToVillage();
 				}, [=]() {
 					CCLOG("Stay in map");
 				});
@@ -833,7 +833,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			{
 				//Create a PopUp when a mission is completed.
 				UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Quest complete", "You have complete the quest!\nHead back to the village to turn in the quest and get your rewards!", NULL, [=]() {
-					PlayGameScene::PlayGameScene::goToVillage();
+					PlayGameScene::goToVillage();
 				}, [=]() {
 					CCLOG("Stay in map");
 				});
