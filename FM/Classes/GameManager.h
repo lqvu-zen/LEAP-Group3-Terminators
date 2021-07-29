@@ -42,7 +42,7 @@ public:
 
 	bool onContactBegin(cocos2d::PhysicsContact &contact);
 	void onContactSeperate(cocos2d::PhysicsContact &contact);
-	
+	vector<int>collectedItems;
 	vector<int>lockedSkills = { 1,2,3 };
 
 	/** return the mapName based on the current map level. Use GameManager::setMapLevel(int level) to set the level

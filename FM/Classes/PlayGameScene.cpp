@@ -379,32 +379,41 @@ bool PlayGameScene::init()
 		//Spawn item. Based on the itemType defined in the tilemap. 1: gem; 2: gold; 3: Hp potion; 4: Mp potion
 		if (SpawnPoint.asValueMap()["name"].asString() == "ItemSpawn")
 		{
-			auto itemX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
-			auto itemY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
-
-			int itemType = SpawnPoint.asValueMap()["ItemType"].asInt();
-			switch (itemType)
+			if (std::find(GameManager::getInstace()->collectedItems.begin(), GameManager::getInstace()->collectedItems.end(), SpawnPoint.asValueMap()["id"].asInt()) != GameManager::getInstace()->collectedItems.end())
 			{
-			case 1:
-				item = new Item(Item::ItemType::GEM);
-				break;
-			case 2:
-				item = new Item(Item::ItemType::GOLD);
-				break;
-			case 3:
-				item = new Item(Item::ItemType::HP_POTION);
-				break;
-			case 4:
-				item = new Item(Item::ItemType::MP_POTION);
-				break;
-			case 5:
-				item = new Item(Item::ItemType::D_BOOTS);
-				break;
+				CCLOG("Collected items will not spawn again");
 			}
-			item->getSprite()->setPosition(itemX, itemY);
-			gameNode->addChild(item->getSprite(), 1);
-
-			GameManager::getInstace()->AddItem(item);
+			else
+			{
+				auto itemX = SpawnPoint.asValueMap()["x"].asFloat()* SCALE_FACTOR;
+				auto itemY = SpawnPoint.asValueMap()["y"].asFloat() * SCALE_FACTOR;
+				int itemType = SpawnPoint.asValueMap()["ItemType"].asInt();
+				switch (itemType)
+				{
+				case 1:
+					item = new Item(Item::ItemType::GEM);
+					item->getSprite()->getPhysicsBody()->setTag(SpawnPoint.asValueMap()["id"].asInt());
+					item->getSprite()->getPhysicsBody()->setName("GEM");
+					break;
+				case 2:
+					item = new Item(Item::ItemType::GOLD);
+					break;
+				case 3:
+					item = new Item(Item::ItemType::HP_POTION);
+					break;
+				case 4:
+					item = new Item(Item::ItemType::MP_POTION);
+					break;
+				case 5:
+					item = new Item(Item::ItemType::D_BOOTS);
+					item->getSprite()->getPhysicsBody()->setTag(SpawnPoint.asValueMap()["id"].asInt());
+					item->getSprite()->getPhysicsBody()->setName("BOOTS");
+					break;
+				}
+				item->getSprite()->setPosition(itemX, itemY);
+				gameNode->addChild(item->getSprite(), 1);
+				GameManager::getInstace()->AddItem(item);
+			}	
 		}
 
 		//Spawn boss
@@ -788,6 +797,11 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 		if (a->getCategoryBitmask() == ITEM_CATEGORY_BITMASK && b->getCategoryBitmask() == PLAYER_CATEGORY_BITMASK)
 		{
 			CCLOG("Collected item");
+			if (a->getName() == "GEM" || a->getName() == "BOOTS")
+			{
+				GameManager::getInstace()->collectedItems.push_back(a->getTag());
+				CCLOG("Collected gem or boots");
+			}
 			a->getNode()->retain();
 			a->getNode()->removeFromParent();
 

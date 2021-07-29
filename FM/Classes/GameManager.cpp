@@ -18,7 +18,7 @@ void GameManager::init()
 
 	characterMap.clear();
 	countCharacter = 0;
-
+	collectedItems.clear();
 	itemMap.clear();
 	countItem = 0;
 	countDead = 0;
@@ -129,6 +129,14 @@ void GameManager::SaveGame()
 	UserDefault::getInstance()->setIntegerForKey("INVENTORY_DBOOTS", playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
 
 	//Save Mission
+
+	//Save Collected Items
+	UserDefault::getInstance()->setIntegerForKey("COLLECTED_ITEMS_SIZE", collectedItems.size());
+	for (int i = 0; i < collectedItems.size(); ++i)
+	{
+		auto collectedItem = StringUtils::format("COLLECTED_ITEM%d", i);
+		UserDefault::getInstance()->setIntegerForKey(collectedItem.c_str(), collectedItems.at(i));
+	}
 }
 
 void GameManager::LoadGame()
@@ -182,6 +190,16 @@ void GameManager::LoadGame()
 		playerCharacter->colectItem(tempItem, c_dBoots - playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
 	}
 	
+	//Load collected items.
+	auto collectedItemCount = UserDefault::getInstance()->getIntegerForKey("COLLECTED_ITEMS_SIZE");
+	if (collectedItemCount != 0)
+	{
+		for (int i = 0; i < collectedItemCount; ++i)
+		{
+			auto collectedItem = StringUtils::format("COLLECTED_ITEM%d", i);
+			collectedItems.push_back(UserDefault::getInstance()->getIntegerForKey(collectedItem.c_str()));
+		}
+	}
 }
 
 GameManager * GameManager::create()
