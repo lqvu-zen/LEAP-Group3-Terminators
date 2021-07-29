@@ -36,48 +36,9 @@ public:
     
     Mission();
 
-    Data getMission() {
-        if (hasMission) {
-            if (mission.state == 1)
-                return mission;
-            else {
-                hasMission = false;
-                return mission;
-            }          
-        }
-        else {
-            int i = 0;
-            while (i < data.size()) {
-                if (data.at(i).state == 0) {
-                    mission = data.at(i);
-                    index = i;
-                    return mission;
-                }
-                i++;
-            }
-            if (i == data.size()) {
-                index = i;
-                mission = data.at(index - 1);
-                return mission;
-            }
-        }
-    }
+    Data getMission();
 
-    Data getNowMission() {
-        if (hasMission) {
-            if (mission.state == 2) {
-                mission = data.at(data.size() - 2);
-            }
-            return mission;
-        }
-        else {
-            if (index == data.size()) {
-                return mission;
-            }
-            return data.at(0);
-        }
-        
-    }
+    Data getNowMission();
 
     void agreeMission();
 
@@ -89,7 +50,14 @@ public:
 
     int getState();
 
+    bool getProcesstate();
+    void setProcesstate(bool state);
+
+    int getIndexMission();
+
     vector<Reward> getReward();
+
+    void loadMission(int index, int id, int begin, int state, bool has);
 private:
     vector<Data> data;
     Data mission;
