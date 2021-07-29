@@ -265,10 +265,10 @@ void PlayerCharacter::updateAction(float dt)
 			}
 			setGrounded();
 		}
-
+		//CCLOG("jump = %d, vec = %f", characterStats.canJump(), characterVelocity.y);
 		if (characterVelocity.y > PADDING_VELOCITY && characterStats.canJump() && characterPhysicsBody->getVelocity().y <= PLAYER_JUMP_VELOCITY * 0.5f) {
 			characterStats.jump++;
-			CCLOG("Jump from: %f", characterPhysicsBody->getVelocity().y);
+			CCLOG("Jump from: %f, jump = %d", characterPhysicsBody->getVelocity().y, characterStats.jump);
 			characterPhysicsBody->setVelocity(
 				Vec2(
 					characterPhysicsBody->getVelocity().x, characterVelocity.y
@@ -644,6 +644,10 @@ void PlayerCharacter::colectItem(Item * item, int mount)
 	//AudioManager::playRandomAudio(AudioManager::RandomAction::Collect);
 
 	characterInventory.addItem(item, mount);
+
+	if (mount > 0 && item->getType() >= Item::ItemType::D_BOOTS) {
+		characterStats.BuffStats(item->getStats());
+	}
 }
 
 void PlayerCharacter::addGold(int num) {

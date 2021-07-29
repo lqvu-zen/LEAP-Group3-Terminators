@@ -18,7 +18,7 @@ void GameManager::init()
 
 	characterMap.clear();
 	countCharacter = 0;
-
+	collectedItems.clear();
 	itemMap.clear();
 	countItem = 0;
 	countDead = 0;
@@ -134,6 +134,14 @@ void GameManager::SaveGame()
 	UserDefault::getInstance()->setIntegerForKey("MISSION_BEGIN", mission->get().begin);
 	UserDefault::getInstance()->setIntegerForKey("MISSION_STATE", mission->get().state);
 	UserDefault::getInstance()->setBoolForKey("HAS_MISSION", mission->getProcesstate());
+
+	//Save Collected Items
+	UserDefault::getInstance()->setIntegerForKey("COLLECTED_ITEMS_SIZE", collectedItems.size());
+	for (int i = 0; i < collectedItems.size(); ++i)
+	{
+		auto collectedItem = StringUtils::format("COLLECTED_ITEM%d", i);
+		UserDefault::getInstance()->setIntegerForKey(collectedItem.c_str(), collectedItems.at(i));
+	}
 }
 
 void GameManager::LoadGame()
@@ -184,9 +192,9 @@ void GameManager::LoadGame()
 
 	if (playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS) < c_dBoots) {
 		auto tempItem = new Item(Item::ItemType::D_BOOTS);
-		playerCharacter->colectItem(tempItem, c_dBoots - playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
+		playerCharacter->colectItem(tempItem, 0);
 	}
-
+	
 	//load Mission
 	int index = UserDefault::getInstance()->getIntegerForKey("INDEX_MISSION");
 	int id = UserDefault::getInstance()->getIntegerForKey("MISSION_ID");
@@ -194,7 +202,17 @@ void GameManager::LoadGame()
 	int state = UserDefault::getInstance()->getIntegerForKey("MISSION_STATE");
 	bool has = UserDefault::getInstance()->getBoolForKey("HAS_MISSION");
 	mission->loadMission(index, id, begin, state, has);
-	
+
+	//Load collected items.
+	auto collectedItemCount = UserDefault::getInstance()->getIntegerForKey("COLLECTED_ITEMS_SIZE");
+	if (collectedItemCount != 0)
+	{
+		for (int i = 0; i < collectedItemCount; ++i)
+		{
+			auto collectedItem = StringUtils::format("COLLECTED_ITEM%d", i);
+			collectedItems.push_back(UserDefault::getInstance()->getIntegerForKey(collectedItem.c_str()));
+		}
+	}
 }
 
 GameManager * GameManager::create()
