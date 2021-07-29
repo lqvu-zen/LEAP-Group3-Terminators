@@ -566,7 +566,7 @@ void PlayGameScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2
 
 void PlayGameScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
-	CCLOG("Key with keycode %d released", keyCode);
+	//CCLOG("Key with keycode %d released", keyCode);
 	heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), keyCode), heldKeys.end());
 }
 
@@ -608,8 +608,9 @@ void PlayGameScene::updateCharacter(float dt)
 		}
 
 		if (std::find(heldKeys.begin(), heldKeys.end(), UP_ARROW) != heldKeys.end()) {
-			if (playerChar->isGrounded() && playerChar->getStats().canJump() && playerChar->getVolocity().y <= PADDING_VELOCITY) {
+			if (playerChar->getRealtimeVolocity().y <= PADDING_VELOCITY && playerChar->getStats().canJump()) {
 				playerChar->setVelocity(Vec2(playerChar->getVolocity().x, PLAYER_JUMP_VELOCITY));
+				//CCLOG("Jump touch!");
 			}
 		}
 

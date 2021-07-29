@@ -179,7 +179,7 @@ void GameManager::LoadGame()
 
 	if (playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS) < c_dBoots) {
 		auto tempItem = new Item(Item::ItemType::D_BOOTS);
-		playerCharacter->colectItem(tempItem, c_dBoots - playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
+		playerCharacter->colectItem(tempItem, 0);
 	}
 	
 }

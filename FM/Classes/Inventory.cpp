@@ -34,6 +34,8 @@ void Inventory::addItem(Item * _item, int mount)
 
 		itemMap[_item->getType()].push_back(item2);
 	}
+
+	updateInventory();
 }
 
 Item * Inventory::getItem(Item::ItemType itemType)
@@ -128,7 +130,35 @@ void Inventory::updateInventory()
 	auto itemGroup = inventoryMap->getObjectGroup("Items");
 	auto itemObjects = itemGroup->getObjects();
 
+	auto characterGroup = inventoryMap->getObjectGroup("Character");
+	auto characterObjects = characterGroup->getObjects();
+
 	for (auto itemList : itemMap) {
+
+		if (itemList.first >= Item::ItemType::D_BOOTS) {
+			if (inventoryMap->getChildByTag(int(itemList.first) + TAG_PADDING) == nullptr && itemList.second.size() > 0) {
+
+				for (auto obj : characterObjects) {
+					auto dict = obj.asValueMap();
+
+					if (dict["type"].asInt() == int(itemList.first)) {
+						auto itemImage = itemList.second.front()->getSprite();
+						itemImage->setPosition(
+							Vec2(
+								dict["x"].asFloat(), dict["y"].asFloat()
+							)
+						);
+
+						itemImage->setScale(0.5f);
+
+						itemImage->setTag(int(itemList.first) + TAG_PADDING);
+						inventoryMap->addChild(itemImage);
+					}
+				}
+			}
+			continue;
+		}
+
 		//update
 		if (inventoryMap->getChildByTag(int(itemList.first) + TAG_PADDING) != nullptr) {
 			auto itemImage = inventoryMap->getChildByTag(int(itemList.first) + TAG_PADDING);
