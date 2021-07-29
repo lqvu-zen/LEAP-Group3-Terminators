@@ -167,29 +167,30 @@ bool VillageScene::init()
 	//Lock Skill
 #if 1
 
-	lockskill_1 = Sprite::create();
+	lockskill_1 = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
-		lockskill_1 = Sprite::create("sprites/lock.png");
+		lockskill_1 = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
 		lockskill_1->setScale(0.3);
 		lockskill_1->setPosition(skill_1Item->getPosition());
 	}
-	buttonNode->addChild(lockskill_1);
 
-	lockskill_2 = Sprite::create();
+	lockskill_2 = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 2)) {
-		lockskill_2 = Sprite::create("sprites/lock.png");
+		lockskill_2 = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
 		lockskill_2->setScale(0.3);
 		lockskill_2->setPosition(skill_2Item->getPosition());
 	}
-	buttonNode->addChild(lockskill_2);
 
-	lockskill_3 = Sprite::create();
+	lockskill_3 = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 2)) {
-		lockskill_3 = Sprite::create("sprites/lock.png");
+		lockskill_3 = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
 		lockskill_3->setScale(0.3);
 		lockskill_3->setPosition(skill_3Item->getPosition());
 	}
-	buttonNode->addChild(lockskill_3);
+	auto lockMenu = Menu::create(lockskill_1, lockskill_2, lockskill_3, nullptr);
+	lockMenu->setPosition(Vec2::ZERO);
+	lockMenu->setOpacity(140);
+	buttonNode->addChild(lockMenu);
 
 #endif
 
