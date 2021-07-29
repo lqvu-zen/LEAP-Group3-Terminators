@@ -80,6 +80,10 @@ Mission::Data Mission::getNowMission() {
 
 }
 
+Mission::Data Mission::get() {
+	return mission;
+}
+
 void Mission::loadReward() {
 	std::string str = FileUtils::getInstance()->getStringFromFile("res/reward.json");
 	CCLOG("s", str.c_str());

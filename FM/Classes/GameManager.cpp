@@ -130,9 +130,9 @@ void GameManager::SaveGame()
 
 	//Save Mission
 	UserDefault::getInstance()->setIntegerForKey("INDEX_MISSION", mission->getIndexMission());
-	UserDefault::getInstance()->setIntegerForKey("MISSION_ID", mission->getMission().id);
-	UserDefault::getInstance()->setIntegerForKey("MISSION_BEGIN", mission->getMission().begin);
-	UserDefault::getInstance()->setIntegerForKey("MISSION_STATE", mission->getMission().state);
+	UserDefault::getInstance()->setIntegerForKey("MISSION_ID", mission->get().id);
+	UserDefault::getInstance()->setIntegerForKey("MISSION_BEGIN", mission->get().begin);
+	UserDefault::getInstance()->setIntegerForKey("MISSION_STATE", mission->get().state);
 	UserDefault::getInstance()->setBoolForKey("HAS_MISSION", mission->getProcesstate());
 }
 

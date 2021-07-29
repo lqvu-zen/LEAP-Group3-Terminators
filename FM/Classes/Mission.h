@@ -40,6 +40,8 @@ public:
 
     Data getNowMission();
 
+    Data get();
+
     void agreeMission();
 
     void cancelMission();
