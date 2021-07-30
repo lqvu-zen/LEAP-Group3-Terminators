@@ -9,7 +9,7 @@ static int backgroundAudioID = AudioEngine::INVALID_AUDIO_ID;
 static int playerActionAudioID = AudioEngine::INVALID_AUDIO_ID;
 static int randomAudioID = AudioEngine::INVALID_AUDIO_ID;
 
-#define ENABLE_AUDIO
+
 
 void AudioManager::preloadAudio()
 {

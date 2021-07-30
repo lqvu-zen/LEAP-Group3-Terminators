@@ -428,11 +428,13 @@ bool VillageScene::init()
 	//save
 	GameManager::getInstace()->SaveGame();
 
+#ifdef ENABLE_KEYBOARD
 	//Keyboard test
 	auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = CC_CALLBACK_2(VillageScene::onKeyPressed, this);
 	listener->onKeyReleased = CC_CALLBACK_2(VillageScene::onKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+#endif
 	
 	//Add a follow action to follow the cameraTarget(the player) with boundaries to follow.
 	//The boundaries are the origin point (0, 0) and the total size of the map (in pixels) * SCALE_FACTOR.
@@ -451,7 +453,7 @@ bool VillageScene::init()
 
 
 
-
+#ifdef ENABLE_KEYBOARD
 void VillageScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
 	//CCLOG("Key with keycode %d pressed, Character position: %f", keyCode, playerChar->getSprite()->getPositionX());
@@ -465,6 +467,7 @@ void VillageScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2
 	CCLOG("Key with keycode %d released", keyCode);
 	heldKeys.erase(std::remove(heldKeys.begin(), heldKeys.end(), keyCode), heldKeys.end());
 }
+#endif
 
 
 void VillageScene::update(float dt)

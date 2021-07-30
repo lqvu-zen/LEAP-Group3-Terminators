@@ -67,4 +67,8 @@ enum Direction {
 	LEFT, RIGHT
 };
 
+//define / undef
+#define ENABLE_AUDIO
+#undef ENABLE_KEYBOARD
+
 #endif // __DIFINITIONS_H__
