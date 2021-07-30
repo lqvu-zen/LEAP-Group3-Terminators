@@ -121,7 +121,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 		char nameSprite[maxWord] = { 0 };
 		char nameCharacter[maxWord] = { 0 };
 
-		sprintf(nameCharacter, characterValue["NAME"].GetString());
+		sprintf(nameCharacter, "%s", characterValue["NAME"].GetString());
 
 		characterSpriteAnimation->setColor(characterColor);
 
@@ -425,7 +425,7 @@ void PlayerCharacter::setJumping()
 
 void PlayerCharacter::getDarker()
 {
-	characterStats.Karma += 5;
+	characterStats.Karma = min(characterStats.Karma + 5, 100);
 
 	if (characterStats.Karma >= 90) {
 		characterColor = cocos2d::Color3B::BLACK;

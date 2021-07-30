@@ -6,7 +6,7 @@
 			"NAME": "Gem",
 			"SPRITES":
 			{
-				"PNG": "sprites/item/Gem.png",
+				"PNG": "sprites/Item/Gem.png",
 				"SCALE": 1.0
 			},
 			"STATS":
@@ -28,7 +28,7 @@
 			"NAME": "HealthPotion",
 			"SPRITES":
 			{
-				"PNG": "sprites/item/StaticBigHealthPotion.png",
+				"PNG": "sprites/Item/StaticBigHealthPotion.png",
 				"SCALE": 1.0
 			},
 			"STATS":
@@ -50,7 +50,7 @@
 			"NAME": "ManaPotion",
 			"SPRITES":
 			{
-				"PNG": "sprites/item/StaticBigManaPotion.png",
+				"PNG": "sprites/Item/StaticBigManaPotion.png",
 				"SCALE": 1.0
 			},
 			"STATS":
@@ -72,7 +72,7 @@
 			"NAME": "Coin",
 			"SPRITES":
 			{
-				"PNG": "sprites/item/StaticCoin.png",
+				"PNG": "sprites/Item/StaticCoin.png",
 				"SCALE": 1.0
 			},
 			"STATS":
@@ -94,7 +94,7 @@
 			"NAME": "D_Boots",
 			"SPRITES":
 			{
-				"PNG": "sprites/item/D_Boots.png",
+				"PNG": "sprites/Item/D_Boots.png",
 				"SCALE": 1.0
 			},
 			"STATS":

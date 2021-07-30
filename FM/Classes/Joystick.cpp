@@ -44,7 +44,7 @@ bool Joystick::init() {
 			break;
 		}
 		mJsBg->setPosition(mJsPos);
-		mJsBg->setScale(1.2);
+		mJsBg->setScale(1.5f);
 		mJsBg->setOpacity(140);
 		addChild(mJsBg);
 
@@ -54,7 +54,7 @@ bool Joystick::init() {
 			break;
 		}
 		mJsCenter->setPosition(mJsPos);
-		mJsCenter->setScale(1.2);
+		mJsCenter->setScale(1.5f);
 		mJsCenter->setOpacity(140);
 		addChild(mJsCenter);
 
