@@ -1,4 +1,4 @@
-#include "Definitions.h"
+﻿#include "Definitions.h"
 #include "VillageScene.h"
 #include "Popup.h"
 #include "MainMenuScene.h"
@@ -287,7 +287,6 @@ bool VillageScene::init()
 	playerChar = GameManager::getInstace()->GetPlayerCharacter();
 	//playerChar->getSprite()->setScale(1.5);
 	playerChar->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
 
 	//Mission description
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
@@ -691,6 +690,21 @@ void VillageScene::onClickNPCInteract()
 				UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Old man's quest", request, NULL, [=]() {
 					GameManager::getInstace()->getMission()->agreeMission();
 					CCLOG("Accpect Mission!");
+					//Check Gem của mission
+					if (GameManager::getInstace()->getMission()->getMission().type == 2) {
+						int num = playerChar->getInventory().getItemCount(Item::ItemType::GEM);
+						GameManager::getInstace()->getMission()->reviseMission(num);
+						if (GameManager::getInstace()->getMission()->getNowMission().id == 6)
+						{
+							//Create a PopUp when a mission is completed.
+							UICustom::Popup* popup = UICustom::Popup::createAsConfirmRejectDialogue("Quest complete", "You have complete the quest!\nHead back to the village to turn in the quest and get your rewards!", NULL, [=]() {
+								CCLOG("Stay in map");
+							}, [=]() {
+								CCLOG("Stay in map");
+							});
+							buttonNode->addChild(popup, 1);
+						}
+					}
 				}, [=]() {
 					GameManager::getInstace()->getMission()->cancelMission();
 					CCLOG("Reject Mission!");
