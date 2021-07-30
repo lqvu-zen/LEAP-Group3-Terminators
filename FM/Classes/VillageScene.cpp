@@ -291,7 +291,7 @@ bool VillageScene::init()
 	//Mission description
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel = Label::createWithTTF(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
-	missionLabel->setColor(Color3B::Color3B(255, 153, 51));
+	missionLabel->setColor(Color3B(255, 153, 51));
 	buttonNode->addChild(missionLabel);
 
 
@@ -562,6 +562,7 @@ void VillageScene::onClickAttackMenu(cocos2d::Ref* sender) {
 	}
 	else if (node->getTag() == 3) {
 		CCLOG("Skill 2");
+		playerChar->attack(2);
 		if (lock2 == false) {
 			lock2 = true;
 			int countDown = 5;

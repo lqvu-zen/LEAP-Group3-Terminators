@@ -3,7 +3,7 @@
 #include "MainMenuScene.h"
 #include "VillageScene.h"
 #include "Popup.h"
-#include <Windows.h>
+//#include <Windows.h>
 
 USING_NS_CC;
 
