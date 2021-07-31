@@ -795,10 +795,17 @@ void VillageScene::goToMap1() {
 }
 
 void VillageScene::goToMap2() {
-	joystick->removeFromParent();
-	GameManager::getInstace()->setMapLevel(2);
-	auto scene = PlayGameScene::createScene();
-	Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+	if (GameManager::getInstace()->getMission()->getIndexMission() < 5) {
+		UICustom::Popup* popup = UICustom::Popup::createAsMessage("Notify", "You must complete all training missions to open map 2 ");
+		buttonNode->addChild(popup, 2);
+	}
+	else {
+		joystick->removeFromParent();
+		GameManager::getInstace()->setMapLevel(2);
+		auto scene = PlayGameScene::createScene();
+		Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+	}
+	
 }
 
 //onContactSeperate when two shapes seperate from each other.
