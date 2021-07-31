@@ -7,7 +7,6 @@
 //
 
 #include "Popup.h"
-#include <Windows.h>
 #include <string.h>
 
 USING_NS_CC;

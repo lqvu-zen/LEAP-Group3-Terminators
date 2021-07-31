@@ -38,8 +38,8 @@ void Skill::CastSkill(Skill::SkillType skillType, Direction direction)
 	char nameElement[maxWord] = { 0 };
 	char nameType[maxWord] = { 0 };
 
-	sprintf(nameElement, skillValue["NAME"].GetString());
-	sprintf(nameType, "Skill");
+	sprintf(nameElement, "%s", skillValue["NAME"].GetString());
+	sprintf(nameType, "%s", "Skill");
 
 	switch (skillType)
 	{
