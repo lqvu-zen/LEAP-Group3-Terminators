@@ -1,5 +1,6 @@
 #include "PlayerCharacter.h"
 #include "GameManager.h"
+#include "Popup.h"
 
 USING_NS_CC;
 
@@ -321,7 +322,7 @@ void PlayerCharacter::updateAction(float dt)
 		//Karma talk
 		if (countDT < 0) countDT *= -1;
 		countDT++;
-		countDT %= (300 - characterStats.Karma * 2);
+		countDT %= (500 - characterStats.Karma * 2);
 
 		//CCLOG("DT: %d", countDT);
 
@@ -425,7 +426,9 @@ void PlayerCharacter::setJumping()
 
 void PlayerCharacter::getDarker()
 {
+#ifdef ENABLE_KARMA
 	characterStats.Karma = min(characterStats.Karma + 5, 100);
+#endif // ENABLE_KARMA
 
 	if (characterStats.Karma >= 90) {
 		characterColor = cocos2d::Color3B::BLACK;
@@ -482,9 +485,11 @@ void PlayerCharacter::attack(int mode)
 			attackMode = (attackMode - 1) % 3 + 1;
 		}
 
+#ifdef ENABLE_KARMA
 		if (countDT % 5 == 0) {
 			AudioManager::playKarmaAudio(AudioManager::KarmaEmotion::Fight);
 		}
+#endif // ENABLE_KARMA
 
 		//update animation
 		if (attackMode == 1) {
@@ -653,11 +658,11 @@ void PlayerCharacter::colectItem(Item * item, int mount)
 	auto moveBy = MoveBy::create(COLECT_DELAY, Vec2(0.0f, 10.0f));
 	auto removeSeft = RemoveSelf::create();
 
-	auto callbackRemove = CallFunc::create([]() {
-		log("Removed!");
+	auto notification = CallFunc::create([]() {
+		
 	});
 
-	colectSprite->runAction(Sequence::create(moveBy, removeSeft, NULL));
+	colectSprite->runAction(Sequence::create(moveBy, removeSeft, notification, NULL));
 
 	characterSprite->addChild(colectSprite);
 
@@ -667,6 +672,11 @@ void PlayerCharacter::colectItem(Item * item, int mount)
 
 	if (mount > 0 && item->getType() >= Item::ItemType::D_BOOTS) {
 		characterStats.BuffStats(item->getStats());
+		if (item->getType() == Item::ItemType::D_BOOTS) {
+			UICustom::Popup* popup = UICustom::Popup::createAsMessage("Upgrade!!!", "Now you can double jump.\n Let try it.\n (Hold jump or click twice)");
+			//characterSprite->getParent()->addChild(popup);
+			Director::getInstance()->getRunningScene()->addChild(popup, 2);
+		}
 	}
 }
 

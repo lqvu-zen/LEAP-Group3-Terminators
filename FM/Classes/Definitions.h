@@ -70,5 +70,6 @@ enum Direction {
 //define / undef
 #define ENABLE_AUDIO
 #define ENABLE_KEYBOARD
+#undef ENABLE_KARMA
 
 #endif // __DIFINITIONS_H__

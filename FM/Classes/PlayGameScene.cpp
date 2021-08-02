@@ -981,6 +981,8 @@ void PlayGameScene::goToVillage() {
 void PlayGameScene::goToSave() {
 	//Implement save game here.
 	CCLOG("SAVE GAME");
+	GameManager::getInstace()->SaveGame();
+	GameManager::getInstace()->SaveMission();
 }
 
 void PlayGameScene::goToSetting() {
