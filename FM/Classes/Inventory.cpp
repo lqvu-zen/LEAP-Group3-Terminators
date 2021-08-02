@@ -84,7 +84,7 @@ cocos2d::Sprite * Inventory::GetSprite()
 		labelConfig.fontFilePath = "fonts/arial.ttf";
 		labelConfig.fontSize = 8;
 		labelConfig.glyphs = GlyphCollection::DYNAMIC;
-		labelConfig.outlineSize = 0;
+		labelConfig.outlineSize = 1;
 		labelConfig.customGlyphs = nullptr;
 		labelConfig.distanceFieldEnabled = false;
 
@@ -192,6 +192,8 @@ void Inventory::updateInventory()
 
 				itemCountLabel->setName("CountItem");
 				itemImage->addChild(itemCountLabel);
+
+				itemCountLabel->setPosition(Vec2(8.0f, -8.0f));
 			}
 		}
 	}

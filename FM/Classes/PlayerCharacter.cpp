@@ -322,7 +322,7 @@ void PlayerCharacter::updateAction(float dt)
 		//Karma talk
 		if (countDT < 0) countDT *= -1;
 		countDT++;
-		countDT %= (500 - characterStats.Karma * 2);
+		countDT %= (1200 - characterStats.Karma * 2);
 
 		//CCLOG("DT: %d", countDT);
 
