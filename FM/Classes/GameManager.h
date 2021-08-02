@@ -63,8 +63,12 @@ public:
 	//Save/Load Gameplay
 	void SaveGame();
 	void LoadGame();
-	//Save/Load Mission
+	//Save Mission
 	void SaveMission();
+	//Save Unlock/Lock Skill
+	void SaveSkill();
+	void LoadSkill();
+	bool GameManager::checkVector(vector<int>list, int num);
 
 private:
 	static GameManager* create();
