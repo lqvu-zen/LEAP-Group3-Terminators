@@ -65,7 +65,7 @@ private:
 	void goToContinue(cocos2d::Ref* sender);
 
 	//Pause
-	void goToMission();
+	void goToLockUnlockSkill();
 	void goToVillage();
 	void goToSetting();
 	void goToMainMenu();
@@ -73,6 +73,7 @@ private:
 	void playerDeadNotice();
 	void goToSave();
 	//Unlock Skill
+	MenuItemImage* lockskill_1Item, * lockskill_2Item, * lockskill_3Item;
 	void unlockSkill(int index);
 	bool checkVector(vector<int>list, int num);
 
