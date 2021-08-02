@@ -175,33 +175,36 @@ bool PlayGameScene::init()
 
 	//Lock Skill
 #if 1
-	lockskill_1Item = Sprite::create();
+	lockskill_1Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
-		lockskill_1Item = Sprite::create("sprites/lock.png");
+		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
 		lockskill_1Item->setScale(0.3);
 		lockskill_1Item->setPosition(skill_1Item->getPosition());
-		buttonNode->addChild(lockskill_1Item);
 	}
-	lockskill_2Item = Sprite::create();
+
+	lockskill_2Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 2)) {
-		lockskill_2Item = Sprite::create("sprites/lock.png");
+		lockskill_2Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
 		lockskill_2Item->setScale(0.3);
 		lockskill_2Item->setPosition(skill_2Item->getPosition());
-		buttonNode->addChild(lockskill_2Item);
 	}
-	lockskill_3Item = Sprite::create();
-	if (checkVector(GameManager::getInstace()->lockedSkills, 3)) {
-		lockskill_3Item = Sprite::create("sprites/lock.png");
+
+	lockskill_3Item = MenuItemImage::create();
+	if (checkVector(GameManager::getInstace()->lockedSkills, 2)) {
+		lockskill_3Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
 		lockskill_3Item->setScale(0.3);
 		lockskill_3Item->setPosition(skill_3Item->getPosition());
-		buttonNode->addChild(lockskill_3Item);
 	}
+	auto lockMenu = Menu::create(lockskill_1Item, lockskill_2Item, lockskill_3Item, nullptr);
+	lockMenu->setPosition(Vec2::ZERO);
+	lockMenu->setOpacity(140);
+	buttonNode->addChild(lockMenu);
 #endif
 
 	//mp Button, hp Button
 #if 1
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
-	mpButton->setScale(0.1);
+	mpButton->setScale(0.065);
 	mpButton->setPosition(Vec2(visibleSize.width - 7 * mpButton->getContentSize().width * 0.05, mpButton->getContentSize().height * 0.05));
 	mpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -218,7 +221,7 @@ bool PlayGameScene::init()
 	buttonNode->addChild(mpButton, 1);
 
 	auto hpButton = ui::Button::create("sprites/hpButton.png");
-	hpButton->setScale(0.1);
+	hpButton->setScale(0.065);
 	hpButton->setPosition(Vec2(visibleSize.width - 9.5 * hpButton->getContentSize().width * 0.05, hpButton->getContentSize().height * 0.05));
 	hpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -598,7 +601,7 @@ void PlayGameScene::update(float dt)
 	//update label
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
-	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width / 2, playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
+	missionLabel->setPosition(playerStatsSprite->getPositionX() + (missionLabel->getContentSize().width * 0.52), playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//this->updateBoss(dt);
 	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
 

@@ -73,7 +73,7 @@ private:
 	void playerDeadNotice();
 	void goToSave();
 	//Unlock Skill
-	Sprite* lockskill_1Item, * lockskill_2Item, * lockskill_3Item;
+	MenuItemImage* lockskill_1Item, * lockskill_2Item, * lockskill_3Item;
 	void unlockSkill(int index);
 	bool checkVector(vector<int>list, int num);
 
