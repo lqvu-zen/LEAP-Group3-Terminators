@@ -212,13 +212,32 @@ void GameManager::LoadGame()
 	}
 }
 
-//Save/Load Mission
+//Save Mission
 void GameManager::SaveMission() {
 	UserDefault::getInstance()->setIntegerForKey("INDEX_MISSION", mission->getIndexMission());
 	UserDefault::getInstance()->setIntegerForKey("MISSION_ID", mission->get().id);
 	UserDefault::getInstance()->setIntegerForKey("MISSION_BEGIN", mission->get().begin);
 	UserDefault::getInstance()->setIntegerForKey("MISSION_STATE", mission->get().state);
 	UserDefault::getInstance()->setBoolForKey("HAS_MISSION", mission->getProcesstate());
+}
+
+//Save Unlock/Lock Skill
+void GameManager::SaveSkill() {
+	UserDefault::getInstance()->setBoolForKey("LOCK_SKILL_1", checkVector(lockedSkills, 1));
+	UserDefault::getInstance()->setBoolForKey("LOCK_SKILL_2", checkVector(lockedSkills, 2));
+	UserDefault::getInstance()->setBoolForKey("LOCK_SKILL_3", checkVector(lockedSkills, 3));
+}
+void GameManager::LoadSkill() {
+	lockedSkills = {};
+	if (UserDefault::getInstance()->getBoolForKey("LOCK_SKILL_1") == true) {
+		lockedSkills.push_back(1);
+	}
+	if (UserDefault::getInstance()->getBoolForKey("LOCK_SKILL_2") == true) {
+		lockedSkills.push_back(2);
+	}
+	if (UserDefault::getInstance()->getBoolForKey("LOCK_SKILL_3") == true) {
+		lockedSkills.push_back(3);
+	}
 }
 
 GameManager * GameManager::create()
@@ -292,4 +311,13 @@ int GameManager::getMapHiddenAreasCount()
 int GameManager::getMapLevel()
 {
 	return mapLevel;
+}
+
+bool GameManager::checkVector(vector<int>list, int num) {
+	for (int i = 0; i < list.size(); i++) {
+		if (num == list[i]) {
+			return true;
+		}
+	}
+	return false;
 }
