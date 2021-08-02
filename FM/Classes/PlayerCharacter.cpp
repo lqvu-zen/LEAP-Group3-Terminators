@@ -118,7 +118,7 @@ void PlayerCharacter::updateAnimation(State actionState, Direction actionDirecti
 		char nameSprite[maxWord] = { 0 };
 		char nameCharacter[maxWord] = { 0 };
 
-		sprintf(nameCharacter, characterValue["NAME"].GetString());
+		sprintf(nameCharacter, "%s", characterValue["NAME"].GetString());
 
 		characterSpriteAnimation->setColor(cocos2d::Color3B::WHITE);
 

@@ -1,5 +1,5 @@
-#include "Character.h"
 #include "Mission.h"
+#include "Character.h"
 #include "Definitions.h"
 
 USING_NS_CC;

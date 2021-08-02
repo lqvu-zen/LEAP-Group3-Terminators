@@ -3,7 +3,6 @@
 #include "MainMenuScene.h"
 #include "VillageScene.h"
 #include "Popup.h"
-//#include <Windows.h>
 
 USING_NS_CC;
 
@@ -345,7 +344,7 @@ bool PlayGameScene::init()
 	//Mission description
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel = Label::createWithTTF(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
-	missionLabel->setColor(Color3B::Color3B(255, 153, 51));
+	missionLabel->setColor(Color3B::ORANGE);
 	buttonNode->addChild(missionLabel);
 
 	//hp and mp potions label
@@ -600,6 +599,8 @@ void PlayGameScene::update(float dt)
 	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width / 2, playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//this->updateBoss(dt);
 	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
+
+	GameManager::getInstace()->SaveMission();
 }
 
 void PlayGameScene::updateCharacter(float dt)
