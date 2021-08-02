@@ -205,7 +205,7 @@ bool PlayGameScene::init()
 	//mp Button, hp Button
 #if 1
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
-	mpButton->setScale(0.1);
+	mpButton->setScale(0.065);
 	mpButton->setPosition(Vec2(visibleSize.width - 7 * mpButton->getContentSize().width * 0.05, mpButton->getContentSize().height * 0.05));
 	mpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -222,7 +222,7 @@ bool PlayGameScene::init()
 	buttonNode->addChild(mpButton, 1);
 
 	auto hpButton = ui::Button::create("sprites/hpButton.png");
-	hpButton->setScale(0.1);
+	hpButton->setScale(0.065);
 	hpButton->setPosition(Vec2(visibleSize.width - 9.5 * hpButton->getContentSize().width * 0.05, hpButton->getContentSize().height * 0.05));
 	hpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
@@ -596,7 +596,7 @@ void PlayGameScene::update(float dt)
 	//update label
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
-	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width / 2, playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
+	missionLabel->setPosition(playerStatsSprite->getPositionX() + (missionLabel->getContentSize().width * 0.52), playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//this->updateBoss(dt);
 	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
 

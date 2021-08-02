@@ -483,7 +483,7 @@ void VillageScene::update(float dt)
 	//update label
 	std::string des = GameManager::getInstace()->getMission()->getNowMission().name;
 	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
-	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width / 2, playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
+	missionLabel->setPosition(playerStatsSprite->getPositionX() + (missionLabel->getContentSize().width * 0.52), playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
 
 	GameManager::getInstace()->SaveMission();
