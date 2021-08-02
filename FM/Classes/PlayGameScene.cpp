@@ -52,7 +52,7 @@ bool PlayGameScene::init()
 			break;
 		case ui::Widget::TouchEventType::ENDED:
 			UICustom::Popup* popup = UICustom::Popup::createPauseMenuPlayGame([=]() {
-				goToMission();
+				goToLockUnlockSkill();
 			}, [=]() {
 				goToVillage();
 			}, [=]() {
@@ -175,31 +175,27 @@ bool PlayGameScene::init()
 
 	//Lock Skill
 #if 1
-	MenuItemImage* lockskill_1Item = MenuItemImage::create();
+	lockskill_1Item = Sprite::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
-		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
+		lockskill_1Item = Sprite::create("sprites/lock.png");
 		lockskill_1Item->setScale(0.3);
 		lockskill_1Item->setPosition(skill_1Item->getPosition());
-		lockskill_1Item->setTag(1);
+		buttonNode->addChild(lockskill_1Item);
 	}
-	MenuItemImage* lockskill_2Item = MenuItemImage::create();
+	lockskill_2Item = Sprite::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 2)) {
-		lockskill_2Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
+		lockskill_2Item = Sprite::create("sprites/lock.png");
 		lockskill_2Item->setScale(0.3);
 		lockskill_2Item->setPosition(skill_2Item->getPosition());
-		lockskill_2Item->setTag(2);
+		buttonNode->addChild(lockskill_2Item);
 	}
-	MenuItemImage* lockskill_3Item = MenuItemImage::create();
+	lockskill_3Item = Sprite::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 3)) {
-		lockskill_3Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
+		lockskill_3Item = Sprite::create("sprites/lock.png");
 		lockskill_3Item->setScale(0.3);
 		lockskill_3Item->setPosition(skill_3Item->getPosition());
-		lockskill_3Item->setTag(2);
+		buttonNode->addChild(lockskill_3Item);
 	}
-	auto lockMenu = Menu::create(lockskill_1Item, lockskill_2Item, lockskill_3Item, nullptr);
-	lockMenu->setPosition(Vec2::ZERO);
-	lockMenu->setOpacity(140);
-	buttonNode->addChild(lockMenu);
 #endif
 
 	//mp Button, hp Button
@@ -958,9 +954,10 @@ void PlayGameScene::bossAction(float dt) {
 }
 
 //Pause
-void PlayGameScene::goToMission() {
-	UICustom::Popup* popup = UICustom::Popup::createAsMessage("Mission", GameManager::getInstace()->getMission()->getNowMission().name);
-	buttonNode->addChild(popup);
+void PlayGameScene::goToLockUnlockSkill() {
+	lockskill_1Item->removeFromParent();
+	lockskill_2Item->removeFromParent();
+	lockskill_3Item->removeFromParent();
 }
 void PlayGameScene::goToVillage() {
 	joystick->removeFromParent();

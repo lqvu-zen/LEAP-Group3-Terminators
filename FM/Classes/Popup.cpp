@@ -290,7 +290,7 @@ namespace UICustom {
         Size winSize = Director::getInstance()->getWinSize();
         if (node && node->init(true))
         {
-            auto missionButton = MenuItemFont::create("Your Mission", [=](Ref* sender) {
+            auto missionButton = MenuItemFont::create("Unlock All Skill", [=](Ref* sender) {
                 MissionFunc();
                 node->dismiss(true);
             });
