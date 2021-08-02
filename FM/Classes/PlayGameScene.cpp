@@ -241,7 +241,7 @@ bool PlayGameScene::init()
 
 	//Add joystick
 	joystick = Joystick::create();
-	buttonNode->addChild(joystick, 2);
+	buttonNode->addChild(joystick);
 
 	//map setup + add map
 	//scale map with SCALE_FACTOR
@@ -349,12 +349,16 @@ bool PlayGameScene::init()
 
 	//hp and mp potions label
 	hpPotionsLabel = Label::createWithTTF(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
-	hpPotionsLabel->setPosition(hpButton->getPosition());
-	buttonNode->addChild(hpPotionsLabel);
+	hpPotionsLabel->setPositionX(hpButton->getPositionX() + (hpButton->getContentSize().width * 0.035));
+	hpPotionsLabel->setPositionY(hpButton->getPositionY() + (hpButton->getContentSize().height * 0.035));
+	hpPotionsLabel->enableOutline(Color4B::BLACK, 1);
+	buttonNode->addChild(hpPotionsLabel, 1);
 
 	mpPotionsLabel = Label::createWithTTF(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
-	mpPotionsLabel->setPosition(mpButton->getPosition());
-	buttonNode->addChild(mpPotionsLabel);
+	mpPotionsLabel->setPositionX(mpButton->getPositionX() + (mpButton->getContentSize().width * 0.035));
+	mpPotionsLabel->setPositionY(mpButton->getPositionY() + (mpButton->getContentSize().height * 0.035));
+	mpPotionsLabel->enableOutline(Color4B::BLACK, 1);
+	buttonNode->addChild(mpPotionsLabel, 1);
 	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.

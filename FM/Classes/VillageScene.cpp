@@ -237,7 +237,7 @@ bool VillageScene::init()
 
 	//Add joystick
 	joystick = Joystick::create();
-	buttonNode->addChild(joystick, 2);
+	buttonNode->addChild(joystick);
 	
 
 	//map setup + add map
