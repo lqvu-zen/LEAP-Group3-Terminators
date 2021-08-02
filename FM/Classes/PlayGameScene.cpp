@@ -990,8 +990,10 @@ void PlayGameScene::goToSave() {
 }
 
 void PlayGameScene::goToSetting() {
-
+	UICustom::Popup* popup = UICustom::Popup::createSetting();
+	buttonNode->addChild(popup, 2);
 }
+
 void PlayGameScene::goToMainMenu() {
 	joystick->removeFromParent();
 	auto scene = MainMenuScene::createScene();

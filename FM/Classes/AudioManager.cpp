@@ -10,8 +10,11 @@ static int playerActionAudioID = AudioEngine::INVALID_AUDIO_ID;
 static int randomAudioID = AudioEngine::INVALID_AUDIO_ID;
 
 static float audioVolume = 0.5f;
-static float effectVolume = 0.5f;
-static float karmaVolume = 0.3f;
+static float effectVolume = 0.3f;
+static float karmaVolume = effectVolume;
+
+static float iAudioVolume = audioVolume;
+static float iEffectVolume = effectVolume;
 
 void AudioManager::preloadAudio()
 {
@@ -210,6 +213,47 @@ void AudioManager::playRandomAudio(RandomAction _action)
 		break;
 	}
 #endif
+}
+
+int AudioManager::getAudioVolume()
+{
+	return int(iAudioVolume * 100);
+}
+
+void AudioManager::setAudioVolume(int _volume, bool _i)
+{
+	audioVolume = _volume * 1.f / 100;
+	AudioEngine::setVolume(backgroundAudioID, audioVolume);
+	if (_i) iAudioVolume = audioVolume;
+}
+
+int AudioManager::getEffectVolume()
+{
+	return int(iEffectVolume * 100);
+}
+
+void AudioManager::setEffectVolume(int _volume, bool _i)
+{
+	effectVolume = _volume * 1.f / 100;
+	karmaVolume = effectVolume;
+	if (_i) iEffectVolume = effectVolume;
+}
+
+void AudioManager::muteAudio()
+{
+	setAudioVolume(0, false);
+	setEffectVolume(0, false);
+}
+
+void AudioManager::unmuteAudio()
+{
+	setAudioVolume(int(iAudioVolume * 100));
+	setEffectVolume(int(iEffectVolume * 100));
+}
+
+bool AudioManager::isMuteAudio()
+{
+	return int(audioVolume * 100 + effectVolume * 100) == 0;
 }
 
 

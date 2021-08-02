@@ -69,6 +69,9 @@ namespace UICustom {
 
     private:
         void initBg(const cocos2d::Size size, const std::string& title);
+
+		void sliderEvent(Ref *pSender, cocos2d::ui::Slider::EventType type);
+		void checkBoxSelectedEvent(Ref *pSender, cocos2d::ui::CheckBox::EventType type);
     };
 
 }

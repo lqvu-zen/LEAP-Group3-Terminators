@@ -31,6 +31,15 @@ public:
 
 	static void playRandomAudio(RandomAction _action);
 
+	static int getAudioVolume();
+	static void setAudioVolume(int _volume, bool _i = true);
+	static int getEffectVolume();
+	static void setEffectVolume(int _volume, bool _i = true);
+
+	static void muteAudio();
+	static void unmuteAudio();
+	static bool isMuteAudio();
+
 private:
 
 };

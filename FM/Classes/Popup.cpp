@@ -9,6 +9,8 @@
 #include "Popup.h"
 #include <string.h>
 
+#include "AudioManager.h"
+
 USING_NS_CC;
 
 using namespace ui;
@@ -197,6 +199,32 @@ namespace UICustom {
         heading->enableOutline(Color4B::BLACK, FONT::LABEL_STROKE);
         heading->enableShadow(Color4B::BLACK, Size(0, -3));
     }
+
+	void Popup::sliderEvent(Ref * pSender, cocos2d::ui::Slider::EventType type)
+	{
+		if (type == Slider::EventType::ON_PERCENTAGE_CHANGED)
+		{
+			auto slider = dynamic_cast<ui::Slider*>(pSender);
+			//CCLOG(">>> LineOptionIndex: %d", slider->getPercent());
+			if (slider->getTag() == 0) {
+				AudioManager::setAudioVolume(slider->getPercent());
+			}
+			else if (slider->getTag() == 1) {
+				AudioManager::setEffectVolume(slider->getPercent());
+			}
+		}
+	}
+
+	void Popup::checkBoxSelectedEvent(Ref * pSender, cocos2d::ui::CheckBox::EventType type)
+	{
+		if (type == CheckBox::EventType::SELECTED)
+		{
+			AudioManager::muteAudio();
+		}
+		else {
+			AudioManager::unmuteAudio();
+		}
+	}
 
     //Edit
     Popup* Popup::createAsConfirmRejectDialogue(const std::string& title, const std::string& msg, cocos2d::Label* lbl, const std::function<void()>& YesFunc, const std::function<void()>& NoFunc)
@@ -391,7 +419,16 @@ namespace UICustom {
 
                 m_sliderOptionMusic->setPosition(Vec2(winSize.width / 2, (winSize.height - FONT::LABEL_OFFSET / 2) * (6 - index * 2) / 10));
 
-                //m_sliderOptionMusic->addEventListener(CC_CALLBACK_2(Popup::sliderEvent, node));
+				m_sliderOptionMusic->setTag(index);
+                
+				if (index == 0) {
+					m_sliderOptionMusic->setPercent(AudioManager::getAudioVolume());
+				}
+				else if (index == 1) {
+					m_sliderOptionMusic->setPercent(AudioManager::getEffectVolume());
+				}
+				m_sliderOptionMusic->addEventListener(CC_CALLBACK_2(Popup::sliderEvent, node));
+
                 node->addChild(m_sliderOptionMusic, 2);
             }
 
@@ -410,8 +447,10 @@ namespace UICustom {
                 "popup/spr_checkbox_active.png");
             m_checkboxMuteAllSound->setScale(0.5);
             m_checkboxMuteAllSound->setPosition(Vec2(winSize.width * 6 / 10, (winSize.height / 2 - FONT::LABEL_OFFSET / 2) * 4 / 10));
-            //m_checkboxMuteAllSound->addEventListener(CC_CALLBACK_2(Popup::checkBoxSelectedEvent, node));
+            m_checkboxMuteAllSound->addEventListener(CC_CALLBACK_2(Popup::checkBoxSelectedEvent, node));
             node->addChild(m_checkboxMuteAllSound, 2);
+
+			m_checkboxMuteAllSound->setSelected(AudioManager::isMuteAudio());
 
             node->initBg(Size(500, 500), "Setting");
             node->autorelease();
