@@ -249,7 +249,7 @@ bool VillageScene::init()
 
 	//collision with map edges
 	auto mapSize = Size((map->getMapSize().width * map->getTileSize().width) * SCALE_FACTOR, ((map->getMapSize().height * map->getTileSize().height) * SCALE_FACTOR) );
-	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 0.0f), 3);
+	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 1.0f), 10.0f);
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(Point(mapSize.width/2, mapSize.height/2));
 	edgeBody->setCollisionBitmask(ALLSET_BITMASK);
