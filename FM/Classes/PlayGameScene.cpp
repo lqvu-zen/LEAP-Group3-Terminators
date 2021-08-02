@@ -3,7 +3,6 @@
 #include "MainMenuScene.h"
 #include "VillageScene.h"
 #include "Popup.h"
-//#include <Windows.h>
 
 USING_NS_CC;
 
@@ -602,6 +601,8 @@ void PlayGameScene::update(float dt)
 	missionLabel->setPosition(playerStatsSprite->getPositionX() + missionLabel->getContentSize().width / 2, playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//this->updateBoss(dt);
 	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
+
+	GameManager::getInstace()->SaveMission();
 }
 
 void PlayGameScene::updateCharacter(float dt)

@@ -132,13 +132,6 @@ void GameManager::SaveGame()
 	UserDefault::getInstance()->setIntegerForKey("INVENTORY_MPPOTION", playerCharacter->getInventory().getItemCount(Item::ItemType::MP_POTION));
 	UserDefault::getInstance()->setIntegerForKey("INVENTORY_DBOOTS", playerCharacter->getInventory().getItemCount(Item::ItemType::D_BOOTS));
 
-	//Save Mission
-	UserDefault::getInstance()->setIntegerForKey("INDEX_MISSION", mission->getIndexMission());
-	UserDefault::getInstance()->setIntegerForKey("MISSION_ID", mission->get().id);
-	UserDefault::getInstance()->setIntegerForKey("MISSION_BEGIN", mission->get().begin);
-	UserDefault::getInstance()->setIntegerForKey("MISSION_STATE", mission->get().state);
-	UserDefault::getInstance()->setBoolForKey("HAS_MISSION", mission->getProcesstate());
-
 	//Save Collected Items
 	UserDefault::getInstance()->setIntegerForKey("COLLECTED_ITEMS_SIZE", collectedItems.size());
 	for (int i = 0; i < collectedItems.size(); ++i)
@@ -199,7 +192,7 @@ void GameManager::LoadGame()
 		playerCharacter->colectItem(tempItem, 0);
 	}
 	
-	//load Mission
+	//Load Mission
 	int index = UserDefault::getInstance()->getIntegerForKey("INDEX_MISSION");
 	int id = UserDefault::getInstance()->getIntegerForKey("MISSION_ID");
 	int begin = UserDefault::getInstance()->getIntegerForKey("MISSION_BEGIN");
@@ -217,6 +210,15 @@ void GameManager::LoadGame()
 			collectedItems.push_back(UserDefault::getInstance()->getIntegerForKey(collectedItem.c_str()));
 		}
 	}
+}
+
+//Save/Load Mission
+void GameManager::SaveMission() {
+	UserDefault::getInstance()->setIntegerForKey("INDEX_MISSION", mission->getIndexMission());
+	UserDefault::getInstance()->setIntegerForKey("MISSION_ID", mission->get().id);
+	UserDefault::getInstance()->setIntegerForKey("MISSION_BEGIN", mission->get().begin);
+	UserDefault::getInstance()->setIntegerForKey("MISSION_STATE", mission->get().state);
+	UserDefault::getInstance()->setBoolForKey("HAS_MISSION", mission->getProcesstate());
 }
 
 GameManager * GameManager::create()

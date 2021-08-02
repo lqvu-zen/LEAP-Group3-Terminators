@@ -66,6 +66,9 @@ public:
 	//Save/Load Gameplay
 	void SaveGame();
 	void LoadGame();
+	//Save/Load Mission
+	void SaveMission();
+
 private:
 	static GameManager* create();
 
