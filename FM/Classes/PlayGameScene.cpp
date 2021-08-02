@@ -268,7 +268,7 @@ bool PlayGameScene::init()
 
 	//collision with map edges
 	auto mapSize = Size((map->getMapSize().width * map->getTileSize().width) * SCALE_FACTOR, ((map->getMapSize().height * map->getTileSize().height) * SCALE_FACTOR) );
-	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 0.0f), 3);
+	auto edgeBody = PhysicsBody::createEdgeBox(mapSize, PhysicsMaterial(1.0f, 0.0f, 0.0f), 10.0f);
 	auto edgeNode = Node::create();
 	edgeNode->setPosition(Point(mapSize.width/2, mapSize.height/2));
 	edgeBody->setCategoryBitmask(ALLSET_BITMASK);
@@ -597,7 +597,7 @@ void PlayGameScene::update(float dt)
 	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
 	missionLabel->setPosition(playerStatsSprite->getPositionX() + (missionLabel->getContentSize().width * 0.52), playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//this->updateBoss(dt);
-	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
+	CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
 
 	GameManager::getInstace()->SaveMission();
 }
@@ -654,7 +654,7 @@ void PlayGameScene::updateCharacter(float dt)
 		//keys action
 
 		//Character fall off the map 
-		if (playerChar->getSprite()->getPositionY() < 36)
+		if (playerChar->getSprite()->getPositionY() < 42)
 		{
 			CCLOG("DEAD");
 			while (playerChar->getStats().HP > 0)
