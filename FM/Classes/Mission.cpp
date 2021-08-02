@@ -47,7 +47,7 @@ Mission::Data Mission::getMission() {
 		}
 	}
 	else {
-		int i = index;
+		int i = index + 1;
 		while (i < data.size()) {
 			if (data.at(i).state == 0) {
 				mission = data.at(i);
@@ -56,7 +56,7 @@ Mission::Data Mission::getMission() {
 			}
 			i++;
 		}
-		if (i == data.size()) {
+		if (i >= data.size()) {
 			index = i;
 			mission = data.at(index - 1);
 			return mission;
@@ -168,9 +168,9 @@ int Mission::getState() {
 				return 2;
 			}
 		}
-		if (mission.id == data.size() - 2) {
+		/*if (mission.id == data.size() - 2) {
 			return 2;
-		}
+		}*/
 		return 0;
 	}
 	else {

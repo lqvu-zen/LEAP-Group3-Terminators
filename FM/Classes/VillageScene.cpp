@@ -170,7 +170,9 @@ bool VillageScene::init()
 
 	//Lock Skill
 #if 1
-	GameManager::getInstace()->LoadSkill();
+	if (GameManager::getInstace()->getLoadOption() == 1) {
+		GameManager::getInstace()->LoadSkill();
+	}
 	lockskill_1 = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
 		lockskill_1 = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
