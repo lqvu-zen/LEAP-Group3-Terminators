@@ -27,12 +27,13 @@
 #include "PlayGameScene.h"
 #include "MainMenuScene.h"
 #include "HelloWorldScene.h"
+#include "GameManager.h"
 
-// #define USE_AUDIO_ENGINE 1
+#define USE_AUDIO_ENGINE 0
 
 #if USE_AUDIO_ENGINE
-#include "audio/include/AudioEngine.h"
-using namespace cocos2d::experimental;
+//#include "audio/include/AudioEngine.h"
+//using namespace cocos2d::experimental;
 #endif
 
 USING_NS_CC;
@@ -124,16 +125,16 @@ bool AppDelegate::applicationDidFinishLaunching() {
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
 
-#if USE_AUDIO_ENGINE
-    AudioEngine::pauseAll();
-#endif
+#ifdef ENABLE_AUDIO
+	AudioEngine::pauseAll();
+#endif // ENABLE_AUDIO
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
 
-#if USE_AUDIO_ENGINE
+#ifdef ENABLE_AUDIO
     AudioEngine::resumeAll();
-#endif
+#endif // ENABLE_AUDIO
 }

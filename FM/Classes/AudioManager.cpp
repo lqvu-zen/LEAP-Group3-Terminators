@@ -10,8 +10,8 @@ static int playerActionAudioID = AudioEngine::INVALID_AUDIO_ID;
 static int randomAudioID = AudioEngine::INVALID_AUDIO_ID;
 
 static float audioVolume = 0.5f;
-static float effectVolume = 0.3f;
-static float karmaVolume = effectVolume;
+static float effectVolume = 0.2f;
+static float karmaVolume = 0.2f;
 
 static float iAudioVolume = audioVolume;
 static float iEffectVolume = effectVolume;

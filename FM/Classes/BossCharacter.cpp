@@ -462,7 +462,7 @@ void BossCharacter::skill_2() {
 
 	characterSpriteAnimation->stopAllActions();
 
-	animation = createAnimation("Shoot_Bow", 1.2, 0.05);
+	animation = createAnimation("Shoot_Bow", 12, 0.05);
 	Animate* animate = Animate::create(animation);
 	animate->retain();
 	auto seq = Sequence::create(animate, CallFuncN::create(CC_CALLBACK_0(BossCharacter::idle, this)), nullptr);

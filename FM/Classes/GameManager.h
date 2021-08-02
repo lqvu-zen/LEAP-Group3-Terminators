@@ -71,7 +71,7 @@ public:
 	//Save Unlock/Lock Skill
 	void SaveSkill();
 	void LoadSkill();
-	bool GameManager::checkVector(vector<int>list, int num);
+	bool checkVector(vector<int>list, int num);
 
 private:
 	static GameManager* create();
