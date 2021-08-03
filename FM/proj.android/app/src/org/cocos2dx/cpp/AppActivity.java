@@ -48,7 +48,7 @@ public class AppActivity extends Cocos2dxActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             // Enable rendering into the cutout area
             WindowManager.LayoutParams lp = getWindow().getAttributes();
-            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            lp.layoutInDisplayCutoutMode = LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
             getWindow().setAttributes(lp);
         }
         // DO OTHER INITIALIZATION BELOW

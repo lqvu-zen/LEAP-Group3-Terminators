@@ -351,13 +351,13 @@ bool PlayGameScene::init()
 	hpPotionsLabel->setPositionX(hpButton->getPositionX() + (hpButton->getContentSize().width * 0.035));
 	hpPotionsLabel->setPositionY(hpButton->getPositionY() + (hpButton->getContentSize().height * 0.035));
 	hpPotionsLabel->enableOutline(Color4B::BLACK, 1);
-	buttonNode->addChild(hpPotionsLabel, 1);
+	buttonNode->addChild(hpPotionsLabel);
 
 	mpPotionsLabel = Label::createWithTTF(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
 	mpPotionsLabel->setPositionX(mpButton->getPositionX() + (mpButton->getContentSize().width * 0.035));
 	mpPotionsLabel->setPositionY(mpButton->getPositionY() + (mpButton->getContentSize().height * 0.035));
 	mpPotionsLabel->enableOutline(Color4B::BLACK, 1);
-	buttonNode->addChild(mpPotionsLabel, 1);
+	buttonNode->addChild(mpPotionsLabel);
 	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
