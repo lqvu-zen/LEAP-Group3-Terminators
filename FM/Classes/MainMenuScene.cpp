@@ -33,6 +33,10 @@ bool MainMenuScene::init()
     // add a "close" icon to exit the progress. it's an autorelease object
 
 	GameManager::getInstace()->init();
+	auto bg = Sprite::create("sprites/mainMenuBG.png");
+	bg->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+	bg->setScale(visibleSize.width / bg->getContentSize().width, visibleSize.height / bg->getContentSize().height);
+	this->addChild(bg);
 #if 1 
     ///Menu
     auto title = Label::createWithTTF("Forgotten memoriae", "fonts/Marker Felt.ttf", 60);
