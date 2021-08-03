@@ -166,7 +166,9 @@ bool VillageScene::init()
 
 	//Lock Skill
 #if 1
-
+	if (GameManager::getInstace()->getLoadOption() == 1) {
+		GameManager::getInstace()->LoadSkill();
+	}
 	lockskill_1 = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
 		lockskill_1 = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
@@ -191,7 +193,6 @@ bool VillageScene::init()
 	lockMenu->setPosition(Vec2::ZERO);
 	lockMenu->setOpacity(140);
 	buttonNode->addChild(lockMenu);
-
 #endif
 
 	//Buton recuperate
@@ -487,6 +488,7 @@ void VillageScene::update(float dt)
 	//CCLOG("player position: %f. camera position: %f", playerChar->getSprite()->getPositionX(), cameraTarget->getPositionX());
 
 	GameManager::getInstace()->SaveMission();
+	GameManager::getInstace()->SaveSkill();
 }
 
 void VillageScene::updateCharacter(float dt)
