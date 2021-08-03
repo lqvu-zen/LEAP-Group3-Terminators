@@ -73,6 +73,10 @@ bool MainMenuScene::init()
 	//play audio
 	AudioManager::playBackgroundAudio(AudioManager::SceneName::MainMenu);
 
+	auto emitter = ParticleRain::create();
+
+	addChild(emitter);
+
     return true;
 }
 
