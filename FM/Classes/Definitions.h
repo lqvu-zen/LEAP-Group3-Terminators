@@ -4,9 +4,9 @@
 #include "cocos2d.h"
 
 #define DISPLAY_TIME_SPLASH_SCENE 1
-#define TRANSITION_TIME 0.5
-#define SCALE_FACTOR 2.0
-#define BIRD_JUMP 0.1
+#define TRANSITION_TIME 0.5f
+#define SCALE_FACTOR 2.0f
+#define BIRD_JUMP 0.1f
 #define ANIMATION_DELAY 0.085f
 #define FAST_ANIMATION_DELAY 0.035f
 #define COLECT_DELAY 0.5f

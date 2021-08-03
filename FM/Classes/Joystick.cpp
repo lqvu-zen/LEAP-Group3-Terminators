@@ -117,12 +117,20 @@ void Joystick::onTouchMoved(Touch *touch, Event *unused_event) {
 		mJsCenter->setPosition(point);
 	}
 
-	
-	JoystickEvent* jsEvent = JoystickEvent::create();
-	jsEvent->type = JoyStickEventType::MOVED;
-	jsEvent->mAnagle = angle;
-	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(
-		JoystickEvent::EVENT_JOYSTICK, jsEvent);
+	if (distanceOfTouchPointToCenter >= mJsCenter->getContentSize().width * 0.8f) {
+		JoystickEvent* jsEvent = JoystickEvent::create();
+		jsEvent->type = JoyStickEventType::MOVED;
+		jsEvent->mAnagle = angle;
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(
+			JoystickEvent::EVENT_JOYSTICK, jsEvent);
+	}
+	else {
+		JoystickEvent* jsEvent = JoystickEvent::create();
+		jsEvent->type = JoyStickEventType::ENDED;
+		jsEvent->mAnagle = angle;
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(
+			JoystickEvent::EVENT_JOYSTICK, jsEvent);
+	}
 }
 
 void Joystick::onTouchEnded(Touch *touch, Event *unused_event) {

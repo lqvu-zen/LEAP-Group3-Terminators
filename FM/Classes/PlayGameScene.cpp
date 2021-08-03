@@ -43,8 +43,8 @@ bool PlayGameScene::init()
 	//Pause button
 #if 1
 	auto pauseButton = ui::Button::create("sprites/pauseButton.png");
-	pauseButton->setScale(0.1);
-	pauseButton->setPosition(Vec2(visibleSize.width - pauseButton->getContentSize().width * 0.05, visibleSize.height - pauseButton->getContentSize().height * 0.05));
+	pauseButton->setScale(0.1f);
+	pauseButton->setPosition(Vec2(visibleSize.width - pauseButton->getContentSize().width * 0.05f, visibleSize.height - pauseButton->getContentSize().height * 0.05f));
 	pauseButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -148,23 +148,23 @@ bool PlayGameScene::init()
 	//Attak button and skill buttons
 #if 1
 	auto attackItem = MenuItemImage::create("sprites/attack.png", "sprites/attack.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
-	attackItem->setScale(0.7);
-	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35, attackItem->getContentSize().height * 0.35));
+	attackItem->setScale(0.7f);
+	attackItem->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.35f, attackItem->getContentSize().height * 0.35f));
 	attackItem->setTag(1);
 
 	auto skill_1Item = MenuItemImage::create("sprites/skill_1.png", "sprites/skill_1.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
-	skill_1Item->setScale(0.3);
-	skill_1Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.7, attackItem->getContentSize().height * 0.2));
+	skill_1Item->setScale(0.3f);
+	skill_1Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.7f, attackItem->getContentSize().height * 0.2f));
 	skill_1Item->setTag(2);
 
 	auto skill_2Item = MenuItemImage::create("sprites/skill_2.png", "sprites/skill_2.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
-	skill_2Item->setScale(0.3);
-	skill_2Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.65, attackItem->getContentSize().height * 0.55));
+	skill_2Item->setScale(0.3f);
+	skill_2Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.65f, attackItem->getContentSize().height * 0.55f));
 	skill_2Item->setTag(3);
 
 	auto skill_3Item = MenuItemImage::create("sprites/skill_3.png", "sprites/skill_3.png", CC_CALLBACK_1(PlayGameScene::onClickAttackMenu, this));
-	skill_3Item->setScale(0.3);
-	skill_3Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.3, attackItem->getContentSize().height * 0.7));
+	skill_3Item->setScale(0.3f);
+	skill_3Item->setPosition(Vec2(visibleSize.width - attackItem->getContentSize().width * 0.3f, attackItem->getContentSize().height * 0.7f));
 	skill_3Item->setTag(4);
 
 	auto attackMenu = Menu::create(skill_1Item, skill_2Item, skill_3Item, attackItem, nullptr);
@@ -178,21 +178,21 @@ bool PlayGameScene::init()
 	lockskill_1Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 1)) {
 		lockskill_1Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
-		lockskill_1Item->setScale(0.3);
+		lockskill_1Item->setScale(0.3f);
 		lockskill_1Item->setPosition(skill_1Item->getPosition());
 	}
 
 	lockskill_2Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 2)) {
 		lockskill_2Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
-		lockskill_2Item->setScale(0.3);
+		lockskill_2Item->setScale(0.3f);
 		lockskill_2Item->setPosition(skill_2Item->getPosition());
 	}
 
 	lockskill_3Item = MenuItemImage::create();
 	if (checkVector(GameManager::getInstace()->lockedSkills, 2)) {
 		lockskill_3Item = MenuItemImage::create("sprites/lock.png", "sprites/lock.png");
-		lockskill_3Item->setScale(0.3);
+		lockskill_3Item->setScale(0.3f);
 		lockskill_3Item->setPosition(skill_3Item->getPosition());
 	}
 	auto lockMenu = Menu::create(lockskill_1Item, lockskill_2Item, lockskill_3Item, nullptr);
@@ -204,8 +204,8 @@ bool PlayGameScene::init()
 	//mp Button, hp Button
 #if 1
 	auto mpButton = ui::Button::create("sprites/mpButton.png");
-	mpButton->setScale(0.065);
-	mpButton->setPosition(Vec2(visibleSize.width - 7 * mpButton->getContentSize().width * 0.05, mpButton->getContentSize().height * 0.05));
+	mpButton->setScale(0.065f);
+	mpButton->setPosition(Vec2(visibleSize.width - 7 * mpButton->getContentSize().width * 0.05f, mpButton->getContentSize().height * 0.05));
 	mpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -221,8 +221,8 @@ bool PlayGameScene::init()
 	buttonNode->addChild(mpButton, 1);
 
 	auto hpButton = ui::Button::create("sprites/hpButton.png");
-	hpButton->setScale(0.065);
-	hpButton->setPosition(Vec2(visibleSize.width - 9.5 * hpButton->getContentSize().width * 0.05, hpButton->getContentSize().height * 0.05));
+	hpButton->setScale(0.065f);
+	hpButton->setPosition(Vec2(visibleSize.width - 9.5 * hpButton->getContentSize().width * 0.05f, hpButton->getContentSize().height * 0.05f));
 	hpButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
 		switch (type)
 		{
@@ -1038,7 +1038,7 @@ void PlayGameScene::unlockSkill(int index) {
 }
 
 bool PlayGameScene::checkVector(vector<int>list, int num) {
-	for (int i = 0; i < list.size(); i++) {
+	for (int i = 0; i < int(list.size()); i++) {
 		if (num == list[i]) {
 			return true;
 		}
