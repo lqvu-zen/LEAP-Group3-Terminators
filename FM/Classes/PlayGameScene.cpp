@@ -603,7 +603,7 @@ void PlayGameScene::update(float dt)
 	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
 	missionLabel->setPosition(playerStatsSprite->getPositionX() + (missionLabel->getContentSize().width * 0.52), playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//this->updateBoss(dt);
-	CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
+	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
 
 	GameManager::getInstace()->SaveMission();
 }
@@ -810,6 +810,10 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			CCLOG("Collected item");
 			if (a->getName() == "GEM" || a->getName() == "BOOTS")
 			{
+				if (a->getName() == "GEM")
+				{
+					GameManager::getInstace()->getMission()->updateMission(2);
+				}
 				GameManager::getInstace()->collectedItems.push_back(a->getTag());
 				CCLOG("Collected gem or boots");
 			}
@@ -819,8 +823,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			GameManager::getInstace()->colect(a->getNode()->getTag());
 			//Update the label whenever the Player collect any item.
 			mpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)));
-			hpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)));
-			GameManager::getInstace()->getMission()->updateMission(2);
+			hpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)));	
 			if (GameManager::getInstace()->getMission()->getNowMission().id == 6)
 			{
 				//Create a PopUp when a mission is completed.
