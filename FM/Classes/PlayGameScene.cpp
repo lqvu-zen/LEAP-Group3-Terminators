@@ -597,7 +597,7 @@ void PlayGameScene::update(float dt)
 	missionLabel->setString(StringUtils::format("%s\n%d / %d", des.c_str(), GameManager::getInstace()->getMission()->getNowMission().begin, GameManager::getInstace()->getMission()->getNowMission().end));
 	missionLabel->setPosition(playerStatsSprite->getPositionX() + (missionLabel->getContentSize().width * 0.52), playerStatsSprite->getPositionY() - playerStatsSprite->getContentSize().height - 40);
 	//this->updateBoss(dt);
-	CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
+	//CCLOG("player positionY: %f.", playerChar->getSprite()->getPositionY());
 
 	GameManager::getInstace()->SaveMission();
 }
