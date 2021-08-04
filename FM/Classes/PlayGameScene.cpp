@@ -351,13 +351,13 @@ bool PlayGameScene::init()
 	hpPotionsLabel->setPositionX(hpButton->getPositionX() + (hpButton->getContentSize().width * 0.035));
 	hpPotionsLabel->setPositionY(hpButton->getPositionY() + (hpButton->getContentSize().height * 0.035));
 	hpPotionsLabel->enableOutline(Color4B::BLACK, 1);
-	buttonNode->addChild(hpPotionsLabel, 1);
+	buttonNode->addChild(hpPotionsLabel);
 
 	mpPotionsLabel = Label::createWithTTF(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)), "fonts/Marker Felt.ttf", visibleSize.height*0.045);
 	mpPotionsLabel->setPositionX(mpButton->getPositionX() + (mpButton->getContentSize().width * 0.035));
 	mpPotionsLabel->setPositionY(mpButton->getPositionY() + (mpButton->getContentSize().height * 0.035));
 	mpPotionsLabel->enableOutline(Color4B::BLACK, 1);
-	buttonNode->addChild(mpPotionsLabel, 1);
+	buttonNode->addChild(mpPotionsLabel);
 	//Add Game Objects in Map here!!
 	//Algorithm: get the EnemySpawn ValueMap from the objectGroup then check if the EnemySpawn has the value "Enemy == 1".
 	//If true -> add enemey at the EnemySpawn.
@@ -804,6 +804,10 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			CCLOG("Collected item");
 			if (a->getName() == "GEM" || a->getName() == "BOOTS")
 			{
+				if (a->getName() == "GEM")
+				{
+					GameManager::getInstace()->getMission()->updateMission(2);
+				}
 				GameManager::getInstace()->collectedItems.push_back(a->getTag());
 				CCLOG("Collected gem or boots");
 			}
@@ -813,8 +817,7 @@ bool PlayGameScene::onContactBegin(cocos2d::PhysicsContact &contact)
 			GameManager::getInstace()->colect(a->getNode()->getTag());
 			//Update the label whenever the Player collect any item.
 			mpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::MP_POTION)));
-			hpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)));
-			GameManager::getInstace()->getMission()->updateMission(2);
+			hpPotionsLabel->setString(StringUtils::format("%d", playerChar->getInventory().getItemCount(Item::ItemType::HP_POTION)));	
 			if (GameManager::getInstace()->getMission()->getNowMission().id == 6)
 			{
 				//Create a PopUp when a mission is completed.
